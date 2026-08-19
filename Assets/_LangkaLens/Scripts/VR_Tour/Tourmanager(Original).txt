@@ -1,0 +1,332 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+
+public class TourManager : MonoBehaviour
+{
+    [Header("Setup")]
+    public Material skyboxMaterial; 
+    public GameObject arrowPrefab;
+    public GameObject hoverIconPrefab;
+    
+    [Header("Title Screen")]
+    public AssetReferenceTexture2D titleScreenPhoto; 
+
+    [Header("VR Fader")]
+    public Image fadeScreen; 
+    public float fadeDuration = 0.5f; 
+
+    [Header("VR Rig Setup")]
+    [Tooltip("Drag the top-level OVRCameraRig or XR Origin here")]
+    public Transform vrRigParent;
+    [Tooltip("Drag the CenterEyeAnchor or Main Camera here")]
+    public Transform vrCamera;
+
+    [Header("UI Menus")]
+    public GameObject mapMenuCanvas;
+    public GameObject returnHomeCanvas;
+
+    private TourNode currentNode;
+    private AsyncOperationHandle<Texture2D> currentTextureHandle;
+    private GameObject currentIconInstance;
+    private List<GameObject> activeArrows = new List<GameObject>();
+
+    private GameObject currentOverlayInstance;
+    private AsyncOperationHandle<GameObject> currentOverlayHandle;
+
+    private void Start()
+    {
+        // --- UPDATED: Ensure menus start hidden on the Title Screen ---
+        if (mapMenuCanvas != null) mapMenuCanvas.SetActive(true);
+        if (returnHomeCanvas != null) returnHomeCanvas.SetActive(false);
+
+        if (titleScreenPhoto.RuntimeKeyIsValid())
+        {
+            currentTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
+            currentTextureHandle.Completed += OnTitleScreenLoaded;
+        }
+    }
+
+    private void OnTitleScreenLoaded(AsyncOperationHandle<Texture2D> handle)
+    {
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+            skyboxMaterial.mainTexture = handle.Result;
+    }
+
+    public void ReturnToMainMenu()
+    {
+        StartCoroutine(MainMenuRoutine());
+    }
+
+    private IEnumerator MainMenuRoutine()
+    {
+        // 1. FADE OUT
+        float timer = 0f;
+        Color faderColor = fadeScreen.color;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            faderColor.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+            fadeScreen.color = faderColor;
+            yield return null; 
+        }
+        faderColor.a = 1f;
+        fadeScreen.color = faderColor;
+
+        // 2. CLEANUP NODE DATA
+        ClearActiveArrows();
+        ClearOverlayModel();
+        currentNode = null; // Clear the current node
+
+        // --- UPDATED: HIDE BOTH MENUS ON THE TITLE SCREEN ---
+        if (mapMenuCanvas != null) mapMenuCanvas.SetActive(true);
+        if (returnHomeCanvas != null) returnHomeCanvas.SetActive(false);
+
+        // 3. LOAD TITLE SCREEN PHOTO
+        if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
+        currentTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
+        yield return currentTextureHandle;
+
+        if (currentTextureHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            skyboxMaterial.mainTexture = currentTextureHandle.Result;
+        }
+
+        // 4. RESET PLAYER ROTATION TO FACE FORWARD (Y = 0)
+        ResetPlayerView();
+
+        // 5. FADE IN
+        timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            faderColor.a = Mathf.Lerp(1f, 0f, timer / fadeDuration);
+            fadeScreen.color = faderColor;
+            yield return null;
+        }
+        faderColor.a = 0f;
+        fadeScreen.color = faderColor;
+    }
+
+   private void ResetPlayerView()
+{
+    if (vrRigParent != null && vrCamera != null)
+    {
+        // 1. Reset the base rotation
+        vrRigParent.rotation = Quaternion.identity;
+        
+        // 2. Force the player to face forward (compensate for real-world head rotation)
+        float currentCameraYaw = vrCamera.eulerAngles.y;
+        vrRigParent.Rotate(0, -currentCameraYaw, 0, Space.World);
+
+        // 3. Offset the rig on ALL axes (X, Y, and Z)
+        // By subtracting the camera's local position from Vector3.zero, 
+        // we push the user's actual headset to exactly 0,0,0 in world space.
+        Vector3 cameraLocalPos = vrCamera.localPosition;
+        vrRigParent.position = -cameraLocalPos; 
+    }
+}
+
+    public void LoadNode(TourNode nextNode)
+    {
+        if (nextNode == null) return;
+        StartCoroutine(TransitionRoutine(nextNode));
+    }
+
+    private IEnumerator TransitionRoutine(TourNode nextNode)
+    {
+        // 1. FADE OUT TO BLACK
+        float timer = 0f;
+        Color faderColor = fadeScreen.color;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            faderColor.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+            fadeScreen.color = faderColor;
+            yield return null; 
+        }
+        faderColor.a = 1f;
+        fadeScreen.color = faderColor;
+
+        // 2. CLEANUP ARROWS & 3D MODELS
+        ClearActiveArrows();
+        ClearOverlayModel(); 
+
+        // 3. LOAD NEW 360 IMAGE
+        if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
+
+        currentNode = nextNode;
+        currentTextureHandle = Addressables.LoadAssetAsync<Texture2D>(currentNode.photoReference);
+        yield return currentTextureHandle; 
+
+        if (currentTextureHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            skyboxMaterial.mainTexture = currentTextureHandle.Result;
+            SpawnNavigationArrows();
+            
+            // 4. LOAD THE 3D OVERLAY (IF IT EXISTS)
+            if (currentNode.overlayModel.RuntimeKeyIsValid())
+            {
+                LoadOverlayModel();
+                SpawnHoverIcon();
+            }
+
+            // --- UPDATED: RESET MENUS FOR THE NEW NODE ---
+            // Ensure Map Menu is closed, and Return Home Canvas is visible
+            if (mapMenuCanvas != null) mapMenuCanvas.SetActive(false);
+            if (returnHomeCanvas != null) returnHomeCanvas.SetActive(true);
+        }
+
+        
+
+
+        // 5. FADE IN FROM BLACK
+        timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            faderColor.a = Mathf.Lerp(1f, 0f, timer / fadeDuration);
+            fadeScreen.color = faderColor;
+            yield return null;
+        }
+        faderColor.a = 0f;
+        fadeScreen.color = faderColor;
+    }
+
+    // Add this new method anywhere inside TourManager.cs
+    private void SpawnHoverIcon()
+    {
+        if (hoverIconPrefab != null)
+        {
+            currentIconInstance = Instantiate(hoverIconPrefab, currentNode.iconPosition, Quaternion.Euler(currentNode.iconRotation));
+            currentIconInstance.transform.localScale = currentNode.iconScale;
+
+            HoverIcon iconScript = currentIconInstance.GetComponent<HoverIcon>();
+            if (iconScript != null)
+            {
+                iconScript.Setup(this);
+            }
+        }
+    }
+
+    private void LoadOverlayModel()
+    {
+        currentOverlayHandle = Addressables.InstantiateAsync(
+            currentNode.overlayModel, 
+            currentNode.modelPosition, 
+            Quaternion.Euler(currentNode.modelRotation)
+        );
+
+        currentOverlayHandle.Completed += (handle) =>
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                currentOverlayInstance = handle.Result;
+                currentOverlayInstance.transform.localScale = currentNode.modelScale;
+                currentOverlayInstance.SetActive(false); 
+            }
+        };
+    }
+
+    private void ClearOverlayModel()
+    {
+        if (currentOverlayInstance != null)
+        {
+            Addressables.ReleaseInstance(currentOverlayInstance);
+            currentOverlayInstance = null;
+        }
+
+        if (currentIconInstance != null) 
+        {
+            Destroy(currentIconInstance);
+            currentIconInstance = null;
+        }
+    }
+
+   private void Update()
+    {
+        // The overlay is now handled by Hover events, so we only listen for the Map Menu toggle
+        if (OVRInput.GetDown(OVRInput.RawButton.Y))
+        {
+            ToggleMapMenu();
+        }
+    }
+
+    // --- NEW: Expose Show and Hide methods for Hover Events ---
+    
+    public void ShowOverlay()
+    {
+        if (currentOverlayInstance != null)
+        {
+            currentOverlayInstance.SetActive(true);
+            Debug.Log("[TourManager] Overlay shown via hover.");
+        }
+        else
+        {
+            Debug.LogWarning("[TourManager] Attempted to show overlay, but currentOverlayInstance is NULL.");
+        }
+    }
+
+    public void HideOverlay()
+    {
+        if (currentOverlayInstance != null)
+        {
+            currentOverlayInstance.SetActive(false);
+            Debug.Log("[TourManager] Overlay hidden via unhover.");
+        }
+    }
+    
+    // --- NEW: Menu juggling logic ---
+    public void ToggleMapMenu()
+    {
+        // Only allow opening the map if we aren't on the title screen
+      
+
+        if (mapMenuCanvas != null)
+        {
+            bool isOpeningMap = !mapMenuCanvas.activeSelf;
+            mapMenuCanvas.SetActive(isOpeningMap);
+
+            if (returnHomeCanvas != null)
+            {
+                returnHomeCanvas.SetActive(!isOpeningMap);
+                
+            }
+
+            // Optional: Close 3D overlays when opening the map menu
+            if (isOpeningMap && currentOverlayInstance != null)
+            {
+                currentOverlayInstance.SetActive(false);
+            }
+        }
+    }
+
+    private void SpawnNavigationArrows()
+    {
+        if (currentNode.previousPath != null && currentNode.previousPath.targetNode != null)
+            SpawnSingleArrow(currentNode.previousPath);
+
+        if (currentNode.nextPath != null && currentNode.nextPath.targetNode != null)
+            SpawnSingleArrow(currentNode.nextPath);
+    }
+
+    private void SpawnSingleArrow(NodeConnection connection)
+    {
+        GameObject newArrow = Instantiate(arrowPrefab, connection.arrowPosition, Quaternion.Euler(connection.arrowRotation));
+        activeArrows.Add(newArrow);
+        NavigationArrow arrowScript = newArrow.GetComponent<NavigationArrow>();
+        if (arrowScript != null) arrowScript.Setup(connection.targetNode, this);
+    }
+
+    private void ClearActiveArrows()
+    {
+        foreach (GameObject arrow in activeArrows)
+        {
+            if (arrow != null) Destroy(arrow);
+        }
+        activeArrows.Clear();
+    }
+}

@@ -1,0 +1,533 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: 3b2ef620841d6bf439aadd8fb8af1c9a
+  m_SerializeEntries:
+  - m_GUID: 00f1ee90daa83ed41ae4080039d4c8bb
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2L1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 01c24aa629cb896418c2a429f8f5e916
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2C2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0407b9d74bf6ae44c955f5c5945c0e7b
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9C3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06657e3a7267bcc4dad0b26aaea55855
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8L2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0bb0f560cc2ef9e4493f07a5ce77aae9
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8B2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e8e4d67273e75b4b98659870466965a
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8C3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f507f8db84394447a6e745ff06a2fef
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2C3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1081c5963f2364e4b96dd47c2723708e
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9C4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10b209112fe824e41abc75dcd1f68fd7
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8R3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13ab67feb59f3f84f9db23ffec813c01
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3C1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 167ddfb32b0ba0a4996c2e1c093fa759
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9F1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 186b3551cf3d4d44c928025e88cb9c4a
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3F3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1cb7941557c86b0479b8a87c57252310
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8R2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20426574258456b459d2c5162cb489b2
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3B4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20ff3e1ed3c7ae64ead6636fe536eb1e
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8C4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22b721ca8f4a09f4e92e56bcfb348f08
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8F2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 249db0d4acfff87488b637fdeea40a97
+    m_Address: Assets/_LangkaLens/360 Images/Environment/TourBG.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2602c9b642482534aa88425b75783da4
+    m_Address: Assets/_LangkaLens/360 Images/Environment/MMBG.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2710fd4fa7625e24f83973ff14f2c75f
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8F4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ac71f0e91745344180ec956b643c3eb
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3F1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2bb65424a836fd743bbe0a806250e09f
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9C1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c32c2d4ce1a435428f0cde42e7560ad
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9L3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f17fdbce2cceca4db39ace9d63bcc80
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3B2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32da7c15e99051c439a54289a97b9a9e
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2F1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 370b7b8329fc53847be7b52fdb7b6a98
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3B1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 379d844bd1a881e469b4a7f9736fc40c
+    m_Address: Assets/_LangkaLens/VR Tour Data/Area_3_Data.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38e31c5a02793e6478d4d56ea755e9eb
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8L4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e60876d842e8844482a1d4e32d131e2
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2F3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40af65a4021437a44afcb4da96550b64
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2C4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41ccc91b5f8975f41ab6ffbd5c32e5c6
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8R7.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44ed7b5cc38e1eb4b9ec8318c1df47a4
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3R4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47644b9d740d2a5469f3ae284991d9c8
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9F3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48b99cbd4a5c85f458991583e5d37315
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8R4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48e8403c35b17164991f3da5cee5bcce
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2B3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49c1a45ff18650d4686c4a2023df115b
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9L4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a1f3c22169c0424387cc0a86af2031c
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3C2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4bd40eff502c9ea4593abdfff2bd0997
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8L7.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f196b660c4401441a28a4305c74b006
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8B1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51019017419a52e4bb96044e657fda53
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9F2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56dd41f5c0495004290f643bc8f0b00f
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2R1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 590ee6770e4205b409c0612b5052f9c7
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3L1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c908b8dc353c6e4e8172f75cbbea643
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8B4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 611f394e5c231b947a1ce3fce34adcc7
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8L6.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6195dd0f53b4fa44e86a60a7381bc26f
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9L2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62b7a60155e507841ad6396bcd72ba56
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9B3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64f1ef66cfa8d684d816f50b2fa52486
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2R2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65e3875e845b23e4a9d8dda46fe2ea37
+    m_Address: Assets/_LangkaLens/Images/MMBackground.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68fbdc6de86e3b14a934018b1acdf0fb
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2L2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c522860ebc817846ab58590140fe8f4
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8R6.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70a034150674bc94590b860267f99b41
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9B4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b37f52f9a6c2d546bcdfa981a9380ff
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8F3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bc766bf4ba6ab040b457f835a3602c7
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3F4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f63250996a7f36498612258ff7ba3d3
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8L5.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83281f974e9c38f4ebf48b27f7b061a3
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3B3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 852aaabda72d29348b5f2a279388ea1b
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8R5.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 867699c69f875f143a7856c427c1c847
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3R2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d7a64518daa85a47bdbc81a32ac0522
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9R1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8daf8d4d980c3db4580e304a8f944b24
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3L3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 929013c8a6e8e98499d4c4db86749f7f
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9R4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94201cf0e139e274ab8445967c1d500f
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2B1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99091ced1abf32f47a7544ab7268f92d
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2C1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9aa25cc565a500043b73e224cbdfb2b3
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3C4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f0881b1feff4974fa0676188f00bb5d
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8R1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a025710bcf14c5e42ac7fe0b8a39da85
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3F2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a67ad070e15ac0c4f8ff12bfcb2430a0
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8L1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7709ba1e31658446b0799a7e6f6c10e
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3C3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7f286dad319b024d91775d74b5adc27
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9B1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c2ace8bf5b61c474c8345b4dc614b71c
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2F2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c60b2bf724d47ce4d97e4c94f9804e0a
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8F1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9fceae724664b845ac4200eb1895540
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8C2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cef9ae2ecab008d478d916ff95108163
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3R3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0ad9d8006315cd4591108f1b6e2435e
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9F4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1cb902b49e3dca43915d094a8ccfb53
+    m_Address: Assets/_LangkaLens/3D Models/Prefabs/globeRED.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e23f1079590ae4f48a61fb1285cd3362
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9L1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e38bd1c9e565cb4468f706b6ce3aa3ea
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3L4.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e46a7a9abf25bd348bd6ecbfa2696221
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3R1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e62c2242301169c4991db98ef9e3da5f
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9B2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e8b32ed9a9da91d42a22d758693496c1
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8B3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f32d6281a5c2f36489cce487055cb505
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9R2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f32fe321b536f7d438922e52777115ee
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8L3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f46cef8a8dea99d41a5a62eaf2dc435f
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E022/2B2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fac6cec2d65ee694095b5ac971bef5bd
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E028/8C1.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb642da640e794c4cb898284aa7d0a34
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E08\u0E32\u0E40\u0E25\u0E30
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E023/3L2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd6914fcb8163824588d274ee45fd4d7
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9R3.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fef6e6157a12cb8448c535fdeee5b6df
+    m_Address: Assets/_LangkaLens/3D Models/sample.glb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffa2150ad7a21de4eb944ff761e188f9
+    m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
+      \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9C2.jpg"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: feb0f96c39ac6a149b9bbb82ba7b1ab2, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 6fd865cb94f630744b06b2cdd8a16d76, type: 2}
+    - {fileID: 11400000, guid: ac9f74f3e1547674f95fa41b62a1a14e, type: 2}

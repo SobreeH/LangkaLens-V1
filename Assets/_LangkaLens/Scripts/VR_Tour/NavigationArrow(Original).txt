@@ -1,0 +1,27 @@
+using UnityEngine;
+
+public class NavigationArrow : MonoBehaviour
+{
+    private TourNode targetNode;
+    private TourManager tourManager;
+
+    // This is called by the TourManager right after the arrow is instantiated
+    public void Setup(TourNode destination, TourManager manager)
+    {
+        targetNode = destination;
+        tourManager = manager;
+    }
+
+    // You will link this method to your Meta XR Interactable Unity Event Wrapper!
+    public void OnArrowSelected()
+    {
+        if (tourManager != null && targetNode != null)
+        {
+            tourManager.LoadNode(targetNode);
+        }
+        else
+        {
+            Debug.LogWarning("Arrow clicked, but target node or manager is missing!");
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "VR_Inputs",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "e3e725c4-d56c-4591-9628-bb76e29f8027",
+            "actions": [
+                {
+                    "name": "ToggleMenu",
+                    "type": "Button",
+                    "id": "8d46b4ec-5371-4c67-87fb-dc13cb1ef9cf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6384ba72-dcb7-401e-bb5f-4d1003cd46df",
+                    "path": "<XRController>{LeftHand}/menu",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fd9dea2550f4f84e98a3bf4a3d638a3, type: 3}
+  m_Name: Area_9_Data
+  m_EditorClassIdentifier: Assembly-CSharp::TourArea
+  areaName: ban_wat9
+  menuThumbnail: {fileID: 0}
+  startingNode: {fileID: 11400000, guid: 13838de3ad0a97749aea79c8997e4086, type: 2}

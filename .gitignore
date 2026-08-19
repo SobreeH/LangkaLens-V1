@@ -20,6 +20,17 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+# IL2CPP backup folders & Burst debug directories
+*BackUpThisFolder_ButDontShipItWithYourGame/
+*BackUpThisFolder_ButDontShipItWithYourGame.meta
+*BurstDebugInformation_DoNotShip/
+*BurstDebugInformation_DoNotShip.meta
+
+# Visual Studio modern solution files
+*.slnx
+*.slnx.user
+
+
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be committed to version control.
 *.blend1
 *.blend1.meta

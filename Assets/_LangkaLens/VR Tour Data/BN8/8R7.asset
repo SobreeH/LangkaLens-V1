@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1592c8ad2b0b96e40b5d150cfef9bbfd, type: 3}
+  m_Name: 8R7
+  m_EditorClassIdentifier: Assembly-CSharp::TourNode
+  areaNumber: 8
+  position: 3
+  positionNumber: 7
+  photoReference:
+    m_AssetGUID: 41ccc91b5f8975f41ab6ffbd5c32e5c6
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  overlayModel:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  modelPosition: {x: 0, y: 0, z: 0}
+  modelRotation: {x: 0, y: 0, z: 0}
+  modelScale: {x: 1, y: 1, z: 1}
+  previousPath:
+    targetNode: {fileID: 11400000, guid: 75ed5e3fdfc445f448153431a644f34f, type: 2}
+    arrowPosition: {x: -14.05, y: -17.77, z: 2.93}
+    arrowRotation: {x: 0, y: -79.187, z: 0}
+  nextPath:
+    targetNode: {fileID: 11400000, guid: 52e9247d1a81d674f933e424a4b3265b, type: 2}
+    arrowPosition: {x: 13.48, y: -16.1, z: -3.29}
+    arrowRotation: {x: 0, y: 104.095, z: 0}
