@@ -23,6 +23,58 @@ MonoBehaviour:
     m_Key: btn_vr
     m_Metadata:
       m_Items: []
+  - m_Id: 31506643671642112
+    m_Key: title_select_language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643709390848
+    m_Key: btn_en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585152
+    m_Key: btn_th
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585153
+    m_Key: btn_ok
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585154
+    m_Key: title_main_menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585155
+    m_Key: btn_mode_mr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585156
+    m_Key: desc_mode_mr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585157
+    m_Key: btn_mode_vrt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585158
+    m_Key: desc_mode_vrt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585159
+    m_Key: btn_mode_vrm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585160
+    m_Key: desc_mode_vrm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585161
+    m_Key: btn_close_app
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585162
+    m_Key: text_version
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -26,6 +26,58 @@ MonoBehaviour:
     m_Localized: VR Mode
     m_Metadata:
       m_Items: []
+  - m_Id: 31506643671642112
+    m_Localized: Select Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643709390848
+    m_Localized: EN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585152
+    m_Localized: TH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585153
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585154
+    m_Localized: 'LangkaLens: Yarang Ancient City'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585155
+    m_Localized: Mixed Reality Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585156
+    m_Localized: Mixed Reality Exploration. Project the ruins in Real-Time.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585157
+    m_Localized: Virtual Tour Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585158
+    m_Localized: Virtual Tour through the ruins. Virtual immersion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585159
+    m_Localized: Virtual Museum Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585160
+    m_Localized: Inspect 3d Artifacts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585161
+    m_Localized: CLOSE APP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31506643713585162
+    m_Localized: v1.0
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
