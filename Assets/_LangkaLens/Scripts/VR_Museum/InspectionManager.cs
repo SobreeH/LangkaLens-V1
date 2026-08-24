@@ -37,7 +37,6 @@ public class InspectionManager : MonoBehaviour
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
     }
 
-    // Notice the new uiAnchor parameter here
     public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, string title, string description)
     {
         if (_isInspecting) return;
@@ -45,9 +44,13 @@ public class InspectionManager : MonoBehaviour
         _isInspecting = true;
         _currentArtifact = artifact;
         _currentOrigin = origin;
-        _currentUIAnchor = uiAnchor; // <--- NEW
+        _currentUIAnchor = uiAnchor; 
 
         if (locomotionScript != null) locomotionScript.enabled = false;
+        
+        // Ensure all locomotion is completely disabled
+        GameObject playerController = GameObject.Find("PlayerController");
+        if (playerController != null) playerController.SetActive(false);
         
         _originalRigPosition = playerRig.position;
         _originalRigRotation = playerRig.rotation;
@@ -69,9 +72,17 @@ public class InspectionManager : MonoBehaviour
 
         if (locomotionScript != null) locomotionScript.enabled = true;
 
+        // Re-enable locomotion
+        Transform locomotorRoot = playerRig.Find("[BuildingBlock] OVRInteractionComprehensive/Locomotor");
+        if (locomotorRoot != null)
+        {
+            Transform playerController = locomotorRoot.Find("PlayerController");
+            if (playerController != null) playerController.gameObject.SetActive(true);
+        }
+
         _currentArtifact = null;
         _currentOrigin = null;
-        _currentUIAnchor = null; // <--- NEW
+        _currentUIAnchor = null; 
         _isInspecting = false;
     }
 

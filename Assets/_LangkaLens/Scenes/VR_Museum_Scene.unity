@@ -5814,17 +5814,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 760734227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &714730071 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6766089068624603154, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
-  m_PrefabInstance: {fileID: 1404763475}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ac2cf64a765614396aab2d92ebeb87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &723584699
 GameObject:
   m_ObjectHideFlags: 0
@@ -7577,7 +7566,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.08023379, y: 0}
+  m_AnchoredPosition: {x: -0.074543916, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &964354936
@@ -9054,7 +9043,7 @@ MonoBehaviour:
   descriptionText: {fileID: 396438496}
   playerRig: {fileID: 147365122}
   centerEyeCamera: {fileID: 1023386062}
-  locomotionScript: {fileID: 714730071}
+  locomotionScript: {fileID: 1404763479}
   inspectionDistance: 1.2
   transitionDuration: 0.4
 --- !u!4 &1165330535
@@ -11005,6 +10994,17 @@ MonoBehaviour:
   installationRoutineCheckpoint:
     _installationRoutineId: 2063f481-1b63-4eda-9ee8-a00df98536bc
     _installationVariants: []
+--- !u!114 &1404763479 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5801245061754409418, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 1404763475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975174141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec6a2955cc1374944a4634c6f312985a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1446521577
 GameObject:
   m_ObjectHideFlags: 0
