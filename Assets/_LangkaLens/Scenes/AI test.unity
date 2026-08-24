@@ -13659,23 +13659,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5334131201983616632, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5334131201983616632, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3500533047982933029}
     - target: {fileID: 5334131201983616632, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: set_enabled
+      value: ToggleTargetCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 5334131201983616632, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GeminiChatUI, Assembly-CSharp
+      value: ButtonCanvasToggle, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5334131201983616632, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5334131201983616632, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6353078612986044924, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
       propertyPath: canvasToToggle
@@ -13690,6 +13694,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
+--- !u!114 &3500533047982933029 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6353078612986044924, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
+  m_PrefabInstance: {fileID: 3500533047982933028}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656aa8b98ec58ce4aa5aeaced1b897d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonCanvasToggle
 --- !u!1001 &5124208291636547485
 PrefabInstance:
   m_ObjectHideFlags: 0
