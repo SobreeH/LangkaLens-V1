@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>บริการดิจิทัลและ AI ของ ม.อ.</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #e8eef5;
+    font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif; color: #102a43;
+  }
+  .slide {
+    width: 297mm; height: 210mm; padding: 16mm 18mm; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #ffffff 0%, #f6faff 100%);
+    page-break-after: always;
+  }
+  .slide:last-child { page-break-after: auto; }
+  .wave { position: absolute; border-radius: 50%; opacity: .14; pointer-events: none; }
+  .wave.one { width: 160mm; height: 160mm; right: -75mm; top: -76mm; background: #0066b3; }
+  .wave.two { width: 110mm; height: 110mm; left: -62mm; bottom: -62mm; background: #f5b335; }
+  .brand {
+    display: flex; align-items: center; gap: 10px; color: #0066b3;
+    font-weight: 800; letter-spacing: .3px; font-size: 14px;
+  }
+  .brand-mark {
+    width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+    background: #0066b3; color: white; font-size: 20px;
+  }
+  h1 { font-size: 39px; line-height: 1.2; margin: 23mm 0 7mm; max-width: 180mm; color: #003e70; }
+  h2 { font-size: 27px; margin: 9mm 0 6mm; color: #003e70; }
+  .lead { font-size: 18px; line-height: 1.65; max-width: 160mm; color: #486581; }
+  .tag {
+    display: inline-block; padding: 6px 12px; background: #e4f2ff; color: #0066b3;
+    border-radius: 999px; font-size: 13px; font-weight: bold; margin-top: 10mm;
+  }
+  .footer {
+    position: absolute; left: 18mm; right: 18mm; bottom: 10mm; display: flex;
+    justify-content: space-between; color: #627d98; font-size: 10px;
+  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 5mm; }
+  .card {
+    min-height: 67mm; padding: 8mm; background: rgba(255,255,255,.94);
+    border: 1px solid #d9e7f4; border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(28,73,112,.08);
+  }
+  .icon {
+    width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+    font-size: 21px; background: #e8f4ff; color: #0066b3; font-weight: bold;
+  }
+  .card h3 { font-size: 20px; margin: 4mm 0 2mm; color: #003e70; }
+  .card p { margin: 0 0 4mm; font-size: 13px; color: #486581; line-height: 1.5; }
+  a {
+    color: #0066b3; font-weight: bold; text-decoration: none;
+    border-bottom: 1px solid #8cc8f2; overflow-wrap: anywhere;
+  }
+  .tip {
+    background: #fff7df; border-left: 5px solid #f5b335; padding: 5mm 6mm;
+    border-radius: 8px; margin-top: 8mm; font-size: 14px; color: #614b14; line-height: 1.5;
+  }
+  .big-link { font-size: 17px; }
+  .numbers { position: absolute; right: 18mm; bottom: 10mm; font-weight: bold; color: #0066b3; }
+  @media screen { .slide { margin: 18px auto; box-shadow: 0 10px 30px rgba(20,56,88,.15); } }
+  @media print { body { background: white; } .slide { margin: 0; box-shadow: none; } }
+</style>
+</head>
+<body>
+
+<section class="slide">
+  <div class="wave one"></div><div class="wave two"></div>
+  <div class="brand"><div class="brand-mark">P</div> PRINCE OF SONGKLA UNIVERSITY</div>
+  <span class="tag">เครื่องมือดิจิทัลสำหรับชาว ม.อ.</span>
+  <h1>บริการดิจิทัล<br>และ AI ของ ม.อ.</h1>
+  <p class="lead">
+    รวมบริการสำคัญสำหรับการเข้าถึงระบบมหาวิทยาลัย พื้นที่จัดเก็บไฟล์
+    ลิขสิทธิ์ซอฟต์แวร์ และเครื่องมือ AI เพื่อการเรียน การสอน และการทำงาน
+  </p>
+  <div class="tip">
+    <strong>วิธีใช้งาน:</strong> คลิกที่ URL สีน้ำเงินเพื่อเข้าสู่บริการ
+    เมื่อนำไปบันทึกเป็น PDF ให้เลือกการตั้งค่าที่คงลิงก์ไว้ เพื่อให้ลิงก์ในเอกสารกดได้
+  </div>
+  <div class="footer"><span>PSU Digital &amp; AI Services</span><span>คู่มือเข้าถึงบริการอย่างรวดเร็ว</span></div>
+  <div class="numbers">01</div>
+</section>
+
+<section class="slide">
+  <div class="wave one"></div>
+  <div class="brand"><div class="brand-mark">P</div> PRINCE OF SONGKLA UNIVERSITY</div>
+  <h2>บัญชี การเข้าถึงระบบ และพื้นที่จัดเก็บข้อมูล</h2>
+  <div class="grid">
+    <article class="card">
+      <div class="icon">☁</div>
+      <h3>PSU Storage</h3>
+      <p>พื้นที่จัดเก็บข้อมูลของมหาวิทยาลัยบน Synology Drive สำหรับเก็บ ซิงก์ และแชร์ไฟล์</p>
+      <a href="https://storage.psu.ac.th" class="big-link">storage.psu.ac.th</a>
+    </article>
+
+    <article class="card">
+      <div class="icon">◉</div>
+      <h3>PSU VPN</h3>
+      <p>เชื่อมต่อเครือข่ายมหาวิทยาลัยอย่างปลอดภัยผ่าน FortiClient VPN เพื่อเข้าถึงทรัพยากรภายใน</p>
+      <a href="https://net.psu.ac.th/index.php/th/home-th/psu-vpn">คู่มือใช้งาน PSU VPN</a>
+    </article>
+
+    <article class="card">
+      <div class="icon">🔐</div>
+      <h3>OnePassport</h3>
+      <p>จัดการบัญชีมหาวิทยาลัย รีเซ็ตรหัสผ่าน และกู้คืนการยืนยันตัวตนเมื่อเปลี่ยนหรือสูญเสียอุปกรณ์</p>
+      <a href="https://onepassport.psu.ac.th/th/">onepassport.psu.ac.th/th/</a>
+    </article>
+
+    <article class="card">
+      <div class="icon">▣</div>
+      <h3>Education Licensing</h3>
+      <p>บริการลิขสิทธิ์ซอฟต์แวร์เพื่อการศึกษา สำหรับบุคลากรและนักศึกษาของมหาวิทยาลัย</p>
+      <a href="https://licensing.psu.ac.th/">licensing.psu.ac.th</a>
+    </article>
+  </div>
+  <div class="footer"><span>PSU Digital &amp; AI Services</span><span>ระบบพื้นฐานและบัญชีผู้ใช้</span></div>
+  <div class="numbers">02</div>
+</section>
+
+<section class="slide">
+  <div class="wave two"></div>
+  <div class="brand"><div class="brand-mark">P</div> PRINCE OF SONGKLA UNIVERSITY</div>
+  <h2>AI เพื่อการเรียนรู้และการทำงาน</h2>
+  <div class="grid">
+    <article class="card">
+      <div class="icon">✦</div>
+      <h3>PSU Personal AI</h3>
+      <p>บริการ AI ส่วนบุคคลของมหาวิทยาลัย สำหรับช่วยงานประจำวัน การเรียนรู้ และการสร้างสรรค์เนื้อหา</p>
+      <a href="https://ai.psu.blue" class="big-link">ai.psu.blue</a>
+    </article>
+
+    <article class="card">
+      <div class="icon">▤</div>
+      <h3>NotebookLM</h3>
+      <p>บริการจาก Google ที่ใช้แนวคิด RAG ช่วยถาม-ตอบ สรุป และวิเคราะห์จากเอกสารหรือแหล่งข้อมูลของคุณ</p>
+      <a href="https://notebooklm.google.com/">notebooklm.google.com</a>
+    </article>
+
+    <article class="card">
+      <div class="icon">AI</div>
+      <h3>AI Passport</h3>
+      <p>แพลตฟอร์ม AI ที่ได้รับการสนับสนุนโดยภาครัฐไทย เพื่อการเข้าถึงเครื่องมือและบริการ AI</p>
+      <a href="https://de.aipass.net/" class="big-link">de.aipass.net</a>
+    </article>
+
+    <article class="card">
+      <div class="icon">✓</div>
+      <h3>เลือกใช้ให้เหมาะกับงาน</h3>
+      <p>
+        <strong>PSU Personal AI:</strong> ผู้ช่วย AI สำหรับงานทั่วไป<br>
+        <strong>NotebookLM:</strong> วิเคราะห์จากแหล่งข้อมูลที่กำหนด<br>
+        <strong>AI Passport:</strong> เข้าถึงแพลตฟอร์ม AI ระดับประเทศ
+      </p>
+    </article>
+  </div>
+  <div class="footer"><span>PSU Digital &amp; AI Services</span><span>เครื่องมือปัญญาประดิษฐ์</span></div>
+  <div class="numbers">03</div>
+</section>
+
+<section class="slide">
+  <div class="wave one"></div><div class="wave two"></div>
+  <div class="brand"><div class="brand-mark">P</div> PRINCE OF SONGKLA UNIVERSITY</div>
+  <h1 style="font-size:32px;margin-top:14mm;">รวมลิงก์เข้าถึงบริการ</h1>
+  <div class="grid" style="gap:5mm;margin-top:2mm;">
+    <article class="card" style="min-height:34mm;padding:5mm;"><strong>PSU Storage</strong><br><a href="https://storage.psu.ac.th">storage.psu.ac.th</a></article>
+    <article class="card" style="min-height:34mm;padding:5mm;"><strong>PSU VPN</strong><br><a href="https://net.psu.ac.th/index.php/th/home-th/psu-vpn">คู่มือ PSU VPN</a></article>
+    <article class="card" style="min-height:34mm;padding:5mm;"><strong>OnePassport</strong><br><a href="https://onepassport.psu.ac.th/th/">onepassport.psu.ac.th</a></article>
+    <article class="card" style="min-height:34mm;padding:5mm;"><strong>Education Licensing</strong><br><a href="https://licensing.psu.ac.th/">licensing.psu.ac.th</a></article>
+    <article class="card" style="min-height:34mm;padding:5mm;"><strong>PSU Personal AI</strong><br><a href="https://ai.psu.blue">ai.psu.blue</a></article>
+    <article class="card" style="min-height:34mm;padding:5mm;"><strong>NotebookLM</strong><br><a href="https://notebooklm.google.com/">notebooklm.google.com</a></article>
+    <article class="card" style="min-height:34mm;padding:5mm;"><strong>AI Passport</strong><br><a href="https://de.aipass.net/">de.aipass.net</a></article>
+  </div>
+  <div class="tip">
+    <strong>คำแนะนำด้านความปลอดภัย:</strong> อย่าเปิดเผยรหัสผ่านหรือรหัสยืนยันตัวตนแก่ผู้อื่น
+    และใช้ PSU VPN เมื่อต้องเข้าถึงทรัพยากรเครือข่ายภายในมหาวิทยาลัย
+  </div>
+  <div class="footer"><span>PSU Digital &amp; AI Services</span><span>ขอบคุณ</span></div>
+  <div class="numbers">04</div>
+</section>
+
+</body>
+</html>
