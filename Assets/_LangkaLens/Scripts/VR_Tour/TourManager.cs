@@ -154,16 +154,24 @@ public class TourManager : MonoBehaviour
         if (vrRigParent != null) vrRigParent.position = idealCenterPos;
     }
 
-    private void ResetPlayerView()
+    private void ResetPlayerView(bool resetRotation = true)
     {
         if (vrRigParent != null && vrCamera != null)
         {
-            vrRigParent.rotation = Quaternion.identity;
-            float currentCameraYaw = vrCamera.eulerAngles.y;
-            vrRigParent.Rotate(0, -currentCameraYaw, 0, Space.World);
+            if (resetRotation)
+            {
+                vrRigParent.rotation = Quaternion.identity;
+                float currentCameraYaw = vrCamera.eulerAngles.y;
+                vrRigParent.Rotate(0, -currentCameraYaw, 0, Space.World);
 
-            Vector3 cameraLocalPos = vrCamera.localPosition;
-            vrRigParent.position = -cameraLocalPos; 
+                Vector3 cameraLocalPos = vrCamera.localPosition;
+                vrRigParent.position = -cameraLocalPos; 
+            }
+            else
+            {
+                Vector3 worldOffset = vrRigParent.rotation * vrCamera.localPosition;
+                vrRigParent.position = -worldOffset;
+            }
         }
     }
 
@@ -244,7 +252,7 @@ public class TourManager : MonoBehaviour
         }
 
         // 4. RESET PLAYER VIEW & WARP CONTAINER
-        ResetPlayerView();
+        ResetPlayerView(false);
         
         if (photoSphereContainer != null && photoSphereRenderer != null)
         {
