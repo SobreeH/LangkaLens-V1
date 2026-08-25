@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: VTour_UI_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 7d632efb6d84d3047ace6241fb947c76, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 581097549824
+    m_Localized: Enter text...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581131104256
+    m_Localized: Send
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298560
+    m_Localized: button X
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298561
+    m_Localized: button Y
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298562
+    m_Localized: button menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298563
+    m_Localized: button A
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298564
+    m_Localized: button B
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298565
+    m_Localized: Home
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298566
+    m_Localized: AI CHAT BOT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298567
+    m_Localized: Ban Ja-Lae 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298568
+    m_Localized: Ban Ja-Lae 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298569
+    m_Localized: Ban Ja-Lae 8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581135298570
+    m_Localized: Ban Wat 9
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
