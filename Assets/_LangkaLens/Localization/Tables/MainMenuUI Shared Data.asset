@@ -75,6 +75,10 @@ MonoBehaviour:
     m_Key: text_version
     m_Metadata:
       m_Items: []
+  - m_Id: 31534544345427968
+    m_Key: btn_Lang
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

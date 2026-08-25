@@ -13,6 +13,13 @@ public class MainMenuManager : MonoBehaviour
 
     [Header("Interaction")]
     [SerializeField] private Button okButton;
+    [SerializeField] private CanvasGroup[] languageButtons;
+    [SerializeField] private float unselectedAlpha = 0.5f;
+
+    [Header("Dynamic Language Icon")]
+    [SerializeField] private RawImage btnLangIcon;
+    [Tooltip("Assign the textures for each language in the same order as the locale list (e.g. 0=EN, 1=TH)")]
+    [SerializeField] private Texture[] languageIcons;
 
     [Header("Scene Names")]
     [Tooltip("Ensure these match your Build Settings names exactly")]
@@ -25,6 +32,9 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        // Setup initial language state based on localization
+        StartCoroutine(InitializeLanguageState());
+
         // Check if the user has previously selected a language (0 = false, 1 = true)
         if (PlayerPrefs.GetInt(LanguageSelectedKey, 0) == 1)
         {
@@ -43,6 +53,21 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    private IEnumerator InitializeLanguageState()
+    {
+        yield return LocalizationSettings.InitializationOperation;
+        
+        var locale = LocalizationSettings.SelectedLocale;
+        if (locale != null)
+        {
+            int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(locale);
+            if (index >= 0)
+            {
+                UpdateLanguageVisuals(index);
+            }
+        }
+    }
+
     public void SelectLanguage(int index)
     {
         // Stop any pending locale changes and start a new one
@@ -51,6 +76,32 @@ public class MainMenuManager : MonoBehaviour
 
         // Enable the OK button now that a selection has been made
         if (okButton != null) okButton.interactable = true;
+
+        UpdateLanguageVisuals(index);
+    }
+
+    private void UpdateLanguageVisuals(int index)
+    {
+        // Update btn_Lang icon to match the selected language
+        if (btnLangIcon != null && languageIcons != null && index >= 0 && index < languageIcons.Length)
+        {
+            if (languageIcons[index] != null)
+            {
+                btnLangIcon.texture = languageIcons[index];
+            }
+        }
+
+        // Dim unselected language buttons
+        if (languageButtons != null)
+        {
+            for (int i = 0; i < languageButtons.Length; i++)
+            {
+                if (languageButtons[i] != null)
+                {
+                    languageButtons[i].alpha = (i == index) ? 1f : unselectedAlpha;
+                }
+            }
+        }
     }
 
     public void ConfirmAndContinue()
