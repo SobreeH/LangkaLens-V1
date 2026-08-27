@@ -22,11 +22,21 @@ public class InspectionManager : MonoBehaviour
     public float inspectionDistance = 0.6f;
     public float transitionDuration = 0.4f;
 
+    [Header("Zoom Settings")]
+    [Tooltip("Speed at which the model scales up and down.")]
+    public float zoomSpeed = 1f;
+    [Tooltip("The minimum scale multiplier for the model.")]
+    public float minScaleMultiplier = 0.5f;
+    [Tooltip("The maximum scale multiplier for the model.")]
+    public float maxScaleMultiplier = 3.0f;
+
     private GameObject _currentArtifact;
     private Transform _currentOrigin;
     private Transform _currentUIAnchor; // <--- NEW
     private Vector3 _originalRigPosition;
     private Quaternion _originalRigRotation;
+    private Vector3 _originalArtifactScale;
+    private float _currentScaleMultiplier = 1f;
     private bool _isInspecting = false;
 
     private void Awake()
@@ -54,6 +64,8 @@ public class InspectionManager : MonoBehaviour
         
         _originalRigPosition = playerRig.position;
         _originalRigRotation = playerRig.rotation;
+        _originalArtifactScale = _currentArtifact.transform.localScale;
+        _currentScaleMultiplier = 1f;
 
         if (titleText != null) titleText.text = title;
         if (descriptionText != null) descriptionText.text = description;
@@ -69,6 +81,11 @@ public class InspectionManager : MonoBehaviour
 
         playerRig.position = _originalRigPosition;
         playerRig.rotation = _originalRigRotation;
+
+        if (_currentArtifact != null)
+        {
+            _currentArtifact.transform.localScale = _originalArtifactScale;
+        }
 
         if (locomotionScript != null) locomotionScript.enabled = true;
 
@@ -138,5 +155,27 @@ public class InspectionManager : MonoBehaviour
         
         inspectionCanvas.transform.position = _currentUIAnchor.position;
         inspectionCanvas.transform.rotation = _currentUIAnchor.rotation;
+    }
+
+    private void Update()
+    {
+        if (_isInspecting && _currentArtifact != null)
+        {
+            // OVRInput.Button.One = A button, Button.Two = B button
+            // Button A (zoom out = scale down), Button B (zoom in = scale up)
+            bool zoomOut = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RTouch);
+            bool zoomIn = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.RTouch);
+
+            if (zoomIn || zoomOut)
+            {
+                float scaleDelta = zoomSpeed * Time.deltaTime;
+                if (zoomOut) scaleDelta = -scaleDelta;
+
+                _currentScaleMultiplier += scaleDelta;
+                _currentScaleMultiplier = Mathf.Clamp(_currentScaleMultiplier, minScaleMultiplier, maxScaleMultiplier);
+
+                _currentArtifact.transform.localScale = _originalArtifactScale * _currentScaleMultiplier;
+            }
+        }
     }
 }
