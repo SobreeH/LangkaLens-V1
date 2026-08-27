@@ -45,7 +45,7 @@ public class VRZoomController : MonoBehaviour
             // to ensure we always return precisely to the origin.
             if (zoomOutPressed && currentZoomOffset.sqrMagnitude > 0.01f)
             {
-                direction = -currentZoomOffset.normalized;
+                direction = currentZoomOffset.normalized;
             }
 
             float step = zoomSpeed * Time.deltaTime;
