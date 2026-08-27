@@ -38,6 +38,9 @@ public class TourManager : MonoBehaviour
     [Header("UI Menus")]
     public GameObject mapMenuCanvas;
     public GameObject returnHomeCanvas;
+    
+    [Header("Controller UI")]
+    public GameObject[] tourOnlyLabels;
 
     private TourNode currentNode;
     private AsyncOperationHandle<Texture2D> currentTextureHandle;
@@ -57,12 +60,23 @@ public class TourManager : MonoBehaviour
             currentTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
             currentTextureHandle.Completed += OnTitleScreenLoaded;
         }
+        
+        SetTourLabelsActive(false);
     }
 
     private void OnTitleScreenLoaded(AsyncOperationHandle<Texture2D> handle)
     {
         if (handle.Status == AsyncOperationStatus.Succeeded && photoSphereRenderer != null)
             photoSphereRenderer.material.mainTexture = handle.Result;
+    }
+
+    private void SetTourLabelsActive(bool active)
+    {
+        if (tourOnlyLabels == null) return;
+        foreach (var label in tourOnlyLabels)
+        {
+            if (label != null) label.SetActive(active);
+        }
     }
 
     public void ReturnToMainMenu()
@@ -117,6 +131,8 @@ public class TourManager : MonoBehaviour
 
         if (mapMenuCanvas != null) mapMenuCanvas.SetActive(true);
         if (returnHomeCanvas != null) returnHomeCanvas.SetActive(false);
+
+        SetTourLabelsActive(false);
 
         // 3. LOAD TITLE SCREEN
         if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
@@ -249,6 +265,8 @@ public class TourManager : MonoBehaviour
 
             if (mapMenuCanvas != null) mapMenuCanvas.SetActive(false);
             if (returnHomeCanvas != null) returnHomeCanvas.SetActive(true);
+            
+            SetTourLabelsActive(true);
         }
 
         // 4. RESET PLAYER VIEW & WARP CONTAINER
