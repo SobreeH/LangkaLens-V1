@@ -7499,7 +7499,7 @@ MonoBehaviour:
   centerEyeCamera: {fileID: 1171521191}
   spawnRelativeToCamera: 1
   globalSpawnPosition: {x: 0, y: -1.5, z: 5}
-  globalSpawnScale: {x: 20, y: 20, z: 20}
+  globalSpawnScale: {x: 10, y: 10, z: 10}
   selectionCanvas: {fileID: 1005534770}
 --- !u!4 &1267961243
 Transform:
