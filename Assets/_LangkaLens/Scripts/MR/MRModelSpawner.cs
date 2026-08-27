@@ -27,14 +27,6 @@ namespace LangkaLens.MR
 
         private GameObject _currentSpawnedModel;
 
-        private void Update()
-        {
-            // Reset the scene when the 'X' button on the left controller is pressed
-            if (OVRInput.GetDown(OVRInput.RawButton.X))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-        }
 
         public void SpawnModel(int index)
         {

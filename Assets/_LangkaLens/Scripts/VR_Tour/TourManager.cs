@@ -325,9 +325,12 @@ public class TourManager : MonoBehaviour
 
     private void Update()
     {
-        if (OVRInput.GetDown(OVRInput.RawButton.Y))
+        if (OVRInput.GetDown(OVRInput.RawButton.X))
         {
-            ToggleMapMenu();
+            if (currentNode != null)
+            {
+                ReturnToMainMenu();
+            }
         }
     }
 
