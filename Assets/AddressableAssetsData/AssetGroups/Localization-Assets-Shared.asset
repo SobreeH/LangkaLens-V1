@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d06b141b2b27ec46bfe4db9db9121a9
+    m_Address: Assets/_LangkaLens/Localization/Tables/Gemini_UI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: af2d17f486927a647b1b987c7bb3f75a
     m_Address: Assets/_LangkaLens/Localization/Tables/MainMenuUI Shared Data.asset
     m_ReadOnly: 1

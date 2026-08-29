@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f1cb6291c792914a9a20e562b4a29dd
+    m_Address: Gemini_UI_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c0a26dcbe162ccc488872fedf81c9ad9
     m_Address: MainMenuUI_en
     m_ReadOnly: 1

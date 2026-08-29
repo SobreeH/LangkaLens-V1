@@ -18,42 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 581097549824
-    m_Localized: Enter text...
-    m_Metadata:
-      m_Items: []
-  - m_Id: 581131104256
-    m_Localized: Send
-    m_Metadata:
-      m_Items: []
-  - m_Id: 581135298560
-    m_Localized: button X
-    m_Metadata:
-      m_Items: []
-  - m_Id: 581135298561
-    m_Localized: button Y
-    m_Metadata:
-      m_Items: []
-  - m_Id: 581135298562
-    m_Localized: button menu
-    m_Metadata:
-      m_Items: []
-  - m_Id: 581135298563
-    m_Localized: button A
-    m_Metadata:
-      m_Items: []
-  - m_Id: 581135298564
-    m_Localized: button B
-    m_Metadata:
-      m_Items: []
-  - m_Id: 581135298565
-    m_Localized: Home
-    m_Metadata:
-      m_Items: []
-  - m_Id: 581135298566
-    m_Localized: AI CHAT BOT
-    m_Metadata:
-      m_Items: []
   - m_Id: 581135298567
     m_Localized: Ban Ja-Lae 2
     m_Metadata:

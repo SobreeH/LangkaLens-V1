@@ -30,11 +30,14 @@ MonoBehaviour:
   modelPosition: {x: 0, y: 0, z: 0}
   modelRotation: {x: 0, y: 0, z: 0}
   modelScale: {x: 1, y: 1, z: 1}
+  iconPosition: {x: 0, y: 0, z: 0}
+  iconRotation: {x: 0, y: 0, z: 0}
+  iconScale: {x: 1, y: 1, z: 1}
   previousPath:
     targetNode: {fileID: 11400000, guid: 9f28e742879a0cc4c8f9982ebca5e789, type: 2}
-    arrowPosition: {x: -10.85, y: -9.02, z: 0.7599994}
-    arrowRotation: {x: 0, y: -84.986, z: 0}
+    arrowPosition: {x: -2.703, y: -2.6, z: -0.05}
+    arrowRotation: {x: 0, y: -92.474, z: 0}
   nextPath:
     targetNode: {fileID: 11400000, guid: 90ba89b9657b4bb4bbb5938b122e2739, type: 2}
-    arrowPosition: {x: 10.84, y: -9.02, z: -0.61}
-    arrowRotation: {x: 0, y: 90.956, z: 0}
+    arrowPosition: {x: 2.42, y: -2.542, z: -0.05}
+    arrowRotation: {x: 0, y: 89.476, z: 0}
