@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 905946dda6569b2458e27e26fe52140f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavigationArrow
+  hoverGlowColor: {r: 0.47358483, g: 0.90598136, b: 1, a: 0.60784316}
 --- !u!114 &2417167671730213496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,10 +181,34 @@ MonoBehaviour:
   _interactableView: {fileID: 4271799962833238153}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5632027055255196265}
+        m_TargetAssemblyTypeName: NavigationArrow, Assembly-CSharp
+        m_MethodName: OnHover
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5632027055255196265}
+        m_TargetAssemblyTypeName: NavigationArrow, Assembly-CSharp
+        m_MethodName: OnUnhover
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
