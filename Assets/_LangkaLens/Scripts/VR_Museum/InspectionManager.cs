@@ -178,6 +178,12 @@ public class InspectionManager : MonoBehaviour
     {
         if (_isInspecting && _currentArtifact != null)
         {
+            // Exit inspection with X button on Left Controller
+            if (OVRInput.GetDown(OVRInput.RawButton.X))
+            {
+                ExitInspectionState();
+            }
+
             // OVRInput.Button.One = A button, Button.Two = B button
             // Button A (zoom out = scale down), Button B (zoom in = scale up)
             bool zoomOut = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RTouch);
