@@ -33,6 +33,7 @@ public class InspectionManager : MonoBehaviour
     private GameObject _currentArtifact;
     private Transform _currentOrigin;
     private Transform _currentUIAnchor; // <--- NEW
+    private GameObject _currentPedestal;
     private Vector3 _originalRigPosition;
     private Quaternion _originalRigRotation;
     private Vector3 _originalArtifactScale;
@@ -55,6 +56,16 @@ public class InspectionManager : MonoBehaviour
         _currentArtifact = artifact;
         _currentOrigin = origin;
         _currentUIAnchor = uiAnchor; 
+
+        if (_currentOrigin != null && _currentOrigin.parent != null)
+        {
+            Transform pedestal = _currentOrigin.parent.Find("Pedestal");
+            if (pedestal != null)
+            {
+                _currentPedestal = pedestal.gameObject;
+                _currentPedestal.SetActive(false);
+            }
+        }
 
         if (locomotionScript != null) locomotionScript.enabled = false;
         
@@ -85,6 +96,12 @@ public class InspectionManager : MonoBehaviour
         if (_currentArtifact != null)
         {
             _currentArtifact.transform.localScale = _originalArtifactScale;
+        }
+
+        if (_currentPedestal != null)
+        {
+            _currentPedestal.SetActive(true);
+            _currentPedestal = null;
         }
 
         if (locomotionScript != null) locomotionScript.enabled = true;
