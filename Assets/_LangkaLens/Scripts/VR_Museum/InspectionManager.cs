@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Localization;
 
 public class InspectionManager : MonoBehaviour
 {
@@ -47,6 +48,9 @@ public class InspectionManager : MonoBehaviour
     private float _currentScaleMultiplier = 1f;
     private bool _isInspecting = false;
 
+    private LocalizedString _currentTitle;
+    private LocalizedString _currentDescription;
+
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(this.gameObject);
@@ -61,7 +65,10 @@ public class InspectionManager : MonoBehaviour
         }
     }
 
-    public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, GameObject pedestal, string title, string description)
+    private void OnTitleChanged(string s) { if (titleText != null) titleText.text = s; }
+    private void OnDescriptionChanged(string s) { if (descriptionText != null) descriptionText.text = s; }
+
+    public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, GameObject pedestal, LocalizedString title, LocalizedString description)
     {
         if (_isInspecting) return;
 
@@ -93,8 +100,14 @@ public class InspectionManager : MonoBehaviour
         _originalArtifactScale = _currentArtifact.transform.localScale;
         _currentScaleMultiplier = 1f;
 
-        if (titleText != null) titleText.text = title;
-        if (descriptionText != null) descriptionText.text = description;
+        if (titleText != null) titleText.text = "";
+        if (descriptionText != null) descriptionText.text = "";
+
+        _currentTitle = title;
+        _currentDescription = description;
+
+        if (_currentTitle != null) _currentTitle.StringChanged += OnTitleChanged;
+        if (_currentDescription != null) _currentDescription.StringChanged += OnDescriptionChanged;
 
         StartCoroutine(MovePlayerToArtifact());
     }
@@ -102,6 +115,9 @@ public class InspectionManager : MonoBehaviour
     public void ExitInspectionState()
     {
         if (!_isInspecting) return;
+
+        if (_currentTitle != null) _currentTitle.StringChanged -= OnTitleChanged;
+        if (_currentDescription != null) _currentDescription.StringChanged -= OnDescriptionChanged;
 
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
 

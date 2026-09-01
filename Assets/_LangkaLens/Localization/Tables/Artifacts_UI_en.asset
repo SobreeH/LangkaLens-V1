@@ -17,7 +17,601 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 9f0e4bfc79e4ec644ad6036cdd92cd5b, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 291722552594432
+    m_Localized: Ancient Clay Storage Jar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722581954560
+    m_Localized: 'The Ancient Clay Storage Jar is a well-preserved ceramic vessel
+      dating to approximately the 5th century CE. It was discovered during a systematic
+      archaeological excavation beneath the remains of a residential structure, where
+      it had been partially buried in the floor of what is believed to have been
+      a household storage area. Archaeologists believe the jar was used to store
+      essential food supplies such as grains, rice, dried legumes, oils, and water,
+      helping families preserve resources for daily consumption and periods of scarcity.
+      Its large capacity and sturdy construction suggest it played an important role
+      in the everyday lives of the settlement''s inhabitants.
+
+
+      The vessel
+      was hand-shaped using locally sourced clay before being fired in a traditional
+      kiln. Close examination of its surface reveals subtle horizontal ridges and
+      faint finger impressions left by the artisan during the shaping process, providing
+      valuable evidence of the pottery-making techniques practiced at the time. The
+      jar''s wide body, rounded base, and narrow neck were intentionally designed
+      to maximize storage capacity while reducing contamination from dust, insects,
+      and moisture. Although simple in appearance, the craftsmanship demonstrates
+      a high level of skill and knowledge of ceramic production.
+
+
+      Unlike decorative
+      ceremonial pottery, this storage jar shows clear signs of regular household
+      use. Wear patterns around the rim indicate frequent opening and closing, while
+      traces of organic residue found inside the vessel suggest it once contained
+      cereal grains and plant-based oils. Scientific analysis of microscopic residue
+      has helped researchers better understand the agricultural practices, dietary
+      habits, and food preservation methods of the ancient community. The discovery
+      of similar jars throughout the excavation site indicates that standardized
+      pottery production and organized food storage were common among the settlement''s
+      residents.
+
+
+      Despite spending more than 1,500 years underground, the
+      jar remains remarkably intact, with only minor surface cracks and edge chipping
+      caused by natural soil pressure over time. Conservation specialists carefully
+      cleaned, stabilized, and restored the artifact using modern preservation techniques
+      to prevent further deterioration while maintaining its original appearance.
+      Today, the Ancient Clay Storage Jar serves as an important archaeological artifact,
+      offering valuable insight into the domestic life, technological knowledge,
+      and economic practices of the people who once inhabited the region. It stands
+      as a testament to the ingenuity and craftsmanship of ancient potters and highlights
+      the significance of pottery in sustaining everyday life throughout history.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148864
+    m_Localized: Terracotta Miniature Stupa with Inverted-Bowl Dome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148865
+    m_Localized: "Dating / Period: 12th\u201314th centuries Buddhist Era (approx.
+      7th\u20139th centuries CE)\nMaterial: Fine-grained baked clay (Terracotta)\nDiscovery
+      Location: Ban Wat / Ban Jaleh archaeological complex, Yarang Ancient City,
+      Pattani Province\nDescription: A free-standing votive stupa (Sathup Din Phao)
+      crafted as a sacred Buddhist offering. The structure rises from a circular
+      stepped pedestal with a distinct recessed waist (thong mai). The central bell
+      dome is sculpted into an inverted-bowl form (ong rakhang song o khwam). Rising
+      directly from the dome is an integrated conical spire formed by concentric
+      horizontal ring ridges (plong chanai), which tapers steadily toward a pointed
+      lotus-bud finial (bua tum). Votive objects of this type were buried within
+      brick sanctuary foundations to generate religious merit."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148866
+    m_Localized: Tiered Umbrella Spire of a Miniature Terracotta Stupa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148867
+    m_Localized: "Period / Dating: 12th\u201314th centuries Buddhist Era (approx.
+      7th\u20139th centuries CE)\nMaterial: Fine-grained baked earthenware / Terracotta
+      (Din Phao Nuea La-iat)\nDimensions: Total Height: 46 cm | Base Diameter (Bottom
+      Plate): 16.7 cm\nProvenance / Discovery Site: Ban Jaleh Monument Complex, Yarang
+      Ancient City, Pattani Province (Surveyed by Anan Wattananikorn, B.E. 2505\u20132516
+      / 1962\u20131973)\nCurrent Repository: Princess Galyani Vadhana Institute of
+      Cultural Studies, Prince of Songkla University, Pattani Campus (Catalog Item
+      23)\n\nCuratorial Description\nThis modular baked clay artifact represents
+      an authentic chatra-valee (tiered umbrella spire) crafted to crown the superstructure
+      of a miniature terracotta votive stupa (Sathup Din Phao).\n\nThe spire is constructed
+      from 7 concentric, ring-shaped umbrella plates (chatra) engineered with raised
+      central cylindrical sleeves. These interlocking components are stacked vertically
+      along a central axis in decreasing diameter from the wide base plate to the
+      narrow summit, forming an elegant graduated conical silhouette. The pinnacle
+      terminates in a tall, elongated pointed lotus-bud finial (bua tum song sung).\n\nArchaeological
+      & Spiritual Significance\nDiscovered within the ancient architectural complex
+      of Ban Jaleh, this artifact showcases the specialized modular ceramic production
+      techniques developed in the Yarang workshops during the height of the ancient
+      maritime kingdom of Langkasuka.\n\nIn Buddhist cosmology, the multi-tiered
+      chatra-valee symbolizes the ascending celestial realms (heavens) and royal-spiritual
+      sovereignty. Miniature stupas crowned with these multi-tiered spires were produced
+      in vast numbers as devotional merit-making offerings and consecrated foundation
+      deposits, reflecting the widespread presence of Mahayana Buddhism and the Cetiyavada
+      school in early peninsular Southeast Asia."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148868
+    m_Localized: Standing Stone Buddha in Vitarka Mudra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148869
+    m_Localized: "- Period / Dating: 13th-14th centuries Buddhist Era (c. 8th-9th
+      centuries CE)\n- Material: Carved stone (Sandstone)\n- Dimensions: Height:
+      60 cm | Width: 16 cm\n- Provenance: Ban Kampong Baru (present-day Ban Jaleh),
+      Yarang Ancient City, Pattani Province\n- Current Repository: Unknown / Unrecorded\n\nCuratorial
+      Description:\nThis monolithic stone sculpture depicts a standing Buddha in
+      a rigid upright frontal posture (samabhanga) resting atop an open double-lotus
+      pedestal (bua khwam bua ngai). Both hands are raised symmetrically to perform
+      the Vitarka Mudra\u2014the gesture of teaching, debate, and intellectual exposition.
+      The Buddha is draped in a diaphanous, sheer monastic robe (civara) covering
+      both shoulders (hom khlum) that clings tightly to the body contours. The frontal
+      hem of the mantle forms a broad U-shaped curve extending down to the shins,
+      revealing an inner lower garment that falls to the ankles.\n\nFacial and anatomical
+      treatments reflect distinct regional modeling, characterized by a flat facial
+      plane, downcast meditative eyes, wide lips, bold spiral hair curls, and a rounded,
+      cylindrical ushnisha (cranial protuberance).\n\nWhile the image shares stylistic
+      affinities with Southern peninsular sculptures from Wat Kaeo and Ban U-thae
+      (Surat Thani) as well as Central Thai Dvaravati traditions, it demonstrates
+      a distinctive innovation unique to the ancient Yarang workshops: both hands
+      are carved resting directly against the lower abdomen at navel level, firmly
+      attached to the torso rather than raised independently at chest or waist height.
+      This piece stands as vital physical evidence of the refined local craftsmanship
+      and Mahayana Buddhist devotional networks flourishing in the ancient maritime
+      kingdom of Langkasuka."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148870
+    m_Localized: Architectural Terracotta Stupa Base with Kudu Niches
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148871
+    m_Localized: '- Dating / Period: 12th-14th centuries Buddhist Era (approx. 7th-9th
+      centuries CE)
+
+      - Dimensions: Diameter: 11.50 cm | Height: 16.50 cm
+
+      -
+      Material: Baked clay with applied relief and red mineral pigment traces
+
+      -
+      Discovery Location: Excavated at Ancient Monument Mound No. 3, Ban Jaleh, Yarang
+      Ancient City, Pattani Province
+
+      - Current Repository: Fine Arts Department
+      Office No. 11, Songkhla
+
+      - Description: A cylindrical architectural stupa
+      base featuring decorative details created through the applied clay technique
+      (pan-pae). The lower rim is bordered by a tooth/gear frieze supporting alternating
+      blind horseshoe-arch niches (kudu) flanked by slender rounded pilasters. Adjacent
+      panels display blind rectangular windows fitted with vertical wooden-style
+      balustrade bars (lak krong mai). The upper register is crowned with false projecting
+      roof rafters (khue), four-petaled floral rosettes, and an upward-lotus moulding
+      that originally supported a dome and tiered spire. This artifact illustrates
+      early Dvaravati-Gupta architectural styles replicated on a miniature scale.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148872
+    m_Localized: Tripartite Stone Shiva Linga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148873
+    m_Localized: '- Period / Dating: c. 7th-8th Century CE (12th-13th Centuries Buddhist
+      Era)
+
+      - Material: Carved sandstone
+
+      - Dimensions: Height: 58 cm
+      | Width: 16 cm | Thickness: 16 cm
+
+      - Discovery Location: Western moat
+      area, Ban Prawae Ancient Monument Group, Yarang District, Pattani Province
+      (Found in 1977)
+
+      - Current Repository: Art and Cultural Center, Yala
+      Rajabhat University
+
+
+      Curatorial Description:
+
+      This monolithic
+      sandstone sculpture is a classic canonical (bap prapheni-niyom) Shiva linga
+      sculpted into three equal vertical sections symbolizing the Hindu Trimurti:
+
+
+      -
+      Rudra-bhaga (Top): A smooth, egg-shaped cylinder representing Lord Shiva, carved
+      with a vertical central ridge (Brahmasutra) and curved lateral contour lines
+      (Parsvasutra) extending toward the rear.
+
+      - Vishnu-bhaga (Middle): An
+      octagonal prismatic shaft symbolizing Lord Vishnu, designed to sit within a
+      sacred yoni pedestal.
+
+      - Brahma-bhaga (Base): A square prismatic block
+      representing Lord Brahma, intended to be anchored into the sanctuary foundation.
+
+
+      The
+      discovery of this artifact provides key material evidence of active Shaivite
+      Hindu worship and syncretic religious culture flourishing alongside Buddhism
+      within the ancient maritime entrepot of Yarang (Langkasuka).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148874
+    m_Localized: Stone Sculpture of a Recumbent Bull / Nandi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148875
+    m_Localized: "- Period / Dating: 11th-12th centuries Buddhist Era (approx. 6th-7th
+      centuries CE)\n- Material: Carved sandstone (Hin Sai)\n- Dimensions: Height:
+      52 cm | Length: 66 cm | Width: 29.5 cm\n- Discovery Location: Excavated from
+      Ancient Monument No. 8, Ban Jaleh, Yarang Ancient City, Pattani Province\n-
+      Current Repository: Songkhla National Museum\n\nCuratorial Description:\nDiscovered
+      beside an interior brick pedestal within an 8x8 meter pillared sanctuary hall
+      at Ban Jaleh Monument No. 8, this monolithic sandstone sculpture portrays a
+      humped zebu bull (tha non mop) resting in a tranquil, recumbent posture with
+      its front legs folded beneath its chest. The sculpture features smooth, minimalist
+      surfaces devoid of ornamental harnesses or jewelry, emphasizing the bull's
+      naturalistic anatomy, upright ears, short horns, and a pronounced dorsal hump
+      rising above the shoulders.\n\nIn ancient South and Southeast Asian art, the
+      bull holds dual religious significance:\n- Hindu / Shaivite Iconography: The
+      bull represents Nandi (Kho Nonthi), the sacred vehicle (vahana) and divine
+      gatekeeper of Lord Shiva. Sculptures of Nandi are traditionally placed near
+      sanctuary entrances facing inward toward the central linga.\n- Buddhist Cosmology
+      & Lineage: The bull embodies Gotama (referencing Shakyamuni Buddha's lineage
+      name) and serves as the Guardian Animal of the Western Direction. This directional
+      motif draws directly from early Indian traditions\u2014such as Emperor Ashoka\u2019s
+      pillar capitals featuring the elephant (East), horse (South), bull (West),
+      and lion (North)\u2014as well as the carved semicircular moonstones (Sandakada
+      Pahana) of Sri Lanka's Anuradhapura period (4th-16th centuries BE).\n\nThe
+      discovery of sandstone chisel debitage alongside a bronze Avalokiteshvara head
+      near the sanctuary base indicates that this monolithic sculpture was carved
+      locally, standing as physical evidence of the syncretic Hindu-Buddhist devotional
+      culture that thrived within the ancient maritime entrepot of Langkasuka."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148876
+    m_Localized: Terracotta Turtle-Shaped Vessel Lid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148877
+    m_Localized: '- Period / Dating: 12th-16th centuries Buddhist Era (approx. 7th-11th
+      centuries CE)
+
+      - Material: Baked earthenware / Terracotta (Din Phao)
+
+      -
+      Dimensions: Diameter: 18.2 cm | Height: 4.7 cm
+
+      - Discovery Location:
+      Excavated from the archaeological site at Ban Jaleh, Yarang Ancient City, Pattani
+      Province
+
+      - Current Repository: Regional Office of Fine Arts No. 11,
+      Songkhla
+
+
+      Curatorial Description:
+
+      Sculpted from local baked earthenware,
+      this circular lid is modeled in the naturalistic form of a flattened turtle
+      (Fa Phachana Din Phao Rup Tao). The piece features a broad domed carapace,
+      four short protruding feet scored with five linear incisions each to denote
+      individual toes, and a protruding turtle head extending forward with a subtle
+      tongue-out expression.
+
+
+      The upper surface of the carapace bears clear
+      archaeological evidence of applied sculptural ornamentation:
+
+      - Miniature
+      Sculptures: Two distinct scar marks on the upper shell mark where miniature
+      baby turtle figurines were originally affixed before detaching over time.
+
+      -
+      Rear Ornamentation: An additional scar mark at the rear edge indicates the
+      original placement of another small decorative finial or miniature element
+      of unidentified form.
+
+
+      Ritual & Cultural Significance:
+
+      Archaeological
+      analysis indicates that this zoomorphic lid was specifically crafted to seal
+      a consecrated earthenware deposit vessel containing auspicious items and sacred
+      relics (watthu mongkhon). Such vessels were deposited within the structural
+      foundations of religious monuments during auspicious groundbreaking and consecration
+      rituals (kan wang roek).
+
+
+      In ancient South and Southeast Asian cosmology,
+      the turtle embodies foundational stability, cosmic support, and protection
+      against negative energies. Discovered within the monument complex of Ban Jaleh,
+      this artifact provides tangible material evidence of the intricate foundation-laying
+      rituals and skilled ceramic craftsmanship practiced within the ancient peninsular
+      trade kingdom of Langkasuka.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148878
+    m_Localized: Bronze Statue of the Sun God Surya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148879
+    m_Localized: "- Period / Dating: 15th-16th centuries Buddhist Era (approx. 10th-11th
+      centuries CE)\n- Material: Cast bronze\n- Dimensions: Height: 20.30 cm | Width:
+      10.30 cm\n- Discovery Location: Ban Kuwing, Sakho Bon Sub-district, Mayo District,
+      Pattani Province (approx. 7 km east of Yarang Ancient City)\n- Current Repository:
+      Unknown / Unrecorded\n\nCuratorial Description:\nCast in bronze, this intricate
+      sculptural triad depicts Surya, the Hindu Sun God and supreme deity of the
+      Saura sect. The composition features Surya standing in a rigid upright frontal
+      pose (samabhanga) atop a lotus pedestal mounted over his celestial single-wheeled
+      chariot. The chariot is drawn by seven galloping horses\u2014with the central
+      steed emerging directly from the wheel's hub\u2014and is steered by the divine
+      dawn charioteer, Aruna.\n\nSurya is flanked by his celestial retinue and personifications
+      of dawn:\n- Pingala & Goddess Usha (Right): The attendant Pingala stands in
+      a graceful dvibhanga posture holding a writing implement and an inkpot, fronted
+      by a relief image of the dawn goddess Usha, the dispeller of darkness.\n- Danda
+      & Goddess Pratyusha (Left): The attendant Danda stands in a dvibhanga pose
+      holding a ritual attribute (possibly a conch), fronted by the partially preserved
+      form of Goddess Pratyusha.\n- Regalia & Attributes: Surya wears a tall conical
+      jewel crown (Kiritamukuta), a bare upper torso, fitted trousers (sanapphlao),
+      and knee-high riding boots. Both hands are raised at hip level to hold stemmed
+      lotus bouquets that rise symmetrically to the level of his head.\n- Aureole
+      & Royal Canopy: The grouping is framed by an openwork arched halo (prabhavali)
+      bordered with bead moulding and stylized leaf-like flame rays, surmounted at
+      the peak by a royal tiered parasol (chattr) draped with fluttering banners
+      and garlands.\n\nArtistic & Cultural Significance:\nStylistically, this sculpture
+      exhibits strong affinities with the 10th-11th century CE Pala-period art of
+      Northeast India (Bengal). Discovered in the immediate vicinity of Yarang Ancient
+      City, the artifact provides key archaeological evidence of the active practice
+      of the Saura tradition and highlights the extensive maritime trade and religious
+      networks connecting the Indian subcontinent with the ancient peninsular kingdom
+      of Langkasuka."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 297797452484608
+    m_Localized: Bronze Bodhisattva Maitreya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 297797481844736
+    m_Localized: "- Period / Dating: 12th-13th centuries Buddhist Era (approx. 7th-8th
+      centuries CE)\n- Material: Cast bronze (lost-wax technique)\n- Dimensions:
+      Height: 16.2 cm\n- Discovery Location: Ban Lan Khwai (Moo 5, Kolam Sub-district),
+      Yarang District, Pattani Province\n- Current Repository: Bangkok National Museum
+      (Phra Nakhon National Museum)\n\nCuratorial Description:\nCast in bronze using
+      the traditional lost-wax (cire perdue) technique, this statuette portrays Bodhisattva
+      Maitreya, the future Buddha who resides in Tusita Heaven awaiting descent to
+      the earthly realm following Gautama Buddha. The deity is sculpted in a graceful,
+      slender tribhanga (triple-bend) stance that imparts a fluid, naturalistic rhythm
+      to the torso and hips. Although both arms are broken off and missing below
+      the shoulders, the preserved body contours retain fine anatomical balance.\n\nThe
+      Bodhisattva's hair is swept up into a tall, tiered ascetic crown of matted
+      locks (jatamukuta), adorned at the front center with a miniature stupa\u2014the
+      primary iconographic symbol identifying Maitreya. A sacred cord (yajnopavita)
+      drapes diagonally over the left shoulder across the chest, while a lower skirt-cloth
+      (sabong) wraps around the hips, fastened securely at the waist with a tied
+      sash (ratprakot).\n\nStylistically, the modeling of the tiered hairstyle and
+      the clinging drapery of the lower garment exhibits strong affinities with South
+      Indian and Sri Lankan sculptural traditions. Discovered in the Yarang archaeological
+      sphere, this statuette serves as significant material evidence of the sophisticated
+      metallurgy, maritime cross-cultural exchange, and Buddhist devotional culture
+      that flourished within the ancient kingdom of Langkasuka."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 297797481844737
+    m_Localized: Stone Dharmachakra / Wheel of the Law
+    m_Metadata:
+      m_Items: []
+  - m_Id: 297797481844738
+    m_Localized: '- Period / Dating: 11th-12th centuries Buddhist Era (approx. 6th-7th
+      centuries CE)
+
+      - Material: Carved sandstone (Hin Sai)
+
+      - Dimensions:
+      Height: 33.5 cm | Wheel Diameter: 22.5 cm | Hub Diameter: 6 cm
+
+      - Discovery
+      Location: Ban Wat Ancient Monument Mound No. 25 (corresponding to Mound No.
+      6 today), Yarang Ancient City, Pattani Province
+
+      - Current Repository:
+      Princess Galyani Vadhana Institute of Cultural Studies, Prince of Songkla University,
+      Pattani Campus
+
+
+      Curatorial Description:
+
+      Carved from dense sandstone,
+      this monolithic Dharmachakra (Wheel of the Law) represents an early aniconic
+      tradition in Buddhist art established prior to the depiction of the Buddha
+      in anthropomorphic form. The wheel symbolizes the First Sermon (Dhammacakkappavattana
+      Sutta, or the "Turning of the Wheel of the Dhamma") delivered by the Buddha
+      at the Deer Park in Isipatana near Varanasi.
+
+
+      The sculpture features
+      a circular wheel with 8 openwork spokes radiating outward from a smooth, unadorned
+      circular hub. Structurally, the wheel is mounted directly atop a solid rectangular
+      stone block, which rests on a rounded, flattened circular base pedestal.
+
+
+      This
+      piece shares notable stylistic and iconographic parallels with early stone
+      Dharmachakras found at Oc Eo in Vietnam and the Khao Phra Narai (Khao Siwichai)
+      archaeological site in Phunphin District, Surat Thani Province. Its presence
+      at Yarang provides vital archaeological evidence of the region''s active participation
+      in early trans-peninsular trade networks and its significance as a major Buddhist
+      center within maritime Southeast Asia during the pre-Dvaravati and early Dvaravati
+      eras.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432247812096
+    m_Localized: Bronze Bodhisattva Maitreya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006400
+    m_Localized: "- Period / Dating: 12th-13th centuries Buddhist Era (approx. 7th-8th
+      centuries CE)\n- Material: Cast bronze (lost-wax technique)\n- Dimensions:
+      Height: 16.2 cm\n- Discovery Location: Ban Lan Khwai (Moo 5, Kolam Sub-district),
+      Yarang District, Pattani Province\n- Current Repository: Bangkok National Museum
+      (Phra Nakhon National Museum)\n\nCuratorial Description:\nCast in bronze using
+      the traditional lost-wax (cire perdue) technique, this statuette portrays Bodhisattva
+      Maitreya, the future Buddha who resides in Tusita Heaven awaiting descent to
+      the earthly realm following Gautama Buddha. The deity is sculpted in a graceful,
+      slender tribhanga (triple-bend) stance that imparts a fluid, naturalistic rhythm
+      to the torso and hips. Although both arms are broken off and missing below
+      the shoulders, the preserved body contours retain fine anatomical balance.\n\nThe
+      Bodhisattva's hair is swept up into a tall, tiered ascetic crown of matted
+      locks (jatamukuta), adorned at the front center with a miniature stupa\u2014the
+      primary iconographic symbol identifying Maitreya. A sacred cord (yajnopavita)
+      drapes diagonally over the left shoulder across the chest, while a lower skirt-cloth
+      (sabong) wraps around the hips, fastened securely at the waist with a tied
+      sash (ratprakot).\n\nStylistically, the modeling of the tiered hairstyle and
+      the clinging drapery of the lower garment exhibits strong affinities with South
+      Indian and Sri Lankan sculptural traditions. Discovered in the Yarang archaeological
+      sphere, this statuette serves as significant material evidence of the sophisticated
+      metallurgy, maritime cross-cultural exchange, and Buddhist devotional culture
+      that flourished within the ancient kingdom of Langkasuka."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006401
+    m_Localized: Bronze Statue of the Sun God Surya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006402
+    m_Localized: "- Period / Dating: 15th-16th centuries Buddhist Era (approx. 10th-11th
+      centuries CE)\n- Material: Cast bronze\n- Dimensions: Height: 20.30 cm | Width:
+      10.30 cm\n- Discovery Location: Ban Kuwing, Sakho Bon Sub-district, Mayo District,
+      Pattani Province (approx. 7 km east of Yarang Ancient City)\n- Current Repository:
+      Unknown / Unrecorded\n\nCuratorial Description:\nCast in bronze, this intricate
+      sculptural triad depicts Surya, the Hindu Sun God and supreme deity of the
+      Saura sect. The composition features Surya standing in a rigid upright frontal
+      pose (samabhanga) atop a lotus pedestal mounted over his celestial single-wheeled
+      chariot. The chariot is drawn by seven galloping horses\u2014with the central
+      steed emerging directly from the wheel's hub\u2014and is steered by the divine
+      dawn charioteer, Aruna.\n\nSurya is flanked by his celestial retinue and personifications
+      of dawn:\n- Pingala & Goddess Usha (Right): The attendant Pingala stands in
+      a graceful dvibhanga posture holding a writing implement and an inkpot, fronted
+      by a relief image of the dawn goddess Usha, the dispeller of darkness.\n- Danda
+      & Goddess Pratyusha (Left): The attendant Danda stands in a dvibhanga pose
+      holding a ritual attribute (possibly a conch), fronted by the partially preserved
+      form of Goddess Pratyusha.\n- Regalia & Attributes: Surya wears a tall conical
+      jewel crown (Kiritamukuta), a bare upper torso, fitted trousers (sanapphlao),
+      and knee-high riding boots. Both hands are raised at hip level to hold stemmed
+      lotus bouquets that rise symmetrically to the level of his head.\n- Aureole
+      & Royal Canopy: The grouping is framed by an openwork arched halo (prabhavali)
+      bordered with bead moulding and stylized leaf-like flame rays, surmounted at
+      the peak by a royal tiered parasol (chattr) draped with fluttering banners
+      and garlands.\n\nArtistic & Cultural Significance:\nStylistically, this sculpture
+      exhibits strong affinities with the 10th-11th century CE Pala-period art of
+      Northeast India (Bengal). Discovered in the immediate vicinity of Yarang Ancient
+      City, the artifact provides key archaeological evidence of the active practice
+      of the Saura tradition and highlights the extensive maritime trade and religious
+      networks connecting the Indian subcontinent with the ancient peninsular kingdom
+      of Langkasuka."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006403
+    m_Localized: Stone Sculpture of a Recumbent Bull / Nandi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006404
+    m_Localized: "- Period / Dating: 11th-12th centuries Buddhist Era (approx. 6th-7th
+      centuries CE)\n- Material: Carved sandstone (Hin Sai)\n- Dimensions: Height:
+      52 cm | Length: 66 cm | Width: 29.5 cm\n- Discovery Location: Excavated from
+      Ancient Monument No. 8, Ban Jaleh, Yarang Ancient City, Pattani Province\n-
+      Current Repository: Songkhla National Museum\n\nCuratorial Description:\nDiscovered
+      beside an interior brick pedestal within an 8x8 meter pillared sanctuary hall
+      at Ban Jaleh Monument No. 8, this monolithic sandstone sculpture portrays a
+      humped zebu bull (tha non mop) resting in a tranquil, recumbent posture with
+      its front legs folded beneath its chest. The sculpture features smooth, minimalist
+      surfaces devoid of ornamental harnesses or jewelry, emphasizing the bull's
+      naturalistic anatomy, upright ears, short horns, and a pronounced dorsal hump
+      rising above the shoulders.\n\nIn ancient South and Southeast Asian art, the
+      bull holds dual religious significance:\n- Hindu / Shaivite Iconography: The
+      bull represents Nandi (Kho Nonthi), the sacred vehicle (vahana) and divine
+      gatekeeper of Lord Shiva. Sculptures of Nandi are traditionally placed near
+      sanctuary entrances facing inward toward the central linga.\n- Buddhist Cosmology
+      & Lineage: The bull embodies Gotama (referencing Shakyamuni Buddha's lineage
+      name) and serves as the Guardian Animal of the Western Direction. This directional
+      motif draws directly from early Indian traditions\u2014such as Emperor Ashoka\u2019s
+      pillar capitals featuring the elephant (East), horse (South), bull (West),
+      and lion (North)\u2014as well as the carved semicircular moonstones (Sandakada
+      Pahana) of Sri Lanka's Anuradhapura period (4th-16th centuries BE).\n\nThe
+      discovery of sandstone chisel debitage alongside a bronze Avalokiteshvara head
+      near the sanctuary base indicates that this monolithic sculpture was carved
+      locally, standing as physical evidence of the syncretic Hindu-Buddhist devotional
+      culture that thrived within the ancient maritime entrepot of Langkasuka."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006405
+    m_Localized: Stone Dharmachakra / Wheel of the Law
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006406
+    m_Localized: '- Period / Dating: 11th-12th centuries Buddhist Era (approx. 6th-7th
+      centuries CE)
+
+      - Material: Carved sandstone (Hin Sai)
+
+      - Dimensions:
+      Height: 33.5 cm | Wheel Diameter: 22.5 cm | Hub Diameter: 6 cm
+
+      - Discovery
+      Location: Ban Wat Ancient Monument Mound No. 25 (corresponding to Mound No.
+      6 today), Yarang Ancient City, Pattani Province
+
+      - Current Repository:
+      Princess Galyani Vadhana Institute of Cultural Studies, Prince of Songkla University,
+      Pattani Campus
+
+
+      Curatorial Description:
+
+      Carved from dense sandstone,
+      this monolithic Dharmachakra (Wheel of the Law) represents an early aniconic
+      tradition in Buddhist art established prior to the depiction of the Buddha
+      in anthropomorphic form. The wheel symbolizes the First Sermon (Dhammacakkappavattana
+      Sutta, or the "Turning of the Wheel of the Dhamma") delivered by the Buddha
+      at the Deer Park in Isipatana near Varanasi.
+
+
+      The sculpture features
+      a circular wheel with 8 openwork spokes radiating outward from a smooth, unadorned
+      circular hub. Structurally, the wheel is mounted directly atop a solid rectangular
+      stone block, which rests on a rounded, flattened circular base pedestal.
+
+
+      This
+      piece shares notable stylistic and iconographic parallels with early stone
+      Dharmachakras found at Oc Eo in Vietnam and the Khao Phra Narai (Khao Siwichai)
+      archaeological site in Phunphin District, Surat Thani Province. Its presence
+      at Yarang provides vital archaeological evidence of the region''s active participation
+      in early trans-peninsular trade networks and its significance as a major Buddhist
+      center within maritime Southeast Asia during the pre-Dvaravati and early Dvaravati
+      eras.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006407
+    m_Localized: Standing Stone Buddha in Vitarka Mudra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006408
+    m_Localized: "- Period / Dating: 13th-14th centuries Buddhist Era (c. 8th-9th
+      centuries CE)\n- Material: Carved stone (Sandstone)\n- Dimensions: Height:
+      60 cm | Width: 16 cm\n- Provenance: Ban Kampong Baru (present-day Ban Jaleh),
+      Yarang Ancient City, Pattani Province\n- Current Repository: Unknown / Unrecorded\n\nCuratorial
+      Description:\nThis monolithic stone sculpture depicts a standing Buddha in
+      a rigid upright frontal posture (samabhanga) resting atop an open double-lotus
+      pedestal (bua khwam bua ngai). Both hands are raised symmetrically to perform
+      the Vitarka Mudra\u2014the gesture of teaching, debate, and intellectual exposition.
+      The Buddha is draped in a diaphanous, sheer monastic robe (civara) covering
+      both shoulders (hom khlum) that clings tightly to the body contours. The frontal
+      hem of the mantle forms a broad U-shaped curve extending down to the shins,
+      revealing an inner lower garment that falls to the ankles.\n\nFacial and anatomical
+      treatments reflect distinct regional modeling, characterized by a flat facial
+      plane, downcast meditative eyes, wide lips, bold spiral hair curls, and a rounded,
+      cylindrical ushnisha (cranial protuberance).\n\nWhile the image shares stylistic
+      affinities with Southern peninsular sculptures from Wat Kaeo and Ban U-thae
+      (Surat Thani) as well as Central Thai Dvaravati traditions, it demonstrates
+      a distinctive innovation unique to the ancient Yarang workshops: both hands
+      are carved resting directly against the lower abdomen at navel level, firmly
+      attached to the torso rather than raised independently at chest or waist height.
+      This piece stands as vital physical evidence of the refined local craftsmanship
+      and Mahayana Buddhist devotional networks flourishing in the ancient maritime
+      kingdom of Langkasuka."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

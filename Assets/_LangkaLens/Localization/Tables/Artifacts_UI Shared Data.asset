@@ -14,7 +14,95 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
   m_TableCollectionName: Artifacts_UI
   m_TableCollectionNameGuidString: 9f0e4bfc79e4ec644ad6036cdd92cd5b
-  m_Entries: []
+  m_Entries:
+  - m_Id: 291722552594432
+    m_Key: artifact_title_jar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722581954560
+    m_Key: artifact_desc_jar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148864
+    m_Key: artifact_title_stupa_inverted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148865
+    m_Key: artifact_desc_stupa_inverted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148866
+    m_Key: artifact_title_spire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148867
+    m_Key: artifact_desc_spire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148870
+    m_Key: artifact_title_stupa_base
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148871
+    m_Key: artifact_desc_stupa_base
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148872
+    m_Key: artifact_title_shiva_linga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148873
+    m_Key: artifact_desc_shiva_linga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148876
+    m_Key: artifact_title_turtle_lid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 291722586148877
+    m_Key: artifact_desc_turtle_lid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432247812096
+    m_Key: Bronze Bodhisattva Maitreya_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006400
+    m_Key: Bronze Bodhisattva Maitreya_Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006401
+    m_Key: Bronze Statue of the Sun God Surya_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006402
+    m_Key: Bronze Statue of the Sun God Surya_Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006403
+    m_Key: Stone Sculpture of a Recumbent Bull - Nandi_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006404
+    m_Key: Stone Sculpture of a Recumbent Bull - Nandi_Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006405
+    m_Key: Stone Dharmachakra - Wheel of the Law_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006406
+    m_Key: Stone Dharmachakra - Wheel of the Law_Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006407
+    m_Key: Standing Stone Buddha in Vitarka Mudra_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298432252006408
+    m_Key: Standing Stone Buddha in Vitarka Mudra_Description
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

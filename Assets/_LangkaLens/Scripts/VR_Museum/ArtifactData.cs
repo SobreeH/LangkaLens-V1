@@ -1,11 +1,11 @@
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class ArtifactData : MonoBehaviour
 {
     [Header("Artifact Details")]
-    public string artifactTitle;
-    [TextArea(5, 10)] 
-    public string artifactDescription;
+    public LocalizedString localizedTitle;
+    public LocalizedString localizedDescription;
 
     [Header("Toggleable Models")]
     public GameObject primaryModel;
@@ -47,8 +47,8 @@ public class ArtifactData : MonoBehaviour
             originalOrigin, 
             uiAnchor, 
             pedestal,
-            artifactTitle, 
-            artifactDescription
+            localizedTitle, 
+            localizedDescription
         );
     }
 
