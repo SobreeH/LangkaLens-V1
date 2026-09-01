@@ -86,6 +86,9 @@ public class TourManager : MonoBehaviour
 
     private IEnumerator MainMenuRoutine()
     {
+        // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
+        AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
+
         Vector3 moveDirection = vrCamera != null ? vrCamera.forward : Vector3.forward;
         moveDirection.y = 0; 
         if (moveDirection.magnitude < 0.001f) moveDirection = Vector3.forward;
@@ -136,8 +139,12 @@ public class TourManager : MonoBehaviour
 
         // 3. LOAD TITLE SCREEN
         if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
-        currentTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
-        yield return currentTextureHandle;
+        
+        currentTextureHandle = nextTextureHandle;
+        if (!currentTextureHandle.IsDone)
+        {
+            yield return currentTextureHandle;
+        }
 
         if (currentTextureHandle.Status == AsyncOperationStatus.Succeeded && photoSphereRenderer != null)
         {
@@ -199,6 +206,9 @@ public class TourManager : MonoBehaviour
 
     private IEnumerator TransitionRoutine(TourNode nextNode, Vector3? targetWorldPosition)
     {
+        // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
+        AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(nextNode.photoReference);
+
         Vector3 moveDirection;
         if (targetWorldPosition.HasValue) moveDirection = (targetWorldPosition.Value - vrCamera.position);
         else moveDirection = vrCamera != null ? vrCamera.forward : Vector3.forward;
@@ -248,8 +258,12 @@ public class TourManager : MonoBehaviour
         if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
 
         currentNode = nextNode;
-        currentTextureHandle = Addressables.LoadAssetAsync<Texture2D>(currentNode.photoReference);
-        yield return currentTextureHandle; 
+        currentTextureHandle = nextTextureHandle;
+        
+        if (!currentTextureHandle.IsDone)
+        {
+            yield return currentTextureHandle; 
+        }
 
         if (currentTextureHandle.Status == AsyncOperationStatus.Succeeded)
         {
