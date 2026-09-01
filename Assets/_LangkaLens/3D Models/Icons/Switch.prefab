@@ -26,15 +26,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9174189231277337637, guid: 46ed6366b53156b41b76d80c376a556c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.40757
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9174189231277337637, guid: 46ed6366b53156b41b76d80c376a556c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.34264
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9174189231277337637, guid: 46ed6366b53156b41b76d80c376a556c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.93816
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9174189231277337637, guid: 46ed6366b53156b41b76d80c376a556c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -84,6 +84,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2786584896859089081, guid: 46ed6366b53156b41b76d80c376a556c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1654441638430156515}
+    - targetCorrespondingSourceObject: {fileID: 2786584896859089081, guid: 46ed6366b53156b41b76d80c376a556c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5197251685098878516}
   m_SourcePrefab: {fileID: 3150474306388093854, guid: 46ed6366b53156b41b76d80c376a556c, type: 3}
 --- !u!1 &1669966024810057592 stripped
 GameObject:
@@ -157,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1464721f2283eb14e94a33e812b47be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.InteractableUnityEventWrapper
-  _interactableView: {fileID: 0}
+  _interactableView: {fileID: 8030196623133469824}
   _whenHover:
     m_PersistentCalls:
       m_Calls: []
@@ -166,7 +169,19 @@ MonoBehaviour:
       m_Calls: []
   _whenSelect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5197251685098878516}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnselect:
     m_PersistentCalls:
       m_Calls: []
@@ -182,3 +197,15 @@ MonoBehaviour:
   _whenSelectingInteractorViewRemoved:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5197251685098878516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669966024810057592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cab1e978ff2e55242b72998137fe757f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToggleModelAction
