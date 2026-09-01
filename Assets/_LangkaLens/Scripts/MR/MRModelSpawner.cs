@@ -27,6 +27,14 @@ namespace LangkaLens.MR
 
         private GameObject _currentSpawnedModel;
 
+        private void Update()
+        {
+            // Despawn the model if the 'B' or 'Y' button is pressed
+            if (OVRInput.GetDown(OVRInput.RawButton.B) || OVRInput.GetDown(OVRInput.RawButton.Y))
+            {
+                DespawnModel();
+            }
+        }
 
         public void SpawnModel(int index)
         {
@@ -109,6 +117,20 @@ namespace LangkaLens.MR
             if (_currentSpawnedModel.GetComponent<MRSpatialObject>() == null)
             {
                 _currentSpawnedModel.AddComponent<MRSpatialObject>();
+            }
+        }
+
+        public void DespawnModel()
+        {
+            if (_currentSpawnedModel != null)
+            {
+                Destroy(_currentSpawnedModel);
+                _currentSpawnedModel = null;
+            }
+
+            if (selectionCanvas != null)
+            {
+                selectionCanvas.SetActive(true);
             }
         }
     }
