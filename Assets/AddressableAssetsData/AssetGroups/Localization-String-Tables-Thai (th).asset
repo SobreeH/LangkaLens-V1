@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-th
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14b69f54c35711649a377e0f23277705
+    m_Address: Artifacts_UI_th
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-th
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 65c2ca6b0a5c47f40b75d425c0c70ee5
     m_Address: VTour_UI_th
     m_ReadOnly: 1

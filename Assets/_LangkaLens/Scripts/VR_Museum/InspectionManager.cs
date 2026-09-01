@@ -10,6 +10,12 @@ public class InspectionManager : MonoBehaviour
     public GameObject inspectionCanvas;
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
+    
+    [Header("Spatial Toggle UI")]
+    [Tooltip("The prefab for the 3D toggle button")]
+    public GameObject spatialToggleButtonPrefab;
+    
+    private GameObject _spawnedToggleButton;
 
     // Removed the offset math variables completely
 
@@ -31,6 +37,7 @@ public class InspectionManager : MonoBehaviour
     public float maxScaleMultiplier = 3.0f;
 
     private GameObject _currentArtifact;
+    private ArtifactData _currentArtifactData;
     private Transform _currentOrigin;
     private Transform _currentUIAnchor; // <--- NEW
     private GameObject _currentPedestal;
@@ -46,25 +53,33 @@ public class InspectionManager : MonoBehaviour
         else Instance = this;
 
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
+
+        if (spatialToggleButtonPrefab != null)
+        {
+            _spawnedToggleButton = Instantiate(spatialToggleButtonPrefab);
+            _spawnedToggleButton.SetActive(false);
+        }
     }
 
-    public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, string title, string description)
+    public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, GameObject pedestal, string title, string description)
     {
         if (_isInspecting) return;
 
         _isInspecting = true;
         _currentArtifact = artifact;
+        if (artifact != null) _currentArtifactData = artifact.GetComponentInParent<ArtifactData>();
         _currentOrigin = origin;
         _currentUIAnchor = uiAnchor; 
-
-        if (_currentOrigin != null && _currentOrigin.parent != null)
+        
+        _currentPedestal = pedestal;
+        if (_currentPedestal != null)
         {
-            Transform pedestal = _currentOrigin.parent.Find("Pedestal");
-            if (pedestal != null)
-            {
-                _currentPedestal = pedestal.gameObject;
-                _currentPedestal.SetActive(false);
-            }
+            _currentPedestal.SetActive(false);
+        }
+
+        if (_spawnedToggleButton != null)
+        {
+            _spawnedToggleButton.SetActive(true);
         }
 
         if (locomotionScript != null) locomotionScript.enabled = false;
@@ -115,6 +130,18 @@ public class InspectionManager : MonoBehaviour
         }
 
         _currentArtifact = null;
+        if (_currentArtifactData != null)
+        {
+            // Reset to primary model on exit if needed
+            _currentArtifactData.ResetToPrimaryModel();
+            _currentArtifactData = null;
+        }
+
+        if (_spawnedToggleButton != null)
+        {
+            _spawnedToggleButton.SetActive(false);
+        }
+
         _currentOrigin = null;
         _currentUIAnchor = null; 
         _isInspecting = false;
@@ -167,11 +194,17 @@ public class InspectionManager : MonoBehaviour
 
     private void PositionCanvas()
     {
-        // Simple and clean: just copy the transform of the empty GameObject
-        if (inspectionCanvas == null || _currentUIAnchor == null) return;
-        
-        inspectionCanvas.transform.position = _currentUIAnchor.position;
-        inspectionCanvas.transform.rotation = _currentUIAnchor.rotation;
+        if (inspectionCanvas != null && _currentUIAnchor != null)
+        {
+            inspectionCanvas.transform.position = _currentUIAnchor.position;
+            inspectionCanvas.transform.rotation = _currentUIAnchor.rotation;
+        }
+
+        if (_spawnedToggleButton != null && _currentArtifactData != null && _currentArtifactData.spatialToggleButtonAnchor != null)
+        {
+            _spawnedToggleButton.transform.position = _currentArtifactData.spatialToggleButtonAnchor.position;
+            _spawnedToggleButton.transform.rotation = _currentArtifactData.spatialToggleButtonAnchor.rotation;
+        }
     }
 
     private void Update()
@@ -199,6 +232,24 @@ public class InspectionManager : MonoBehaviour
 
                 _currentArtifact.transform.localScale = _originalArtifactScale * _currentScaleMultiplier;
             }
+
+            // Toggle Models with 'Y' Button (Button.Four on Left Touch)
+            if (OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.LTouch) || 
+                OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.Active))
+            {
+                if (_currentArtifactData != null)
+                {
+                    _currentArtifactData.ToggleModel();
+                }
+            }
+        }
+    }
+
+    public void OnToggleModelButtonClicked()
+    {
+        if (_isInspecting && _currentArtifactData != null)
+        {
+            _currentArtifactData.ToggleModel();
         }
     }
 }

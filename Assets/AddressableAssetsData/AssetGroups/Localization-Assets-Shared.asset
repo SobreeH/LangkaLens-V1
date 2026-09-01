@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f0e4bfc79e4ec644ad6036cdd92cd5b
+    m_Address: Assets/_LangkaLens/Localization/Tables/Artifacts_UI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: af2d17f486927a647b1b987c7bb3f75a
     m_Address: Assets/_LangkaLens/Localization/Tables/MainMenuUI Shared Data.asset
     m_ReadOnly: 1
