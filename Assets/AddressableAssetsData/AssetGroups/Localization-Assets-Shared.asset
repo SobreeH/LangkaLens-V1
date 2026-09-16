@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5d5850ea1cf5d54681e2928fc983b0f
+    m_Address: Assets/_LangkaLens/Localization/Tables/Tablet_UI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: feb0f96c39ac6a149b9bbb82ba7b1ab2, type: 2}
   m_SchemaSet:

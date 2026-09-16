@@ -47,6 +47,7 @@ public class InspectionManager : MonoBehaviour
     private Vector3 _originalArtifactScale;
     private float _currentScaleMultiplier = 1f;
     private bool _isInspecting = false;
+    private Collider _headCollider;
 
     private LocalizedString _currentTitle;
     private LocalizedString _currentDescription;
@@ -62,6 +63,11 @@ public class InspectionManager : MonoBehaviour
         {
             _spawnedToggleButton = Instantiate(spatialToggleButtonPrefab);
             _spawnedToggleButton.SetActive(false);
+        }
+
+        if (centerEyeCamera != null)
+        {
+            _headCollider = centerEyeCamera.GetComponent<Collider>();
         }
     }
 
@@ -94,6 +100,8 @@ public class InspectionManager : MonoBehaviour
         // Ensure all locomotion is completely disabled
         GameObject playerController = GameObject.Find("PlayerController");
         if (playerController != null) playerController.SetActive(false);
+        
+        if (_headCollider != null) _headCollider.enabled = false;
         
         _originalRigPosition = playerRig.position;
         _originalRigRotation = playerRig.rotation;
@@ -144,6 +152,8 @@ public class InspectionManager : MonoBehaviour
             Transform playerController = locomotorRoot.Find("PlayerController");
             if (playerController != null) playerController.gameObject.SetActive(true);
         }
+
+        if (_headCollider != null) _headCollider.enabled = true;
 
         _currentArtifact = null;
         if (_currentArtifactData != null)
