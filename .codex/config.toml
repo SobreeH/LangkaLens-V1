@@ -1,0 +1,8 @@
+# Unity MCP includes the installed Meta XR MCP extension's tools.
+[mcp_servers.unity-mcp]
+command = 'C:\Users\sobre\.unity\relay\relay_win.exe'
+args = ["--mcp", "--project-path", 'E:\Unity\Projects\LangkaLens']
+cwd = 'E:\Unity\Projects\LangkaLens'
+enabled = true
+startup_timeout_sec = 60
+tool_timeout_sec = 120
