@@ -12,14 +12,6 @@ public class InspectionManager : MonoBehaviour
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
     
-    [Header("Spatial Toggle UI")]
-    [Tooltip("The prefab for the 3D toggle button")]
-    public GameObject spatialToggleButtonPrefab;
-    
-    private GameObject _spawnedToggleButton;
-
-    // Removed the offset math variables completely
-
     [Header("VR Rig References")]
     public Transform playerRig;
     public Transform centerEyeCamera;
@@ -59,12 +51,6 @@ public class InspectionManager : MonoBehaviour
 
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
 
-        if (spatialToggleButtonPrefab != null)
-        {
-            _spawnedToggleButton = Instantiate(spatialToggleButtonPrefab);
-            _spawnedToggleButton.SetActive(false);
-        }
-
         if (centerEyeCamera != null)
         {
             _headCollider = centerEyeCamera.GetComponent<Collider>();
@@ -88,11 +74,6 @@ public class InspectionManager : MonoBehaviour
         if (_currentPedestal != null)
         {
             _currentPedestal.SetActive(false);
-        }
-
-        if (_spawnedToggleButton != null)
-        {
-            _spawnedToggleButton.SetActive(true);
         }
 
         if (locomotionScript != null) locomotionScript.enabled = false;
@@ -163,11 +144,6 @@ public class InspectionManager : MonoBehaviour
             _currentArtifactData = null;
         }
 
-        if (_spawnedToggleButton != null)
-        {
-            _spawnedToggleButton.SetActive(false);
-        }
-
         _currentOrigin = null;
         _currentUIAnchor = null; 
         _isInspecting = false;
@@ -226,11 +202,6 @@ public class InspectionManager : MonoBehaviour
             inspectionCanvas.transform.rotation = _currentUIAnchor.rotation;
         }
 
-        if (_spawnedToggleButton != null && _currentArtifactData != null && _currentArtifactData.spatialToggleButtonAnchor != null)
-        {
-            _spawnedToggleButton.transform.position = _currentArtifactData.spatialToggleButtonAnchor.position;
-            _spawnedToggleButton.transform.rotation = _currentArtifactData.spatialToggleButtonAnchor.rotation;
-        }
     }
 
     private void Update()
@@ -268,14 +239,6 @@ public class InspectionManager : MonoBehaviour
                     _currentArtifactData.ToggleModel();
                 }
             }
-        }
-    }
-
-    public void OnToggleModelButtonClicked()
-    {
-        if (_isInspecting && _currentArtifactData != null)
-        {
-            _currentArtifactData.ToggleModel();
         }
     }
 }

@@ -20,9 +20,6 @@ public class ArtifactData : MonoBehaviour
     [Tooltip("The empty GameObject representing exactly where the UI should appear")]
     public Transform uiAnchor; 
 
-    [Tooltip("The empty GameObject representing where the spatial toggle button should appear")]
-    public Transform spatialToggleButtonAnchor;
-    
     [Tooltip("The parent transform where the models will be spawned")]
     public Transform modelContainer;
 
