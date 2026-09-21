@@ -6793,7 +6793,7 @@ RectTransform:
   m_GameObject: {fileID: 575244873}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 6}
-  m_LocalScale: {x: 1.884, y: 1.884, z: 1.884}
+  m_LocalScale: {x: 2.3836367, y: 2.3836367, z: 2.3836367}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 724614616}
@@ -6801,7 +6801,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -476.3, y: 429}
+  m_AnchoredPosition: {x: -433, y: -399}
   m_SizeDelta: {x: 145.4, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &575244875
@@ -8732,7 +8732,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.8434, y: 398}
+  m_AnchoredPosition: {x: -6.8434, y: 430}
   m_SizeDelta: {x: 1174.8, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &754309307
@@ -10819,7 +10819,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.15383469, y: 0}
+  m_AnchoredPosition: {x: 0.1471962, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &964354936
@@ -10987,8 +10987,8 @@ RectTransform:
   m_Children:
   - {fileID: 754309306}
   - {fileID: 438836535}
-  - {fileID: 575244874}
   - {fileID: 1962561953}
+  - {fileID: 575244874}
   m_Father: {fileID: 366375908}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -11501,8 +11501,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1023386061}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.23799434, y: -0.809706, z: 5.438162}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12764,7 +12764,6 @@ MonoBehaviour:
   inspectionCanvas: {fileID: 366375907}
   titleText: {fileID: 754309307}
   descriptionText: {fileID: 396438496}
-  spatialToggleButtonPrefab: {fileID: 1669966024810057592, guid: 2e38ba3c5741db24abddbe84d358fa1a, type: 3}
   playerRig: {fileID: 147365122}
   centerEyeCamera: {fileID: 1023386062}
   locomotionScript: {fileID: 1404763479}
@@ -21172,7 +21171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.6848, y: -21}
+  m_AnchoredPosition: {x: -6.6848, y: 31}
   m_SizeDelta: {x: 1174.7, y: 724.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1962561954
