@@ -198,6 +198,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46ed6366b53156b41b76d80c376a556c
+    m_Address: Assets/_LangkaLens/3D Models/Icons/Switch.glb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 47644b9d740d2a5469f3ae284991d9c8
     m_Address: "Assets/_LangkaLens/360 Images/\u0E1A\u0E49\u0E32\u0E19\u0E27\u0E31\u0E14
       \u0E2B\u0E21\u0E32\u0E22\u0E40\u0E25\u0E029/9F3.jpg"
