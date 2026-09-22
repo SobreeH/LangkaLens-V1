@@ -103,6 +103,18 @@ MonoBehaviour:
     m_Key: Standing Stone Buddha in Vitarka Mudra_Description
     m_Metadata:
       m_Items: []
+  - m_Id: 7982710677745664
+    m_Key: model_state_current
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7982710715494400
+    m_Key: model_state_original
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7982710715494401
+    m_Key: toggle_btn_model
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

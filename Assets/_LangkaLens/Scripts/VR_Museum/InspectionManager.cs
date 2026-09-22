@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
 
 public class InspectionManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class InspectionManager : MonoBehaviour
     public GameObject inspectionCanvas;
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
+    public TextMeshProUGUI modelStateText;
+    public LocalizeStringEvent modelStateLocalizeEvent;
+    public GameObject toggleModelButton;
     
     [Header("VR Rig References")]
     public Transform playerRig;
@@ -55,6 +59,16 @@ public class InspectionManager : MonoBehaviour
         {
             _headCollider = centerEyeCamera.GetComponent<Collider>();
         }
+
+        if (modelStateLocalizeEvent == null && modelStateText != null)
+        {
+            modelStateLocalizeEvent = modelStateText.GetComponent<LocalizeStringEvent>();
+        }
+        if (toggleModelButton == null && inspectionCanvas != null)
+        {
+            Transform t = inspectionCanvas.transform.Find("Panel/Toggle_btn");
+            if (t != null) toggleModelButton = t.gameObject;
+        }
     }
 
     private void OnTitleChanged(string s) { if (titleText != null) titleText.text = s; }
@@ -97,6 +111,8 @@ public class InspectionManager : MonoBehaviour
 
         if (_currentTitle != null) _currentTitle.StringChanged += OnTitleChanged;
         if (_currentDescription != null) _currentDescription.StringChanged += OnDescriptionChanged;
+
+        UpdateModelStateUI();
 
         StartCoroutine(MovePlayerToArtifact());
     }
@@ -234,11 +250,41 @@ public class InspectionManager : MonoBehaviour
             if (OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.LTouch) || 
                 OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.Active))
             {
-                if (_currentArtifactData != null)
-                {
-                    _currentArtifactData.ToggleModel();
-                }
+                OnToggleModelButtonClicked();
             }
+        }
+    }
+
+    public void OnToggleModelButtonClicked()
+    {
+        if (_currentArtifactData != null)
+        {
+            _currentArtifactData.ToggleModel();
+            UpdateModelStateUI();
+        }
+    }
+
+    private void UpdateModelStateUI()
+    {
+        if (_currentArtifactData == null) return;
+
+        bool hasAlternate = _currentArtifactData.alternateModel != null;
+        if (toggleModelButton != null) toggleModelButton.SetActive(hasAlternate);
+        if (modelStateText != null) modelStateText.gameObject.SetActive(hasAlternate);
+
+        if (!hasAlternate) return;
+
+        bool isPrimary = _currentArtifactData.IsShowingPrimary;
+        string key = isPrimary ? "model_state_current" : "model_state_original";
+
+        if (modelStateLocalizeEvent != null)
+        {
+            modelStateLocalizeEvent.StringReference.SetReference("Artifacts_UI", key);
+            modelStateLocalizeEvent.RefreshString();
+        }
+        else if (modelStateText != null)
+        {
+            modelStateText.text = isPrimary ? "Current Model" : "Original Model";
         }
     }
 }

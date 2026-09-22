@@ -12,6 +12,7 @@ public class ArtifactData : MonoBehaviour
     public GameObject alternateModel;
     
     private bool _isShowingPrimary = true;
+    public bool IsShowingPrimary => _isShowingPrimary;
 
     [Header("Transforms")]
     [Tooltip("The parent empty GameObject that stays on the podium")]
