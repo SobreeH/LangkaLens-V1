@@ -67,7 +67,18 @@ namespace LangkaLens.MR
             // Destroy currently spawned model if it exists
             if (_currentSpawnedModel != null)
             {
+#if UNITY_EDITOR
+                if (!Application.isPlaying)
+                {
+                    DestroyImmediate(_currentSpawnedModel);
+                }
+                else
+                {
+                    Destroy(_currentSpawnedModel);
+                }
+#else
                 Destroy(_currentSpawnedModel);
+#endif
             }
 
             // Hide the canvas
@@ -190,7 +201,18 @@ namespace LangkaLens.MR
         {
             if (_currentSpawnedModel != null)
             {
+#if UNITY_EDITOR
+                if (!Application.isPlaying)
+                {
+                    DestroyImmediate(_currentSpawnedModel);
+                }
+                else
+                {
+                    Destroy(_currentSpawnedModel);
+                }
+#else
                 Destroy(_currentSpawnedModel);
+#endif
                 _currentSpawnedModel = null;
             }
 
@@ -199,5 +221,26 @@ namespace LangkaLens.MR
                 selectionCanvas.SetActive(true);
             }
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Spawn Demo Model (Editor Only)")]
+        private void EditorSpawnDemoModel()
+        {
+            if (modelPrefabs != null && modelPrefabs.Length > 0)
+            {
+                SpawnModel(0);
+            }
+            else
+            {
+                Debug.LogWarning("No model prefabs assigned to spawn.");
+            }
+        }
+
+        [ContextMenu("Despawn Demo Model (Editor Only)")]
+        private void EditorDespawnDemoModel()
+        {
+            DespawnModel();
+        }
+#endif
     }
 }
