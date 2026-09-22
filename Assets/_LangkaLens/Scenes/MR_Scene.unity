@@ -2124,6 +2124,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -359013632804196949, guid: 6f5d8699ae69a2c47a443a1f9d647c83, type: 3}
+      propertyPath: m_Name
+      value: Mesh_ref
+      objectReference: {fileID: 0}
     - target: {fileID: 194085579584822883, guid: 6f5d8699ae69a2c47a443a1f9d647c83, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -12634,7 +12638,7 @@ Transform:
   m_GameObject: {fileID: 1054263240}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: -2.78}
+  m_LocalPosition: {x: 6.42, y: -0, z: -2.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15804,6 +15808,7 @@ MonoBehaviour:
   - {fileID: 7654723282547133788, guid: ebf4a4c3fd1bb4c40a412d027a497ad3, type: 3}
   - {fileID: 5406630184764429131, guid: 3920a3349158f5c48a1449f9b4439e3f, type: 3}
   - {fileID: -757705561814038949, guid: bdfe80665527c904eb96ee80e0e4f651, type: 3}
+  modelPlacement: {fileID: 0}
   centerEyeCamera: {fileID: 1171521191}
   spawnRelativeToCamera: 1
   globalSpawnPosition: {x: 0, y: -1.5, z: 5}

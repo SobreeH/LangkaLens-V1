@@ -9,3 +9,6 @@ tool_timeout_sec = 120
 
 [mcp_servers.unity-mcp.tools.Unity_RunCommand]
 approval_mode = "approve"
+
+[mcp_servers.unity-mcp.tools.Unity_SceneView_CaptureMultiAngleSceneView]
+approval_mode = "approve"
