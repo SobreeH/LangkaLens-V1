@@ -64,10 +64,30 @@ public class InspectionManager : MonoBehaviour
         {
             modelStateLocalizeEvent = modelStateText.GetComponent<LocalizeStringEvent>();
         }
+        
+        // Ensure manual binding of the localization event to bypass any broken YAML UnityEvent links
+        if (modelStateLocalizeEvent != null && modelStateText != null)
+        {
+            modelStateLocalizeEvent.OnUpdateString.AddListener((s) => { modelStateText.text = s; });
+        }
+
         if (toggleModelButton == null && inspectionCanvas != null)
         {
             Transform t = inspectionCanvas.transform.Find("Panel/Toggle_btn");
             if (t != null) toggleModelButton = t.gameObject;
+        }
+
+        if (toggleModelButton != null)
+        {
+            var btnText = toggleModelButton.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (btnText != null)
+            {
+                var btnLocalize = btnText.GetComponent<LocalizeStringEvent>();
+                if (btnLocalize != null)
+                {
+                    btnLocalize.OnUpdateString.AddListener((s) => { btnText.text = s; });
+                }
+            }
         }
     }
 
