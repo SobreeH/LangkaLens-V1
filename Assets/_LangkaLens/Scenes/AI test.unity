@@ -11990,7 +11990,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5050320771252609891, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -23.405
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7040443216476601327, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211115857236795555, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
+      propertyPath: _size.x
+      value: 1800
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211115857236795555, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
+      propertyPath: _size.y
+      value: 1200
       objectReference: {fileID: 0}
     - target: {fileID: 8798681724080464221, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
       propertyPath: m_Pivot.x
