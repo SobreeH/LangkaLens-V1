@@ -27,9 +27,12 @@ namespace LangkaLens.MR
         [Min(0.1f)] public float warningDistance = 0.8f;
         [Min(0)] public float recoveryMargin = 0.1f;
 
+        [Header("Development")]
+        public bool developmentMode = false;
+
         public AreaState State { get; private set; } = AreaState.Unconfigured;
         public float DistanceToEdge { get; private set; }
-        public bool CanPlay => isActiveAndEnabled && (State == AreaState.Inside || State == AreaState.NearBoundary);
+        public bool CanPlay => developmentMode || (isActiveAndEnabled && (State == AreaState.Inside || State == AreaState.NearBoundary));
         public string ConfigurationError { get; private set; }
         private bool _configured;
 
@@ -67,6 +70,12 @@ namespace LangkaLens.MR
 
         private void LateUpdate()
         {
+            if (developmentMode)
+            {
+                State = AreaState.Inside;
+                return;
+            }
+            
             if (!_configured) { State = AreaState.Unconfigured; return; }
             if (!alignment.IsConfirmed) { State = AreaState.Aligning; return; }
             if (!alignment.IsTrackingValid || !passthrough.isActiveAndEnabled || passthrough.hidden ||
