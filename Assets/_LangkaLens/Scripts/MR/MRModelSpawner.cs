@@ -4,6 +4,7 @@ using Oculus.Interaction;
 
 namespace LangkaLens.MR
 {
+    [DefaultExecutionOrder(400)]
     public class MRModelSpawner : MonoBehaviour
     {
         [Header("Model Prefabs")]
@@ -14,6 +15,10 @@ namespace LangkaLens.MR
         public Transform modelPlacement;
 
         public Transform centerEyeCamera;
+
+        [Header("On-site playable area (optional)")]
+        [Tooltip("When assigned, models follow the aligned site and are hidden outside its playable interior.")]
+        public MRMeshPlayableArea playableArea;
         
         [Tooltip("If true, spawn position is relative to the camera. If false, it uses exact world coordinates.")]
         public bool spawnRelativeToCamera = true;
@@ -41,6 +46,12 @@ namespace LangkaLens.MR
 
         public void SpawnModel(int index)
         {
+            if (playableArea != null && !playableArea.CanPlay)
+            {
+                Debug.Log("Align the entrance reference and enter the playable interior before selecting a model.");
+                return;
+            }
+
             if (index < 0 || index >= modelPrefabs.Length)
             {
                 Debug.LogWarning("Invalid model index.");
@@ -101,6 +112,8 @@ namespace LangkaLens.MR
             
             _currentSpawnedModel = Instantiate(modelPrefabs[index], finalSpawnPos, finalRotation);
             _currentSpawnedModel.name = modelPrefabs[index].name + "_Spawned";
+            if (playableArea != null)
+                _currentSpawnedModel.transform.SetParent(playableArea.transform, true);
             _currentSpawnedModel.transform.localScale = globalSpawnScale;
 
             // Dynamically add physics and interaction components for raw GLB models
@@ -128,10 +141,22 @@ namespace LangkaLens.MR
             }
 
             // If the prefab doesn't have MRSpatialObject, add it (which also adds Grabbable)
-            if (_currentSpawnedModel.GetComponent<MRSpatialObject>() == null)
+            if (playableArea == null && _currentSpawnedModel.GetComponent<MRSpatialObject>() == null)
             {
                 _currentSpawnedModel.AddComponent<MRSpatialObject>();
             }
+            else if (playableArea != null)
+            {
+                // Site content follows the common entrance alignment instead of an independent object anchor.
+                foreach (var spatialObject in _currentSpawnedModel.GetComponentsInChildren<MRSpatialObject>(true))
+                    spatialObject.enabled = false;
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (playableArea != null && _currentSpawnedModel != null && _currentSpawnedModel.activeSelf != playableArea.CanPlay)
+                _currentSpawnedModel.SetActive(playableArea.CanPlay);
         }
 
         public void DespawnModel()

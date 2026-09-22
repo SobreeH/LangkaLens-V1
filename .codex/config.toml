@@ -12,3 +12,6 @@ approval_mode = "approve"
 
 [mcp_servers.unity-mcp.tools.Unity_SceneView_CaptureMultiAngleSceneView]
 approval_mode = "approve"
+
+[mcp_servers.unity-mcp.tools.Unity_GetConsoleLogs]
+approval_mode = "approve"
