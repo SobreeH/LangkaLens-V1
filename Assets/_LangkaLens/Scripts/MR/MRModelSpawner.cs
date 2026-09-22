@@ -10,6 +10,9 @@ namespace LangkaLens.MR
         public GameObject[] modelPrefabs;
 
         [Header("Global Spawn Settings")]
+        [Tooltip("If assigned, the model will spawn at this transform's position and rotation.")]
+        public Transform modelPlacement;
+
         public Transform centerEyeCamera;
         
         [Tooltip("If true, spawn position is relative to the camera. If false, it uses exact world coordinates.")]
@@ -65,7 +68,18 @@ namespace LangkaLens.MR
             Vector3 finalSpawnPos;
             Quaternion finalRotation;
 
-            if (spawnRelativeToCamera && centerEyeCamera != null)
+            if (modelPlacement == null)
+            {
+                GameObject mp = GameObject.Find("Model_Placement");
+                if (mp != null) modelPlacement = mp.transform;
+            }
+
+            if (modelPlacement != null)
+            {
+                finalSpawnPos = modelPlacement.position;
+                finalRotation = modelPlacement.rotation;
+            }
+            else if (spawnRelativeToCamera && centerEyeCamera != null)
             {
                 // Calculate position relative to the camera
                 finalSpawnPos = centerEyeCamera.position 
