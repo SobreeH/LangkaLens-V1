@@ -9,6 +9,9 @@ public class NavigationArrow : MonoBehaviour
     
     [SerializeField] private Color hoverGlowColor = new Color(0.3f, 0.3f, 0.3f, 1f);
 
+    public TourNode TargetNode => targetNode;
+    public bool IsHovered { get; private set; }
+
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
@@ -29,6 +32,7 @@ public class NavigationArrow : MonoBehaviour
 
     public void OnHover()
     {
+        IsHovered = true;
         if (meshRenderer != null && meshRenderer.material != null)
         {
             meshRenderer.material.EnableKeyword("_EMISSION");
@@ -38,6 +42,7 @@ public class NavigationArrow : MonoBehaviour
 
     public void OnUnhover()
     {
+        IsHovered = false;
         if (meshRenderer != null && meshRenderer.material != null)
         {
             meshRenderer.material.SetColor("_EmissionColor", originalColor);

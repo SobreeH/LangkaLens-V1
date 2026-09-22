@@ -466,6 +466,10 @@ PrefabInstance:
       propertyPath: _centerEyeCamera
       value: 
       objectReference: {fileID: 2082841587}
+    - target: {fileID: 733246938184751041, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1168042863143544391, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1806,6 +1810,7 @@ GameObject:
   - component: {fileID: 194958226}
   - component: {fileID: 194958225}
   - component: {fileID: 194958224}
+  - component: {fileID: 194958227}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -1884,6 +1889,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &194958227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194958223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6460e852ba999ee4386f220e9706c976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRTeleportNavigator
+  originTransform: {fileID: 844342422}
+  tourManager: {fileID: 194958224}
+  lineRenderer: {fileID: 0}
+  controller: 1
+  thumbstickAxis: 1
+  activationThreshold: 0.45
+  releaseThreshold: 0.2
+  cancelThreshold: -0.35
+  arcResolution: 30
+  arcVelocity: 8.5
+  upwardAngleBias: 12
+  simulatedGravity: 9.8
+  timeStep: 0.05
+  snapRadius: 2
+  searchColorStart: {r: 0.3, g: 0.7, b: 1, a: 0.6}
+  searchColorEnd: {r: 0.1, g: 0.5, b: 1, a: 0.9}
+  snapColorStart: {r: 0.2, g: 1, b: 0.5, a: 0.85}
+  snapColorEnd: {r: 0.1, g: 1, b: 0.3, a: 1}
+  lineWidth: 0.025
 --- !u!1 &195908697
 GameObject:
   m_ObjectHideFlags: 0
@@ -12212,7 +12248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8798681724080464221, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8798681724080464221, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12638,7 +12674,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1778265026}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalPosition: {x: 0, y: 0, z: 6}
   m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
   m_ConstrainProportionsScale: 1
   m_Children:

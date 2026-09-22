@@ -46,6 +46,8 @@ public class TourManager : MonoBehaviour
     private AsyncOperationHandle<Texture2D> currentTextureHandle;
     private GameObject currentIconInstance;
     private List<GameObject> activeArrows = new List<GameObject>();
+    public IReadOnlyList<GameObject> ActiveArrows => activeArrows;
+    public bool IsTransitioning { get; private set; }
 
     private GameObject currentOverlayInstance;
     private AsyncOperationHandle<GameObject> currentOverlayHandle;
@@ -81,11 +83,13 @@ public class TourManager : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
+        if (IsTransitioning) return;
         StartCoroutine(MainMenuRoutine());
     }
 
     private IEnumerator MainMenuRoutine()
     {
+        IsTransitioning = true;
         // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
         AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
 
@@ -175,6 +179,7 @@ public class TourManager : MonoBehaviour
         }
         
         if (vrRigParent != null) vrRigParent.position = idealCenterPos;
+        IsTransitioning = false;
     }
 
     private void ResetPlayerView(bool resetRotation = true)
@@ -200,12 +205,13 @@ public class TourManager : MonoBehaviour
 
     public void LoadNode(TourNode nextNode, Vector3? targetWorldPosition = null)
     {
-        if (nextNode == null) return;
+        if (nextNode == null || IsTransitioning) return;
         StartCoroutine(TransitionRoutine(nextNode, targetWorldPosition));
     }
 
     private IEnumerator TransitionRoutine(TourNode nextNode, Vector3? targetWorldPosition)
     {
+        IsTransitioning = true;
         // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
         AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(nextNode.photoReference);
 
@@ -307,6 +313,7 @@ public class TourManager : MonoBehaviour
         }
         
         if (vrRigParent != null) vrRigParent.position = idealCenterPos;
+        IsTransitioning = false;
     }
 
     private void SpawnHoverIcon()
