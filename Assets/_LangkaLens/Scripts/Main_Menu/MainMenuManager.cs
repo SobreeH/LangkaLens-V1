@@ -27,16 +27,19 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private string vrSceneName = "Scene_2_VR_Phase3B";
     [SerializeField] private string museumSceneName = "Scene_3_Museum_Phase3C";
 
-    // Define a key to save our state
-    private const string LanguageSelectedKey = "HasSelectedLanguage";
+    // Tracks whether the user has selected a language during the current app session.
+    // Static variables reset to false whenever the application process is completely exited / terminated.
+    private static bool hasSelectedLanguageThisSession = false;
+
+    private const string LegacyLanguageSelectedKey = "HasSelectedLanguage";
 
     private void Start()
     {
         // Setup initial language state based on localization
         StartCoroutine(InitializeLanguageState());
 
-        // Check if the user has previously selected a language (0 = false, 1 = true)
-        if (PlayerPrefs.GetInt(LanguageSelectedKey, 0) == 1)
+        // Check if the user has selected a language during this app session
+        if (hasSelectedLanguageThisSession)
         {
             // Skip the language panel and go straight to the main menu
             languagePanel.SetActive(false);
@@ -44,12 +47,24 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            // Show language panel for first-time setup
+            // Show language panel for session setup
             languagePanel.SetActive(true);
             mainMenuPanel.SetActive(false);
 
             // Keep OK button disabled until a language is picked
             if (okButton != null) okButton.interactable = false;
+
+            // Dim all language buttons so user makes an active choice
+            if (languageButtons != null)
+            {
+                for (int i = 0; i < languageButtons.Length; i++)
+                {
+                    if (languageButtons[i] != null)
+                    {
+                        languageButtons[i].alpha = unselectedAlpha;
+                    }
+                }
+            }
         }
     }
 
@@ -63,7 +78,20 @@ public class MainMenuManager : MonoBehaviour
             int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(locale);
             if (index >= 0)
             {
-                UpdateLanguageVisuals(index);
+                // Update btn_Lang icon to match the selected language
+                if (btnLangIcon != null && languageIcons != null && index >= 0 && index < languageIcons.Length)
+                {
+                    if (languageIcons[index] != null)
+                    {
+                        btnLangIcon.texture = languageIcons[index];
+                    }
+                }
+
+                // If language was already chosen in this session, reflect selection visual on buttons
+                if (hasSelectedLanguageThisSession)
+                {
+                    UpdateLanguageVisuals(index);
+                }
             }
         }
     }
@@ -106,9 +134,15 @@ public class MainMenuManager : MonoBehaviour
 
     public void ConfirmAndContinue()
     {
-        // Save state so the language panel doesn't show up again next time
-        PlayerPrefs.SetInt(LanguageSelectedKey, 1);
-        PlayerPrefs.Save(); // Forces the save to disk immediately
+        // Mark that language has been selected for this app session
+        hasSelectedLanguageThisSession = true;
+
+        // Clean up legacy PlayerPrefs key if present so it doesn't cause confusion
+        if (PlayerPrefs.HasKey(LegacyLanguageSelectedKey))
+        {
+            PlayerPrefs.DeleteKey(LegacyLanguageSelectedKey);
+            PlayerPrefs.Save();
+        }
 
         languagePanel.SetActive(false);
         mainMenuPanel.SetActive(true);
@@ -121,6 +155,18 @@ public class MainMenuManager : MonoBehaviour
     {
         mainMenuPanel.SetActive(false);
         languagePanel.SetActive(true);
+
+        if (okButton != null) okButton.interactable = true;
+
+        var locale = LocalizationSettings.SelectedLocale;
+        if (locale != null)
+        {
+            int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(locale);
+            if (index >= 0)
+            {
+                UpdateLanguageVisuals(index);
+            }
+        }
     }
 
     private IEnumerator SetLocaleRoutine(int localeID)
