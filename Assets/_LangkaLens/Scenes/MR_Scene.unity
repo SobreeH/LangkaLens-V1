@@ -12356,7 +12356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1005534771
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16186,6 +16186,7 @@ MonoBehaviour:
   fitToCentralOpening: 1
   displayBaseHeight: 0
   selectionCanvas: {fileID: 1005534770}
+  alignment: {fileID: 1054263245}
 --- !u!4 &1267961243
 Transform:
   m_ObjectHideFlags: 0

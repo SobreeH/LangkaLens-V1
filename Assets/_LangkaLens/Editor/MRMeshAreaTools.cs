@@ -53,6 +53,7 @@ namespace LangkaLens.Editor
             Undo.SetTransformParent(placement.transform, root.transform, "Keep model placement with the aligned site");
             Undo.RecordObject(spawner, "Connect playable interior");
             spawner.playableArea = area;
+            spawner.alignment = alignment;
             spawner.modelPlacement = placement.transform;
             spawner.centerEyeCamera = rig.centerEyeAnchor;
             DisableVirtualLocomotion(rig);

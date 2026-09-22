@@ -34,10 +34,41 @@ namespace LangkaLens.MR
         public float displayBaseHeight;
 
         [Header("UI References")]
-        [Tooltip("The canvas to hide when a model is spawned.")]
+        [Tooltip("The canvas to hide when a model is spawned, and kept disabled while manual alignment is not done.")]
         public GameObject selectionCanvas;
 
+        [Tooltip("Alignment reference. When assigned (or detected via playableArea), selectionCanvas is disabled until alignment is confirmed.")]
+        public MRMeshReferenceAlignment alignment;
+
+        public bool IsAlignmentDone
+        {
+            get
+            {
+                if (playableArea != null && playableArea.developmentMode)
+                    return true;
+                if (alignment != null)
+                    return alignment.IsConfirmed;
+                if (playableArea != null && playableArea.alignment != null)
+                    return playableArea.alignment.IsConfirmed;
+                return true;
+            }
+        }
+
         private GameObject _currentSpawnedModel;
+
+        private void Start()
+        {
+            if (alignment == null && playableArea != null)
+            {
+                alignment = playableArea.alignment;
+            }
+            if (alignment == null)
+            {
+                alignment = FindFirstObjectByType<MRMeshReferenceAlignment>();
+            }
+
+            UpdateSelectionCanvasState();
+        }
 
         private void Update()
         {
@@ -46,10 +77,29 @@ namespace LangkaLens.MR
             {
                 DespawnModel();
             }
+
+            UpdateSelectionCanvasState();
+        }
+
+        public void UpdateSelectionCanvasState()
+        {
+            if (selectionCanvas == null) return;
+
+            bool shouldBeActive = IsAlignmentDone && _currentSpawnedModel == null;
+            if (selectionCanvas.activeSelf != shouldBeActive)
+            {
+                selectionCanvas.SetActive(shouldBeActive);
+            }
         }
 
         public void SpawnModel(int index)
         {
+            if (!IsAlignmentDone)
+            {
+                Debug.Log("Align the entrance reference before selecting a model.");
+                return;
+            }
+
             if (playableArea != null && !playableArea.CanPlay)
             {
                 Debug.Log("Align the entrance reference and enter the playable interior before selecting a model.");
@@ -254,10 +304,7 @@ namespace LangkaLens.MR
                 _currentSpawnedModel = null;
             }
 
-            if (selectionCanvas != null)
-            {
-                selectionCanvas.SetActive(true);
-            }
+            UpdateSelectionCanvasState();
         }
 
 #if UNITY_EDITOR
