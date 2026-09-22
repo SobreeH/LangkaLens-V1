@@ -30,6 +30,22 @@ MonoBehaviour:
     m_Localized: Change Language
     m_Metadata:
       m_Items: []
+  - m_Id: 7536930531749888
+    m_Localized: Enter text...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7536930569498624
+    m_Localized: Send
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7536930569498625
+    m_Localized: Speak
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7536930569498626
+    m_Localized: AI Chat
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

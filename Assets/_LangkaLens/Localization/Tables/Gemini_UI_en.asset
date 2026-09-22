@@ -27,7 +27,27 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21152381415425
+    m_Localized: <sprite="send" index=0>  Send
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9175584341667840
+    m_Localized: Enter text...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9175584534605824
     m_Localized: Send
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9175584534605825
+    m_Localized: Speak
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9175584534605826
+    m_Localized: AI Chat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9176136488235008
+    m_Localized: <sprite="microphone" index=0> Speak
     m_Metadata:
       m_Items: []
   references:

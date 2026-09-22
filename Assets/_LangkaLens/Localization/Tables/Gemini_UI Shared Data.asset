@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: UI_Button_Send
     m_Metadata:
       m_Items: []
+  - m_Id: 9176136488235008
+    m_Key: UI_Button_Speak
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

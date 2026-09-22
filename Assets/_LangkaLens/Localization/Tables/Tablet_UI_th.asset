@@ -30,6 +30,22 @@ MonoBehaviour:
     m_Localized: "\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E20\u0E32\u0E29\u0E32"
     m_Metadata:
       m_Items: []
+  - m_Id: 7536930531749888
+    m_Localized: Enter text...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7536930569498624
+    m_Localized: Send
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7536930569498625
+    m_Localized: Speak
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7536930569498626
+    m_Localized: AI Chat
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
