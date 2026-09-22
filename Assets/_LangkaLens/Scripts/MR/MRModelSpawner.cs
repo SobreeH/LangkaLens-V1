@@ -81,8 +81,25 @@ namespace LangkaLens.MR
 
             if (modelPlacement == null)
             {
-                GameObject mp = GameObject.Find("Model_Placement");
-                if (mp != null) modelPlacement = mp.transform;
+                if (playableArea != null)
+                {
+                    // Try to find Model_Placement inside the playable area first (including inactive ones)
+                    Transform[] allTransforms = playableArea.GetComponentsInChildren<Transform>(true);
+                    foreach (var t in allTransforms)
+                    {
+                        if (t.name == "Model_Placement" || t.name == "Model_placement")
+                        {
+                            modelPlacement = t;
+                            break;
+                        }
+                    }
+                }
+
+                if (modelPlacement == null)
+                {
+                    GameObject mp = GameObject.Find("Model_Placement");
+                    if (mp != null) modelPlacement = mp.transform;
+                }
             }
 
             if (modelPlacement != null)
@@ -112,8 +129,18 @@ namespace LangkaLens.MR
             
             _currentSpawnedModel = Instantiate(modelPrefabs[index], finalSpawnPos, finalRotation);
             _currentSpawnedModel.name = modelPrefabs[index].name + "_Spawned";
-            if (playableArea != null)
-                _currentSpawnedModel.transform.SetParent(playableArea.transform, true);
+            
+            Transform targetParent = playableArea != null ? playableArea.transform : null;
+            if (modelPlacement != null)
+            {
+                targetParent = modelPlacement;
+            }
+
+            if (targetParent != null)
+            {
+                _currentSpawnedModel.transform.SetParent(targetParent, true);
+            }
+            
             _currentSpawnedModel.transform.localScale = globalSpawnScale;
 
             // Dynamically add physics and interaction components for raw GLB models
