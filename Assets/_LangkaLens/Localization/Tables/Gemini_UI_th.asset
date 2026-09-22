@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9176136488235008
-    m_Localized: "<sprite name=microphone> \u0E1E\u0E39\u0E14"
+    m_Localized: "<sprite=\"microphone\" index=0> \u0E1E\u0E39\u0E14"
     m_Metadata:
       m_Items: []
   references:
