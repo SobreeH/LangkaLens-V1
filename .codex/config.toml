@@ -15,3 +15,6 @@ approval_mode = "approve"
 
 [mcp_servers.unity-mcp.tools.Unity_GetConsoleLogs]
 approval_mode = "approve"
+
+[mcp_servers.unity-mcp.tools.Unity_Camera_Capture]
+approval_mode = "approve"
