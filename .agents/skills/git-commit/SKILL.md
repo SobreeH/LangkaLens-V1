@@ -1,14 +1,14 @@
 ---
 name: git-commit
 description: >-
-  Inspect git repository changes, analyze diffs, group changes into logical units, formulate Conventional Commit messages, and stage and commit changes safely. Use whenever the user asks to check git status, create commits, review uncommitted changes, or commit modified files.
+  Inspect git repository changes, analyze diffs, automatically split changes into an appropriate number of clean atomic Conventional Commits (never one big commit), and stage and commit changes safely. Use whenever the user asks to check git status, create commits, review uncommitted changes, or commit modified files.
 ---
 
 # Git Commit Workflow
 
-This skill provides a systematic runbook for inspecting git working tree changes, grouping changes into clean atomic commits, crafting descriptive Conventional Commit messages, and committing them safely.
+This skill provides a systematic runbook for inspecting git working tree changes, **always splitting changes into an appropriate number of clean atomic commits** (never one giant catch-all commit), crafting descriptive Conventional Commit messages, and committing them safely.
 
-Detailed commit conventions and Unity-specific git hygiene rules are documented in [references/commit-rules.md](references/commit-rules.md).
+Detailed commit conventions, Unity-specific git hygiene rules, and atomic splitting guidelines are documented in [references/commit-rules.md](references/commit-rules.md).
 
 ---
 
@@ -33,54 +33,70 @@ Detailed commit conventions and Unity-specific git hygiene rules are documented 
    git log -n 5 --oneline
    ```
 
-### Step 2: Analyze & Group Changes
+### Step 2: Analyze & Group Changes into Atomic Units
 
-1. **Identify logical concerns**:
-   - Are changes related to a single feature or fix? -> Single commit.
-   - Do changes span multiple independent areas (e.g., project configuration vs. scene edits vs. script logic)? -> Split into separate logical commits.
-2. **Unity-specific asset checks**:
+> [!IMPORTANT]
+> **Always Split into Appropriate Atomic Commits by Default**  
+> Never bundle changes spanning distinct concerns, multiple features, bug fixes, localization assets, scene layouts, or project settings into a single "catch-all" or "big" commit. Always partition them into an appropriate number of focused, atomic commits.
+
+1. **Classify changes by logical concern**:
+   - **Localization & String Tables**: `Assets/.../Localization/Tables/`, Addressable asset group mappings, string table collections, and shared data (`feat(localization)` or `feat(<scope>)`).
+   - **Core Feature / Script Logic**: C# scripts (`Assets/.../Scripts/`) introducing or extending feature behavior (`feat(<scope>)`).
+   - **Bug Fixes**: Standalone bug fixes, text/markup adjustments, or syntax corrections (`fix(<scope>)`).
+   - **Scene & Prefab Layouts**: Scene files (`.unity`) and prefabs (`.prefab`) modifying UI hierarchy, camera setup, positioning, or visual components (`refactor(scenes)` or `feat(scenes)`).
+   - **Editor & Tooling**: Editor scripts (`Editor/*.cs`), automated checks, or menu items (`feat(editor)` or `refactor(editor)`).
+   - **Project Configuration**: `ProjectSettings/`, packages, or build configs (`chore(settings)` or `chore(...)`).
+
+2. **Handle Multi-Concern Files / Scenes**:
+   - If a scene (`.unity`) or file contains changes supporting multiple distinct concerns (e.g. script component wiring for a new feature AND separate UI canvas layout adjustments), split the hunks cleanly:
+     - Stage the component reference wiring with the relevant feature commit.
+     - Stage the layout/transform overrides with the scene/prefab layout commit.
+
+3. **Unity-specific asset checks**:
    - Ensure every modified/added/deleted asset in `Assets/` or `Packages/` is staged with its matching `.meta` file.
    - Ensure non-project files (e.g., `Library/`, `Temp/`, user settings) are untracked or ignored.
-3. **Determine grouping strategy**:
-   - If grouping is obvious (e.g. 1-2 tightly coupled files), prepare the commit directly.
-   - If there are 3+ files across distinct domains (e.g. `ProjectSettings/` vs `Scenes/`), propose the split or ask the user for their grouping preference before committing.
 
-### Step 3: Formulate Conventional Commit Message
+4. **Plan commit sequence**:
+   - Order commits logically (e.g. foundation/localization/dependencies -> core feature logic -> bug fixes -> scene/prefab layout).
+
+### Step 3: Formulate Conventional Commit Messages
 
 Construct messages following the Conventional Commits specification:
 `<type>(<optional scope>): <imperative summary>`
 
 - **Types**: `feat`, `fix`, `refactor`, `chore`, `perf`, `docs`, `style`, `test`
-- **Scope**: Lowercase component or feature (e.g., `settings`, `vr-museum`, `scenes`, `spawner`)
-- **Summary**: Imperative mood, lowercase, no ending period, <= 72 characters (e.g., `update project organization ID and OpenXR settings`)
-- **Body**: (Optional) Bulleted details if the change involves multiple non-obvious tweaks.
+- **Scope**: Lowercase component or feature (e.g., `mr`, `gemini-ui`, `scenes`, `vr-tour`, `localization`, `settings`)
+- **Summary**: Imperative mood, lowercase, no ending period, <= 72 characters (e.g., `add localized strings for site alignment and boundary feedback`)
+- **Body**: Bulleted details describing what was changed and why.
 
 Refer to [references/commit-rules.md](references/commit-rules.md) for full reference tables and examples.
 
-### Step 4: Stage & Commit
+### Step 4: Stage & Commit Iteratively
 
-1. Stage only the files intended for this commit:
+For each logical group in your planned sequence:
+
+1. Stage only the files (and `.meta`s or hunks) intended for this commit:
    ```bash
    git add <file1> <file2> ...
    ```
-2. Commit with the formulated message:
+2. Verify staged diff matches the intended atomic scope:
    ```bash
-   git commit -m "<message>"
+   git diff --cached
    ```
-   *For multi-line messages with a body, format cleanly or pass multiple `-m` flags:*
+3. Commit with the formulated message and body details:
    ```bash
    git commit -m "<type>(<scope>): <summary>" -m "- <detail 1>" -m "- <detail 2>"
    ```
-3. Repeat for remaining groups if multiple commits were planned.
+4. Repeat until all changes from the working tree are cleanly committed.
 
 ### Step 5: Verify Status
 
-1. Confirm working tree status:
+1. Confirm working tree status is completely clean:
    ```bash
    git status
    ```
-2. Verify recent commits in the log:
+2. Verify all newly created commits in the log:
    ```bash
-   git log -n 3 --oneline
+   git log -n <number_of_commits> --oneline
    ```
-3. Report the newly created commit hashes and messages clearly to the user.
+3. Report the full breakdown of newly created commits (hashes, messages, and files) clearly to the user.

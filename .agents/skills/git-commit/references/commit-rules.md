@@ -68,3 +68,28 @@ Never commit internal Unity cache and temporary folders:
   - Which GameObjects or Components were touched (e.g. `Transform`, `Canvas`, `MonoBehaviour`).
   - Whether changes were deliberate (e.g. repositioning a canvas, reordering elements) or accidental editor touch-ups.
   - Summarize the specific scene components in the commit message scope or body.
+
+---
+
+## 3. Atomic Commits & Splitting Strategy
+
+### The Single-Concern Principle
+Every commit should represent one focused, self-contained unit of work:
+- **Never bundle everything into one big commit** when changes cover multiple domains, independent features, bug fixes, localization assets, scene layouts, or project settings.
+- **Always split changes into an appropriate number of atomic commits by default.**
+
+### Standard Classification Domains
+
+| Domain | Types & Scope | Typical File Patterns | Example Message |
+| :--- | :--- | :--- | :--- |
+| **Localization & Data** | `feat(localization)`, `feat(<scope>)` | `Localization/Tables/`, `AddressableAssetsData/` | `feat(mr): add localized strings for site alignment and boundary feedback` |
+| **Feature Logic / Scripts** | `feat(<scope>)`, `refactor(<scope>)` | `Scripts/**/*.cs` | `feat(mr): disable model selection canvas until site alignment is confirmed` |
+| **Bug Fixes** | `fix(<scope>)` | Any file with an isolated fix | `fix(gemini-ui): fix microphone sprite tag syntax in Thai string table` |
+| **Scene & Prefab Layout** | `refactor(scenes)`, `feat(scenes)` | `Scenes/*.unity`, `Prefabs/**/*.prefab` | `refactor(scenes): adjust Gemini canvas layout and enable in VR tour scene` |
+| **Editor & Tooling** | `feat(editor)`, `refactor(editor)` | `Editor/**/*.cs` | `feat(editor): add alignment validation tool for MR site boundary` |
+| **Settings & Chores** | `chore(settings)`, `chore(...)` | `ProjectSettings/*`, `.gitignore`, configs | `chore(settings): update project organization ID and OpenXR settings` |
+
+### Multi-Concern Files (e.g. Scenes)
+When a single scene file contains changes belonging to different logical concerns (such as hooking up component references for a newly added feature script, alongside general UI canvas repositioning):
+- Split the changes across commits cleanly (via selective staging or patches).
+- Commit the component wiring with the feature script, and commit the UI repositioning with the scene layout commit.
