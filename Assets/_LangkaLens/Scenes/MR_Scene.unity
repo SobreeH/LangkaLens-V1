@@ -12972,6 +12972,7 @@ MonoBehaviour:
   stopDistance: 0.25
   warningDistance: 0.8
   recoveryMargin: 0.1
+  developmentMode: 0
 --- !u!114 &1054263245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16180,7 +16181,7 @@ Transform:
   m_GameObject: {fileID: 1268848200}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.95, y: -0, z: 10.46}
+  m_LocalPosition: {x: 8.51, y: -0, z: 10.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

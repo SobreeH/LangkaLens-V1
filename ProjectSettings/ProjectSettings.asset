@@ -149,6 +149,8 @@ PlayerSettings:
   - {fileID: 11400000, guid: e62faaac64383634fa0477dda04319a8, type: 2}
   - {fileID: 11400000, guid: f29b332bc1358514b89a8191ae0f5d7f, type: 2}
   - {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  - {fileID: 2837660275724031522, guid: d19c4b9f114a9d446a5c996ac318a81a, type: 2}
+  - {fileID: -723448146863180201, guid: 1ca0595cb84e5154b8e2d8f294b21607, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
