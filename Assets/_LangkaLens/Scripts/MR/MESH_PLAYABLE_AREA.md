@@ -1,37 +1,59 @@
-# Mesh interior and entrance alignment
+# Central model display and mesh walking area
 
-`MR_Scene` uses the enclosed central space between the eight BJ3 scan meshes as its playable footprint. `Mesh_ref`, the sign/table box in `BJ3F`, is the manual alignment reference. No physical features or scan meshes were moved during setup. `Model_Placement` now moves with `PlayableBoundary` and retains its authored position.
+MR_Scene lets visitors select a large reconstruction in the central opening and walk around it in mixed reality to appreciate its size. The walking footprint is the union of the eight floor planes exported with the BJ3 mesh sections. Their FLOOR > Parent transforms provide the floor dimensions and orientation. Overlap seams are removed from the boundary; the empty centre is not walking space. This uses the scan's floor-plane footprint, not collision against every scanned triangle or object.
 
-## In the headset
+Each selected model is uniformly scaled to fit the 14 x 16.5 m central reference rectangle, centered by its rendered bounds, and grounded at site-local Y = 0. Scaling preserves proportions. The reference rectangle is a user-selected size estimate, **not verified original dimensions**. All four models are independently fitted, so their relative historical sizes are not established by this mode.
 
-1. Start MR at the entrance with the right controller tracked.
-2. Hold **right grip**. A cyan wire outline matching `Mesh_ref` appears in front of the controller. Move your hand to position it over the actual sign/table represented by that box.
-3. While holding grip, use the **right thumbstick horizontally** to rotate the site and **vertically** to change placement reach. Match the box's position, orientation and height. The **green arrow must point into the real site's interior**; this prevents a visually similar 180-degree alignment.
-4. Release grip and press **A**. The app creates a session spatial anchor at the reference. Content remains paused until this anchor is tracked.
-5. Enter the central interior. Approaching its edge shows a warning; leaving it hides the selected model and blocks new model selections. Returning inside restores the selected model. Passthrough/tracking failures also pause content.
-6. Hold **X for two seconds** to restart alignment. Confirm the entrance alignment on each app launch; this version does not persist or automatically recognize the sign.
+## Display reference and legacy rectangular footprint
 
-`Mesh_ref` is an imported box approximately 1.09 m wide, 0.31 m deep, and 0.73 m high. Its pivot is at the box centre, approximately 0.33 m above the authored ground. Align the box to the physical feature it represents, including its height—not merely to an arbitrary point on the sign face. If the proxy box does not fit the physical sign/table, correct that mesh or its transform in Unity before relying on the alignment. The table/sign must be in its surveyed location.
+Coordinates are in PlayableBoundary local X/Z metres.
 
-## Editing and verification
+| Boundary | X minimum / maximum | Z minimum / maximum | Size |
+| --- | --- | --- | --- |
+| Outer hallway limit | -8.5 / 12.5 | 0.5 / 24.5 | 21 x 24 m |
+| Central exclusion | -5 / 9 | 4.5 / 21 | 14 x 16.5 m |
 
-Select **PlayableBoundary**. `MR Mesh Playable Area` shows the generated outline and its area. Use **Rebuild interior from scan meshes** after changing scan geometry or the relative positions of BJ3 sections. The system detects changed section transforms at startup and refuses stale outlines.
+The legacy rectangular mode gives 273 m² before stop margins. The active **Mesh Floors** mode follows the imported floor planes instead (approximately 279.2 m² before margins). The outer rectangle does not control walking in Mesh Floors mode. The central rectangle controls model placement and size only. Scan registration is uneven, particularly at the front-left corner.
 
-The outline comes from the real triangles in `GLOBAL_MESH` objects intersected at local height **1.2 m**. A visibility polygon from the interior seed follows the inward-facing surfaces. It is not a bounding rectangle or a convex hull. The current seed produces an enclosed central region of about **244 m²**. Helper meshes, furniture boxes, and wireframe duplicates are excluded from the bake. Open cross-sections produce an error instead of an invented enclosing shape.
+The [SAC site record](https://archaeology.sac.or.th/archaeology/84) describes a 13.5 m square monument and an 8.25 m central building. A [Fine Arts Department publication](https://www.finearts.go.th/storage/contents/file/iuem8KKNkl2V2LdU9GbtFCsTLiVLDeSIRLKLdgSG.pdf) reports a 13.15 m square plan. Neither establishes surrounding visitor-hallway dimensions. Research date: 2026-09-22. The scene dimensions are an editable first pass from the scans and require measurement on site.
 
-The method assumes the central region is visible from its seed (star-shaped); it does not expand into hidden side rooms. It tests the horizontal head position, not terrain, feet, or dynamic obstacles. Other surfaces at different heights, ruins inside the space, and people are not automatically treated as exclusions. The warning begins at **0.8 m** from the outline; content pauses within **0.25 m**, with **0.1 m** of recovery hysteresis. These are adjustable application distances, not certified safety margins.
+## Editing
 
-The imported scan renderers and colliders are disabled only at runtime to preserve passthrough. The area test does not require a trigger collider or a Rigidbody on the camera. Virtual controller/hand locomotion is disabled in this scene. The tracked headset is never clamped or teleported by this system.
+Select **PlayableBoundary > MR Mesh Playable Area**. Footprint Mode is **Mesh Floors**. The eight **Floor Planes** references point at the imported FLOOR > Parent transforms. After moving/scaling scan sections in edit mode, press **Refresh mesh floor footprint**. Cyan marks walking boundaries; orange marks the model's size-reference rectangle. Unity Rect Y means local Z; Width/Height are X/Z lengths.
 
-Run **Tools > LangkaLens > MR > Run playable interior checks** for geometry and scene-wiring checks. On a Quest, verify manual placement, correct heading, entry/exit, edge warnings, model hiding/restoration, loss/recovery of tracking, recentering and restarting. Walk to the far side to measure actual registration drift before using this large area with visitors. One entrance anchor cannot guarantee precise registration throughout the entire site.
+On **MRManager > MR Model Spawner**, **Fit To Central Opening** enables per-model proportional fitting. **Display Base Height** sets the model's base in site-local metres. With fitting disabled, the previous global-scale behaviour remains available. Change **Model Opening Reference (X/Z)** on the area to adjust the display footprint without redefining the walking mesh.
 
-The application outline is separate from Quest's system boundary. This setup does not suppress that boundary or enable app-wide boundaryless mode. If the configured system boundary prevents using the full site, contextual boundaryless MR is a separate deployment configuration to evaluate with the actual route and passthrough experience.
+Legacy **Scan Interior** mode retains the original approximately 244 m² bake for comparison. Only that mode requires fresh scan transforms. That central polygon is not the active walking footprint.
+
+Model_Placement is under PlayableBoundary at the opening centre, local (2, 0, 12.75). Visitors stand on the surrounding floor footprint while the virtual reconstruction occupies the opening. Scan meshes and Mesh_ref were not repositioned. Model bounds, rather than imported pivots, determine the final placement. Selection order is BJ2, BJ8, BJ3, BW9 to match the button labels.
+
+## Headset operation
+
+1. Hold **right grip** to place the cyan Mesh_ref sign/table outline over the physical feature.
+2. Use **right thumbstick horizontally** to rotate and **vertically** to adjust reach. Match position, orientation and height. Check the green arrow points toward the real front hallway.
+3. Release grip and press **A**. Playback waits for the session spatial anchor to be tracked.
+4. Select a model. It appears in the central opening; walk on the surrounding mesh floor footprint to view it. Approaching its boundary warns. Leaving the floor footprint (including entering the central hole) or reaching the stop margin hides the model and blocks selection. Returning with sufficient clearance restores the model. Press **B or Y** to remove it and reopen selection.
+5. Hold **X for two seconds** to realign. Alignment is required each launch; anchors are not persisted.
+
+Mesh_ref is approximately 1.09 m wide, 0.31 m deep and 0.73 m high, with its pivot about 0.33 m above authored ground. Match its real dimensions, height and surveyed position.
+
+Warning distance: **0.8 m**. Stop distance: **0.25 m**. Recovery margin: **0.1 m**. Headset/anchor tracking and passthrough availability gate playback. Controller tracking is required for alignment; its loss after confirmation does not itself pause playback. Pausing hides the model and blocks spawning, not the whole application.
+
+**Development Mode** bypasses these gates; it is off in the saved scene.
+
+## Verification
+
+Run **Tools > LangkaLens > MR > Run playable interior checks** and **Run central display checks**. These cover the installed mesh floor centres, central hole, union overlaps/duplicates/touching edges, clearance, site transforms, all four models' fit/centering/grounding/proportions, legacy rectangle behaviour, tracking gates and model hiding/restoration.
+
+Scan renderers/colliders are disabled at runtime. The boundaries test horizontal headset position and are not physical barriers. They do not detect people, floor levels or additional obstacles. Virtual locomotion is disabled; the headset is never clamped or teleported. Quest boundary suppression remains off.
+
+Verify imported floor registration, obstacles and margins on site, and walk all floor-section joins. Test tracking, passthrough, recentering, restart and drift across the full route. One entrance anchor does not guarantee registration accuracy everywhere. Measured model dimensions are needed before describing the fitted reconstructions as historically accurate life size.
 
 ## Components
 
-- `MRMeshReferenceAlignment`: manual entrance placement and a session spatial anchor; moves `PlayableBoundary`, not the camera rig.
-- `MRMeshPlayableArea`: baked polygon, tracking/passthrough checks, clearance and `CanPlay`.
-- `MRMeshAreaFeedback`: sign outline, orientation arrow, setup instructions and edge warnings.
-- `MRModelSpawner.playableArea`: blocks spawning and hides/restores the current site model when play is paused. With no area assigned, existing free-placement behaviour remains available.
-
-Spatial anchor lifecycle follows the installed Meta SDK and [Meta's anchor documentation](https://developers.meta.com/horizon/documentation/unity/unity-spatial-anchors-persist-content/).
+- MRMeshReferenceAlignment: entrance placement and session anchor; moves the complete site.
+- MRFloorFootprint: union of imported floor planes and exposed boundary segments.
+- MRMeshPlayableArea: mesh floor footprint, legacy modes, clearance, tracking gates and CanPlay.
+- MRMeshAreaFeedback: reference outline, heading arrow, walking boundary segments and instructions.
+- MRModelSpawner: model fitting, grounding, selection gate and visibility; models follow the aligned site.
+- MRMeshAreaTools / MRDisplayChecks: Inspector/Scene tools and automated checks.

@@ -97,6 +97,7 @@ namespace LangkaLens.Editor
         public static void Bake(MRMeshPlayableArea area)
         {
             if (EditorApplication.isPlaying) throw new InvalidOperationException("Bake outside Play mode.");
+            if (area.UsesHallways || area.UsesMeshFloors) throw new InvalidOperationException("Only legacy ScanInterior mode uses the wall cross-section bake.");
             if (area.boundaryMeshes == null || area.boundaryMeshes.Length == 0) throw new InvalidOperationException("Assign the scan meshes first.");
             var segments = new List<Segment>();
             foreach (var filter in area.boundaryMeshes)
@@ -202,16 +203,83 @@ namespace LangkaLens.Editor
             finally { EditorSceneManager.ClosePreviewScene(preview); }
             var installed = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<MRMeshPlayableArea>(true)).Single();
             Check(installed.ValidateConfiguration(out string error), "Scene wiring: " + error);
-            Check(MRMeshPlayableArea.ContainsPoint(installed.outline, installed.interiorSeed, out clearance) && clearance > 1, "Actual central area is playable");
+            if (installed.UsesMeshFloors)
+            {
+                Vector2 centre = installed.ruinExclusion.center;
+                Check(!installed.ContainsWorldPoint(installed.transform.TransformPoint(new Vector3(centre.x, 1.7f, centre.y)), out _), "Central model opening is not walking space");
+                foreach (var floor in installed.floorPlanes)
+                    Check(installed.ContainsWorldPoint(floor.position, out clearance) && clearance > installed.stopDistance + installed.recoveryMargin, "Imported floor centre is traversable");
+            }
+            else if (installed.UsesHallways)
+            {
+                Check(!installed.ContainsWorldPoint(installed.transform.TransformPoint(new Vector3(installed.ruinExclusion.center.x, 0, installed.ruinExclusion.center.y)), out _), "Actual central ruin is excluded");
+                foreach (var p in HallwaySamples(installed.hallwayOuter, installed.ruinExclusion))
+                    Check(installed.ContainsWorldPoint(installed.transform.TransformPoint(new Vector3(p.x, 1.7f, p.y)), out clearance) && clearance > installed.stopDistance + installed.recoveryMargin, "Each installed hallway and corner is traversable");
+            }
+            else
+                Check(MRMeshPlayableArea.ContainsPoint(installed.outline, installed.interiorSeed, out clearance) && clearance > 1, "Actual central area is playable");
             var reference = installed.alignment.meshReference;
             Check(reference != null && reference.name == "Mesh_ref", "Exact entrance reference connected");
-            Check(!installed.ContainsWorldPoint(reference.transform.position, out _), "Entrance reference does not accidentally expand the interior");
+            if (!installed.UsesHallways && !installed.UsesMeshFloors)
+                Check(!installed.ContainsWorldPoint(reference.transform.position, out _), "Entrance reference does not accidentally expand the interior");
             var spawner = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<MRModelSpawner>(true)).Single();
             Check(spawner.playableArea == installed && spawner.modelPlacement.IsChildOf(installed.transform), "Spawned content shares site alignment");
             var rig = installed.head.GetComponentInParent<OVRCameraRig>();
             Check(!rig.GetComponentsInChildren<Transform>(true).Any(x => (x.name == "LocomotionControllerInteractorGroup" || x.name == "MicroGesturesLocomotionHandInteractorGroup" || x.name == "LocomotionOutput") && x.gameObject.activeInHierarchy), "Virtual locomotion disabled in MR");
             passed += CheckContentGate();
-            Debug.Log($"PASS: {passed} playable interior checks. {installed.outline.Length} vertices; {installed.squareMetres:F1} m². Headset alignment/input/anchor behaviour still needs device testing.");
+            passed += CheckHallways();
+            Debug.Log($"PASS: {passed} playable interior checks. {installed.footprintMode}; {installed.PlayableSquareMetres:F1} m². Headset alignment/input/anchor behaviour still needs device testing.");
+        }
+
+        private static Vector2[] HallwaySamples(Rect outer, Rect inner)
+        {
+            float left = (outer.xMin + inner.xMin) / 2, right = (outer.xMax + inner.xMax) / 2;
+            float front = (outer.yMin + inner.yMin) / 2, back = (outer.yMax + inner.yMax) / 2;
+            return new[] { new Vector2(left, inner.center.y), new Vector2(right, inner.center.y),
+                new Vector2(inner.center.x, front), new Vector2(inner.center.x, back),
+                new Vector2(left, front), new Vector2(left, back), new Vector2(right, front), new Vector2(right, back) };
+        }
+
+        private static int CheckHallways()
+        {
+            int passed = 0;
+            void Check(bool condition, string name) { if (!condition) throw new Exception("Failed: " + name); passed++; }
+            var outer = new Rect(-10, -12, 20, 24);
+            var inner = new Rect(-7, -9, 14, 18);
+            foreach (var p in HallwaySamples(outer, inner))
+                Check(MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, p, out float d) && d >= 1.5f, "Hallways and connected corners are inside");
+            Check(!MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, Vector2.zero, out _), "Ruin centre excluded");
+            Check(!MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, new Vector2(11, 0), out _), "Beyond outer edge excluded");
+            Check(!MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, new Vector2(7, 0), out float clearance) && clearance == 0, "Ruin edge excluded with zero clearance");
+            Check(MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, new Vector2(7.2f, 0), out clearance) && Mathf.Abs(clearance - 0.2f) < 0.001f, "Inner-edge stop clearance");
+            Check(MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, new Vector2(9.8f, 0), out clearance) && Mathf.Abs(clearance - 0.2f) < 0.001f, "Outer-edge stop clearance");
+            Check(MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, new Vector2(7.3f, 9.4f), out clearance) && Mathf.Abs(clearance - 0.5f) < 0.001f, "Diagonal distance to ruin corner");
+            Check(MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, new Vector2(10, 0), out clearance) && clearance == 0, "Outer edge has zero clearance");
+            Check(!MRMeshPlayableArea.ContainsHallwayPoint(outer, inner, new Vector2(float.NaN, 0), out _), "Invalid head position rejected");
+            Check(!MRMeshPlayableArea.ValidHallways(outer, new Rect(-11, -9, 14, 18)), "Protruding ruin rejected");
+            Check(!MRMeshPlayableArea.ValidHallways(outer, new Rect(-10, -9, 14, 18)), "Closed hallway rejected");
+            Check(!MRMeshPlayableArea.ValidHallways(outer, new Rect(0, 0, -1, 2)), "Negative rectangle size rejected");
+            var preview = EditorSceneManager.NewPreviewScene();
+            try
+            {
+                var go = new GameObject("Hallway coordinate checks");
+                SceneManager.MoveGameObjectToScene(go, preview);
+                var area = go.AddComponent<MRMeshPlayableArea>();
+                area.footprintMode = MRMeshPlayableArea.FootprintMode.RectangularHallways;
+                area.hallwayOuter = outer; area.ruinExclusion = inner;
+                go.transform.SetPositionAndRotation(new Vector3(35, 2, -19), Quaternion.Euler(0, 73, 0));
+                Check(area.ContainsWorldPoint(go.transform.TransformPoint(new Vector3(8.5f, 1.7f, 0)), out clearance) && Mathf.Abs(clearance - 1.5f) < 0.001f, "Aligned hallway preserves clearance");
+                Check(!area.ContainsWorldPoint(go.transform.TransformPoint(Vector3.zero), out _), "Aligned ruin remains excluded");
+                Check(Mathf.Abs(area.PlayableSquareMetres - 228) < 0.001f, "Area subtracts central exclusion");
+                Vector3 World(float x) => go.transform.TransformPoint(new Vector3(x, 1.7f, 0));
+                Check(area.EvaluatePositionState(World(7.2f), true) == MRMeshPlayableArea.AreaState.Outside, "Inner edge pauses playback");
+                Check(area.EvaluatePositionState(World(7.3f), false) == MRMeshPlayableArea.AreaState.Outside, "Recovery hysteresis holds pause");
+                Check(area.EvaluatePositionState(World(7.4f), false) == MRMeshPlayableArea.AreaState.NearBoundary, "Recovery restores with warning");
+                Check(area.EvaluatePositionState(World(8.5f), true) == MRMeshPlayableArea.AreaState.Inside, "Hallway centre plays without warning");
+                Check(area.EvaluatePositionState(World(9.8f), true) == MRMeshPlayableArea.AreaState.Outside, "Outer edge pauses playback");
+            }
+            finally { EditorSceneManager.ClosePreviewScene(preview); }
+            return passed;
         }
 
         // Exercise the spawner without starting XR or entering Play mode in the user's scene.
@@ -265,24 +333,124 @@ namespace LangkaLens.Editor
     {
         public override void OnInspectorGUI()
         {
-            DrawDefaultInspector();
             var area = (MRMeshPlayableArea)target;
-            EditorGUILayout.HelpBox($"Interior: {area.squareMetres:F1} m², {area.outline.Length} vertices. Derived from actual mesh triangles at the slice height. Rebuild after moving or editing scan sections.", MessageType.Info);
+            serializedObject.Update();
             using (new EditorGUI.DisabledScope(Application.isPlaying))
-                if (GUILayout.Button("Rebuild interior from scan meshes")) MRMeshAreaTools.Bake(area);
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("footprintMode"));
+                bool hallways = serializedObject.FindProperty("footprintMode").enumValueIndex == (int)MRMeshPlayableArea.FootprintMode.RectangularHallways;
+                bool meshFloors = serializedObject.FindProperty("footprintMode").enumValueIndex == (int)MRMeshPlayableArea.FootprintMode.MeshFloors;
+                if (meshFloors)
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("floorPlanes"), true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ruinExclusion"), new GUIContent("Model opening reference (X/Z)"));
+                    EditorGUILayout.HelpBox("Walking space follows the union of the imported floor planes. The rectangle is only a reference for sizing and centering the displayed model.", MessageType.Info);
+                }
+                else if (hallways)
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("hallwayOuter"), new GUIContent("Outer hallway bounds (X/Z)"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ruinExclusion"), new GUIContent("Central exclusion (X/Z)"));
+                    EditorGUILayout.HelpBox("Rect Y means local Z. Cyan: outer limit. Orange: excluded ruin/enclosure. Drag the edge handles in Scene view. Dimensions are provisional until measured on site.", MessageType.Info);
+                }
+                else
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("boundaryMeshes"), true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("sliceHeight"));
+                }
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("interiorSeed"), new GUIContent("Entrance arrow target (X/Z)"));
+            }
+            DrawPropertiesExcluding(serializedObject, "m_Script", "footprintMode", "floorPlanes", "hallwayOuter", "ruinExclusion", "boundaryMeshes", "sliceHeight", "interiorSeed");
+            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.HelpBox($"Playable footprint: {area.PlayableSquareMetres:F1} m². " + (area.UsesMeshFloors ? "Imported mesh floor planes, with overlap seams removed." : area.UsesHallways ? "Outer rectangle minus central exclusion; scan partitions are ignored." : "Legacy scan-derived interior."), MessageType.Info);
+            if (!area.ValidateConfiguration(out string error)) EditorGUILayout.HelpBox(error, MessageType.Error);
+            if (area.developmentMode) EditorGUILayout.HelpBox("Development mode bypasses alignment, tracking and walking-area restrictions.", MessageType.Warning);
+            using (new EditorGUI.DisabledScope(Application.isPlaying))
+                if (area.UsesMeshFloors)
+                {
+                    if (GUILayout.Button("Refresh mesh floor footprint")) area.RebuildFloorFootprint();
+                }
+                else if (!area.UsesHallways && GUILayout.Button("Rebuild interior from scan meshes")) MRMeshAreaTools.Bake(area);
             if (Application.isPlaying) EditorGUILayout.LabelField("State", area.State.ToString());
         }
 
         private void OnSceneGUI()
         {
             var area = (MRMeshPlayableArea)target;
-            if (area.outline == null || area.outline.Length < 3) return;
-            var points = new Vector3[area.outline.Length + 1];
-            for (int i = 0; i < area.outline.Length; i++) points[i] = area.transform.TransformPoint(new Vector3(area.outline[i].x, 0.05f, area.outline[i].y));
+            if (area.UsesMeshFloors)
+            {
+                Vector2[] edges = area.FloorFootprint?.Edges ?? Array.Empty<Vector2>();
+                Handles.color = Color.cyan;
+                for (int i = 0; i < edges.Length; i += 2)
+                    Handles.DrawAAPolyLine(4, area.transform.TransformPoint(new Vector3(edges[i].x, 0.05f, edges[i].y)),
+                        area.transform.TransformPoint(new Vector3(edges[i + 1].x, 0.05f, edges[i + 1].y)));
+                DrawLoop(area, MRMeshPlayableArea.RectangleCorners(area.ruinExclusion), new Color(1, 0.6f, 0.1f));
+                Vector2 centre = area.ruinExclusion.center;
+                Handles.Label(area.transform.TransformPoint(new Vector3(centre.x, 0.1f, centre.y)), "MODEL DISPLAY\nFootprint-based scale reference");
+                return;
+            }
+            DrawLoop(area, area.OuterOutline, Color.cyan);
+            DrawLoop(area, area.ExclusionOutline, new Color(1, 0.4f, 0.1f));
+            if (area.UsesHallways)
+            {
+                Rect o = area.hallwayOuter, r = area.ruinExclusion;
+                if (MRMeshPlayableArea.ValidHallways(o, r))
+                {
+                    DrawHallwayFill(area, Rect.MinMaxRect(o.xMin, o.yMin, o.xMax, r.yMin));
+                    DrawHallwayFill(area, Rect.MinMaxRect(o.xMin, r.yMax, o.xMax, o.yMax));
+                    DrawHallwayFill(area, Rect.MinMaxRect(o.xMin, r.yMin, r.xMin, r.yMax));
+                    DrawHallwayFill(area, Rect.MinMaxRect(r.xMax, r.yMin, o.xMax, r.yMax));
+                }
+                if (!Application.isPlaying)
+                {
+                    EditRectangle(area, false);
+                    EditRectangle(area, true);
+                }
+                Vector2 c = area.ruinExclusion.center;
+                Handles.Label(area.transform.TransformPoint(new Vector3(c.x, 0.1f, c.y)), "RUIN / ENCLOSURE\nExcluded from walking area");
+            }
+            Handles.Label(area.transform.TransformPoint(new Vector3(area.interiorSeed.x, 0.1f, area.interiorSeed.y)), $"{area.footprintMode}\n{area.PlayableSquareMetres:F1} m² (provisional)");
+        }
+
+        private static void DrawLoop(MRMeshPlayableArea area, Vector2[] polygon, Color color)
+        {
+            if (polygon == null || polygon.Length < 3) return;
+            var points = new Vector3[polygon.Length + 1];
+            for (int i = 0; i < polygon.Length; i++) points[i] = area.transform.TransformPoint(new Vector3(polygon[i].x, 0.05f, polygon[i].y));
             points[points.Length - 1] = points[0];
-            Handles.color = Color.cyan;
+            Handles.color = color;
             Handles.DrawAAPolyLine(4, points);
-            Handles.Label(area.transform.TransformPoint(new Vector3(area.interiorSeed.x, 0.1f, area.interiorSeed.y)), $"Playable mesh interior\n{area.squareMetres:F1} m²");
+        }
+
+        private static void DrawHallwayFill(MRMeshPlayableArea area, Rect rect)
+        {
+            Vector3[] points = MRMeshPlayableArea.RectangleCorners(rect)
+                .Select(p => area.transform.TransformPoint(new Vector3(p.x, 0.03f, p.y))).ToArray();
+            Handles.DrawSolidRectangleWithOutline(points, new Color(0.1f, 0.9f, 0.7f, 0.12f), Color.clear);
+        }
+
+        private static void EditRectangle(MRMeshPlayableArea area, bool exclusion)
+        {
+            Rect rect = exclusion ? area.ruinExclusion : area.hallwayOuter;
+            Handles.color = exclusion ? new Color(1, 0.4f, 0.1f) : Color.cyan;
+            for (int edge = 0; edge < 4; edge++)
+            {
+                bool xAxis = edge < 2;
+                Vector2 local = xAxis ? new Vector2(edge == 0 ? rect.xMin : rect.xMax, rect.center.y) : new Vector2(rect.center.x, edge == 2 ? rect.yMin : rect.yMax);
+                Vector3 world = area.transform.TransformPoint(new Vector3(local.x, 0.08f, local.y));
+                Vector3 direction = area.transform.TransformDirection(xAxis ? Vector3.right : Vector3.forward);
+                EditorGUI.BeginChangeCheck();
+                Vector3 moved = Handles.Slider(world, direction, HandleUtility.GetHandleSize(world) * 0.09f, Handles.CubeHandleCap, 0.1f);
+                if (!EditorGUI.EndChangeCheck()) continue;
+                Vector3 next = area.transform.InverseTransformPoint(moved);
+                Undo.RecordObject(area, "Resize rectangular hallway");
+                if (edge == 0) rect.xMin = Mathf.Min(next.x, rect.xMax - 0.1f);
+                if (edge == 1) rect.xMax = Mathf.Max(next.x, rect.xMin + 0.1f);
+                if (edge == 2) rect.yMin = Mathf.Min(next.z, rect.yMax - 0.1f);
+                if (edge == 3) rect.yMax = Mathf.Max(next.z, rect.yMin + 0.1f);
+                if (exclusion) area.ruinExclusion = rect; else area.hallwayOuter = rect;
+                EditorUtility.SetDirty(area);
+                EditorSceneManager.MarkSceneDirty(area.gameObject.scene);
+            }
         }
     }
 }

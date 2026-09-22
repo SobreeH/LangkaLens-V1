@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Oculus.Interaction;
 
 namespace LangkaLens.MR
 {
@@ -29,6 +27,12 @@ namespace LangkaLens.MR
         [Tooltip("The global scale applied to all spawned models.")]
         public Vector3 globalSpawnScale = Vector3.one;
 
+        [Header("Central model display")]
+        [Tooltip("Fit each model proportionally into the site's central rectangle. This is a footprint-based estimate, not a measured historical scale.")]
+        public bool fitToCentralOpening;
+        [Tooltip("Height of the model base in site-local metres.")]
+        public float displayBaseHeight;
+
         [Header("UI References")]
         [Tooltip("The canvas to hide when a model is spawned.")]
         public GameObject selectionCanvas;
@@ -52,7 +56,7 @@ namespace LangkaLens.MR
                 return;
             }
 
-            if (index < 0 || index >= modelPrefabs.Length)
+            if (modelPrefabs == null || index < 0 || index >= modelPrefabs.Length)
             {
                 Debug.LogWarning("Invalid model index.");
                 return;
@@ -154,19 +158,16 @@ namespace LangkaLens.MR
             
             _currentSpawnedModel.transform.localScale = globalSpawnScale;
 
+            if (fitToCentralOpening && playableArea != null)
+                FitModelToOpening(_currentSpawnedModel.transform, playableArea, displayBaseHeight);
+
             // Dynamically add physics and interaction components for raw GLB models
             if (_currentSpawnedModel.GetComponent<Collider>() == null)
             {
                 BoxCollider bc = _currentSpawnedModel.AddComponent<BoxCollider>();
-                Renderer[] renderers = _currentSpawnedModel.GetComponentsInChildren<Renderer>();
-                if (renderers.Length > 0)
+                if (TryGetBounds(_currentSpawnedModel.transform, _currentSpawnedModel.transform, out Bounds bounds))
                 {
-                    Bounds bounds = renderers[0].bounds;
-                    for (int j = 1; j < renderers.Length; j++)
-                    {
-                        bounds.Encapsulate(renderers[j].bounds);
-                    }
-                    bc.center = _currentSpawnedModel.transform.InverseTransformPoint(bounds.center);
+                    bc.center = bounds.center;
                     bc.size = bounds.size;
                 }
             }
@@ -189,6 +190,43 @@ namespace LangkaLens.MR
                 foreach (var spatialObject in _currentSpawnedModel.GetComponentsInChildren<MRSpatialObject>(true))
                     spatialObject.enabled = false;
             }
+        }
+
+        public static bool FitModelToOpening(Transform model, MRMeshPlayableArea area, float baseHeight)
+        {
+            Rect opening = area.ruinExclusion;
+            if (opening.width <= 0 || opening.height <= 0 ||
+                !TryGetBounds(model, area.transform, out Bounds bounds) || bounds.size.x < 0.0001f || bounds.size.z < 0.0001f)
+                return false;
+
+            // Preserve the model's proportions and orientation; fit its horizontal footprint.
+            float factor = Mathf.Min(opening.width / bounds.size.x, opening.height / bounds.size.z);
+            model.localScale *= factor;
+            TryGetBounds(model, area.transform, out bounds);
+            Vector3 offset = new Vector3(opening.center.x - bounds.center.x, baseHeight - bounds.min.y,
+                opening.center.y - bounds.center.z);
+            model.position += area.transform.TransformVector(offset);
+            return true;
+        }
+
+        public static bool TryGetBounds(Transform model, Transform space, out Bounds bounds)
+        {
+            bounds = new Bounds();
+            bool found = false;
+            foreach (Renderer renderer in model.GetComponentsInChildren<Renderer>(true))
+            {
+                Bounds local = renderer.localBounds;
+                Matrix4x4 matrix = space.worldToLocalMatrix * renderer.transform.localToWorldMatrix;
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector3 corner = local.center + Vector3.Scale(local.extents,
+                        new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
+                    Vector3 point = matrix.MultiplyPoint3x4(corner);
+                    if (!found) { bounds = new Bounds(point, Vector3.zero); found = true; }
+                    else bounds.Encapsulate(point);
+                }
+            }
+            return found;
         }
 
         private void LateUpdate()
