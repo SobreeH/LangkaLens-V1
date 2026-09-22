@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MR_UI_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: bd0c356624f2bc54093b48a1abd001f8, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 659206144
+    m_Localized: Align the entrance sign/table
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760576
+    m_Localized: Align the outline with the entrance sign/table.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760577
+    m_Localized: Hold RIGHT GRIP to place the sign/table outline.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760578
+    m_Localized: Match all edges and the height of the real sign/table. Release grip,
+      then press A.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760579
+    m_Localized: Locking the entrance reference. Keep looking around the sign/table.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760580
+    m_Localized: Could not track the entrance anchor. Look around, then align and
+      press A again.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760581
+    m_Localized: Entrance aligned. Hold X for two seconds to realign.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760582
+    m_Localized: Entrance alignment is missing references or the site is not at metre
+      scale.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760583
+    m_Localized: Point the green arrow into the site.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760584
+    m_Localized: "RIGHT GRIP: move  \u2022  RIGHT STICK: turn / adjust reach\nRelease
+      grip + A: confirm  \u2022  Hold X 2 seconds: restart"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760585
+    m_Localized: Site setup needed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760586
+    m_Localized: 'Tracking unavailable
+
+      Pause here and look around. The site
+      experience is paused.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760587
+    m_Localized: 'Site experience paused
+
+      Tracking or passthrough is unavailable.
+      Pause here and look around.
+
+      Hold X for 2 seconds at the entrance to
+      realign if needed.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760588
+    m_Localized: 'Outside the walking area
+
+      The site experience is paused.
+      Return to the marked hallways when the physical route is clear. Keep out of
+      the central ruin.
+
+      Hold X for 2 seconds at the entrance to realign.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692760589
+    m_Localized: 'Approaching the boundary
+
+      Keep clear of the edge of the playable
+      area.'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

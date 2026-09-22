@@ -24,6 +24,7 @@ namespace LangkaLens.MR
         public bool IsTrackingValid => isActiveAndEnabled && IsConfirmed && _anchor != null && _anchor.Created && _anchor.Localized &&
                                        _anchor.IsTracked && HeadIsTracked();
         public string Status { get; private set; } = "Align the outline with the entrance sign/table.";
+        public string StatusKey { get; private set; } = "Align_Status_Default";
 
         private OVRSpatialAnchor _anchor;
         private GameObject _anchorObject;
@@ -45,6 +46,7 @@ namespace LangkaLens.MR
                 rightController == null || head == null || Vector3.Distance(transform.lossyScale, Vector3.one) > 0.001f)
             {
                 Status = "Entrance alignment is missing references or the site is not at metre scale.";
+                StatusKey = "Align_Status_MissingRefs";
                 enabled = false;
                 return;
             }
@@ -88,6 +90,7 @@ namespace LangkaLens.MR
                 SetReferencePose(centre, rotation);
                 HasPlacedPreview = true;
                 Status = "Match all edges and the height of the real sign/table. Release grip, then press A.";
+                StatusKey = "Align_Status_Adjusting";
             }
             if (HasPlacedPreview && !OVRInput.Get(OVRInput.RawButton.RHandTrigger, OVRInput.Controller.RTouch) && OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch))
                 StartCoroutine(ConfirmAlignment());
@@ -109,12 +112,14 @@ namespace LangkaLens.MR
             _anchorObject = null;
             _anchor = null;
             Status = "Hold RIGHT GRIP to place the sign/table outline.";
+            StatusKey = "Align_Status_HoldGrip";
         }
 
         private IEnumerator ConfirmAlignment()
         {
             IsBusy = true;
             Status = "Locking the entrance reference. Keep looking around the sign/table.";
+            StatusKey = "Align_Status_Locking";
             Vector3 rootPosition = transform.position;
             Quaternion rootRotation = transform.rotation;
             _anchorObject = new GameObject("Ban Jalae 3 entrance anchor (session)");
@@ -128,6 +133,7 @@ namespace LangkaLens.MR
             {
                 BeginAlignment();
                 Status = "Could not track the entrance anchor. Look around, then align and press A again.";
+                StatusKey = "Align_Status_TrackFailed";
                 yield break;
             }
             _rootInAnchor = _anchor.transform.InverseTransformPoint(rootPosition);
@@ -135,6 +141,7 @@ namespace LangkaLens.MR
             IsBusy = false;
             IsConfirmed = true;
             Status = "Entrance aligned. Hold X for two seconds to realign.";
+            StatusKey = "Align_Status_Confirmed";
         }
 
         private void LateUpdate()

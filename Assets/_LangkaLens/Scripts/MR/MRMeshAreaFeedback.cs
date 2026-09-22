@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization.Settings;
 
 namespace LangkaLens.MR
 {
@@ -168,18 +169,65 @@ namespace LangkaLens.MR
 
             _panel.SetActive(area.State != MRMeshPlayableArea.AreaState.Inside);
             if (area.State == MRMeshPlayableArea.AreaState.Unconfigured)
-                _text.text = "<b>Site setup needed</b>\n" + area.ConfigurationError;
+            {
+                string title = GetLocalized("Area_Title_SiteSetupNeeded", "Site setup needed");
+                _text.text = $"<b>{title}</b>\n" + area.ConfigurationError;
+            }
             else if (!alignment.HeadTracked)
-                _text.text = "<b>Tracking unavailable</b>\nPause here and look around. The site experience is paused.";
+            {
+                string msg = GetLocalized("Area_Tracking_Unavailable", "Tracking unavailable\nPause here and look around. The site experience is paused.");
+                _text.text = FormatWithBoldFirstLine(msg);
+            }
             else if (settingUp)
-                _text.text = "<b>Align the entrance sign/table</b>\n" + alignment.Status +
-                    "\nPoint the green arrow into the site.\nRIGHT GRIP: move  •  RIGHT STICK: turn / adjust reach\nRelease grip + A: confirm  •  Hold X 2 seconds: restart";
+            {
+                string title = GetLocalized("Align_Title_Setup", "Align the entrance sign/table");
+                string status = !string.IsNullOrEmpty(alignment.StatusKey)
+                    ? GetLocalized(alignment.StatusKey, alignment.Status)
+                    : alignment.Status;
+                string arrow = GetLocalized("Align_Help_Arrow", "Point the green arrow into the site.");
+                string controls = GetLocalized("Align_Controls_Guide", "RIGHT GRIP: move  •  RIGHT STICK: turn / adjust reach\nRelease grip + A: confirm  •  Hold X 2 seconds: restart");
+                _text.text = $"<b>{title}</b>\n{status}\n{arrow}\n{controls}";
+            }
             else if (area.State == MRMeshPlayableArea.AreaState.TrackingUnavailable)
-                _text.text = "<b>Site experience paused</b>\nTracking or passthrough is unavailable. Pause here and look around.\nHold X for 2 seconds at the entrance to realign if needed.";
+            {
+                string msg = GetLocalized("Area_Paused_TrackingOrPT", "Site experience paused\nTracking or passthrough is unavailable. Pause here and look around.\nHold X for 2 seconds at the entrance to realign if needed.");
+                _text.text = FormatWithBoldFirstLine(msg);
+            }
             else if (area.State == MRMeshPlayableArea.AreaState.Outside)
-                _text.text = "<b>Outside the walking area</b>\nThe site experience is paused. Return to the marked hallways when the physical route is clear. Keep out of the central ruin.\nHold X for 2 seconds at the entrance to realign.";
+            {
+                string msg = GetLocalized("Area_Outside_Walking", "Outside the walking area\nThe site experience is paused. Return to the marked hallways when the physical route is clear. Keep out of the central ruin.\nHold X for 2 seconds at the entrance to realign.");
+                _text.text = FormatWithBoldFirstLine(msg);
+            }
             else
-                _text.text = "<b>Approaching the boundary</b>\nKeep clear of the edge of the playable area.";
+            {
+                string msg = GetLocalized("Area_Near_Boundary", "Approaching the boundary\nKeep clear of the edge of the playable area.");
+                _text.text = FormatWithBoldFirstLine(msg);
+            }
+        }
+
+        private static string GetLocalized(string key, string fallback)
+        {
+            try
+            {
+                string val = LocalizationSettings.StringDatabase.GetLocalizedString("MR_UI", key);
+                return string.IsNullOrEmpty(val) ? fallback : val;
+            }
+            catch
+            {
+                return fallback;
+            }
+        }
+
+        private static string FormatWithBoldFirstLine(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return text;
+            if (text.StartsWith("<b>")) return text;
+            int newlineIndex = text.IndexOf('\n');
+            if (newlineIndex > 0)
+            {
+                return "<b>" + text.Substring(0, newlineIndex) + "</b>\n" + text.Substring(newlineIndex + 1);
+            }
+            return "<b>" + text + "</b>";
         }
 
         private void OnDisable()
