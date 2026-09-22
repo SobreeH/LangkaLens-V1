@@ -1504,7 +1504,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &363744318237137812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1539,6 +1539,7 @@ MonoBehaviour:
   sendButton: {fileID: 8971615632284664095}
   scrollRect: {fileID: 5216660772292662824}
   apiKey: AQ.Ab8RN6LWboDZRwzxj0NOL_zFqJf6TPNUzFlSmQh45bKeYasovQ
+  modelName: gemini-3.1-flash-lite-preview
   maxOutputTokens: 150
   systemPrompt: You are an expert AI guide for the Yarang Ancient City VR museum.
     Keep all responses strictly under 2 sentences.
@@ -1561,7 +1562,7 @@ MonoBehaviour:
   speakButtonText: {fileID: 2445905706643818451}
   geminiChatUI: {fileID: 8721593612043548131}
   apiKey: 
-  modelName: gemini-3.6-flash
+  modelName: gemini-3.1-flash-lite-preview
   maxRecordingDuration: 15
   sampleRate: 16000
   recordingButtonColor: {r: 0.92, g: 0.3, b: 0.25, a: 1}

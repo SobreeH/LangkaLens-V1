@@ -21,7 +21,9 @@ public class GeminiChatUI : MonoBehaviour
 
     [Header("API Configuration")]
     public string apiKey = "YOUR_API_KEY_HERE"; 
-    private string apiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=";
+    [Tooltip("Gemini Flash or Flash-Lite model name for chat generation.")]
+    public string modelName = "gemini-3.5-flash-lite";
+    private string ApiEndpoint => $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key=";
     
     [Header("AI Settings")]
     [Tooltip("Maximum length of the AI's response in tokens. 100 tokens is roughly 60-80 words.")]
@@ -97,7 +99,7 @@ public class GeminiChatUI : MonoBehaviour
         };
 
         string jsonPayload = JsonUtility.ToJson(requestData);
-        string url = apiEndpoint + apiKey;
+        string url = ApiEndpoint + apiKey;
 
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
         {
@@ -177,9 +179,18 @@ public class GeminiChatUIEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
         DrawDefaultInspector();
 
         GeminiChatUI chatScript = (GeminiChatUI)target;
+        SerializedProperty modelProp = serializedObject.FindProperty("modelName");
+        
+        GUILayout.Space(10);
+        GeminiModelPicker.DrawModelSelector(serializedObject, modelProp, chatScript.apiKey, "Chat Model");
+        
+        serializedObject.ApplyModifiedProperties();
+
         GUILayout.Space(15);
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold };
 

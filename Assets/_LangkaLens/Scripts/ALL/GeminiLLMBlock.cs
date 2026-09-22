@@ -12,7 +12,9 @@ public class GeminiLLMBlock : MonoBehaviour
 {
     [Header("API Configuration")]
     public string apiKey = "YOUR_API_KEY_HERE";
-    private string apiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=";
+    [Tooltip("Gemini Flash or Flash-Lite model name for generation.")]
+    public string modelName = "gemini-3.5-flash-lite";
+    private string ApiEndpoint => $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key=";
     [Header("Input")]
     [TextArea(5, 10)]
     public string prompt = "Describe the historical architecture of the Yarang ancient city ruins.";
@@ -40,7 +42,7 @@ public class GeminiLLMBlock : MonoBehaviour
         };
 
         string jsonPayload = JsonUtility.ToJson(requestData);
-        using (UnityWebRequest request = new UnityWebRequest(apiEndpoint + apiKey, "POST"))
+        using (UnityWebRequest request = new UnityWebRequest(ApiEndpoint + apiKey, "POST"))
         {
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonPayload);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -80,10 +82,18 @@ public class GeminiLLMBlockEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
         // Draw the default variables (API Key, Prompt Text Area)
         DrawDefaultInspector();
 
         GeminiLLMBlock block = (GeminiLLMBlock)target;
+        SerializedProperty modelProp = serializedObject.FindProperty("modelName");
+
+        GUILayout.Space(10);
+        GeminiModelPicker.DrawModelSelector(serializedObject, modelProp, block.apiKey, "Model");
+
+        serializedObject.ApplyModifiedProperties();
 
         GUILayout.Space(15);
 

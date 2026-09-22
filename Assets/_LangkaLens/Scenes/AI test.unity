@@ -5244,6 +5244,7 @@ MonoBehaviour:
   sendButton: {fileID: 0}
   scrollRect: {fileID: 0}
   apiKey: AQ.Ab8RN6LWboDZRwzxj0NOL_zFqJf6TPNUzFlSmQh45bKeYasovQ
+  modelName: gemini-3.1-flash-lite-preview
   maxOutputTokens: 150
   systemPrompt: You are an expert AI guide for the Yarang Ancient City VR museum.
     Keep all responses strictly under 2 sentences.
@@ -9333,6 +9334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GeminiLLMBlock
   apiKey: AQ.Ab8RN6LWboDZRwzxj0NOL_zFqJf6TPNUzFlSmQh45bKeYasovQ
+  modelName: gemini-3.5-flash-lite
   prompt: Describe the historical architecture of the Yarang ancient city ruins.
 --- !u!1 &1742699648
 GameObject:

@@ -532,11 +532,20 @@ public class SpeechToTextHandlerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
         DrawDefaultInspector();
 
         SpeechToTextHandler handler = (SpeechToTextHandler)target;
-        GUILayout.Space(15);
+        string effectiveKey = !string.IsNullOrWhiteSpace(handler.apiKey) ? handler.apiKey : (handler.geminiChatUI != null ? handler.geminiChatUI.apiKey : "");
+        SerializedProperty modelProp = serializedObject.FindProperty("modelName");
 
+        GUILayout.Space(10);
+        GeminiModelPicker.DrawModelSelector(serializedObject, modelProp, effectiveKey, "STT Model");
+
+        serializedObject.ApplyModifiedProperties();
+
+        GUILayout.Space(15);
         GUIStyle boldBtn = new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold };
 
         if (!handler.IsRecording)
