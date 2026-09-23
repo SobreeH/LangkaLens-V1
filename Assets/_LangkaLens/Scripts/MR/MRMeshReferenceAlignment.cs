@@ -8,6 +8,8 @@ namespace LangkaLens.MR
     [DisallowMultipleComponent]
     public class MRMeshReferenceAlignment : MonoBehaviour
     {
+        [Header("Optional four-corner foundation setup")]
+        public MRFourPointCalibration fourPoint;
         [Header("Entrance sign/table in the authored mesh")]
         public MeshFilter meshReference;
         public Transform rightController;
@@ -17,12 +19,13 @@ namespace LangkaLens.MR
         [Tooltip("Hide imported scan surfaces/helpers during MR; the sign outline remains visible during setup.")]
         public bool hideScanAtRuntime = true;
 
-        public bool IsConfirmed { get; private set; }
+        private bool _legacyConfirmed;
+        public bool IsConfirmed { get => fourPoint != null ? fourPoint.IsConfirmed : _legacyConfirmed; private set => _legacyConfirmed = value; }
         public bool IsBusy { get; private set; }
         public bool HasPlacedPreview { get; private set; }
         public bool HeadTracked => HeadIsTracked();
-        public bool IsTrackingValid => isActiveAndEnabled && IsConfirmed && _anchor != null && _anchor.Created && _anchor.Localized &&
-                                       _anchor.IsTracked && HeadIsTracked();
+        public bool IsTrackingValid => isActiveAndEnabled && (fourPoint != null ? fourPoint.IsTrackingValid :
+            IsConfirmed && _anchor != null && _anchor.Created && _anchor.Localized && _anchor.IsTracked && HeadIsTracked());
         public string Status { get; private set; } = "Align the outline with the entrance sign/table.";
         public string StatusKey { get; private set; } = "Align_Status_Default";
 
@@ -42,7 +45,7 @@ namespace LangkaLens.MR
 
         private void Awake()
         {
-            if (meshReference == null || meshReference.sharedMesh == null || !meshReference.transform.IsChildOf(transform) ||
+            if ((fourPoint == null && (meshReference == null || meshReference.sharedMesh == null || !meshReference.transform.IsChildOf(transform))) ||
                 rightController == null || head == null || Vector3.Distance(transform.lossyScale, Vector3.one) > 0.001f)
             {
                 Status = "Entrance alignment is missing references or the site is not at metre scale.";
@@ -50,7 +53,8 @@ namespace LangkaLens.MR
                 enabled = false;
                 return;
             }
-            _referenceCentreInRoot = transform.InverseTransformPoint(meshReference.transform.TransformPoint(meshReference.sharedMesh.bounds.center));
+            if (meshReference != null)
+                _referenceCentreInRoot = transform.InverseTransformPoint(meshReference.transform.TransformPoint(meshReference.sharedMesh.bounds.center));
             _authoredRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
             _scanRenderers = GetComponentsInChildren<Renderer>(true);
             _rendererStates = new bool[_scanRenderers.Length];
@@ -70,6 +74,7 @@ namespace LangkaLens.MR
 
         private void Update()
         {
+            if (fourPoint != null) return;
             bool reset = HeadIsTracked() && OVRInput.Get(OVRInput.RawButton.X, OVRInput.Controller.LTouch);
             _resetHeld = reset ? _resetHeld + Time.unscaledDeltaTime : 0;
             if (!reset) _resetLatched = false;
@@ -104,6 +109,7 @@ namespace LangkaLens.MR
 
         public void BeginAlignment()
         {
+            if (fourPoint != null) fourPoint.Restart();
             StopAllCoroutines();
             IsConfirmed = false;
             IsBusy = false;
@@ -146,6 +152,7 @@ namespace LangkaLens.MR
 
         private void LateUpdate()
         {
+            if (fourPoint != null) return;
             if (IsTrackingValid)
                 transform.SetPositionAndRotation(_anchor.transform.TransformPoint(_rootInAnchor), _anchor.transform.rotation * _rotationInAnchor);
         }
