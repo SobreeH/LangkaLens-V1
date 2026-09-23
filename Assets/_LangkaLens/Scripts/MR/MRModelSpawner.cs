@@ -40,6 +40,19 @@ namespace LangkaLens.MR
         [Tooltip("Alignment reference. When assigned (or detected via playableArea), selectionCanvas is disabled until alignment is confirmed.")]
         public MRMeshReferenceAlignment alignment;
 
+        [Header("Calibrated site and demonstration models")]
+        public int localStructureIndex = 2;
+        [System.Serializable]
+        public class DemoPlacement
+        {
+            [Min(0.01f)] public float sizeMultiplier = 1;
+            public float yaw;
+            public float heightMetres;
+            public Vector2 offsetMetres;
+        }
+        public DemoPlacement[] demoPlacements = new DemoPlacement[4];
+        public MRFourPointCalibration Foundation => alignment != null ? alignment.fourPoint : null;
+
         public bool IsAlignmentDone
         {
             get
@@ -72,6 +85,12 @@ namespace LangkaLens.MR
 
         private void Update()
         {
+            if (Foundation != null && !Foundation.IsConfirmed)
+            {
+                if (_currentSpawnedModel != null) DespawnModel();
+                UpdateSelectionCanvasState();
+                return; // Setup owns A/B/X/Y until the placement is locked.
+            }
             // Despawn the model if the 'B' or 'Y' button is pressed
             if (OVRInput.GetDown(OVRInput.RawButton.B) || OVRInput.GetDown(OVRInput.RawButton.Y))
             {
@@ -96,7 +115,7 @@ namespace LangkaLens.MR
         {
             if (!IsAlignmentDone)
             {
-                Debug.Log("Align the entrance reference before selecting a model.");
+                Debug.Log("Complete site alignment before selecting a model.");
                 return;
             }
 
@@ -208,7 +227,9 @@ namespace LangkaLens.MR
             
             _currentSpawnedModel.transform.localScale = globalSpawnScale;
 
-            if (fitToCentralOpening && playableArea != null)
+            if (Foundation != null)
+                ApplyFoundationPlacement(_currentSpawnedModel.transform, index);
+            else if (fitToCentralOpening && playableArea != null)
                 FitModelToOpening(_currentSpawnedModel.transform, playableArea, displayBaseHeight);
 
             // Dynamically add physics and interaction components for raw GLB models
@@ -240,6 +261,31 @@ namespace LangkaLens.MR
                 foreach (var spatialObject in _currentSpawnedModel.GetComponentsInChildren<MRSpatialObject>(true))
                     spatialObject.enabled = false;
             }
+        }
+
+        public void ApplyFoundationPlacement(Transform model, int index)
+        {
+            var foundation = Foundation;
+            model.SetParent(foundation.contentRoot, false);
+            model.localPosition = Vector3.zero;
+            model.localRotation = Quaternion.identity;
+            model.localScale = Vector3.one;
+            if (index == localStructureIndex) return;
+
+            DemoPlacement settings = demoPlacements != null && index >= 0 && index < demoPlacements.Length
+                ? demoPlacements[index] : null;
+            model.localRotation = Quaternion.Euler(0, settings != null ? settings.yaw : 0, 0);
+            Vector3 min = foundation.ReferencePoints[0], max = min, centre = Vector3.zero;
+            foreach (var point in foundation.ReferencePoints)
+            { min = Vector3.Min(min, point); max = Vector3.Max(max, point); centre += point * 0.25f; }
+            if (!TryGetBounds(model, foundation.contentRoot, out Bounds bounds) || bounds.size.x < 0.0001f || bounds.size.z < 0.0001f) return;
+            float factor = Mathf.Min((max.x - min.x) / bounds.size.x, (max.z - min.z) / bounds.size.z);
+            model.localScale = Vector3.one * factor * (settings != null ? settings.sizeMultiplier : 1);
+            TryGetBounds(model, foundation.contentRoot, out bounds);
+            float unitsPerMetre = 1 / Mathf.Max(0.001f, foundation.contentRoot.lossyScale.x);
+            Vector3 adjustment = settings != null
+                ? new Vector3(settings.offsetMetres.x, settings.heightMetres, settings.offsetMetres.y) * unitsPerMetre : Vector3.zero;
+            model.localPosition += new Vector3(centre.x - bounds.center.x, centre.y - bounds.min.y, centre.z - bounds.center.z) + adjustment;
         }
 
         public static bool FitModelToOpening(Transform model, MRMeshPlayableArea area, float baseHeight)
