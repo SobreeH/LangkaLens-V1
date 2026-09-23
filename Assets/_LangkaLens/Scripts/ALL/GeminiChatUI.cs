@@ -45,6 +45,10 @@ public class GeminiChatUI : MonoBehaviour
         {
             sendButton.onClick.AddListener(SendMessageToGemini);
         }
+        if (inputField != null)
+        {
+            inputField.onSubmit.AddListener((val) => SendMessageToGemini());
+        }
     }
 
     public void SendMessageToGemini()
@@ -54,7 +58,15 @@ public class GeminiChatUI : MonoBehaviour
 
         SendAndLog(prompt);
         
-        if (inputField != null) inputField.text = "";
+        if (inputField != null)
+        {
+            inputField.text = "";
+            QuestKeyboardHandler keyboardHandler = inputField.GetComponent<QuestKeyboardHandler>();
+            if (keyboardHandler != null)
+            {
+                keyboardHandler.CloseKeyboard();
+            }
+        }
     }
 
 #if UNITY_EDITOR
