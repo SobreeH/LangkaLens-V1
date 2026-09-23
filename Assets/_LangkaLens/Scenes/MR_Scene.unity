@@ -1939,6 +1939,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f5d8699ae69a2c47a443a1f9d647c83, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f5d8699ae69a2c47a443a1f9d647c83, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.16
       objectReference: {fileID: 0}
@@ -1977,6 +1981,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6f5d8699ae69a2c47a443a1f9d647c83, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f5d8699ae69a2c47a443a1f9d647c83, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8663677773507372528, guid: 6f5d8699ae69a2c47a443a1f9d647c83, type: 3}
       propertyPath: m_Enabled
@@ -6920,13 +6928,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472632711}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 12.75}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 1.23, y: -4, z: 11.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1054263241}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &473433681
 GameObject:
   m_ObjectHideFlags: 0
@@ -12688,7 +12696,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.42, y: -0, z: -2.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 79519558}
   - {fileID: 1326880812}
@@ -12753,7 +12761,7 @@ MonoBehaviour:
   - {fileID: 1188113489}
   - {fileID: 705661423}
   - {fileID: 1384451644}
-  footprintMode: 2
+  footprintMode: 3
   hallwayOuter:
     serializedVersion: 2
     x: -8.5
@@ -16182,7 +16190,7 @@ MonoBehaviour:
   playableArea: {fileID: 1054263244}
   spawnRelativeToCamera: 1
   globalSpawnPosition: {x: 0, y: -1.5, z: 5}
-  globalSpawnScale: {x: 1, y: 1, z: 1}
+  globalSpawnScale: {x: 30, y: 30, z: 30}
   fitToCentralOpening: 1
   displayBaseHeight: 0
   selectionCanvas: {fileID: 1005534770}
