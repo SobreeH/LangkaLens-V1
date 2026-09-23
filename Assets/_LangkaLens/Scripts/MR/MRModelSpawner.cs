@@ -15,7 +15,7 @@ namespace LangkaLens.MR
         public Transform centerEyeCamera;
 
         [Header("On-site playable area (optional)")]
-        [Tooltip("When assigned, models follow the aligned site and are hidden outside its playable interior.")]
+        [Tooltip("When assigned, models follow the aligned site. Alignment, tracking and the selected footprint mode control playback.")]
         public MRMeshPlayableArea playableArea;
         
         [Tooltip("If true, spawn position is relative to the camera. If false, it uses exact world coordinates.")]
@@ -102,7 +102,7 @@ namespace LangkaLens.MR
 
             if (playableArea != null && !playableArea.CanPlay)
             {
-                Debug.Log("Align the entrance reference and enter the playable interior before selecting a model.");
+                Debug.Log("Site playback is paused. Check alignment, tracking, passthrough and any enabled walking boundary before selecting a model.");
                 return;
             }
 

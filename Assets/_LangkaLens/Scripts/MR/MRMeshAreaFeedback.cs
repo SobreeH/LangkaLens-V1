@@ -135,7 +135,7 @@ namespace LangkaLens.MR
                 _headingArrow.SetPositions(new[] { start, tip, tip - direction * 0.18f + side * 0.1f, tip, tip - direction * 0.18f - side * 0.1f });
                 _headingArrow.startColor = _headingArrow.endColor = Color.green;
             }
-            bool showBoundary = alignment.IsTrackingValid && (alwaysShowBoundary || area.State == MRMeshPlayableArea.AreaState.NearBoundary || area.State == MRMeshPlayableArea.AreaState.Outside);
+            bool showBoundary = !area.IsUnrestricted && alignment.IsTrackingValid && (alwaysShowBoundary || area.State == MRMeshPlayableArea.AreaState.NearBoundary || area.State == MRMeshPlayableArea.AreaState.Outside);
             _boundaryOutline.enabled = showBoundary && !area.UsesMeshFloors;
             if (_floorEdges != null)
             {

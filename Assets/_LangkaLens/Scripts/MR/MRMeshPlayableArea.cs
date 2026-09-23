@@ -8,7 +8,7 @@ namespace LangkaLens.MR
     public class MRMeshPlayableArea : MonoBehaviour
     {
         public enum AreaState { Unconfigured, Aligning, TrackingUnavailable, Outside, NearBoundary, Inside }
-        public enum FootprintMode { ScanInterior, RectangularHallways, MeshFloors }
+        public enum FootprintMode { ScanInterior, RectangularHallways, MeshFloors, Unrestricted }
 
         [Header("Walking surfaces from imported meshes")]
         [Tooltip("The scaled Parent transforms of the imported FLOOR planes. Their union defines walking space; the central hole stays empty.")]
@@ -37,8 +37,9 @@ namespace LangkaLens.MR
         public Rect ruinExclusion = new Rect(-5, 4.5f, 14, 16.5f);
 
         public bool UsesHallways => footprintMode == FootprintMode.RectangularHallways;
-        public float PlayableSquareMetres => UsesMeshFloors ? (FloorFootprint?.SquareMetres ?? 0) : UsesHallways ? hallwayOuter.width * hallwayOuter.height - ruinExclusion.width * ruinExclusion.height : squareMetres;
-        public Vector2[] OuterOutline => UsesMeshFloors ? Array.Empty<Vector2>() : UsesHallways ? RectangleCorners(hallwayOuter) : outline;
+        public bool IsUnrestricted => footprintMode == FootprintMode.Unrestricted;
+        public float PlayableSquareMetres => IsUnrestricted ? float.PositiveInfinity : UsesMeshFloors ? (FloorFootprint?.SquareMetres ?? 0) : UsesHallways ? hallwayOuter.width * hallwayOuter.height - ruinExclusion.width * ruinExclusion.height : squareMetres;
+        public Vector2[] OuterOutline => IsUnrestricted || UsesMeshFloors ? Array.Empty<Vector2>() : UsesHallways ? RectangleCorners(hallwayOuter) : outline;
         public Vector2[] ExclusionOutline => UsesHallways ? RectangleCorners(ruinExclusion) : Array.Empty<Vector2>();
 
         [Header("Interior baked from the surrounding scan meshes")]
@@ -80,9 +81,11 @@ namespace LangkaLens.MR
             if (head == null || alignment == null || passthrough == null)
                 error = "Assign the head, entrance alignment and passthrough references.";
             else if (Vector3.Distance(transform.lossyScale, Vector3.one) > 0.001f ||
-                     !Finite(stopDistance) || !Finite(warningDistance) || !Finite(recoveryMargin) ||
-                     stopDistance < 0.05f || warningDistance <= stopDistance || recoveryMargin < 0)
+                     (!IsUnrestricted && (!Finite(stopDistance) || !Finite(warningDistance) || !Finite(recoveryMargin) ||
+                     stopDistance < 0.05f || warningDistance <= stopDistance || recoveryMargin < 0)))
                 error = "Use metre scale (1,1,1) and valid boundary distances.";
+            else if (IsUnrestricted)
+                return true;
             else if (UsesMeshFloors)
             {
                 if (floorPlanes == null || floorPlanes.Length == 0 ||
@@ -139,6 +142,7 @@ namespace LangkaLens.MR
         {
             bool contained = ContainsWorldPoint(position, out float distance);
             DistanceToEdge = distance;
+            if (IsUnrestricted) return contained ? AreaState.Inside : AreaState.TrackingUnavailable;
             float stop = stopDistance + (wasPlaying ? 0 : recoveryMargin);
             return !contained || distance <= stop ? AreaState.Outside :
                 distance <= warningDistance ? AreaState.NearBoundary : AreaState.Inside;
@@ -146,6 +150,9 @@ namespace LangkaLens.MR
 
         public bool ContainsWorldPoint(Vector3 worldPoint, out float distance)
         {
+            if (!Finite(worldPoint.x) || !Finite(worldPoint.y) || !Finite(worldPoint.z))
+            { distance = 0; return false; }
+            if (IsUnrestricted) { distance = float.PositiveInfinity; return true; }
             Vector3 local = transform.InverseTransformPoint(worldPoint);
             if (!Finite(local.y)) { distance = 0; return false; }
             if (UsesMeshFloors)
@@ -210,6 +217,7 @@ namespace LangkaLens.MR
 
         private void OnDrawGizmosSelected()
         {
+            if (IsUnrestricted) return;
             if (UsesMeshFloors)
             {
                 Gizmos.color = Color.cyan;
