@@ -204,7 +204,19 @@ namespace LangkaLens.Editor
             finally { EditorSceneManager.ClosePreviewScene(preview); }
             var installed = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<MRMeshPlayableArea>(true)).Single();
             Check(installed.ValidateConfiguration(out string error), "Scene wiring: " + error);
-            if (installed.UsesMeshFloors)
+            if (installed.IsUnrestricted)
+            {
+                foreach (var local in new[] { new Vector3(-100, 1.7f, -100), new Vector3(100, 1.7f, 100),
+                    new Vector3(installed.ruinExclusion.center.x, 1.7f, installed.ruinExclusion.center.y) })
+                {
+                    Vector3 world = installed.transform.TransformPoint(local);
+                    Check(installed.ContainsWorldPoint(world, out clearance) && float.IsPositiveInfinity(clearance), "Unrestricted position has no mesh boundary");
+                    Check(installed.EvaluatePositionState(world, false) == MRMeshPlayableArea.AreaState.Inside, "Playback resumes outside scan and in central opening");
+                }
+                Check(installed.EvaluatePositionState(new Vector3(float.NaN, 0, 0), true) == MRMeshPlayableArea.AreaState.TrackingUnavailable, "Invalid unrestricted position pauses playback");
+                Check(installed.OuterOutline.Length == 0 && installed.ExclusionOutline.Length == 0, "Unrestricted mode has no boundary outlines");
+            }
+            else if (installed.UsesMeshFloors)
             {
                 Vector2 centre = installed.ruinExclusion.center;
                 Check(!installed.ContainsWorldPoint(installed.transform.TransformPoint(new Vector3(centre.x, 1.7f, centre.y)), out _), "Central model opening is not walking space");
@@ -221,7 +233,7 @@ namespace LangkaLens.Editor
                 Check(MRMeshPlayableArea.ContainsPoint(installed.outline, installed.interiorSeed, out clearance) && clearance > 1, "Actual central area is playable");
             var reference = installed.alignment.meshReference;
             Check(reference != null && reference.name == "Mesh_ref", "Exact entrance reference connected");
-            if (!installed.UsesHallways && !installed.UsesMeshFloors)
+            if (!installed.UsesHallways && !installed.UsesMeshFloors && !installed.IsUnrestricted)
                 Check(!installed.ContainsWorldPoint(reference.transform.position, out _), "Entrance reference does not accidentally expand the interior");
             var spawner = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<MRModelSpawner>(true)).Single();
             Check(spawner.playableArea == installed && spawner.modelPlacement.IsChildOf(installed.transform), "Spawned content shares site alignment");
@@ -310,6 +322,14 @@ namespace LangkaLens.Editor
                 var instance = (GameObject)current.GetValue(spawner);
                 Check(instance != null && instance.transform.parent == area.transform, "Site model follows aligned root");
                 Check(instance.GetComponent<MRSpatialObject>() == null, "No conflicting per-model anchor");
+                area.footprintMode = MRMeshPlayableArea.FootprintMode.Unrestricted;
+                Vector3 anchoredPosition = instance.transform.position;
+                state.SetValue(area, area.EvaluatePositionState(new Vector3(100, 1.7f, 100), true));
+                lateUpdate.Invoke(spawner, null);
+                Check(instance.activeSelf && instance.transform.position == anchoredPosition, "Walking beyond scan keeps model visible and anchored");
+                state.SetValue(area, MRMeshPlayableArea.AreaState.Aligning);
+                lateUpdate.Invoke(spawner, null);
+                Check(!instance.activeSelf && !area.CanPlay, "Unrestricted mode still requires alignment");
                 state.SetValue(area, MRMeshPlayableArea.AreaState.Outside);
                 lateUpdate.Invoke(spawner, null);
                 Check(!instance.activeSelf, "Leaving interior hides content");
@@ -341,7 +361,13 @@ namespace LangkaLens.Editor
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("footprintMode"));
                 bool hallways = serializedObject.FindProperty("footprintMode").enumValueIndex == (int)MRMeshPlayableArea.FootprintMode.RectangularHallways;
                 bool meshFloors = serializedObject.FindProperty("footprintMode").enumValueIndex == (int)MRMeshPlayableArea.FootprintMode.MeshFloors;
-                if (meshFloors)
+                bool unrestricted = serializedObject.FindProperty("footprintMode").enumValueIndex == (int)MRMeshPlayableArea.FootprintMode.Unrestricted;
+                if (unrestricted)
+                {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ruinExclusion"), new GUIContent("Model opening reference (X/Z)"));
+                    EditorGUILayout.HelpBox("Visitors can play inside and outside the scanned mesh. The mesh anchors the model; alignment, tracking and passthrough are still required.", MessageType.Info);
+                }
+                else if (meshFloors)
                 {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("floorPlanes"), true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("ruinExclusion"), new GUIContent("Model opening reference (X/Z)"));
@@ -360,9 +386,12 @@ namespace LangkaLens.Editor
                 }
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("interiorSeed"), new GUIContent("Entrance arrow target (X/Z)"));
             }
-            DrawPropertiesExcluding(serializedObject, "m_Script", "footprintMode", "floorPlanes", "hallwayOuter", "ruinExclusion", "boundaryMeshes", "sliceHeight", "interiorSeed");
+            if (serializedObject.FindProperty("footprintMode").enumValueIndex == (int)MRMeshPlayableArea.FootprintMode.Unrestricted)
+                DrawPropertiesExcluding(serializedObject, "m_Script", "footprintMode", "floorPlanes", "hallwayOuter", "ruinExclusion", "boundaryMeshes", "sliceHeight", "interiorSeed", "stopDistance", "warningDistance", "recoveryMargin");
+            else
+                DrawPropertiesExcluding(serializedObject, "m_Script", "footprintMode", "floorPlanes", "hallwayOuter", "ruinExclusion", "boundaryMeshes", "sliceHeight", "interiorSeed");
             serializedObject.ApplyModifiedProperties();
-            EditorGUILayout.HelpBox($"Playable footprint: {area.PlayableSquareMetres:F1} m². " + (area.UsesMeshFloors ? "Imported mesh floor planes, with overlap seams removed." : area.UsesHallways ? "Outer rectangle minus central exclusion; scan partitions are ignored." : "Legacy scan-derived interior."), MessageType.Info);
+            EditorGUILayout.HelpBox(area.IsUnrestricted ? "Playable area: unrestricted. Scan edges do not pause playback or show boundary warnings." : $"Playable footprint: {area.PlayableSquareMetres:F1} m². " + (area.UsesMeshFloors ? "Imported mesh floor planes, with overlap seams removed." : area.UsesHallways ? "Outer rectangle minus central exclusion; scan partitions are ignored." : "Legacy scan-derived interior."), MessageType.Info);
             if (!area.ValidateConfiguration(out string error)) EditorGUILayout.HelpBox(error, MessageType.Error);
             if (area.developmentMode) EditorGUILayout.HelpBox("Development mode bypasses alignment, tracking and walking-area restrictions.", MessageType.Warning);
             using (new EditorGUI.DisabledScope(Application.isPlaying))
@@ -370,13 +399,20 @@ namespace LangkaLens.Editor
                 {
                     if (GUILayout.Button("Refresh mesh floor footprint")) area.RebuildFloorFootprint();
                 }
-                else if (!area.UsesHallways && GUILayout.Button("Rebuild interior from scan meshes")) MRMeshAreaTools.Bake(area);
+                else if (!area.IsUnrestricted && !area.UsesHallways && GUILayout.Button("Rebuild interior from scan meshes")) MRMeshAreaTools.Bake(area);
             if (Application.isPlaying) EditorGUILayout.LabelField("State", area.State.ToString());
         }
 
         private void OnSceneGUI()
         {
             var area = (MRMeshPlayableArea)target;
+            if (area.IsUnrestricted)
+            {
+                DrawLoop(area, MRMeshPlayableArea.RectangleCorners(area.ruinExclusion), new Color(1, 0.6f, 0.1f));
+                Vector2 centre = area.ruinExclusion.center;
+                Handles.Label(area.transform.TransformPoint(new Vector3(centre.x, 0.1f, centre.y)), "MODEL DISPLAY\nUnrestricted visitor area");
+                return;
+            }
             if (area.UsesMeshFloors)
             {
                 Vector2[] edges = area.FloorFootprint?.Edges ?? Array.Empty<Vector2>();
