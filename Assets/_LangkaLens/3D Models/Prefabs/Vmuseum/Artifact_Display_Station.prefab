@@ -227,37 +227,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5497405978834722309}
   m_LocalEulerAnglesHint: {x: 0, y: 60, z: 0}
---- !u!1 &4713308891685561534
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6995420737323961304}
-  m_Layer: 0
-  m_Name: ToggleIcon_Placement_Anchor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6995420737323961304
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4713308891685561534}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7678247, z: -0, w: 0.64066}
-  m_LocalPosition: {x: 0.58599997, y: 0.556, z: 2.792}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5497405978834722309}
-  m_LocalEulerAnglesHint: {x: 0, y: 100.318, z: 0}
 --- !u!1 &6548232308621222860
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +351,6 @@ Transform:
   - {fileID: 6193375751725098955}
   - {fileID: 2203826414574403983}
   - {fileID: 3517987776785465505}
-  - {fileID: 6995420737323961304}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6055350007168076819
@@ -539,57 +507,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6201163bca0816e4ca045707ac352343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArtifactData
-  artifactTitle: Ancient Clay Storage Jar
-  artifactDescription: 'The Ancient Clay Storage Jar is a well-preserved ceramic
-    vessel dating to approximately the 5th century CE. It was discovered during a
-    systematic archaeological excavation beneath the remains of a residential structure,
-    where it had been partially buried in the floor of what is believed to have been
-    a household storage area. Archaeologists believe the jar was used to store essential
-    food supplies such as grains, rice, dried legumes, oils, and water, helping families
-    preserve resources for daily consumption and periods of scarcity. Its large capacity
-    and sturdy construction suggest it played an important role in the everyday lives
-    of the settlement''s inhabitants.
-
-
-    The vessel was hand-shaped using locally
-    sourced clay before being fired in a traditional kiln. Close examination of its
-    surface reveals subtle horizontal ridges and faint finger impressions left by
-    the artisan during the shaping process, providing valuable evidence of the pottery-making
-    techniques practiced at the time. The jar''s wide body, rounded base, and narrow
-    neck were intentionally designed to maximize storage capacity while reducing
-    contamination from dust, insects, and moisture. Although simple in appearance,
-    the craftsmanship demonstrates a high level of skill and knowledge of ceramic
-    production.
-
-
-    Unlike decorative ceremonial pottery, this storage jar shows
-    clear signs of regular household use. Wear patterns around the rim indicate frequent
-    opening and closing, while traces of organic residue found inside the vessel
-    suggest it once contained cereal grains and plant-based oils. Scientific analysis
-    of microscopic residue has helped researchers better understand the agricultural
-    practices, dietary habits, and food preservation methods of the ancient community.
-    The discovery of similar jars throughout the excavation site indicates that standardized
-    pottery production and organized food storage were common among the settlement''s
-    residents.
-
-
-    Despite spending more than 1,500 years underground, the jar
-    remains remarkably intact, with only minor surface cracks and edge chipping caused
-    by natural soil pressure over time. Conservation specialists carefully cleaned,
-    stabilized, and restored the artifact using modern preservation techniques to
-    prevent further deterioration while maintaining its original appearance. Today,
-    the Ancient Clay Storage Jar serves as an important archaeological artifact,
-    offering valuable insight into the domestic life, technological knowledge, and
-    economic practices of the people who once inhabited the region. It stands as
-    a testament to the ingenuity and craftsmanship of ancient potters and highlights
-    the significance of pottery in sustaining everyday life throughout history.'
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   primaryModel: {fileID: 0}
   alternateModel: {fileID: 0}
   originalOrigin: {fileID: 2203826414574403983}
   uiAnchor: {fileID: 3517987776785465505}
-  spatialToggleButtonAnchor: {fileID: 0}
   modelContainer: {fileID: 0}
   pedestal: {fileID: 0}
+  infoIcon: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!54 &461489860558098635
 Rigidbody:
   m_ObjectHideFlags: 0

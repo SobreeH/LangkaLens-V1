@@ -50,10 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7262525401332414863, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
       propertyPath: m_Name
-      value: Artifact_Display_Station
+      value: DisplayDemo1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4713308891685561534, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
