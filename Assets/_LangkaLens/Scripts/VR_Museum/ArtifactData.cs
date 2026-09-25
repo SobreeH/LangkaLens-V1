@@ -27,16 +27,41 @@ public class ArtifactData : MonoBehaviour
     [Tooltip("The pedestal GameObject to hide during inspection")]
     public GameObject pedestal;
 
+    [Tooltip("The info icon GameObject to hide during inspection (auto-detected if left empty)")]
+    public GameObject infoIcon;
+
     private void Start()
     {
         if (modelContainer == null)
         {
             modelContainer = transform.Find("ObjectMesh");
         }
+
+        FindInfoIconIfMissing();
+    }
+
+    private void FindInfoIconIfMissing()
+    {
+        if (infoIcon == null)
+        {
+            Transform stationRoot = transform.parent != null ? transform.parent : transform;
+            var bobbing = stationRoot.GetComponentInChildren<BobbingAnimation>(true);
+            if (bobbing != null)
+            {
+                infoIcon = bobbing.gameObject;
+            }
+            else
+            {
+                Transform found = stationRoot.Find("Info_icon");
+                if (found != null) infoIcon = found.gameObject;
+            }
+        }
     }
 
     public void TriggerInspection()
     {
+        FindInfoIconIfMissing();
+
         // Pass the modelContainer as the object to be scaled by InspectionManager
         GameObject artifactToScale = modelContainer != null ? modelContainer.gameObject : this.gameObject;
         
@@ -45,6 +70,7 @@ public class ArtifactData : MonoBehaviour
             originalOrigin, 
             uiAnchor, 
             pedestal,
+            infoIcon,
             localizedTitle, 
             localizedDescription
         );

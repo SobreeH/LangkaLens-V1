@@ -38,6 +38,7 @@ public class InspectionManager : MonoBehaviour
     private Transform _currentOrigin;
     private Transform _currentUIAnchor; // <--- NEW
     private GameObject _currentPedestal;
+    private GameObject _currentInfoIcon;
     private Vector3 _originalRigPosition;
     private Quaternion _originalRigRotation;
     private Vector3 _originalArtifactScale;
@@ -96,6 +97,11 @@ public class InspectionManager : MonoBehaviour
 
     public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, GameObject pedestal, LocalizedString title, LocalizedString description)
     {
+        EnterInspectionState(artifact, origin, uiAnchor, pedestal, null, title, description);
+    }
+
+    public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, GameObject pedestal, GameObject infoIcon, LocalizedString title, LocalizedString description)
+    {
         if (_isInspecting) return;
 
         _isInspecting = true;
@@ -108,6 +114,16 @@ public class InspectionManager : MonoBehaviour
         if (_currentPedestal != null)
         {
             _currentPedestal.SetActive(false);
+        }
+
+        _currentInfoIcon = infoIcon;
+        if (_currentInfoIcon == null && _currentArtifactData != null)
+        {
+            _currentInfoIcon = _currentArtifactData.infoIcon;
+        }
+        if (_currentInfoIcon != null)
+        {
+            _currentInfoIcon.SetActive(false);
         }
 
         if (locomotionScript != null) locomotionScript.enabled = false;
@@ -158,6 +174,12 @@ public class InspectionManager : MonoBehaviour
         {
             _currentPedestal.SetActive(true);
             _currentPedestal = null;
+        }
+
+        if (_currentInfoIcon != null)
+        {
+            _currentInfoIcon.SetActive(true);
+            _currentInfoIcon = null;
         }
 
         if (locomotionScript != null) locomotionScript.enabled = true;
