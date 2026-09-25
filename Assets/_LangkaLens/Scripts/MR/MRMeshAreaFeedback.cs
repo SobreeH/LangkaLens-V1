@@ -67,7 +67,7 @@ namespace LangkaLens.MR
             canvas.renderMode = RenderMode.WorldSpace;
             canvas.worldCamera = alignment.head.GetComponent<Camera>();
             var rect = _panel.GetComponent<RectTransform>();
-            rect.sizeDelta = alignment.fourPoint != null ? new Vector2(880, 370) : new Vector2(780, 240);
+            rect.sizeDelta = new Vector2(780, 240);
             var image = _panel.AddComponent<Image>();
             image.color = new Color(0.025f, 0.045f, 0.06f, 0.82f);
             image.raycastTarget = false;
@@ -108,13 +108,6 @@ namespace LangkaLens.MR
         private void LateUpdate()
         {
             if (_text == null) return;
-            if (alignment.fourPoint != null)
-            {
-                var setup = alignment.fourPoint;
-                _panel.SetActive(!setup.IsConfirmed || !area.CanPlay);
-                _text.text = setup.Instructions(MRFourPointCalibration.IsThai);
-                return;
-            }
             bool settingUp = !alignment.IsConfirmed;
             _referenceOutline.enabled = settingUp && alignment.HasPlacedPreview && alignment.HeadTracked && alignment.meshReference != null;
             _headingArrow.enabled = _referenceOutline.enabled;
