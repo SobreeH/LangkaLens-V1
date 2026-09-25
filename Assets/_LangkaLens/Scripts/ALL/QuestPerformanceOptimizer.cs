@@ -19,8 +19,8 @@ public class QuestPerformanceOptimizer : MonoBehaviour
     [SerializeField] private bool useDynamicFoveation = true;
 
     [Header("Hardware Performance")]
-    [SerializeField] private OVRManager.ProcessorPerformanceLevel cpuPerformanceLevel = OVRManager.ProcessorPerformanceLevel.Medium;
-    [SerializeField] private OVRManager.ProcessorPerformanceLevel gpuPerformanceLevel = OVRManager.ProcessorPerformanceLevel.High;
+    [SerializeField] private OVRManager.ProcessorPerformanceLevel cpuPerformanceLevel = OVRManager.ProcessorPerformanceLevel.SustainedLow;
+    [SerializeField] private OVRManager.ProcessorPerformanceLevel gpuPerformanceLevel = OVRManager.ProcessorPerformanceLevel.SustainedHigh;
 
     [Header("Clarity & Sharpening")]
     [Tooltip("Enables Meta contrast-adaptive sharpening for crisp model inspection at 1:1 render scale.")]
