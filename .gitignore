@@ -11,6 +11,7 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 .utmp/
+/.mcp-git/.venv/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -116,3 +117,11 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# AI Assistant & Agent local configurations / skills
+.codex/
+!.codex/config.toml
+.gemini/
+.config/
+Assets/MetaSkills/
+Assets/MetaSkills.meta
