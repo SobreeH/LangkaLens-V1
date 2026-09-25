@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6689036041284674117, guid: aa1d01f44daa9a04e9916a1c4934207d, type: 3}
       propertyPath: m_Name
-      value: exclamation_mark_3d_icon
+      value: Info_icon_Animated
       objectReference: {fileID: 0}
     - target: {fileID: -5301087204789320899, guid: aa1d01f44daa9a04e9916a1c4934207d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -79,5 +79,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: aa1d01f44daa9a04e9916a1c4934207d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7962079822552689726}
   m_SourcePrefab: {fileID: -5645937942226959685, guid: aa1d01f44daa9a04e9916a1c4934207d, type: 3}
+--- !u!1 &4972137431219059734 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6689036041284674117, guid: aa1d01f44daa9a04e9916a1c4934207d, type: 3}
+  m_PrefabInstance: {fileID: 7362067692222489005}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7962079822552689726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4972137431219059734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57771ce46af76a848932e7e3d2126116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BobbingAnimation
+  bobHeight: 0.05
+  bobFrequency: 1
+  bobAxis: {x: 0, y: 1, z: 0}
+  randomizeStartPhase: 1
+  enableRotation: 0
+  rotationSpeed: 30
+  rotationAxis: {x: 0, y: 1, z: 0}
