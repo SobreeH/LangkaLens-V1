@@ -525,7 +525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 958166954594428850, guid: 56d563951d4adea479f5a5a7d901ef0c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2444,7 +2444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3194833976442966440, guid: 95b8c5124ecfb3241a1b5cdbe29df385, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2531,7 +2531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5730392386203120793, guid: 28a5a9acab9b45e4887a17d583b2005e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3382,6 +3382,7 @@ GameObject:
   - component: {fileID: 147365120}
   - component: {fileID: 147365119}
   - component: {fileID: 147365118}
+  - component: {fileID: 147365123}
   m_Layer: 0
   m_Name: Camera Rig
   m_TagString: Untagged
@@ -3389,6 +3390,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &147365123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147365117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc4dc03845504259b1a336019345c7d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetFrameRate: 72
+  foveatedRenderingLevel: 3
+  useDynamicFoveation: 1
+  cpuPerformanceLevel: 1
+  gpuPerformanceLevel: 2
+  enableSharpening: 1
 --- !u!114 &147365118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3427,7 +3446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monoscopic: 0
-  _sharpenType: 0
+  _sharpenType: 1
   _disableRecording: 0
   _enableDynamicResolution: 1
   minDynamicResolutionScale: 1
@@ -3435,7 +3454,7 @@ MonoBehaviour:
   quest2MinDynamicResolutionScale: 0.7
   quest2MaxDynamicResolutionScale: 1.3
   quest3MinDynamicResolutionScale: 0.7
-  quest3MaxDynamicResolutionScale: 1.6
+  quest3MaxDynamicResolutionScale: 1
   minRenderScale: 0.7
   maxRenderScale: 1
   _headPoseRelativeOffsetRotation: {x: 0, y: 0, z: 0}
@@ -13161,7 +13180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7777620672270909021, guid: b0b4e07cb306b7a469ec732ed6054d30, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21026,8 +21045,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
   m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
+  m_RequiresDepthTextureOption: 0
+  m_RequiresOpaqueTextureOption: 0
   m_CameraType: 0
   m_Cameras: []
   m_RendererIndex: -1
@@ -21036,7 +21055,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
+  m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -22633,7 +22652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -396751074686559199, guid: 788c9005c0c029c48be5c60d72173319, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 574184048319792986, guid: 788c9005c0c029c48be5c60d72173319, type: 3}
       propertyPath: m_LocalScale.x
@@ -28123,7 +28142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4718011608621808624, guid: 8c0bd9a974bd98b408325da9e014a006, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -28185,7 +28204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4312237559755967062, guid: e11aee3f89a779742ab2500c10d8308b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2164098953085390624, guid: e11aee3f89a779742ab2500c10d8308b, type: 3}
       propertyPath: m_LocalScale.x
@@ -28920,7 +28939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7047520218550004871, guid: 455197cbb2eda284bbc3e6001be3fae0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33119,7 +33138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5450020942614384389, guid: bb86fe0e6a3a75a4cb461a216e72d6f2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7934565601548879769, guid: bb86fe0e6a3a75a4cb461a216e72d6f2, type: 3}
       propertyPath: m_LocalScale.x
@@ -37607,7 +37626,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6914385113895836907, guid: ca80c02fa0e5ce04ab2201928ff42b2f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9128383959302335170, guid: ca80c02fa0e5ce04ab2201928ff42b2f, type: 3}
       propertyPath: m_LocalScale.x
@@ -41588,7 +41607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6076630694765140309, guid: 8b40e52fd1a892540b0815e4259916a1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2376100972469505597, guid: 8b40e52fd1a892540b0815e4259916a1, type: 3}
       propertyPath: m_LocalScale.x
