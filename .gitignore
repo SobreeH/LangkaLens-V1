@@ -11,7 +11,6 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 .utmp/
-/.mcp-git/.venv/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -35,6 +34,10 @@
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be committed to version control.
 *.blend1
 *.blend1.meta
+
+# Adobe Illustrator files
+*.ai
+*.ai.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -118,10 +121,17 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
-# AI Assistant & Agent local configurations / skills
+# AI Assistant & Agent local configurations, plugins, and skills
+.agents/
 .codex/
-!.codex/config.toml
 .gemini/
 .config/
+.mcp-git/
+.cursor/
+.claude/
+.windsurf/
+*.cursorrules
+CLAUDE.md
 Assets/MetaSkills/
 Assets/MetaSkills.meta
+
