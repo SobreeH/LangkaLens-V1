@@ -1,12 +1,12 @@
 ---
 name: git-commit
 description: >-
-  Inspect git repository changes, analyze diffs, automatically split changes into an appropriate number of clean atomic Conventional Commits (never one big commit), and stage and commit changes safely. Use whenever the user asks to check git status, create commits, review uncommitted changes, or commit modified files.
+  Slash action shortcut (/git-commit) to inspect git repository changes, analyze diffs, automatically split changes into an appropriate number of clean atomic Conventional Commits (never one big commit), and stage and commit changes safely. Use when invoked with /git-commit or whenever the user asks to check git status, create commits, review uncommitted changes, or commit modified files.
 ---
 
-# Git Commit Workflow
+# /git-commit Workflow
 
-This skill provides a systematic runbook for inspecting git working tree changes, **always splitting changes into an appropriate number of clean atomic commits** (never one giant catch-all commit), crafting descriptive Conventional Commit messages, and committing them safely.
+This skill provides a systematic runbook and slash action shortcut (`/git-commit`) for inspecting git working tree changes, **always splitting changes into an appropriate number of clean atomic commits** (never one giant catch-all commit), crafting descriptive Conventional Commit messages, and committing them safely.
 
 Detailed commit conventions, Unity-specific git hygiene rules, and atomic splitting guidelines are documented in [references/commit-rules.md](references/commit-rules.md).
 
