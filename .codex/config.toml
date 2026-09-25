@@ -18,3 +18,12 @@ approval_mode = "approve"
 
 [mcp_servers.unity-mcp.tools.Unity_Camera_Capture]
 approval_mode = "approve"
+
+# Git reference server for inspecting this repository's changes.
+[mcp_servers.git]
+command = 'E:\Unity\Projects\LangkaLens\.mcp-git\.venv\Scripts\python.exe'
+args = ['-m', 'mcp_server_git', '--repository', 'E:\Unity\Projects\LangkaLens']
+cwd = 'E:\Unity\Projects\LangkaLens'
+enabled = true
+enabled_tools = ['git_status', 'git_diff_unstaged', 'git_diff_staged', 'git_diff', 'git_log', 'git_show', 'git_branch']
+env = { GIT_CONFIG_COUNT = '1', GIT_CONFIG_KEY_0 = 'safe.directory', GIT_CONFIG_VALUE_0 = 'E:/Unity/Projects/LangkaLens' }

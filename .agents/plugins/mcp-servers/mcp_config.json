@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "git": {
+      "command": "E:\\Unity\\Projects\\LangkaLens\\.mcp-git\\.venv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "mcp_server_git",
+        "--repository",
+        "E:\\Unity\\Projects\\LangkaLens"
+      ],
+      "env": {
+        "GIT_CONFIG_COUNT": "1",
+        "GIT_CONFIG_KEY_0": "safe.directory",
+        "GIT_CONFIG_VALUE_0": "E:/Unity/Projects/LangkaLens"
+      }
+    },
+    "memory": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\sobre\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-memory\\dist\\index.js"
+      ],
+      "env": {
+        "MEMORY_FILE_PATH": "C:\\Users\\sobre\\.gemini\\memory.jsonl"
+      }
+    },
+    "sequential-thinking": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\sobre\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-sequential-thinking\\dist\\index.js"
+      ]
+    }
+  }
+}
