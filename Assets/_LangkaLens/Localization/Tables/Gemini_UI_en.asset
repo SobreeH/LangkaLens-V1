@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21152381415425
-    m_Localized: <sprite="send" index=0>  Send
+    m_Localized: Send
     m_Metadata:
       m_Items: []
   - m_Id: 9175584341667840
@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9176136488235008
-    m_Localized: <sprite="microphone" index=0> Speak
+    m_Localized: Speak
     m_Metadata:
       m_Items: []
   references:

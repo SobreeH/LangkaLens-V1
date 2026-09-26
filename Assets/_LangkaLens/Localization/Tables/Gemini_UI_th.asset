@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21152381415425
-    m_Localized: "<sprite=\"send\" index=0> \u0E2A\u0E48\u0E07"
+    m_Localized: "\u0E2A\u0E48\u0E07"
     m_Metadata:
       m_Items: []
   - m_Id: 9175584341667840
@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9176136488235008
-    m_Localized: "<sprite=\"microphone\" index=0> \u0E1E\u0E39\u0E14"
+    m_Localized: "\u0E1E\u0E39\u0E14"
     m_Metadata:
       m_Items: []
   references:
