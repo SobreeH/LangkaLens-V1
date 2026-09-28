@@ -401,7 +401,7 @@ PrefabInstance:
     - target: {fileID: 6353078612986044924, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
       propertyPath: canvasToToggle
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 54470344}
     - target: {fileID: 6650307950638927864, guid: 1703ac58b842c9a4c9547fbc2ae7d9d7, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
@@ -1490,6 +1490,11 @@ PrefabInstance:
 --- !u!224 &54470343 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8798681724080464221, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
+  m_PrefabInstance: {fileID: 54470342}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &54470344 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3797594491250639918, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
   m_PrefabInstance: {fileID: 54470342}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &57924779
