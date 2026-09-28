@@ -75,6 +75,54 @@ MonoBehaviour:
     m_Key: Area_Near_Boundary
     m_Metadata:
       m_Items: []
+  - m_Id: 2063007606288384
+    m_Key: SiteInfo_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842816
+    m_Key: SiteInfo_Subtitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842817
+    m_Key: SiteInfo_AboutTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842818
+    m_Key: SiteInfo_About
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842819
+    m_Key: SiteInfo_EvidenceTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842820
+    m_Key: SiteInfo_Evidence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842821
+    m_Key: SiteInfo_InterpretationTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842822
+    m_Key: SiteInfo_Interpretation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842823
+    m_Key: SiteInfo_SourceAbout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842824
+    m_Key: SiteInfo_SourceEvidence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842825
+    m_Key: SiteInfo_Previous
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842826
+    m_Key: SiteInfo_Next
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

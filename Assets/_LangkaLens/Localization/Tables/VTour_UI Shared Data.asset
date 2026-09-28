@@ -31,6 +31,22 @@ MonoBehaviour:
     m_Key: area_banwat_9
     m_Metadata:
       m_Items: []
+  - m_Id: 12235778906828800
+    m_Key: vtour_ctrl_exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12235778940383232
+    m_Key: vtour_ctrl_zoom_in
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12235778940383233
+    m_Key: vtour_ctrl_zoom_out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12235778940383234
+    m_Key: vtour_ctrl_teleport
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

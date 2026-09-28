@@ -100,6 +100,77 @@ MonoBehaviour:
       area.'
     m_Metadata:
       m_Items: []
+  - m_Id: 2063007606288384
+    m_Localized: Ban Jalae 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842816
+    m_Localized: Ancient Yarang | Pattani, Thailand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842817
+    m_Localized: The place
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842818
+    m_Localized: 'Ban Jalae 3 is a Buddhist brick monument in ancient Yarang, Pattani.
+      Excavation revealed two building phases, with the first dated to around the
+      7th century CE.
+
+
+      Votive tablets and miniature stupas found in the central
+      chamber show its religious role.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842819
+    m_Localized: Surviving evidence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842820
+    m_Localized: 'Look at the stepped base, projecting sides and window-like recesses.
+      The excavation record describes these features, helping relate the model to
+      the surviving ruin.
+
+
+      The books record a base about 13.5 x 13.6 m and
+      a central chamber 5.2 x 5.2 m.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842821
+    m_Localized: Reading the restoration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842822
+    m_Localized: 'The complete upper structure has not survived. Its restored form
+      is an interpretation; the books suggest a possible comparison with Candi Mendut
+      in Java.
+
+
+      This display is fitted to the viewing space. Its size, upper
+      tiers, colours and fine details are not a verified, exact replica.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842823
+    m_Localized: 'Sources: Yarang, p. 180
+
+      Southern Border Provinces, p. 66'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842824
+    m_Localized: 'Sources: Yarang, pp. 180, 192-194
+
+      Southern Border Provinces,
+      p. 66'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842825
+    m_Localized: Previous
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2063007639842826
+    m_Localized: Next
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

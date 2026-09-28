@@ -50,6 +50,18 @@ MonoBehaviour:
     m_Localized: Speak
     m_Metadata:
       m_Items: []
+  - m_Id: 11406881382379520
+    m_Localized: Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11406881415933952
+    m_Localized: You
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11406881415933953
+    m_Localized: Guide
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

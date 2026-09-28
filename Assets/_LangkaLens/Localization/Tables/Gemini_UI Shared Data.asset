@@ -31,6 +31,18 @@ MonoBehaviour:
     m_Key: UI_Button_Speak
     m_Metadata:
       m_Items: []
+  - m_Id: 11406881382379520
+    m_Key: UI_Button_Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11406881415933952
+    m_Key: Chat_Sender_User
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11406881415933953
+    m_Key: Chat_Sender_Guide
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
