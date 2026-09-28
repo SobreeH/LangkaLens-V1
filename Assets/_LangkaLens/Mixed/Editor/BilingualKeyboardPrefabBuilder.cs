@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>Authors the reusable UI; Meta ray setup is added with the SDK's canvas action before saving.</summary>
 public static class BilingualKeyboardPrefabBuilder
 {
-    public const string PrefabPath = "Assets/_LangkaLens/3D Models/Prefabs/Center/BilingualVirtualKeyboard.prefab";
+    public const string PrefabPath = "Assets/_LangkaLens/Mixed/3D Models/Prefabs/Center/BilingualVirtualKeyboard.prefab";
     private const string FontPath = "Assets/TextMesh Pro/Resources/Fonts & Materials/Sarabun-Medium SDF.asset";
 
     public static GameObject Create()

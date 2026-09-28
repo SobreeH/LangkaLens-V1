@@ -15,7 +15,7 @@ namespace LangkaLens.Editor
     public static class GeminiLocalizationSetup
     {
         private const string Table = "Gemini_UI";
-        private const string PrefabPath = "Assets/_LangkaLens/3D Models/Prefabs/Center/Gemini_Canvas.prefab";
+        private const string PrefabPath = "Assets/_LangkaLens/Mixed/3D Models/Prefabs/Center/Gemini_Canvas.prefab";
 
         private static readonly string[,] Copy =
         {
@@ -97,7 +97,7 @@ namespace LangkaLens.Editor
                 localizeEvent.RefreshString();
 
                 // Setup icon Image child matching Send_Button / Speak_Button pattern
-                const string iconPath = "Assets/_LangkaLens/3D Models/Icons/clear.png";
+                const string iconPath = "Assets/_LangkaLens/Mixed/3D Models/Icons/clear.png";
                 AssetDatabase.ImportAsset(iconPath, ImportAssetOptions.ForceUpdate);
                 var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(iconPath);
 

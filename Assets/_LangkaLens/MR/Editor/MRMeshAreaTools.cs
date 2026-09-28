@@ -58,7 +58,7 @@ namespace LangkaLens.Editor
             spawner.centerEyeCamera = rig.centerEyeAnchor;
             DisableVirtualLocomotion(rig);
 
-            const string materialPath = "Assets/_LangkaLens/Materials/MRBoundaryLine.mat";
+            const string materialPath = "Assets/_LangkaLens/MR/Materials/MRBoundaryLine.mat";
             Material material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
             if (material == null)
             {
