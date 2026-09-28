@@ -66,6 +66,25 @@ namespace LangkaLens.Editor
                         (Mathf.Abs(bounds.size.x - 14) < 0.001f || Mathf.Abs(bounds.size.z - 16.5f) < 0.001f), prefab.name + " maximizes fit without overflow");
                     Vector3 scale = model.transform.localScale;
                     Check(Mathf.Abs(scale.x - scale.y) < 0.001f && Mathf.Abs(scale.y - scale.z) < 0.001f, prefab.name + " proportions preserved");
+                    Vector3 fittedSize = bounds.size;
+                    Vector3 adjustment = new Vector3(0.25f, 0.1f, -0.4f);
+                    foreach (float multiplier in new[] { 1.05f, 0.95f })
+                    {
+                        Check(MRModelSpawner.FitModelToOpening(model.transform, area, 0, multiplier, adjustment),
+                            prefab.name + " adjusted fit succeeds");
+                        MRModelSpawner.TryGetBounds(model.transform, root.transform, out bounds);
+                        Check(Vector3.Distance(bounds.size, fittedSize * multiplier) < 0.002f,
+                            prefab.name + " adjustment scales all dimensions proportionally");
+                        Check(Mathf.Abs(bounds.center.x - 2.25f) < 0.001f &&
+                            Mathf.Abs(bounds.center.z - 12.35f) < 0.001f && Mathf.Abs(bounds.min.y - 0.1f) < 0.001f,
+                            prefab.name + " adjustment follows rotated site and preserves base height");
+                        Vector3 adjustedPosition = model.transform.position;
+                        Vector3 adjustedScale = model.transform.localScale;
+                        MRModelSpawner.FitModelToOpening(model.transform, area, 0, multiplier, adjustment);
+                        Check(Vector3.Distance(model.transform.position, adjustedPosition) < 0.002f &&
+                            Vector3.Distance(model.transform.localScale, adjustedScale) < 0.002f,
+                            prefab.name + " repeated fit does not accumulate adjustments");
+                    }
                     UnityEngine.Object.DestroyImmediate(model);
                 }
             }

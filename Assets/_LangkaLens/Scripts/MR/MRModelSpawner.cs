@@ -33,6 +33,12 @@ namespace LangkaLens.MR
         [Tooltip("Height of the model base in site-local metres.")]
         public float displayBaseHeight;
 
+        [Min(0.01f)]
+        [Tooltip("Uniform multiplier after automatic fitting: 1 = fitted size, 1.05 = 5% larger, 0.95 = 5% smaller. Respawn to apply.")]
+        public float fittedScaleMultiplier = 1f;
+        [Tooltip("Offset from the fitted position in site-local metres (X sideways, Y up, Z forward). Respawn to apply.")]
+        public Vector3 fittedPositionOffset = Vector3.zero;
+
         [Header("UI References")]
         [Tooltip("The canvas to hide when a model is spawned, and kept disabled while manual alignment is not done.")]
         public GameObject selectionCanvas;
@@ -209,7 +215,8 @@ namespace LangkaLens.MR
             _currentSpawnedModel.transform.localScale = globalSpawnScale;
 
             if (fitToCentralOpening && playableArea != null)
-                FitModelToOpening(_currentSpawnedModel.transform, playableArea, displayBaseHeight);
+                FitModelToOpening(_currentSpawnedModel.transform, playableArea, displayBaseHeight,
+                    fittedScaleMultiplier, fittedPositionOffset);
 
             // Dynamically add physics and interaction components for raw GLB models
             if (_currentSpawnedModel.GetComponent<Collider>() == null)
@@ -244,6 +251,12 @@ namespace LangkaLens.MR
 
         public static bool FitModelToOpening(Transform model, MRMeshPlayableArea area, float baseHeight)
         {
+            return FitModelToOpening(model, area, baseHeight, 1f, Vector3.zero);
+        }
+
+        public static bool FitModelToOpening(Transform model, MRMeshPlayableArea area, float baseHeight,
+            float scaleMultiplier, Vector3 positionOffset)
+        {
             Rect opening = area.ruinExclusion;
             if (opening.width <= 0 || opening.height <= 0 ||
                 !TryGetBounds(model, area.transform, out Bounds bounds) || bounds.size.x < 0.0001f || bounds.size.z < 0.0001f)
@@ -251,10 +264,11 @@ namespace LangkaLens.MR
 
             // Preserve the model's proportions and orientation; fit its horizontal footprint.
             float factor = Mathf.Min(opening.width / bounds.size.x, opening.height / bounds.size.z);
-            model.localScale *= factor;
+            // Scale before centering/grounding so an offset mesh pivot does not shift the fitted base.
+            model.localScale *= factor * Mathf.Max(0.01f, scaleMultiplier);
             TryGetBounds(model, area.transform, out bounds);
             Vector3 offset = new Vector3(opening.center.x - bounds.center.x, baseHeight - bounds.min.y,
-                opening.center.y - bounds.center.z);
+                opening.center.y - bounds.center.z) + positionOffset;
             model.position += area.transform.TransformVector(offset);
             return true;
         }
