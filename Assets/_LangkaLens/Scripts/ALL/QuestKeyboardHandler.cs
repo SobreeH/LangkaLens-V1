@@ -1,172 +1,104 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(TMP_InputField))]
-public class QuestKeyboardHandler : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, ISelectHandler, IDeselectHandler
+public class QuestKeyboardHandler : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHandler
 {
+    [Header("Keyboard")]
+    [Tooltip("Assign a scene-local bilingual keyboard. Leave empty to use the Quest system keyboard.")]
+    [SerializeField] private BilingualVirtualKeyboard customKeyboard;
     private TMP_InputField inputField;
-    private TouchScreenKeyboard overlayKeyboard;
     private Image targetImage;
     private Color originalColor = Color.white;
-    private bool isEditingActive = false;
 
     [Header("Visual Feedback Settings")]
-    [Tooltip("Color applied to the input field background when awaiting input.")]
     public Color activeBackgroundColor = new Color(0.88f, 0.94f, 1.0f, 1.0f);
-
-    [Tooltip("Whether to automatically send onSubmit when user presses Done on virtual keyboard.")]
+    [Tooltip("Send the chat message when the input field is submitted, including keyboard Done.")]
     public bool submitOnDone = true;
 
     private void Awake()
     {
-        EnsureInitialized();
-    }
-
-    private void EnsureInitialized()
-    {
-        if (inputField == null)
+        inputField = GetComponent<TMP_InputField>();
+        // A custom keyboard suppresses the native overlay for this field only.
+        inputField.shouldHideSoftKeyboard = customKeyboard != null;
+        inputField.shouldHideMobileInput = false;
+        inputField.shouldActivateOnSelect = true;
+        inputField.keyboardType = TouchScreenKeyboardType.Default;
+        if (customKeyboard != null)
         {
-            inputField = GetComponent<TMP_InputField>();
+            inputField.onFocusSelectAll = false;
+            inputField.resetOnDeActivation = false;
         }
-        if (targetImage == null)
+        targetImage = GetComponent<Image>();
+        if (targetImage != null)
         {
-            targetImage = GetComponent<Image>();
-            if (targetImage != null)
-            {
-                originalColor = targetImage.color;
-            }
+            originalColor = targetImage.color;
         }
     }
 
     private void OnEnable()
     {
-        EnsureInitialized();
+        if (customKeyboard != null) customKeyboard.Closed += OnCustomKeyboardClosed;
         if (inputField != null)
         {
             inputField.onSelect.AddListener(OnInputFieldSelected);
+            inputField.onDeselect.AddListener(OnInputFieldDeselected);
+            inputField.onEndEdit.AddListener(OnInputFieldDeselected);
         }
     }
 
     private void OnDisable()
     {
+        if (customKeyboard != null) customKeyboard.Closed -= OnCustomKeyboardClosed;
         if (inputField != null)
         {
             inputField.onSelect.RemoveListener(OnInputFieldSelected);
+            inputField.onDeselect.RemoveListener(OnInputFieldDeselected);
+            inputField.onEndEdit.RemoveListener(OnInputFieldDeselected);
         }
         CloseKeyboard();
     }
 
     private void OnInputFieldSelected(string text)
     {
-        OpenKeyboard();
+        SetEditingVisual(true);
+        if (customKeyboard != null) customKeyboard.Show(inputField);
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    private void OnCustomKeyboardClosed(TMP_InputField closedInput)
     {
-        OpenKeyboard();
+        if (closedInput == inputField) SetEditingVisual(false);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    private void OnInputFieldDeselected(string text)
     {
-        OpenKeyboard();
-    }
-
-    public void OnSelect(BaseEventData eventData)
-    {
-        OpenKeyboard();
-    }
-
-    public void OnDeselect(BaseEventData eventData)
-    {
-        // In VR with RayInteractors, releasing the trigger or glancing away causes an immediate OnDeselect event.
-        // We only close the keyboard if the overlay keyboard is no longer active.
-        if (overlayKeyboard == null || !overlayKeyboard.active)
+        if (customKeyboard != null && customKeyboard.Target == inputField)
         {
-            SetEditingVisual(false);
+            customKeyboard.CaptureSelection(inputField);
+            return;
         }
+        SetEditingVisual(false);
+    }
+
+    public void OnPointerClick(UnityEngine.EventSystems.PointerEventData eventData)
+    {
+        if (eventData.button == UnityEngine.EventSystems.PointerEventData.InputButton.Left && customKeyboard != null)
+            customKeyboard.Show(inputField);
     }
 
     public void OpenKeyboard()
     {
-        // Activate input field to show caret and enable text input
-        if (inputField != null)
-        {
-            inputField.ActivateInputField();
-            inputField.Select();
-        }
-
-        SetEditingVisual(true);
-
-        if (overlayKeyboard != null && overlayKeyboard.active)
-        {
+        if (inputField == null || !inputField.isActiveAndEnabled ||
+            !inputField.IsInteractable() || inputField.readOnly)
             return;
-        }
 
-        if (TouchScreenKeyboard.isSupported)
-        {
-            string placeholderText = "";
-            if (inputField.placeholder is TMP_Text placeholderTmp)
-            {
-                placeholderText = placeholderTmp.text;
-            }
-
-            // Open the Meta Quest system keyboard overlay
-            overlayKeyboard = TouchScreenKeyboard.Open(
-                inputField.text,
-                TouchScreenKeyboardType.Default,
-                autocorrection: false,
-                multiline: inputField.multiLine,
-                secure: inputField.contentType == TMP_InputField.ContentType.Password,
-                alert: false,
-                textPlaceholder: placeholderText
-            );
-        }
-        else
-        {
-            Debug.Log("[QuestKeyboardHandler] Keyboard requested. Input field activated for input. (System Keyboard overlay will display on Quest hardware).");
-        }
-    }
-
-    private void Update()
-    {
-        if (overlayKeyboard == null) return;
-
-        // Note: On Meta Quest, the system keyboard overlay may cause TouchScreenKeyboard to temporarily
-        // report LostFocus while the user is typing on the overlay. Do NOT cancel the keyboard on LostFocus.
-        if (overlayKeyboard.status == TouchScreenKeyboard.Status.Visible || overlayKeyboard.active)
-        {
-            if (inputField.text != overlayKeyboard.text)
-            {
-                inputField.text = overlayKeyboard.text;
-                inputField.caretPosition = inputField.text.Length;
-            }
-        }
-        else if (overlayKeyboard.status == TouchScreenKeyboard.Status.Done)
-        {
-            inputField.text = overlayKeyboard.text;
-            inputField.caretPosition = inputField.text.Length;
-            inputField.onEndEdit?.Invoke(inputField.text);
-
-            if (submitOnDone)
-            {
-                inputField.onSubmit?.Invoke(inputField.text);
-            }
-
-            CloseKeyboard();
-        }
-        else if (overlayKeyboard.status == TouchScreenKeyboard.Status.Canceled)
-        {
-            CloseKeyboard();
-        }
+        if (customKeyboard != null) customKeyboard.Show(inputField);
+        inputField.ActivateInputField();
     }
 
     private void SetEditingVisual(bool active)
     {
-        EnsureInitialized();
-        isEditingActive = active;
         if (targetImage != null)
         {
             targetImage.color = active ? activeBackgroundColor : originalColor;
@@ -175,14 +107,9 @@ public class QuestKeyboardHandler : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void CloseKeyboard()
     {
-        if (overlayKeyboard != null)
-        {
-            if (overlayKeyboard.active)
-            {
-                overlayKeyboard.active = false;
-            }
-            overlayKeyboard = null;
-        }
+        if (customKeyboard != null) customKeyboard.HideFor(inputField);
+        if (inputField != null)
+            inputField.DeactivateInputField();
         SetEditingVisual(false);
     }
 }
