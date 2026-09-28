@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Localization.Settings;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,6 +17,8 @@ public class GeminiChatUI : MonoBehaviour
     public TMP_Text chatLogText;
     public TMP_InputField inputField;
     public Button sendButton;
+    [Tooltip("Button to clear the chat messages from the viewport.")]
+    public Button clearButton;
     [Tooltip("Drag your Scroll View object here to enable auto-scrolling.")]
     public ScrollRect scrollRect; 
 
@@ -30,8 +33,12 @@ public class GeminiChatUI : MonoBehaviour
     public int maxOutputTokens = 150; 
     
     [TextArea(2,4)]
-    [Tooltip("Hidden instructions to dictate the AI's behavior and constraints.")]
-    public string systemPrompt = "You are an expert AI guide for the Yarang Ancient City VR museum. Keep all responses strictly under 2 sentences.";
+    [Tooltip("English guide instructions, used when the app locale is English (or not Thai).")]
+    public string systemPrompt = "You are a tour guide for Yarang Ancient City in Pattani, Thailand. Answer in English using short sentences and as few tokens as possible without losing accuracy. Avoid repetition and filler. If unsure, say so; do not invent facts.";
+
+    [TextArea(2, 4)]
+    [Tooltip("Thai guide instructions, used when the app locale is Thai.")]
+    public string thaiSystemPrompt = "คุณคือมัคคุเทศก์เมืองโบราณยะรัง จังหวัดปัตตานี ประเทศไทย ตอบเป็นภาษาไทยด้วยประโยคสั้น ใช้โทเคนให้น้อยที่สุดโดยคงความถูกต้อง ไม่กล่าวซ้ำหรือเกริ่นเกินจำเป็น หากไม่แน่ใจให้บอกตามตรง ห้ามแต่งข้อมูล";
 
 #if UNITY_EDITOR
     [Header("Inspector Debugging")]
@@ -39,16 +46,40 @@ public class GeminiChatUI : MonoBehaviour
     public string debugPrompt = "โปรดอธิบายลักษณะสถาปัตยกรรมทางประวัติศาสตร์ของซากเมืองโบราณยะรัง จังหวัดปัตตานี";
 #endif
 
+    private Coroutine currentRequestCoroutine;
+    private UnityWebRequest currentWebRequest;
+
     void Start()
     {
         if (sendButton != null)
         {
             sendButton.onClick.AddListener(SendMessageToGemini);
         }
+        if (clearButton != null)
+        {
+            clearButton.onClick.AddListener(ClearChatLog);
+        }
         if (inputField != null)
         {
-            inputField.onSubmit.AddListener((val) => SendMessageToGemini());
+            inputField.onSubmit.AddListener(OnInputSubmitted);
         }
+    }
+
+    private void OnInputSubmitted(string value)
+    {
+        QuestKeyboardHandler keyboardHandler = inputField.GetComponent<QuestKeyboardHandler>();
+        if (keyboardHandler == null || keyboardHandler.submitOnDone)
+            SendMessageToGemini();
+    }
+
+    private void OnDestroy()
+    {
+        if (sendButton != null)
+            sendButton.onClick.RemoveListener(SendMessageToGemini);
+        if (clearButton != null)
+            clearButton.onClick.RemoveListener(ClearChatLog);
+        if (inputField != null)
+            inputField.onSubmit.RemoveListener(OnInputSubmitted);
     }
 
     public void SendMessageToGemini()
@@ -77,17 +108,117 @@ public class GeminiChatUI : MonoBehaviour
     }
 #endif
 
+    /// <summary>
+    /// Clears the chat messages from the viewport and resets the scroll position to the top.
+    /// Cancels any active in-flight AI response.
+    /// </summary>
+    public void ClearChatLog()
+    {
+        if (currentRequestCoroutine != null)
+        {
+            StopCoroutine(currentRequestCoroutine);
+            currentRequestCoroutine = null;
+        }
+
+        if (currentWebRequest != null)
+        {
+            try
+            {
+                currentWebRequest.Abort();
+                currentWebRequest.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[GeminiChatUI] Exception aborting request during clear: {ex.Message}");
+            }
+            currentWebRequest = null;
+        }
+
+        if (chatLogText != null)
+        {
+            chatLogText.text = string.Empty;
+        }
+
+        ResetScrollPosition();
+
+        Debug.Log("<b>[GeminiChatUI]:</b> Viewport content cleared.");
+    }
+
+    /// <summary>
+    /// Alias for ClearChatLog.
+    /// </summary>
+    public void ClearChat() => ClearChatLog();
+
+    /// <summary>
+    /// Alias for ClearChatLog.
+    /// </summary>
+    public void ClearContent() => ClearChatLog();
+
+    /// <summary>
+    /// Resets the Scroll View position back to the top.
+    /// </summary>
+    public void ResetScrollPosition()
+    {
+        if (scrollRect != null)
+        {
+            Canvas.ForceUpdateCanvases();
+            scrollRect.verticalNormalizedPosition = 1f;
+            if (scrollRect.content != null)
+            {
+                scrollRect.content.anchoredPosition = Vector2.zero;
+            }
+        }
+    }
+
+    private string GetSenderUserLabel()
+    {
+        try
+        {
+            string localized = LocalizationSettings.StringDatabase.GetLocalizedString("Gemini_UI", "Chat_Sender_User");
+            if (!string.IsNullOrEmpty(localized)) return localized;
+        }
+        catch { }
+        return IsThaiLocale() ? "คุณ" : "You";
+    }
+
+    private string GetSenderGuideLabel()
+    {
+        try
+        {
+            string localized = LocalizationSettings.StringDatabase.GetLocalizedString("Gemini_UI", "Chat_Sender_Guide");
+            if (!string.IsNullOrEmpty(localized)) return localized;
+        }
+        catch { }
+        return IsThaiLocale() ? "ไกด์" : "Guide";
+    }
+
+    private bool IsThaiLocale()
+    {
+        var currentLocale = LocalizationSettings.SelectedLocale;
+        return currentLocale != null && currentLocale.Identifier.Code.StartsWith("th");
+    }
+
+    private string GetLocalizedSystemPrompt()
+    {
+        return IsThaiLocale() ? thaiSystemPrompt : systemPrompt;
+    }
+
     private void SendAndLog(string prompt)
     {
         // Visual distinction for the User Query using Rich Text Colors
         if (chatLogText != null) 
         {
-            chatLogText.text += $"\n\n<color=#55AAFF><b>You:</b></color> {prompt}";
+            string userLabel = GetSenderUserLabel();
+            chatLogText.text += $"\n\n<color=#55AAFF><b>{userLabel}:</b></color> {prompt}";
             ScrollToBottom();
         }
         
         Debug.Log($"<b>[Gemini Input]:</b> {prompt}");
-        StartCoroutine(SendRequest(prompt));
+        if (currentRequestCoroutine != null)
+        {
+            StopCoroutine(currentRequestCoroutine);
+        }
+        currentRequestCoroutine = StartCoroutine(SendRequest(prompt));
     }
 
     private IEnumerator SendRequest(string prompt)
@@ -95,18 +226,18 @@ public class GeminiChatUI : MonoBehaviour
         // Construct the payload with GenerationConfig and SystemInstruction
         GeminiRequest requestData = new GeminiRequest
         {
-            systemInstruction = new SystemInstructionData
+            system_instruction = new SystemInstructionData
             {
                 role = "system",
-                parts = new Part[] { new Part { text = systemPrompt } }
+                parts = new Part[] { new Part { text = GetLocalizedSystemPrompt() } }
             },
             contents = new Content[]
             {
                 new Content { parts = new Part[] { new Part { text = prompt } } }
             },
-            generationConfig = new GenerationConfigData
+            generation_config = new GenerationConfigData
             {
-                maxOutputTokens = this.maxOutputTokens
+                max_output_tokens = this.maxOutputTokens
             }
         };
 
@@ -115,12 +246,21 @@ public class GeminiChatUI : MonoBehaviour
 
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
         {
+            currentWebRequest = request;
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonPayload);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
 
             yield return request.SendWebRequest();
+
+            // If the request was aborted during clear, exit cleanly
+            if (request.result == UnityWebRequest.Result.ConnectionError && request.error == "Request aborted")
+            {
+                currentWebRequest = null;
+                currentRequestCoroutine = null;
+                yield break;
+            }
 
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -129,14 +269,17 @@ public class GeminiChatUI : MonoBehaviour
                 
                 if (chatLogText != null) 
                 {
-                    chatLogText.text += $"\n<color=red><b>Debug Error:</b> {rawError}</color>";
+                    string errorLabel = IsThaiLocale() ? "ข้อผิดพลาด:" : "Debug Error:";
+                    chatLogText.text += $"\n<color=red><b>{errorLabel}</b> {rawError}</color>";
                     ScrollToBottom();
                 }
             }
             else
             {
                 GeminiResponse response = JsonUtility.FromJson<GeminiResponse>(request.downloadHandler.text);
-                if (response != null && response.candidates.Length > 0)
+                if (response != null && response.candidates != null && response.candidates.Length > 0 &&
+                    response.candidates[0].content != null && response.candidates[0].content.parts != null &&
+                    response.candidates[0].content.parts.Length > 0)
                 {
                     string reply = response.candidates[0].content.parts[0].text;
                     
@@ -145,12 +288,15 @@ public class GeminiChatUI : MonoBehaviour
                     // Visual distinction for the AI Response using Rich Text Colors
                     if (chatLogText != null) 
                     {
-                        chatLogText.text += $"\n\n<color=#00FFAA><b>Guide:</b></color> {reply}";
+                        string guideLabel = GetSenderGuideLabel();
+                        chatLogText.text += $"\n\n<color=#00FFAA><b>{guideLabel}:</b></color> {reply}";
                         ScrollToBottom();
                     }
                 }
             }
+            currentWebRequest = null;
         }
+        currentRequestCoroutine = null;
     }
     
     // Forces the Scroll View to snap to the newest message
@@ -167,9 +313,9 @@ public class GeminiChatUI : MonoBehaviour
 // Data structures mapping to the API payload
 [Serializable] public class GeminiRequest 
 { 
-    public SystemInstructionData systemInstruction;
+    public SystemInstructionData system_instruction;
     public Content[] contents; 
-    public GenerationConfigData generationConfig;
+    public GenerationConfigData generation_config;
 }
 [Serializable] public class SystemInstructionData 
 { 
@@ -178,7 +324,7 @@ public class GeminiChatUI : MonoBehaviour
 }
 [Serializable] public class GenerationConfigData 
 { 
-    public int maxOutputTokens; 
+    public int max_output_tokens; 
 }
 [Serializable] public class Content { public Part[] parts; }
 [Serializable] public class Part { public string text; }
@@ -216,6 +362,11 @@ public class GeminiChatUIEditor : Editor
             {
                 Debug.LogWarning("[System]: You must be in Play Mode to send web requests.");
             }
+        }
+
+        if (GUILayout.Button("Clear Chat Content", buttonStyle, GUILayout.Height(30)))
+        {
+            chatScript.ClearChatLog();
         }
     }
 }
