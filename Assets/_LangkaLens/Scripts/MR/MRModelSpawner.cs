@@ -58,6 +58,9 @@ namespace LangkaLens.MR
 
         private GameObject _currentSpawnedModel;
 
+        public bool IsModelVisible => isActiveAndEnabled && _currentSpawnedModel != null &&
+                                      _currentSpawnedModel.activeInHierarchy;
+
         private void Start()
         {
             if (alignment == null && playableArea != null)
