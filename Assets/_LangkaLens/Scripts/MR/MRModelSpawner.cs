@@ -5,8 +5,8 @@ namespace LangkaLens.MR
     [DefaultExecutionOrder(400)]
     public class MRModelSpawner : MonoBehaviour
     {
-        [Header("Model Prefabs")]
-        public GameObject[] modelPrefabs;
+        [Header("Site restoration")]
+        public GameObject siteModelPrefab;
 
         [Header("Global Spawn Settings")]
         [Tooltip("If assigned, the model will spawn at this transform's position and rotation.")]
@@ -39,11 +39,7 @@ namespace LangkaLens.MR
         [Tooltip("Offset from the fitted position in site-local metres (X sideways, Y up, Z forward). Respawn to apply.")]
         public Vector3 fittedPositionOffset = Vector3.zero;
 
-        [Header("UI References")]
-        [Tooltip("The canvas to hide when a model is spawned, and kept disabled while manual alignment is not done.")]
-        public GameObject selectionCanvas;
-
-        [Tooltip("Alignment reference. When assigned (or detected via playableArea), selectionCanvas is disabled until alignment is confirmed.")]
+        [Tooltip("The entrance alignment that must be confirmed before the restoration appears.")]
         public MRMeshReferenceAlignment alignment;
 
         public bool IsAlignmentDone
@@ -72,81 +68,13 @@ namespace LangkaLens.MR
             {
                 alignment = FindFirstObjectByType<MRMeshReferenceAlignment>();
             }
-
-            UpdateSelectionCanvasState();
         }
 
-        private void Update()
+        public void SpawnModel()
         {
-            // Despawn the model if the 'B' or 'Y' button is pressed
-            if (OVRInput.GetDown(OVRInput.RawButton.B) || OVRInput.GetDown(OVRInput.RawButton.Y))
-            {
-                DespawnModel();
-            }
-
-            UpdateSelectionCanvasState();
-        }
-
-        public void UpdateSelectionCanvasState()
-        {
-            if (selectionCanvas == null) return;
-
-            bool shouldBeActive = IsAlignmentDone && _currentSpawnedModel == null;
-            if (selectionCanvas.activeSelf != shouldBeActive)
-            {
-                selectionCanvas.SetActive(shouldBeActive);
-            }
-        }
-
-        public void SpawnModel(int index)
-        {
-            if (!IsAlignmentDone)
-            {
-                Debug.Log("Align the entrance reference before selecting a model.");
+            if (_currentSpawnedModel != null || !IsAlignmentDone ||
+                (playableArea != null && !playableArea.CanPlay) || siteModelPrefab == null)
                 return;
-            }
-
-            if (playableArea != null && !playableArea.CanPlay)
-            {
-                Debug.Log("Site playback is paused. Check alignment, tracking, passthrough and any enabled walking boundary before selecting a model.");
-                return;
-            }
-
-            if (modelPrefabs == null || index < 0 || index >= modelPrefabs.Length)
-            {
-                Debug.LogWarning("Invalid model index.");
-                return;
-            }
-
-            if (modelPrefabs[index] == null)
-            {
-                Debug.LogWarning("Model prefab is null.");
-                return;
-            }
-
-            // Destroy currently spawned model if it exists
-            if (_currentSpawnedModel != null)
-            {
-#if UNITY_EDITOR
-                if (!Application.isPlaying)
-                {
-                    DestroyImmediate(_currentSpawnedModel);
-                }
-                else
-                {
-                    Destroy(_currentSpawnedModel);
-                }
-#else
-                Destroy(_currentSpawnedModel);
-#endif
-            }
-
-            // Hide the canvas
-            if (selectionCanvas != null)
-            {
-                selectionCanvas.SetActive(false);
-            }
-
             Vector3 finalSpawnPos;
             Quaternion finalRotation;
 
@@ -198,8 +126,8 @@ namespace LangkaLens.MR
                 finalRotation = Quaternion.identity; 
             }
             
-            _currentSpawnedModel = Instantiate(modelPrefabs[index], finalSpawnPos, finalRotation);
-            _currentSpawnedModel.name = modelPrefabs[index].name + "_Spawned";
+            _currentSpawnedModel = Instantiate(siteModelPrefab, finalSpawnPos, finalRotation);
+            _currentSpawnedModel.name = siteModelPrefab.name + "_Spawned";
             
             Transform targetParent = playableArea != null ? playableArea.transform : null;
             if (modelPlacement != null)
@@ -295,8 +223,11 @@ namespace LangkaLens.MR
 
         private void LateUpdate()
         {
-            if (playableArea != null && _currentSpawnedModel != null && _currentSpawnedModel.activeSelf != playableArea.CanPlay)
-                _currentSpawnedModel.SetActive(playableArea.CanPlay);
+            bool canDisplay = IsAlignmentDone && (playableArea == null || playableArea.CanPlay);
+            if (canDisplay && _currentSpawnedModel == null)
+                SpawnModel();
+            if (_currentSpawnedModel != null && _currentSpawnedModel.activeSelf != canDisplay)
+                _currentSpawnedModel.SetActive(canDisplay);
         }
 
         public void DespawnModel()
@@ -317,22 +248,13 @@ namespace LangkaLens.MR
 #endif
                 _currentSpawnedModel = null;
             }
-
-            UpdateSelectionCanvasState();
         }
 
 #if UNITY_EDITOR
         [ContextMenu("Spawn Demo Model (Editor Only)")]
         private void EditorSpawnDemoModel()
         {
-            if (modelPrefabs != null && modelPrefabs.Length > 0)
-            {
-                SpawnModel(0);
-            }
-            else
-            {
-                Debug.LogWarning("No model prefabs assigned to spawn.");
-            }
+            SpawnModel();
         }
 
         [ContextMenu("Despawn Demo Model (Editor Only)")]

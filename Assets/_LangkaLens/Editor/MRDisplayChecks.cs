@@ -52,7 +52,7 @@ namespace LangkaLens.Editor
                 Check(area.ContainsWorldPoint(root.transform.TransformPoint(Vector3.zero), out distance) && distance > 0.99f, "Touching floor seam is traversable");
 
                 area.ruinExclusion = new Rect(-5, 4.5f, 14, 16.5f);
-                foreach (var prefab in installed.modelPrefabs)
+                foreach (var prefab in new[] { installed.siteModelPrefab })
                 {
                     var model = UnityEngine.Object.Instantiate(prefab, root.transform);
                     model.transform.localPosition = new Vector3(10, -5, 3);

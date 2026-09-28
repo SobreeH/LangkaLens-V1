@@ -296,7 +296,7 @@ namespace LangkaLens.Editor
         }
 
         // Exercise the spawner without starting XR or entering Play mode in the user's scene.
-        private static int CheckContentGate()
+        public static int CheckContentGate()
         {
             int passed = 0;
             void Check(bool condition, string name) { if (!condition) throw new Exception("Failed: " + name); passed++; }
@@ -310,17 +310,21 @@ namespace LangkaLens.Editor
                 var template = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 SceneManager.MoveGameObjectToScene(template, scene);
                 spawner.playableArea = area;
-                spawner.modelPrefabs = new[] { template };
+                spawner.siteModelPrefab = template;
                 spawner.modelPlacement = root.transform;
                 var current = typeof(MRModelSpawner).GetField("_currentSpawnedModel", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 var lateUpdate = typeof(MRModelSpawner).GetMethod("LateUpdate", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 var state = typeof(MRMeshPlayableArea).GetProperty("State");
-                spawner.SpawnModel(0);
+                lateUpdate.Invoke(spawner, null);
                 Check(current.GetValue(spawner) == null, "Spawning blocked before alignment");
                 state.SetValue(area, MRMeshPlayableArea.AreaState.Inside);
-                spawner.SpawnModel(0);
+                lateUpdate.Invoke(spawner, null);
                 var instance = (GameObject)current.GetValue(spawner);
                 Check(instance != null && instance.transform.parent == area.transform, "Site model follows aligned root");
+                lateUpdate.Invoke(spawner, null);
+                spawner.SpawnModel();
+                Check(current.GetValue(spawner) == instance && root.transform.childCount == 1,
+                    "Repeated automatic and explicit spawning keep one instance");
                 Check(instance.GetComponent<MRSpatialObject>() == null, "No conflicting per-model anchor");
                 area.footprintMode = MRMeshPlayableArea.FootprintMode.Unrestricted;
                 Vector3 anchoredPosition = instance.transform.position;
@@ -330,6 +334,10 @@ namespace LangkaLens.Editor
                 state.SetValue(area, MRMeshPlayableArea.AreaState.Aligning);
                 lateUpdate.Invoke(spawner, null);
                 Check(!instance.activeSelf && !area.CanPlay, "Unrestricted mode still requires alignment");
+                state.SetValue(area, MRMeshPlayableArea.AreaState.Inside);
+                lateUpdate.Invoke(spawner, null);
+                Check(instance.activeSelf && current.GetValue(spawner) == instance && instance.transform.position == anchoredPosition,
+                    "Realignment restores the same calibrated instance");
                 state.SetValue(area, MRMeshPlayableArea.AreaState.Outside);
                 lateUpdate.Invoke(spawner, null);
                 Check(!instance.activeSelf, "Leaving interior hides content");
@@ -340,6 +348,9 @@ namespace LangkaLens.Editor
                 lateUpdate.Invoke(spawner, null);
                 Check(!instance.activeSelf, "Tracking loss hides content");
                 state.SetValue(area, MRMeshPlayableArea.AreaState.Inside);
+                lateUpdate.Invoke(spawner, null);
+                Check(instance.activeSelf && current.GetValue(spawner) == instance,
+                    "Tracking recovery restores the same model");
                 area.enabled = false;
                 lateUpdate.Invoke(spawner, null);
                 Check(!instance.activeSelf, "Disabled area fails closed");
