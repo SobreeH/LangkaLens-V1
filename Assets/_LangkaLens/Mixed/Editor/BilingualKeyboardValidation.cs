@@ -3,10 +3,83 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using Oculus.Interaction;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>Offline Play Mode checks; no microphone, API calls, or chat messages are sent.</summary>
 public static class BilingualKeyboardValidation
 {
+    [MenuItem("Tools/LangkaLens/Validate Chatbot Keyboard Ray Routing")]
+    public static void ValidateRayRouting()
+    {
+        // Direct Button clicks bypass Meta's canvas filter. Exercise the saved chatbot
+        // hierarchy and actual GraphicRaycaster/PointableCanvasModule filter instead.
+        var scene = EditorSceneManager.NewPreviewScene();
+        var texture = new RenderTexture(512, 512, 24);
+        try
+        {
+            var asset = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/_LangkaLens/Mixed/3D Models/Prefabs/Center/Gemini_Canvas.prefab");
+            var root = (GameObject)PrefabUtility.InstantiatePrefab(asset, scene);
+            var keyboard = root.GetComponentInChildren<BilingualVirtualKeyboard>(true);
+            keyboard.transform.Find("KeyboardPanel").gameObject.SetActive(true);
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)keyboard.transform);
+            Canvas.ForceUpdateCanvases();
+            var pointable = keyboard.GetComponentInChildren<PointableCanvas>(true);
+            var cameraObject = new GameObject("KeyboardRayTestCamera", typeof(Camera));
+            SceneManager.MoveGameObjectToScene(cameraObject, scene);
+            var camera = cameraObject.GetComponent<Camera>();
+            camera.enabled = false;
+            camera.orthographic = true;
+            camera.orthographicSize = 2;
+            camera.nearClipPlane = 0.01f;
+            camera.farClipPlane = 10;
+            camera.targetTexture = texture;
+            pointable.Canvas.worldCamera = camera;
+            var eventsObject = new GameObject("KeyboardRayTestEvents", typeof(EventSystem));
+            SceneManager.MoveGameObjectToScene(eventsObject, scene);
+            int count = 0;
+            foreach (var key in keyboard.GetComponentsInChildren<VirtualKeyboardKey>())
+            {
+                var canvas = key.GetComponentInParent<Canvas>();
+                Require(canvas.rootCanvas == pointable.Canvas,
+                    key.name + ": Meta rejects nested canvas hits; pointable must target the root canvas");
+                var rt = (RectTransform)key.transform;
+                Vector3 center = rt.TransformPoint(rt.rect.center);
+                camera.transform.SetPositionAndRotation(center - canvas.transform.forward, canvas.transform.rotation);
+                // Preview-scene graphics have depth -1 until a camera renders them.
+                camera.Render();
+                var data = new PointerEventData(eventsObject.GetComponent<EventSystem>())
+                    { position = camera.WorldToScreenPoint(center) };
+                var hits = new List<RaycastResult>();
+                canvas.GetComponent<GraphicRaycaster>().Raycast(data, hits);
+                var hit = RayFilterProbe.First(hits, pointable.Canvas);
+                Require(hit.gameObject == key.gameObject, key.name + ": ray must reach the key (hit=" +
+                    (hit.gameObject == null ? "none" : hit.gameObject.name) + ", candidates=" + hits.Count +
+                    ", depth=" + key.GetComponent<Graphic>().depth + ", center=" + center + ")");
+                count++;
+            }
+            Require(count > 50, "All keyboard controls were checked");
+            Debug.Log("Chatbot keyboard: " + count + " keys passed graphic raycasting and Meta canvas filtering.");
+        }
+        finally
+        {
+            EditorSceneManager.ClosePreviewScene(scene);
+            texture.Release();
+            UnityEngine.Object.DestroyImmediate(texture);
+        }
+    }
+
+    private sealed class RayFilterProbe : PointableCanvasModule
+    {
+        public static RaycastResult First(List<RaycastResult> hits, Canvas canvas)
+            => FindFirstRaycastWithinCanvas(hits, canvas);
+    }
+
     [MenuItem("Tools/LangkaLens/Validate Bilingual Keyboard (Play Mode)")]
     public static void Validate()
     {

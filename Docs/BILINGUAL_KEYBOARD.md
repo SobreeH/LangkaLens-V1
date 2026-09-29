@@ -2,7 +2,9 @@
 
 ## Already integrated
 
-`Assets/_LangkaLens/3D Models/Prefabs/Center/BilingualVirtualKeyboard.prefab` is nested in the shared `Gemini_Canvas.prefab` and connected to its input field. MR, VR Tour, VR Museum, and AI test scenes reference that chatbot prefab and inherit this addition without scene-specific script changes.
+`Assets/_LangkaLens/Mixed/3D Models/Prefabs/Center/BilingualVirtualKeyboard.prefab` is nested in the shared `Gemini_Canvas.prefab` and connected to its input field. MR, VR Tour, VR Museum, and AI test scenes reference that chatbot prefab and inherit this addition without scene-specific script changes.
+
+The chatbot instance overrides the keyboard's standalone setup: its nested Canvas and GraphicRaycaster are removed, and the keyboard's PointableCanvas targets the chatbot's root Canvas. This is required by the installed Meta SDK's root-canvas hit filter. Keeping a separate nested Canvas as the PointableCanvas target makes the keyboard visible but rejects its key hits. The keyboard keeps its own ray surface and remains inside the reusable chatbot prefab.
 
 Selecting the chat input opens the custom keyboard below the chat panel. Native keyboard opening is suppressed only on fields with a custom keyboard assigned. The existing Quest system-keyboard implementation remains the fallback when that reference is empty.
 
@@ -12,7 +14,7 @@ Selecting the chat input opens the custom keyboard below the chat panel. Native 
 2. Add `QuestKeyboardHandler` to a standard text `TMP_InputField`.
 3. Assign the local keyboard instance to the handler's **Custom Keyboard** field.
 4. Use a TMP font that contains English and Thai. The supplied key labels use the project's Sarabun font.
-5. Position the keyboard where it is comfortable to read and point at. Its standalone size is 2.0 by 0.8 metres at the supplied 0.001 scale; scale the root uniformly to fit the scene. When nested under a scaled world-space canvas, use local scale 1, as in the chatbot.
+5. Position the keyboard where it is comfortable to read and point at. Its standalone size is 2.0 by 0.8 metres at the supplied 0.001 scale; scale the root uniformly to fit the scene. Keep a standalone keyboard outside other Canvases. For the chatbot, reuse the whole `Gemini_Canvas.prefab`; its nested keyboard already has the required Canvas overrides and local scale 1.
 
 The scene needs one EventSystem with Meta `PointableCanvasModule` and an interaction rig with controller/hand ray interactors. The keyboard prefab does not create extra EventSystems or rigs. For additive scenes, provide those shared scene services only once.
 
@@ -35,6 +37,9 @@ This is a free-text keyboard for chat/search fields. It is not an IME with predi
 Layout reference: [Unicode CLDR Thai keyboard layouts](https://www.unicode.org/cldr/charts/43/keyboards/layouts/th.html).
 
 ## Validation
+
+- September 29 ray-input regression: the original chatbot failed Meta's root-canvas hit filter. After correcting the prefab, all 55 keys passed actual GraphicRaycaster hits and the installed PointableCanvasModule filter. Run **Tools > LangkaLens > Validate Chatbot Keyboard Ray Routing** in Edit Mode to repeat this check. It uses an isolated preview scene and sends no API requests.
+- The 14 offline typing checks passed again after the routing correction; the corrected chatbot keyboard also remained open after Play Mode initialization.
 
 - Unity compiled the scripts.
 - 14 offline Play Mode checks passed: English and Thai insertion, Shift, tone-mark deletion, selection replacement, caret editing, surrogate handling, character limits, single submission, reopen cleanup, retargeting, disable cleanup, and independent instances.
