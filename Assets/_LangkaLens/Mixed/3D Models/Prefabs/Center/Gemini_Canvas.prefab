@@ -35,6 +35,7 @@ RectTransform:
   - {fileID: 3453220664789900266}
   - {fileID: 6654056141296172930}
   - {fileID: 4243759251571072846}
+  - {fileID: 4424202035256470172}
   m_Father: {fileID: 8798681724080464221}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -272,7 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestKeyboardHandler
   customKeyboard: {fileID: 3762717746723497016}
-  activeBackgroundColor: {r: 0.88, g: 0.94, b: 1, a: 1}
+  activeBackgroundColor: {r: 0.3, g: 0.18, b: 0.16, a: 1}
   submitOnDone: 1
 --- !u!1 &568547110150375628
 GameObject:
@@ -1582,17 +1583,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2909087960696606565}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2.5822, y: 2.5822, z: 2.5822}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3786003252050246157}
   - {fileID: 2830117438632486419}
-  m_Father: {fileID: 8375993107812385901}
+  m_Father: {fileID: 3608427517807545081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 259.51437, y: 137}
+  m_AnchoredPosition: {x: 681.6946, y: 507.75806}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6326218075808203945
@@ -1888,6 +1889,7 @@ MonoBehaviour:
   chatLogText: {fileID: 3983674324899947968}
   inputField: {fileID: 1752833821977741932}
   sendButton: {fileID: 8971615632284664095}
+  sendButtonLabel: {fileID: 1323073276536485875}
   clearButton: {fileID: 5471906679022770873}
   scrollRect: {fileID: 5216660772292662824}
   apiKey: AQ.Ab8RN6LWboDZRwzxj0NOL_zFqJf6TPNUzFlSmQh45bKeYasovQ
@@ -1923,7 +1925,7 @@ MonoBehaviour:
   speakButtonText: {fileID: 2445905706643818451}
   geminiChatUI: {fileID: 8721593612043548131}
   groqApiKey: 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
-  modelName: whisper-large-v3
+  modelName: whisper-large-v3-turbo
   languageMode: 0
   explicitLanguageCode: th
   thaiPromptContext: "\u0E02\u0E49\u0E2D\u0E04\u0E27\u0E32\u0E21\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
@@ -1938,6 +1940,7 @@ MonoBehaviour:
   maxRecordingDuration: 15
   sampleRate: 16000
   recordingButtonColor: {r: 0.92, g: 0.3, b: 0.25, a: 1}
+  disabledTextColor: {r: 0, g: 0, b: 0, a: 0}
   isRecording: 0
   isTranscribing: 0
 --- !u!1 &5122496602721634532
@@ -2399,7 +2402,6 @@ RectTransform:
   m_LocalScale: {x: 2.5822, y: 2.5822, z: 2.5822}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4424202035256470172}
   - {fileID: 2636789264775911985}
   - {fileID: 9038146532293494301}
   m_Father: {fileID: 3608427517807545081}
@@ -2659,7 +2661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2852,8 +2854,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4285243576
+  m_fontColor: {r: 0.72156864, g: 0.627451, b: 0.41960788, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3087,7 +3089,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 96792957321971730, guid: 2116f63220db54540b3d125abbcb85e1, type: 3}
       propertyPath: _canvas
-      value:
+      value: 
       objectReference: {fileID: 3832701758050621325}
     - target: {fileID: 7914412356252074477, guid: 2116f63220db54540b3d125abbcb85e1, type: 3}
       propertyPath: m_Name
