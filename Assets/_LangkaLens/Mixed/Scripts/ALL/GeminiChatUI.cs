@@ -20,6 +20,17 @@ public class GeminiChatUI : MonoBehaviour
     public TMP_InputField inputField;
     public Button sendButton;
     [SerializeField] private TMP_Text sendButtonLabel;
+
+    [Header("Send Button Visuals")]
+    [Tooltip("The icon Image component on the send button. Auto-detected if not assigned.")]
+    public Image sendButtonIcon;
+    [Tooltip("Sprite for Send state (defaults to current icon sprite if not set).")]
+    public Sprite sendIconSprite;
+    [Tooltip("Sprite for Cancel/Stop state (e.g. stop.png or cancel.png).")]
+    public Sprite cancelIconSprite;
+    [Tooltip("Button background color tint when in Cancel/Pending state. Set alpha to 0 to keep original color.")]
+    public Color cancelButtonColor = new Color(0.55f, 0.15f, 0.15f, 1f);
+
     [Tooltip("Button to clear the chat messages from the viewport.")]
     public Button clearButton;
     [Tooltip("Drag your Scroll View object here to enable auto-scrolling.")]
@@ -29,7 +40,10 @@ public class GeminiChatUI : MonoBehaviour
     public string apiKey = "YOUR_API_KEY_HERE";
     [Tooltip("Gemini Flash or Flash-Lite model name for chat generation.")]
     public string modelName = "gemini-3.5-flash-lite";
-    private string ApiEndpoint => $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key=";
+    [Tooltip("Try the fallback once if the main model is unavailable (404, 408, 429, or 5xx).")]
+    public bool enableFallback = true;
+    [Tooltip("Alternative chat model. Uses the same API key, prompt and response limit.")]
+    public string fallbackModelName = "gemini-3.1-flash-lite";
 
     [Header("AI Settings")]
     [Tooltip("Maximum length of the AI's response in tokens. 100 tokens is roughly 60-80 words.")]
@@ -54,20 +68,59 @@ public class GeminiChatUI : MonoBehaviour
     private bool requestPending;
     private string pendingStatus;
     private LocalizeStringEvent sendLabelLocalization;
-    private bool restoreLabelLocalization;
     private bool awaitingResponse;
+    private bool usingFallback;
+    private Image sendButtonBackground;
+    private Color originalButtonColor = Color.white;
 
     private void Awake()
     {
-        if (sendButtonLabel == null && sendButton != null)
+        InitializeSendButtonReferences();
+    }
+
+    private void InitializeSendButtonReferences()
+    {
+        if (sendButton == null) return;
+
+        if (sendButtonBackground == null)
+        {
+            sendButtonBackground = sendButton.GetComponent<Image>();
+            if (sendButtonBackground != null)
+                originalButtonColor = sendButtonBackground.color;
+        }
+
+        if (sendButtonLabel == null)
             sendButtonLabel = sendButton.GetComponentInChildren<TMP_Text>(true);
-        if (sendButtonLabel != null)
+
+        if (sendLabelLocalization == null && sendButtonLabel != null)
             sendLabelLocalization = sendButtonLabel.GetComponent<LocalizeStringEvent>();
+
+        if (sendButtonIcon == null)
+        {
+            var images = sendButton.GetComponentsInChildren<Image>(true);
+            foreach (var img in images)
+            {
+                if (img != sendButtonBackground)
+                {
+                    sendButtonIcon = img;
+                    break;
+                }
+            }
+        }
+
+        if (sendButtonIcon != null && sendIconSprite == null && sendButtonIcon.sprite != null)
+        {
+            sendIconSprite = sendButtonIcon.sprite;
+        }
     }
 
     private void OnEnable()
     {
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
+        if (!requestPending)
+        {
+            SetRequestPending(false);
+        }
     }
 
     private void OnLocaleChanged(Locale locale)
@@ -76,29 +129,60 @@ public class GeminiChatUI : MonoBehaviour
         if (requestPending) ShowRequestStatus();
     }
 
-    private void SetRequestPending(bool pending)
+    public bool IsRequestPending => requestPending;
+
+    public void SetRequestPending(bool pending)
     {
-        if (pending && !requestPending)
-        {
-            restoreLabelLocalization = sendLabelLocalization != null && sendLabelLocalization.enabled;
-            if (restoreLabelLocalization) sendLabelLocalization.enabled = false;
-        }
+        InitializeSendButtonReferences();
         requestPending = pending;
-        if (!pending && restoreLabelLocalization && sendLabelLocalization != null)
+
+        // 1. Update button icon
+        if (sendButtonIcon != null)
         {
-            sendLabelLocalization.enabled = true;
-            sendLabelLocalization.RefreshString();
-            restoreLabelLocalization = false;
+            if (pending)
+            {
+                if (cancelIconSprite != null)
+                    sendButtonIcon.sprite = cancelIconSprite;
+            }
+            else
+            {
+                if (sendIconSprite != null)
+                    sendButtonIcon.sprite = sendIconSprite;
+            }
         }
+
+        // 2. Update button background color
+        if (sendButtonBackground != null)
+        {
+            if (pending && cancelButtonColor.a > 0.001f)
+            {
+                sendButtonBackground.color = cancelButtonColor;
+            }
+            else
+            {
+                sendButtonBackground.color = originalButtonColor;
+            }
+        }
+
+        // 3. Update text and localization
         RefreshSendLabel();
     }
 
     private void RefreshSendLabel()
     {
         if (sendButtonLabel != null)
+        {
             sendButtonLabel.text = requestPending
                 ? (IsThaiLocale() ? "ยกเลิก" : "Cancel")
                 : (IsThaiLocale() ? "ส่ง" : "Send");
+        }
+
+        if (sendLabelLocalization != null)
+        {
+            sendLabelLocalization.StringReference.TableReference = "Gemini_UI";
+            sendLabelLocalization.StringReference.TableEntryReference = requestPending ? "UI_Button_Cancel" : "UI_Button_Send";
+            sendLabelLocalization.RefreshString();
+        }
     }
 
     private void ShowRequestStatus()
@@ -107,6 +191,10 @@ public class GeminiChatUI : MonoBehaviour
         pendingStatus = awaitingResponse
             ? (IsThaiLocale() ? "\n\nกำลังรอคำตอบ..." : "\n\nAwaiting response...")
             : (IsThaiLocale() ? "\n\nกำลังส่ง..." : "\n\nSending...");
+        if (usingFallback)
+            pendingStatus = IsThaiLocale()
+                ? "\n\nบริการหลักไม่พร้อมใช้งาน กำลังลองบริการสำรอง..."
+                : "\n\nMain service unavailable. Trying backup...";
         if (chatLogText != null) chatLogText.text += pendingStatus;
         ScrollToBottom();
     }
@@ -307,6 +395,7 @@ public class GeminiChatUI : MonoBehaviour
 
         Debug.Log($"<b>[Gemini Input]:</b> {prompt}");
         awaitingResponse = false;
+        usingFallback = false;
         SetRequestPending(true);
         ShowRequestStatus();
         currentRequestCoroutine = StartCoroutine(SendRequest(prompt));
@@ -335,90 +424,110 @@ public class GeminiChatUI : MonoBehaviour
             };
 
             string jsonPayload = JsonUtility.ToJson(requestData);
-            string url = ApiEndpoint + apiKey;
+            // Snapshot the settings so edits during a request cannot change its retry target.
+            string primaryModel = NormalizeModelName(modelName);
+            string backupModel = NormalizeModelName(fallbackModelName);
+            bool canFallback = enableFallback && !string.IsNullOrEmpty(backupModel) &&
+                !string.Equals(primaryModel, backupModel, StringComparison.OrdinalIgnoreCase);
 
-            using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
+            for (int attempt = 0; attempt < 2; attempt++)
             {
-                currentWebRequest = request;
-                request.timeout = 60;
-                byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonPayload);
-                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-                request.downloadHandler = new DownloadHandlerBuffer();
-                request.SetRequestHeader("Content-Type", "application/json");
-
-                var operation = request.SendWebRequest();
-                while (!operation.isDone)
+                string activeModel = attempt == 0 ? primaryModel : backupModel;
+                string url = $"https://generativelanguage.googleapis.com/v1beta/models/{activeModel}:generateContent?key=" + apiKey;
+                awaitingResponse = false;
+                ShowRequestStatus();
+                using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
                 {
-                    if (!awaitingResponse && request.uploadProgress >= 1f)
-                    {
-                        awaitingResponse = true;
-                        ShowRequestStatus();
-                    }
-                    yield return null;
-                }
-                RemovePendingStatus();
+                    currentWebRequest = request;
+                    request.timeout = 60;
+                    byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonPayload);
+                    request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                    request.downloadHandler = new DownloadHandlerBuffer();
+                    request.SetRequestHeader("Content-Type", "application/json");
 
-                // If the request was aborted during clear, exit cleanly
-                if (request.result == UnityWebRequest.Result.ConnectionError && request.error == "Request aborted")
-                {
-                    currentWebRequest = null;
-                    currentRequestCoroutine = null;
-                    yield break;
-                }
-
-                if (request.result != UnityWebRequest.Result.Success)
-                {
-                    string rawError = request.downloadHandler != null ? request.downloadHandler.text : "";
-                    if (string.IsNullOrWhiteSpace(rawError)) rawError = request.error ?? "No response from server.";
-                    Debug.LogError($"[Gemini Error]: {request.error}\n{rawError}");
-
-                    if (chatLogText != null)
+                    var operation = request.SendWebRequest();
+                    while (!operation.isDone)
                     {
-                        string errorLabel = IsThaiLocale() ? "ข้อผิดพลาด:" : "Debug Error:";
-                        chatLogText.text += $"\n<color=red><b>{errorLabel}</b> {rawError}</color>";
-                        ScrollToBottom();
+                        if (!awaitingResponse && request.uploadProgress >= 1f)
+                        {
+                            awaitingResponse = true;
+                            ShowRequestStatus();
+                        }
+                        yield return null;
                     }
-                }
-                else
-                {
-                    GeminiResponse response = null;
-                    try
-                    {
-                        response = JsonUtility.FromJson<GeminiResponse>(request.downloadHandler.text);
-                    }
-                    catch (ArgumentException)
-                    {
-                        Debug.LogWarning("[GeminiChatUI] The service returned an invalid JSON response.");
-                    }
-                    string reply = GetReplyText(response);
-                    if (!string.IsNullOrWhiteSpace(reply))
-                    {
-                        Debug.Log($"<b><color=#00FFAA>[Gemini Response]:</color></b>\n{reply}");
+                    RemovePendingStatus();
 
-                        // Visual distinction for the AI Response using Rich Text Colors
+                    // If the request was aborted during clear, exit cleanly
+                    if (request.result == UnityWebRequest.Result.ConnectionError && request.error == "Request aborted")
+                    {
+                        currentWebRequest = null;
+                        currentRequestCoroutine = null;
+                        yield break;
+                    }
+
+                    if (request.result != UnityWebRequest.Result.Success)
+                    {
+                        if (attempt == 0 && canFallback && IsFallbackStatus(request.responseCode))
+                        {
+                            Debug.LogWarning($"[GeminiChatUI] Model {activeModel} returned HTTP {request.responseCode}; trying {backupModel} once.");
+                            currentWebRequest = null;
+                            usingFallback = true;
+                            // Leaving the using block disposes the failed request before starting the backup.
+                            continue;
+                        }
+                        string rawError = request.downloadHandler != null ? request.downloadHandler.text : "";
+                        if (string.IsNullOrWhiteSpace(rawError)) rawError = request.error ?? "No response from server.";
+                        Debug.LogError($"[Gemini Error]: {request.error}\n{rawError}");
+
                         if (chatLogText != null)
                         {
-                            string guideLabel = GetSenderGuideLabel();
-                            chatLogText.text += $"\n\n<color=#00FFAA><b>{guideLabel}:</b></color> {reply}";
+                            string errorLabel = IsThaiLocale() ? "ข้อผิดพลาด:" : "Debug Error:";
+                            chatLogText.text += $"\n<color=red><b>{errorLabel}</b> {rawError}</color>";
                             ScrollToBottom();
                         }
                     }
                     else
                     {
-                        string reason = response?.promptFeedback?.blockReason;
-                        if (string.IsNullOrEmpty(reason) && response?.candidates != null && response.candidates.Length > 0)
-                            reason = response.candidates[0]?.finishReason;
-                        Debug.LogWarning($"[GeminiChatUI] No answer text returned. Model={modelName}, finishReason={reason ?? "unknown"}, maxOutputTokens={maxOutputTokens}");
-                        if (chatLogText != null)
+                        GeminiResponse response = null;
+                        try
                         {
-                            chatLogText.text += IsThaiLocale()
-                                ? "\nไม่ได้รับข้อความคำตอบ กรุณาลองอีกครั้ง"
-                                : "\nNo answer text was returned. Please try again.";
-                            ScrollToBottom();
+                            response = JsonUtility.FromJson<GeminiResponse>(request.downloadHandler.text);
+                        }
+                        catch (ArgumentException)
+                        {
+                            Debug.LogWarning("[GeminiChatUI] The service returned an invalid JSON response.");
+                        }
+                        string reply = GetReplyText(response);
+                        if (!string.IsNullOrWhiteSpace(reply))
+                        {
+                            Debug.Log($"<b><color=#00FFAA>[Gemini Response]:</color></b>\n{reply}");
+
+                            // Visual distinction for the AI Response using Rich Text Colors
+                            if (chatLogText != null)
+                            {
+                                string guideLabel = GetSenderGuideLabel();
+                                chatLogText.text += $"\n\n<color=#00FFAA><b>{guideLabel}:</b></color> {reply}";
+                                ScrollToBottom();
+                            }
+                        }
+                        else
+                        {
+                            string reason = response?.promptFeedback?.blockReason;
+                            if (string.IsNullOrEmpty(reason) && response?.candidates != null && response.candidates.Length > 0)
+                                reason = response.candidates[0]?.finishReason;
+                            Debug.LogWarning($"[GeminiChatUI] No answer text returned. Model={activeModel}, finishReason={reason ?? "unknown"}, maxOutputTokens={maxOutputTokens}");
+                            if (chatLogText != null)
+                            {
+                                chatLogText.text += IsThaiLocale()
+                                    ? "\nไม่ได้รับข้อความคำตอบ กรุณาลองอีกครั้ง"
+                                    : "\nNo answer text was returned. Please try again.";
+                                ScrollToBottom();
+                            }
                         }
                     }
+                    currentWebRequest = null;
                 }
-                currentWebRequest = null;
+                break;
             }
         }
         finally
@@ -428,6 +537,20 @@ public class GeminiChatUI : MonoBehaviour
             RemovePendingStatus();
             SetRequestPending(false);
         }
+    }
+
+    private static string NormalizeModelName(string model)
+    {
+        string normalized = (model ?? "").Trim();
+        return normalized.StartsWith("models/", StringComparison.OrdinalIgnoreCase)
+            ? normalized.Substring("models/".Length) : normalized;
+    }
+
+    private static bool IsFallbackStatus(long status)
+    {
+        // Auth, malformed requests, safety blocks and local connection failures need
+        // their own resolution; changing models must not conceal those failures.
+        return status == 404 || status == 408 || status == 429 || (status >= 500 && status <= 599);
     }
 
     private static string GetReplyText(GeminiResponse response)
@@ -492,6 +615,9 @@ public class GeminiChatUIEditor : Editor
 
         GUILayout.Space(10);
         GeminiModelPicker.DrawModelSelector(serializedObject, modelProp, chatScript.apiKey, "Chat Model");
+        if (serializedObject.FindProperty("enableFallback").boolValue)
+            GeminiModelPicker.DrawModelSelector(serializedObject,
+                serializedObject.FindProperty("fallbackModelName"), chatScript.apiKey, "Fallback Model");
 
         serializedObject.ApplyModifiedProperties();
 
