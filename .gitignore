@@ -134,4 +134,8 @@ InitTestScene*.unity*
 CLAUDE.md
 Assets/MetaSkills/
 Assets/MetaSkills.meta
-
+# Documentation and translation files
+AI_PROMPT_FLOWCHART.md
+AI_PROMPT_STORYBOARD.md
+Artifacts_UI_Translations.csv
+PROJECT_PROGRESS.md
