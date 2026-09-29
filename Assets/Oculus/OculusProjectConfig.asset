@@ -25,7 +25,7 @@ MonoBehaviour:
   eyeTrackingSupport: 0
   colocationSessionSupport: 0
   sceneSupport: 2
-  boundaryVisibilitySupport: 0
+  boundaryVisibilitySupport: 1
   disableBackups: 1
   enableNSCConfig: 1
   securityXmlPath: 
@@ -39,7 +39,7 @@ MonoBehaviour:
   useOpenXRPromptDeclined: 0
   focusAware: 1
   requiresSystemKeyboard: 1
-  experimentalFeaturesEnabled: 1
+  experimentalFeaturesEnabled: 0
   insightPassthroughEnabled: 0
   _insightPassthroughSupport: 1
   isPassthroughCameraAccessEnabled: 1
