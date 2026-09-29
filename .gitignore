@@ -139,3 +139,6 @@ AI_PROMPT_FLOWCHART.md
 AI_PROMPT_STORYBOARD.md
 Artifacts_UI_Translations.csv
 PROJECT_PROGRESS.md
+
+# Release keystore - DO NOT commit
+*.keystore
