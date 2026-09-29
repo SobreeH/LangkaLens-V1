@@ -13,6 +13,7 @@ This document contains the official short and long store descriptions formatted 
 - **Supported Languages**: English, Thai (ภาษาไทย)
 - **Privacy Policy URL**: `https://github.com/SobreeH/LangkaLens-V1/blob/main/PRIVACY_POLICY.md`
 - **Internet Connection**: Required for Gemini AI Cultural Guide; offline mode supported for core VR/MR tours.
+- **Universal Basic Asset (2560x1440 PNG)**: `StoreAssets/LangkaLens_UniversalBasicAsset_2560x1440.png`
 - **Search Keywords (Max 5, Alphanumeric only - No spaces)**:
   1. `Heritage`
   2. `Museum`
