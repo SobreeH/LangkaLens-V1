@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Localization-Assets-Shared
   m_GUID: 5887737496b2fc24aaf9b58fa72a898c
   m_SerializeEntries:
+  - m_GUID: 4f7338e218c6cf54f9cc3e02890da2b5
+    m_Address: Assets/_LangkaLens/Mixed/Localization/Tables/ControllerHints Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7d632efb6d84d3047ace6241fb947c76
     m_Address: Assets/_LangkaLens/Localization/Tables/VTour_UI Shared Data.asset
     m_ReadOnly: 1
