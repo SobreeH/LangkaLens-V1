@@ -43,6 +43,10 @@ MonoBehaviour:
     m_Key: Chat_Sender_Guide
     m_Metadata:
       m_Items: []
+  - m_Id: 11733894865530880
+    m_Key: UI_Button_Cancel
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

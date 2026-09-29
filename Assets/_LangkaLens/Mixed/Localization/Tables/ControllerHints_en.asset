@@ -98,6 +98,24 @@ MonoBehaviour:
     m_Localized: Zoom In
     m_Metadata:
       m_Items: []
+  - m_Id: 79246400335872
+    m_Localized: Toggle Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81062613659648
+    m_Localized: 'Hold Meta
+
+      Reset Position'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81062617853952
+    m_Localized: stuck? press this button to reset headset position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81062617853953
+    m_Localized: Hold the Meta button on your right controller.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

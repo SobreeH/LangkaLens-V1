@@ -87,6 +87,22 @@ MonoBehaviour:
     m_Key: zoom_in
     m_Metadata:
       m_Items: []
+  - m_Id: 79246400335872
+    m_Key: toggle_site_info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81062613659648
+    m_Key: meta_recenter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81062617853952
+    m_Key: recenter_reminder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81062617853953
+    m_Key: recenter_instruction
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
