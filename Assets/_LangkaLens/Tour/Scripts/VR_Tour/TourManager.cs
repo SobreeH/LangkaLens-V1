@@ -48,6 +48,7 @@ public class TourManager : MonoBehaviour
     private List<GameObject> activeArrows = new List<GameObject>();
     public IReadOnlyList<GameObject> ActiveArrows => activeArrows;
     public bool IsTransitioning { get; private set; }
+    public bool IsAtMainMenu => currentNode == null && !IsTransitioning;
 
     private GameObject currentOverlayInstance;
     private AsyncOperationHandle<GameObject> currentOverlayHandle;

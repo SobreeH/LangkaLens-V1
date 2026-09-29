@@ -44,6 +44,12 @@ public class InspectionManager : MonoBehaviour
     private Vector3 _originalArtifactScale;
     private float _currentScaleMultiplier = 1f;
     private bool _isInspecting = false;
+    public bool IsInspecting => _isInspecting;
+    public bool CanToggleInspectedModel => _isInspecting && _currentArtifactData != null && _currentArtifactData.alternateModel != null;
+    private int _lastInspectionExitFrame = -1;
+    // Keep the X press that exits inspection out of the main-menu confirmation,
+    // regardless of which component receives Update first.
+    public bool CanExitToMainMenu => !_isInspecting && Time.frameCount > _lastInspectionExitFrame;
     private Collider _headCollider;
 
     private LocalizedString _currentTitle;
@@ -156,6 +162,9 @@ public class InspectionManager : MonoBehaviour
     public void ExitInspectionState()
     {
         if (!_isInspecting) return;
+
+        _lastInspectionExitFrame = Time.frameCount;
+        StopAllCoroutines();
 
         if (_currentTitle != null) _currentTitle.StringChanged -= OnTitleChanged;
         if (_currentDescription != null) _currentDescription.StringChanged -= OnDescriptionChanged;
@@ -270,6 +279,7 @@ public class InspectionManager : MonoBehaviour
             if (OVRInput.GetDown(OVRInput.RawButton.X))
             {
                 ExitInspectionState();
+                return;
             }
 
             // OVRInput.Button.One = A button, Button.Two = B button
