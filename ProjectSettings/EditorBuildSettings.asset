@@ -6,16 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_LangkaLens/Scenes/Main_Menu_Scene.unity
+    path: Assets/_LangkaLens/Main_menu/Scenes/Main_Menu_Scene.unity
     guid: ae6b94708ec20db44aca18d4f6ec224e
   - enabled: 1
-    path: Assets/_LangkaLens/Scenes/MR_Scene.unity
+    path: Assets/_LangkaLens/MR/Scenes/MR_Scene.unity
     guid: e70b06edb510eff43900b27a16b4911f
   - enabled: 1
-    path: Assets/_LangkaLens/Scenes/VR_Tour_Scene.unity
+    path: Assets/_LangkaLens/Tour/Scenes/VR_Tour_Scene.unity
     guid: 2fc36fededbf5924a86a41327afb5715
   - enabled: 1
-    path: Assets/_LangkaLens/Scenes/VR_Museum_Scene.unity
+    path: Assets/_LangkaLens/Museum/Scenes/VR_Museum_Scene.unity
     guid: 2a375c7335c5c044dbc3c6f712fc0de1
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 9beee12e8782bae46995bb1361b63a5b, type: 2}
