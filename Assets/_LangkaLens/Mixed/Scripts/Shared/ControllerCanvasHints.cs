@@ -140,6 +140,7 @@ public class ControllerCanvasHints : MonoBehaviour
                     return (context & Context.ConfirmExit) != 0 ? "mr_confirm_home" : "mr_home_realign";
                 return (context & Context.ConfirmExit) != 0 ? "confirm_home" : "home";
             case Control.LeftY:
+                if (mr) return "toggle_site_info";
                 return museum && inspecting && (context & Context.AlternateModel) != 0 ? "switch_model" : null;
             case Control.LeftStick:
                 if (tourScene) return !tourMenu && !busy ? "teleport" : null;

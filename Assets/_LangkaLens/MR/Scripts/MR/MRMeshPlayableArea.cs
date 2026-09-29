@@ -128,14 +128,28 @@ namespace LangkaLens.MR
                 return;
             }
             
-            if (!_configured) { State = AreaState.Unconfigured; return; }
-            if (!alignment.IsConfirmed) { State = AreaState.Aligning; return; }
+            if (!_configured) { State = AreaState.Unconfigured; UpdateBoundarySuppression(false); return; }
+            if (!alignment.IsConfirmed) { State = AreaState.Aligning; UpdateBoundarySuppression(false); return; }
             if (!alignment.IsTrackingValid || !passthrough.isActiveAndEnabled || passthrough.hidden ||
                 passthrough.textureOpacity < 0.95f || OVRManager.instance == null ||
                 !OVRManager.instance.isInsightPassthroughEnabled || !OVRManager.IsInsightPassthroughInitialized())
-            { State = AreaState.TrackingUnavailable; return; }
+            { State = AreaState.TrackingUnavailable; UpdateBoundarySuppression(false); return; }
+
+            // Passthrough is active and tracking is valid — suppress the Guardian boundary.
+            UpdateBoundarySuppression(true);
 
             State = EvaluatePositionState(head.position, CanPlay);
+        }
+
+        /// <summary>
+        /// Synchronise Guardian boundary suppression with passthrough state.
+        /// The boundary is only suppressed while passthrough is confirmed active so that
+        /// VR scenes and the main menu retain their boundary protection automatically.
+        /// </summary>
+        private static void UpdateBoundarySuppression(bool suppress)
+        {
+            if (OVRManager.instance != null)
+                OVRManager.instance.shouldBoundaryVisibilityBeSuppressed = suppress;
         }
 
         public AreaState EvaluatePositionState(Vector3 position, bool wasPlaying)
@@ -213,7 +227,7 @@ namespace LangkaLens.MR
 
         private static bool Finite(float n) => !float.IsNaN(n) && !float.IsInfinity(n);
 
-        private void OnDisable() { State = AreaState.Unconfigured; }
+        private void OnDisable() { UpdateBoundarySuppression(false); State = AreaState.Unconfigured; }
 
         private void OnDrawGizmosSelected()
         {

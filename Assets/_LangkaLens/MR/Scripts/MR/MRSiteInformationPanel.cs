@@ -19,6 +19,7 @@ namespace LangkaLens.MR
         [Range(100, 170)] public float reorientAngle = 120;
 
         private int _page;
+        private bool _requestedVisible;
         private bool _visible;
         private Quaternion _heading;
 
@@ -34,9 +35,18 @@ namespace LangkaLens.MR
             view.SetActive(false);
         }
 
+        private void Update()
+        {
+            if (OVRInput.GetDown(OVRInput.RawButton.Y, OVRInput.Controller.LTouch))
+                ToggleVisibility();
+        }
+
+        public void ToggleVisibility() => _requestedVisible = !_requestedVisible;
+
         private void LateUpdate()
         {
-            bool visible = spawner != null && head != null && spawner.IsModelVisible;
+            // Keep listening on this root while only the canvas view is hidden.
+            bool visible = _requestedVisible && spawner != null && head != null && spawner.IsModelVisible;
             if (!visible)
             {
                 if (_visible) view.SetActive(false);

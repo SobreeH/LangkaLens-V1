@@ -20,7 +20,7 @@ public static class ControllerCanvasHintsValidation
         string original = SceneManager.GetActiveScene().path;
         int checks = 0;
         var table = LocalizationEditorSettings.GetStringTableCollection(ControllerCanvasHints.TableName);
-        Require(table != null && table.SharedData.Entries.Count == 18, "Missing hint table entries.");
+        Require(table != null && table.SharedData.Entries.Count >= 18, "Missing hint table entries.");
         foreach (string language in new[] { "en", "th" })
         {
             var translated = table.StringTables.Single(t => t.LocaleIdentifier.Code == language);
