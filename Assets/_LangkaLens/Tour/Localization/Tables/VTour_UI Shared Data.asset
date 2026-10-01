@@ -143,6 +143,10 @@ MonoBehaviour:
     m_Key: reconstruction_description_9
     m_Metadata:
       m_Items: []
+  - m_Id: 13458397711732736
+    m_Key: vtour_main_attraction
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
