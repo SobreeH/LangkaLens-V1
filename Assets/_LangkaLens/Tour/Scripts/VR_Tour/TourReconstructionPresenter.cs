@@ -56,9 +56,9 @@ public class TourReconstructionPresenter : MonoBehaviour
         if (!isActiveAndEnabled || node == null || node.reconstruction == null ||
             !node.reconstruction.IsConfigured || placeholderPrefab == null) return;
 
-        placeholder = Instantiate(placeholderPrefab, node.reconstructionPosition,
-            Quaternion.Euler(node.reconstructionRotation), transform);
-        placeholder.transform.localScale = node.reconstructionScale;
+        placeholder = Instantiate(placeholderPrefab, node.iconPosition,
+            Quaternion.Euler(node.iconRotation), transform);
+        placeholder.transform.localScale = node.iconScale;
         placeholder.Setup(this);
         State = PresentationState.Ready;
         RefreshVisibility();

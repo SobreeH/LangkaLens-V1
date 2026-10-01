@@ -13,12 +13,10 @@ public class HoverIcon : MonoBehaviour
     // Link this to your Meta XR Wrapper's Hover Event!
     public void OnHoverEnter()
     {
-        if (tourManager != null) tourManager.ShowOverlay();
     }
 
     // Link this to your Meta XR Wrapper's Unhover Event!
     public void OnHoverExit()
     {
-        if (tourManager != null) tourManager.HideOverlay();
     }
-}
+}

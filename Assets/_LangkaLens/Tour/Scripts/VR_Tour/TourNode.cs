@@ -13,15 +13,6 @@ public class TourNode : ScriptableObject
 
     [Header("The 360 Image")]
     public AssetReferenceTexture2D photoReference; 
-    
-    [Header("3D Overlay (Optional)")]
-    [Tooltip("Drag the Addressable 3D Prefab here")]
-    public AssetReferenceGameObject overlayModel; 
-    public Vector3 modelPosition;
-    public Vector3 modelRotation;
-    public Vector3 modelScale = Vector3.one;
-
-    // Inside TourNode.cs, add these lines right under your 3D Overlay variables:
 
     [Header("Hover Icon Placement")]
     public Vector3 iconPosition;
@@ -30,9 +21,6 @@ public class TourNode : ScriptableObject
 
     [Header("Restored Reconstruction (Optional)")]
     public TourReconstructionDefinition reconstruction;
-    public Vector3 reconstructionPosition = new Vector3(0f, -0.2f, 2f);
-    public Vector3 reconstructionRotation;
-    public Vector3 reconstructionScale = Vector3.one;
 
     [Header("Previous Node (Leave blank if start of tour)")]
     public NodeConnection previousPath;

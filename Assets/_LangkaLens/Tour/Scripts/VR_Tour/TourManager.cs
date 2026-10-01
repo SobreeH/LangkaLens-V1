@@ -56,9 +56,7 @@ public class TourManager : MonoBehaviour
     public bool IsNavigationBlocked => IsTransitioning || IsReconstructionBusy || IsMapOpen;
     public TourNode CurrentNode => currentNode;
 
-    private GameObject currentOverlayInstance;
-    private int overlayGeneration;
-    private AsyncOperationHandle<GameObject> overlayHandle;
+
 
     private void Start()
     {
@@ -144,7 +142,7 @@ public class TourManager : MonoBehaviour
 
         // 2. CLEANUP
         ClearActiveArrows();
-        ClearOverlayModel();
+        ClearHoverIcon();
         currentNode = null; 
 
         if (mapMenuCanvas != null) mapMenuCanvas.SetActive(true);
@@ -273,7 +271,7 @@ public class TourManager : MonoBehaviour
 
         // 2. CLEANUP ARROWS & 3D MODELS
         ClearActiveArrows();
-        ClearOverlayModel(); 
+        ClearHoverIcon(); 
 
         // 3. LOAD NEW 360 IMAGE
         if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
@@ -292,12 +290,7 @@ public class TourManager : MonoBehaviour
             if (photoSphereRenderer != null) photoSphereRenderer.material.mainTexture = currentTextureHandle.Result;
             
             SpawnNavigationArrows();
-            
-            if (currentNode.reconstruction == null && currentNode.overlayModel != null && currentNode.overlayModel.RuntimeKeyIsValid())
-            {
-                LoadOverlayModel();
-                SpawnHoverIcon();
-            }
+            SpawnHoverIcon();
 
             if (mapMenuCanvas != null) mapMenuCanvas.SetActive(false);
             if (returnHomeCanvas != null) returnHomeCanvas.SetActive(true);
@@ -347,46 +340,8 @@ public class TourManager : MonoBehaviour
         }
     }
 
-    private void LoadOverlayModel()
+    private void ClearHoverIcon()
     {
-        TourNode requestedNode = currentNode;
-        int request = ++overlayGeneration;
-        var operation = Addressables.InstantiateAsync(
-            requestedNode.overlayModel,
-            requestedNode.modelPosition,
-            Quaternion.Euler(requestedNode.modelRotation)
-        );
-
-        operation.Completed += (handle) =>
-        {
-            if (handle.Status != AsyncOperationStatus.Succeeded)
-            {
-                Addressables.Release(handle);
-                return;
-            }
-            if (this == null || request != overlayGeneration || currentNode != requestedNode)
-            {
-                Addressables.ReleaseInstance(handle);
-                return;
-            }
-            else
-            {
-                overlayHandle = handle;
-                currentOverlayInstance = handle.Result;
-                currentOverlayInstance.transform.localScale = requestedNode.modelScale;
-                currentOverlayInstance.SetActive(false); 
-            }
-        };
-    }
-
-    private void ClearOverlayModel()
-    {
-        ++overlayGeneration;
-        if (currentOverlayInstance != null) currentOverlayInstance.SetActive(false);
-        if (overlayHandle.IsValid()) Addressables.ReleaseInstance(overlayHandle);
-        overlayHandle = default;
-        currentOverlayInstance = null;
-
         if (currentIconInstance != null) 
         {
             Destroy(currentIconInstance);
@@ -406,16 +361,6 @@ public class TourManager : MonoBehaviour
         }
     }
 
-    public void ShowOverlay()
-    {
-        if (currentOverlayInstance != null) currentOverlayInstance.SetActive(true);
-    }
-
-    public void HideOverlay()
-    {
-        if (currentOverlayInstance != null) currentOverlayInstance.SetActive(false);
-    }
-    
     public void ToggleMapMenu()
     {
         if (IsTransitioning) return;
@@ -426,11 +371,6 @@ public class TourManager : MonoBehaviour
             mapMenuCanvas.SetActive(isOpeningMap);
 
             if (returnHomeCanvas != null) returnHomeCanvas.SetActive(!isOpeningMap);
-
-            if (isOpeningMap && currentOverlayInstance != null)
-            {
-                currentOverlayInstance.SetActive(false);
-            }
             if (reconstructionPresenter != null) reconstructionPresenter.RefreshVisibility();
             RefreshNavigationVisibility();
         }
@@ -476,7 +416,7 @@ public class TourManager : MonoBehaviour
     private void OnDestroy()
     {
         if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();
-        ClearOverlayModel();
+        ClearHoverIcon();
         if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
         if (pendingTextureHandle.IsValid()) Addressables.Release(pendingTextureHandle);
     }
