@@ -91,6 +91,7 @@ public class TourManager : MonoBehaviour
     private IEnumerator MainMenuRoutine()
     {
         IsTransitioning = true;
+        SetActiveArrowsVisible(false);
         // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
         AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
 
@@ -213,6 +214,7 @@ public class TourManager : MonoBehaviour
     private IEnumerator TransitionRoutine(TourNode nextNode, Vector3? targetWorldPosition)
     {
         IsTransitioning = true;
+        SetActiveArrowsVisible(false);
         // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
         AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(nextNode.photoReference);
 
@@ -315,6 +317,7 @@ public class TourManager : MonoBehaviour
         
         if (vrRigParent != null) vrRigParent.position = idealCenterPos;
         IsTransitioning = false;
+        SetActiveArrowsVisible(true);
     }
 
     private void SpawnHoverIcon()
@@ -415,6 +418,15 @@ public class TourManager : MonoBehaviour
         activeArrows.Add(newArrow);
         NavigationArrow arrowScript = newArrow.GetComponent<NavigationArrow>();
         if (arrowScript != null) arrowScript.Setup(connection.targetNode, this);
+        newArrow.SetActive(!IsTransitioning);
+    }
+
+    private void SetActiveArrowsVisible(bool visible)
+    {
+        foreach (GameObject arrow in activeArrows)
+        {
+            if (arrow != null) arrow.SetActive(visible);
+        }
     }
 
     private void ClearActiveArrows()
