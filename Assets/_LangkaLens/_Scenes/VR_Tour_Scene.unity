@@ -3930,9 +3930,11 @@ MonoBehaviour:
   tourManager: {fileID: 194958224}
   inspectionManager: {fileID: 302743721}
   placeholderPrefab: {fileID: 2602049957433266548, guid: 81c982514df803748bf1cad2bf1e3597, type: 3}
+  placeholderMaxDistance: 3
+  inspectionViewingDistance: 0.8
   inspectionPanelOffset: {x: 1.2, y: -0.2, z: 1.2}
-  panoramaFade: 0.85
-  panoramaFadeDuration: 0.3
+  panoramaBlur: 0.85
+  panoramaBlurDuration: 0.3
 --- !u!4 &302743723
 Transform:
   m_ObjectHideFlags: 0
@@ -10970,7 +10972,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4664812427861864888, guid: e1cb902b49e3dca43915d094a8ccfb53, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.92
+      value: 7.59
       objectReference: {fileID: 0}
     - target: {fileID: 4664812427861864888, guid: e1cb902b49e3dca43915d094a8ccfb53, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10978,7 +10980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4664812427861864888, guid: e1cb902b49e3dca43915d094a8ccfb53, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.47
+      value: 12.41
       objectReference: {fileID: 0}
     - target: {fileID: 4664812427861864888, guid: e1cb902b49e3dca43915d094a8ccfb53, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14378,6 +14380,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _InspectionBlur: 0
     - _InspectionFade: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -21451,8 +21454,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082841585}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.04497689, y: 0.01857166, z: -0.0008364076, w: -0.99881506}
+  m_LocalPosition: {x: -0.0000011920929, y: 0.0000011324883, z: 0.0000009536743}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
