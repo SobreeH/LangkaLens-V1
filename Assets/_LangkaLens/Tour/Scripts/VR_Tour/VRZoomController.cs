@@ -8,6 +8,7 @@ public class VRZoomController : MonoBehaviour
     public Transform vrRigParent;
     public Transform vrCamera;
     public TextMeshProUGUI zoomText;
+    public TourManager tourManager;
 
     [Header("Settings")]
     [Tooltip("How fast the camera zooms in/out.")]
@@ -29,6 +30,8 @@ public class VRZoomController : MonoBehaviour
 
     void Update()
     {
+        if (tourManager != null && (tourManager.IsNavigationBlocked ||
+            (tourManager.reconstructionPresenter != null && !tourManager.reconstructionPresenter.CanReturnToTourMenu))) return;
         // OVRInput.Button.Two = B button on Right controller
         // OVRInput.Button.One = A button on Right controller
         bool zoomInPressed = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.RTouch); 

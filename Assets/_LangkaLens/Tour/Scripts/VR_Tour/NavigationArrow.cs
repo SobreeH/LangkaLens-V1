@@ -55,7 +55,7 @@ public class NavigationArrow : MonoBehaviour
 
     public void OnArrowSelected()
     {
-        if (tourManager != null && targetNode != null)
+        if (tourManager != null && targetNode != null && !tourManager.IsNavigationBlocked)
         {
             // Pass the arrow's exact position to trigger a directional zoom
             tourManager.LoadNode(targetNode, transform.position);

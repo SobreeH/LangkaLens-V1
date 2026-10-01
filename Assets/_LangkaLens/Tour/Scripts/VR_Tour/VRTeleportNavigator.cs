@@ -147,7 +147,7 @@ public class VRTeleportNavigator : MonoBehaviour
     private void HandleInput()
     {
         // Don't allow new aiming or teleporting during an active scene/tour transition
-        if (tourManager != null && tourManager.IsTransitioning)
+        if (tourManager != null && tourManager.IsNavigationBlocked)
         {
             if (isAiming) CancelAiming();
             return;
@@ -155,7 +155,12 @@ public class VRTeleportNavigator : MonoBehaviour
 
         Vector2 stick = OVRInput.Get(thumbstickAxis, controller);
 
-        #if UNITY_EDITOR
+        #if UNITY_EDITOR && ENABLE_INPUT_SYSTEM
+        var keyboard = UnityEngine.InputSystem.Keyboard.current;
+        if (stick.magnitude < 0.05f && keyboard != null &&
+            (keyboard.upArrowKey.isPressed || keyboard.wKey.isPressed))
+            stick = new Vector2(0f, 1f);
+        #elif UNITY_EDITOR && ENABLE_LEGACY_INPUT_MANAGER
         // Fallback for testing in Unity Editor with keyboard/mouse
         if (stick.magnitude < 0.05f)
         {

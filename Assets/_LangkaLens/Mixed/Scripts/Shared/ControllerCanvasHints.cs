@@ -73,7 +73,7 @@ public class ControllerCanvasHints : MonoBehaviour
         if (tour != null && tour.isActiveAndEnabled)
         {
             if (tour.IsAtMainMenu) context |= Context.TourMenu;
-            if (tour.IsTransitioning) context |= Context.Busy;
+            if (tour.IsTransitioning || (tour.IsReconstructionBusy && !inspecting)) context |= Context.Busy;
         }
         if (exitConfirmation != null && exitConfirmation.isActiveAndEnabled && exitConfirmation.IsShowing)
             context |= Context.ConfirmExit;
@@ -133,7 +133,7 @@ public class ControllerCanvasHints : MonoBehaviour
             case Control.LeftMenu: return (context & Context.Tablet) != 0 ? "tablet" : null;
             case Control.LeftX:
                 if (main) return null;
-                if (museum && inspecting) return "exit_inspection";
+                if ((museum || tourScene) && inspecting) return "exit_inspection";
                 if (tourScene && busy) return null;
                 if (tourScene && !tourMenu) return "exit_tour";
                 if (mr && (context & Context.AlignmentAvailable) != 0)
@@ -143,7 +143,7 @@ public class ControllerCanvasHints : MonoBehaviour
                 if (mr) return "toggle_site_info";
                 return museum && inspecting && (context & Context.AlternateModel) != 0 ? "switch_model" : null;
             case Control.LeftStick:
-                if (tourScene) return !tourMenu && !busy ? "teleport" : null;
+                if (tourScene) return !tourMenu && !busy && !inspecting ? "teleport" : null;
                 return (context & Context.Move) != 0 ? "move" : null;
             case Control.RightStick:
                 if (aligning) return "align_turn_reach";
