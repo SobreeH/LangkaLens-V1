@@ -45,8 +45,8 @@ public static class TourReconstructionValidation
         var tour = UnityEngine.Object.FindFirstObjectByType<TourManager>();
         Require(tour != null && tour.reconstructionPresenter != null, "Tour scene wiring is missing.");
         var presenter = tour.reconstructionPresenter;
-        Require(tour.photoSphereRenderer != null && tour.photoSphereRenderer.sharedMaterial.HasProperty("_InspectionFade"),
-            "Panorama shader cannot fade during inspection.");
+        Require(tour.photoSphereRenderer != null && tour.photoSphereRenderer.sharedMaterial.HasProperty("_InspectionBlur"),
+            "Panorama shader cannot blur during inspection.");
         Require(!ShaderUtil.ShaderHasError(tour.photoSphereRenderer.sharedMaterial.shader), "Panorama shader has compilation errors.");
         Require(presenter.inspectionManager != null && presenter.placeholderPrefab != null && presenter.tourManager == tour,
             "Presenter is missing a required reference.");
@@ -65,6 +65,12 @@ public static class TourReconstructionValidation
             .Select(g => AssetDatabase.LoadAssetAtPath<TourArea>(AssetDatabase.GUIDToAssetPath(g))).Where(a => a.reconstruction != null).ToArray();
         Require(areas.Length == 4, "Expected four configured areas.");
         foreach (int area in new[] { 2, 3, 8, 9 }) Require(areas.Any(a => a.startingNode != null && a.startingNode.areaNumber == area), "Missing area for " + area);
+        foreach (string guid in AssetDatabase.FindAssets("t:TourNode", new[] { "Assets/_LangkaLens/Tour" }))
+        {
+            var node = AssetDatabase.LoadAssetAtPath<TourNode>(AssetDatabase.GUIDToAssetPath(guid));
+            var photo = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(node.photoReference.AssetGUID));
+            Require(photo != null && photo.mipmapCount > 1, node.name + ": panorama needs mipmaps for inspection blur.");
+        }
         var table = LocalizationEditorSettings.GetStringTableCollection("VTour_UI");
         foreach (var translated in table.StringTables.Where(t => t.LocaleIdentifier.Code == "en" || t.LocaleIdentifier.Code == "th"))
         {
@@ -141,7 +147,7 @@ public static class TourReconstructionValidation
         var presenter = tour.reconstructionPresenter;
         var inspection = presenter.inspectionManager;
         var panel = inspection.inspectionCanvas.GetComponent<TourInspectionPanel>();
-        float originalFade = ReadPanoramaFade(tour);
+        float originalBlur = ReadPanoramaBlur(tour);
         var areas = AssetDatabase.FindAssets("t:TourArea", new[] { "Assets/_LangkaLens/Tour" })
             .Select(g => AssetDatabase.LoadAssetAtPath<TourArea>(AssetDatabase.GUIDToAssetPath(g)))
             .OrderBy(a => a.startingNode.areaNumber).ToArray();
@@ -174,17 +180,31 @@ public static class TourReconstructionValidation
             Require(presenter.State == TourReconstructionPresenter.PresentationState.Loading, "Selection did not start one load.");
             Require(tour.ActiveArrows.All(a => !a.activeSelf) && tour.IsNavigationBlocked, "Navigation active during loading.");
             while (presenter.State == TourReconstructionPresenter.PresentationState.Loading) yield return null;
-            Require(presenter.State == TourReconstructionPresenter.PresentationState.Inspecting && inspection.IsStationaryInspection,
+            Require(presenter.State == TourReconstructionPresenter.PresentationState.Inspecting && inspection.IsTourInspection,
                 node.name + ": reconstruction did not open.");
+            var spawnedPosition = presenter.DisplayInstance.transform.position;
+            float startingDistance = Vector3.ProjectOnPlane(spawnedPosition - tour.vrCamera.position, Vector3.up).magnitude;
+            bool movedDuringApproach = false;
+            while (inspection.IsMovingToInspection)
+            {
+                movedDuringApproach |= Vector3.Distance(position, tour.vrRigParent.position) > 0.001f;
+                yield return null;
+            }
+            Require(movedDuringApproach && Vector3.Distance(position, tour.vrRigParent.position) > 0.01f,
+                "Inspection did not glide the player closer.");
+            Require(Vector3.ProjectOnPlane(spawnedPosition - tour.vrCamera.position, Vector3.up).magnitude < startingDistance - 0.01f,
+                "Approach did not improve model viewing distance.");
+            Require(Vector3.Distance(spawnedPosition, presenter.DisplayInstance.transform.position) < 0.001f,
+                "Approach moved the model instead of the player.");
             yield return null; // SDK Start validates serialized interaction wiring.
-            float fadeDeadline = Time.unscaledTime + presenter.panoramaFadeDuration + 0.05f;
-            while (Time.unscaledTime < fadeDeadline) yield return null;
-            Require(Mathf.Abs(ReadPanoramaFade(tour) - Mathf.Lerp(originalFade, 1f, presenter.panoramaFade)) < 0.001f,
-                "Inspection did not fade the panorama.");
-            Require(tour.photoSphereRenderer.sharedMaterial.GetFloat("_InspectionFade") == 0f,
+            float blurDeadline = Time.unscaledTime + presenter.panoramaBlurDuration + 0.05f;
+            while (Time.unscaledTime < blurDeadline) yield return null;
+            Require(Mathf.Abs(ReadPanoramaBlur(tour) - Mathf.Lerp(originalBlur, 1f, presenter.panoramaBlur)) < 0.001f,
+                "Inspection did not blur the panorama.");
+            Require(tour.photoSphereRenderer.sharedMaterial.GetFloat("_InspectionBlur") == 0f,
                 "Inspection modified the shared panorama material.");
-            Require(Vector3.Distance(tour.vrRigParent.position, position) < 0.001f &&
-                Quaternion.Angle(tour.vrRigParent.rotation, rotation) < 0.01f, "Inspection moved the player.");
+            Require(Mathf.Abs(tour.vrRigParent.position.y - position.y) < 0.001f &&
+                Quaternion.Angle(tour.vrRigParent.rotation, rotation) < 0.01f, "Approach changed player height or facing.");
             Require(!inspection.CanToggleInspectedModel && !marker.gameObject.activeSelf, "Unexpected alternate or visible marker.");
             var head = tour.vrCamera;
             Vector3 forward = Vector3.ProjectOnPlane(head.forward, Vector3.up).normalized;
@@ -217,16 +237,30 @@ public static class TourReconstructionValidation
             while (string.IsNullOrEmpty(inspection.titleText.text)) yield return null;
             Require(!string.IsNullOrEmpty(inspection.descriptionText.text), "Description did not localize.");
             panel.closeButton.onClick.Invoke();
+            Require(Vector3.Distance(tour.vrRigParent.position, position) < 0.001f &&
+                Quaternion.Angle(tour.vrRigParent.rotation, rotation) < 0.01f, "Close did not restore the tour rig.");
             Require(!inspection.IsInspecting && presenter.DisplayInstance == null && marker.gameObject.activeSelf,
                 "Close did not clear display and restore marker.");
             Require(!presenter.CanReturnToTourMenu, "Close input can also leave the node in the same frame.");
             yield return null;
             Require(presenter.CanReturnToTourMenu && tour.ActiveArrows.All(a => a.activeSelf), "Tour controls did not restore.");
-            fadeDeadline = Time.unscaledTime + presenter.panoramaFadeDuration + 0.05f;
-            while (Time.unscaledTime < fadeDeadline) yield return null;
-            Require(Mathf.Abs(ReadPanoramaFade(tour) - originalFade) < 0.001f, "Close did not restore panorama brightness.");
-            Debug.Log(node.name + ": spawn, select, SDK rotation, stationary rig, panel zoom, localization and close passed.");
+            blurDeadline = Time.unscaledTime + presenter.panoramaBlurDuration + 0.05f;
+            while (Time.unscaledTime < blurDeadline) yield return null;
+            Require(Mathf.Abs(ReadPanoramaBlur(tour) - originalBlur) < 0.001f, "Close did not restore panorama sharpness.");
+            Debug.Log(node.name + ": spawn, select, player approach/restore, SDK rotation, panel zoom, localization and close passed.");
         }
+        // Cancel a glide while it is still moving; no later frame may move the restored rig.
+        Vector3 beforeApproach = tour.vrRigParent.position;
+        Quaternion beforeApproachRotation = tour.vrRigParent.rotation;
+        presenter.OpenInspection();
+        while (presenter.State == TourReconstructionPresenter.PresentationState.Loading) yield return null;
+        Require(inspection.IsMovingToInspection, "Tour approach did not begin smoothly.");
+        presenter.CloseInspection();
+        float cancelledApproachDeadline = Time.unscaledTime + inspection.transitionDuration + 0.05f;
+        while (Time.unscaledTime < cancelledApproachDeadline) yield return null;
+        Require(!inspection.IsMovingToInspection && Vector3.Distance(tour.vrRigParent.position, beforeApproach) < 0.001f &&
+            Quaternion.Angle(tour.vrRigParent.rotation, beforeApproachRotation) < 0.01f,
+            "Cancelling approach failed to stop movement and restore the rig.");
         // Placement regressions: unset nodes, sphere-wall positions, and valid authored positions.
         var placementNode = UnityEngine.Object.Instantiate(tour.CurrentNode);
         try
@@ -308,7 +342,7 @@ public static class TourReconstructionValidation
         Require(presenter.DisplayInstance == null && presenter.PlaceholderInstance == null && !inspection.IsInspecting,
             "Leaving while loading leaked content into another node.");
         Require(tour.ActiveArrows.Count > 0 && tour.ActiveArrows.All(a => a.activeSelf), "Unconfigured node navigation regressed.");
-        Require(Mathf.Abs(ReadPanoramaFade(tour) - originalFade) < 0.001f, "Node change left panorama dimmed.");
+        Require(Mathf.Abs(ReadPanoramaBlur(tour) - originalBlur) < 0.001f, "Node change left panorama blurred.");
         tour.currentArea = areas[0];
         tour.LoadNode(areas[0].startingNode);
         while (tour.IsTransitioning) yield return null;
@@ -335,7 +369,7 @@ public static class TourReconstructionValidation
         finally { LocalizationSettings.SelectedLocale = previousLocale; }
         presenter.enabled = false;
         yield return null;
-        Require(Mathf.Abs(ReadPanoramaFade(tour) - originalFade) < 0.001f, "Disabling presenter left panorama dimmed.");
+        Require(Mathf.Abs(ReadPanoramaBlur(tour) - originalBlur) < 0.001f, "Disabling presenter left panorama blurred.");
         Require(!inspection.IsInspecting && presenter.GetComponentsInChildren<ArtifactData>(true).Length == 0,
             "Disabling presenter leaked inspection content.");
         presenter.enabled = true;
@@ -366,7 +400,7 @@ public static class TourReconstructionValidation
         Vector3 original = inspection.playerRig.position;
         Quaternion rotation = inspection.playerRig.rotation;
         data.TriggerInspection();
-        Require(inspection.IsInspecting && !inspection.IsStationaryInspection, "Museum entered the tour presentation mode.");
+        Require(inspection.IsInspecting && !inspection.IsTourInspection, "Museum entered the tour presentation mode.");
         while (!inspection.inspectionCanvas.activeSelf) yield return null;
         Require(Vector3.Distance(original, inspection.playerRig.position) > 0.01f, "Museum glide did not move the player.");
         Require(inspection.inspectionCanvas.activeSelf && inspection.CanToggleInspectedModel, "Museum panel/toggle regressed.");
@@ -380,12 +414,12 @@ public static class TourReconstructionValidation
             "Museum exit did not reset model/UI state.");
     }
 
-    private static float ReadPanoramaFade(TourManager tour)
+    private static float ReadPanoramaBlur(TourManager tour)
     {
         var properties = new MaterialPropertyBlock();
         tour.photoSphereRenderer.GetPropertyBlock(properties);
-        return properties.HasFloat("_InspectionFade") ? properties.GetFloat("_InspectionFade") :
-            tour.photoSphereRenderer.sharedMaterial.GetFloat("_InspectionFade");
+        return properties.HasFloat("_InspectionBlur") ? properties.GetFloat("_InspectionBlur") :
+            tour.photoSphereRenderer.sharedMaterial.GetFloat("_InspectionBlur");
     }
 
     private static void Require(bool condition, string message)
