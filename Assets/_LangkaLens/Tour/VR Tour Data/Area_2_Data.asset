@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Area_2_Data
   m_EditorClassIdentifier: Assembly-CSharp::TourArea
   areaName: ban_jalae2
-  menuThumbnail: {fileID: 0}
+  reconstruction: {fileID: 11400000, guid: b1cae107ba8b47a409788f62b6b426b7, type: 2}
   startingNode: {fileID: 11400000, guid: 4f24a885538170a449572dfdcc737525, type: 2}
