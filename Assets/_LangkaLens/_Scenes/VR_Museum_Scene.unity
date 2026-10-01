@@ -40329,7 +40329,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4279898635
   m_fontColor: {r: 0.045, g: 0.07, b: 0.1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -40342,12 +40342,12 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
+  m_fontSize: 29.7
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -46072,12 +46072,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1140258354145779283, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
+      propertyPath: localizedTitle.m_TableEntryReference.m_Key
+      value: artifact_title_stupa_water_pot
+      objectReference: {fileID: 0}
+    - target: {fileID: 1140258354145779283, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
       propertyPath: localizedTitle.m_TableEntryReference.m_KeyId
-      value: 291722586148866
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1140258354145779283, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
+      propertyPath: localizedDescription.m_TableEntryReference.m_Key
+      value: artifact_desc_stupa_water_pot
       objectReference: {fileID: 0}
     - target: {fileID: 1140258354145779283, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
       propertyPath: localizedDescription.m_TableEntryReference.m_KeyId
-      value: 291722586148866
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1140258354145779283, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
       propertyPath: artifactTitle.m_TableReference.m_TableCollectionName
@@ -46085,7 +46093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140258354145779283, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
       propertyPath: localizedTitle.m_TableReference.m_TableCollectionName
-      value: GUID:9f0e4bfc79e4ec644ad6036cdd92cd5b
+      value: Artifacts_UI
       objectReference: {fileID: 0}
     - target: {fileID: 1140258354145779283, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
       propertyPath: artifactDescription.m_TableReference.m_TableCollectionName
@@ -46093,7 +46101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140258354145779283, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
       propertyPath: localizedDescription.m_TableReference.m_TableCollectionName
-      value: GUID:9f0e4bfc79e4ec644ad6036cdd92cd5b
+      value: Artifacts_UI
       objectReference: {fileID: 0}
     - target: {fileID: 1542638646873447146, guid: 0e184c302cd28ff43be58db9263199ce, type: 3}
       propertyPath: m_LocalPosition.x

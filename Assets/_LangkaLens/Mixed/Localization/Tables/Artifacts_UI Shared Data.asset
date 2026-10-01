@@ -115,6 +115,14 @@ MonoBehaviour:
     m_Key: toggle_btn_model
     m_Metadata:
       m_Items: []
+  - m_Id: 10866033467363328
+    m_Key: artifact_title_stupa_water_pot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10866033509306368
+    m_Key: artifact_desc_stupa_water_pot
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
