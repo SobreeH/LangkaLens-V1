@@ -127,13 +127,9 @@ public static class TourReconstructionSetup
             if (node == null) continue;
             int index = Array.IndexOf(Areas, node.areaNumber);
             if (index < 0) continue;
-            Undo.RecordObject(node, "Configure starting-node reconstruction");
-            if (node.reconstruction == null)
-            {
-                // Reconstruction will use the node's existing iconPosition/iconRotation/iconScale.
-            }
-            node.reconstruction = definitions[index];
-            EditorUtility.SetDirty(node);
+            Undo.RecordObject(area, "Configure area reconstruction");
+            area.reconstruction = definitions[index];
+            EditorUtility.SetDirty(area);
         }
         AssetDatabase.SaveAssets();
         EditorSceneManager.MarkSceneDirty(scene);

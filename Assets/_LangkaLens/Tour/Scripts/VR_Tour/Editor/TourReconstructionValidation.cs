@@ -61,10 +61,10 @@ public static class TourReconstructionValidation
             panel.zoomInButton != null && panel.zoomOutButton != null, "Panel buttons are not wired.");
         Require(panel.transform.Find("Panel/Toggle_btn") == null && panel.transform.Find("Panel/Model_State") == null,
             "Tour panel contains model comparison controls.");
-        var nodes = AssetDatabase.FindAssets("t:TourNode", new[] { "Assets/_LangkaLens/Tour" })
-            .Select(g => AssetDatabase.LoadAssetAtPath<TourNode>(AssetDatabase.GUIDToAssetPath(g))).Where(n => n.reconstruction != null).ToArray();
-        Require(nodes.Length == 4, "Expected four configured starting nodes.");
-        foreach (int area in new[] { 2, 3, 8, 9 }) Require(nodes.Any(n => n.areaNumber == area && n.position == NodePosition.F && n.positionNumber == 1), "Missing start node for " + area);
+        var areas = AssetDatabase.FindAssets("t:TourArea", new[] { "Assets/_LangkaLens/Tour" })
+            .Select(g => AssetDatabase.LoadAssetAtPath<TourArea>(AssetDatabase.GUIDToAssetPath(g))).Where(a => a.reconstruction != null).ToArray();
+        Require(areas.Length == 4, "Expected four configured areas.");
+        foreach (int area in new[] { 2, 3, 8, 9 }) Require(areas.Any(a => a.startingNode != null && a.startingNode.areaNumber == area), "Missing area for " + area);
         var table = LocalizationEditorSettings.GetStringTableCollection("VTour_UI");
         foreach (var translated in table.StringTables.Where(t => t.LocaleIdentifier.Code == "en" || t.LocaleIdentifier.Code == "th"))
         {
@@ -142,11 +142,13 @@ public static class TourReconstructionValidation
         var inspection = presenter.inspectionManager;
         var panel = inspection.inspectionCanvas.GetComponent<TourInspectionPanel>();
         float originalFade = ReadPanoramaFade(tour);
-        var starts = AssetDatabase.FindAssets("t:TourArea", new[] { "Assets/_LangkaLens/Tour" })
-            .Select(g => AssetDatabase.LoadAssetAtPath<TourArea>(AssetDatabase.GUIDToAssetPath(g)).startingNode)
-            .OrderBy(n => n.areaNumber).ToArray();
-        foreach (var node in starts)
+        var areas = AssetDatabase.FindAssets("t:TourArea", new[] { "Assets/_LangkaLens/Tour" })
+            .Select(g => AssetDatabase.LoadAssetAtPath<TourArea>(AssetDatabase.GUIDToAssetPath(g)))
+            .OrderBy(a => a.startingNode.areaNumber).ToArray();
+        foreach (var area in areas)
         {
+            var node = area.startingNode;
+            tour.currentArea = area;
             tour.LoadNode(node);
             while (tour.IsTransitioning) yield return null;
             Require(presenter.State == TourReconstructionPresenter.PresentationState.Ready && presenter.PlaceholderInstance != null,
@@ -235,13 +237,12 @@ public static class TourReconstructionValidation
         var invalid = ScriptableObject.CreateInstance<TourReconstructionDefinition>();
         invalid.inspectionPrefab = new UnityEngine.AddressableAssets.AssetReferenceGameObject("00000000000000000000000000000000");
         var invalidNode = UnityEngine.Object.Instantiate(tour.CurrentNode);
-        invalidNode.reconstruction = invalid;
         var previousHandler = UnityEngine.ResourceManagement.ResourceManager.ExceptionHandler;
         string loadFailure = null;
         try
         {
             UnityEngine.ResourceManagement.ResourceManager.ExceptionHandler = (handle, error) => loadFailure = error.Message;
-            presenter.EnterNode(invalidNode);
+            presenter.EnterNode(invalidNode, invalid);
             presenter.OpenInspection();
             while (presenter.State == TourReconstructionPresenter.PresentationState.Loading) yield return null;
             Require(loadFailure != null && presenter.State == TourReconstructionPresenter.PresentationState.Ready &&
@@ -252,13 +253,16 @@ public static class TourReconstructionValidation
         finally
         {
             UnityEngine.ResourceManagement.ResourceManager.ExceptionHandler = previousHandler;
-            presenter.EnterNode(tour.CurrentNode);
+            presenter.EnterNode(tour.CurrentNode, tour.currentArea?.reconstruction);
             UnityEngine.Object.Destroy(invalidNode);
             UnityEngine.Object.Destroy(invalid);
         }
         presenter.OpenInspection();
         var unconfigured = AssetDatabase.FindAssets("t:TourNode", new[] { "Assets/_LangkaLens/Tour/VR Tour Data/BN2" })
             .Select(g => AssetDatabase.LoadAssetAtPath<TourNode>(AssetDatabase.GUIDToAssetPath(g))).First(n => n.name == "2F2");
+        
+        var oldArea = tour.currentArea;
+        tour.currentArea = null;
         tour.LoadNode(unconfigured);
         while (tour.IsTransitioning) yield return null;
         yield return null;
@@ -266,7 +270,8 @@ public static class TourReconstructionValidation
             "Leaving while loading leaked content into another node.");
         Require(tour.ActiveArrows.Count > 0 && tour.ActiveArrows.All(a => a.activeSelf), "Unconfigured node navigation regressed.");
         Require(Mathf.Abs(ReadPanoramaFade(tour) - originalFade) < 0.001f, "Node change left panorama dimmed.");
-        tour.LoadNode(starts[0]);
+        tour.currentArea = areas[0];
+        tour.LoadNode(areas[0].startingNode);
         while (tour.IsTransitioning) yield return null;
         presenter.OpenInspection();
         while (presenter.State == TourReconstructionPresenter.PresentationState.Loading) yield return null;
@@ -301,7 +306,8 @@ public static class TourReconstructionValidation
         while (tour.IsTransitioning) yield return null;
         Require(tour.IsAtMainMenu && presenter.PlaceholderInstance == null && presenter.DisplayInstance == null,
             "Returning to tour menu did not clear reconstruction.");
-        tour.LoadNode(starts[0]);
+        tour.currentArea = areas[0];
+        tour.LoadNode(areas[0].startingNode);
         while (tour.IsTransitioning) yield return null;
         presenter.OpenInspection();
         var sceneLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("VR_Museum_Scene");
