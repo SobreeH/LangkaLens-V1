@@ -55,6 +55,20 @@ public class TourNodeEditor : Editor
 
         EditorGUILayout.EndHorizontal();
 
+        if (node.reconstruction != null && GUILayout.Button("Sync from 'ReconstructionDummy'"))
+        {
+            GameObject marker = FindDummy("ReconstructionDummy");
+            if (marker != null)
+            {
+                Undo.RecordObject(node, "Sync reconstruction marker");
+                node.reconstructionPosition = marker.transform.position;
+                node.reconstructionRotation = marker.transform.eulerAngles;
+                node.reconstructionScale = marker.transform.localScale;
+                EditorUtility.SetDirty(node);
+            }
+            else Debug.LogWarning("Use 'Setup Scene for this Node' to create the reconstruction preview first.");
+        }
+
         GUILayout.Space(5);
         
         EditorGUILayout.BeginHorizontal();
@@ -142,6 +156,34 @@ public class TourNodeEditor : Editor
             toSelect.Add(next);
         }
 
+        GameObject marker = FindDummy("ReconstructionDummy");
+        if (node.reconstruction != null)
+        {
+            TourManager manager = FindObjectOfType<TourManager>();
+            if (marker == null && manager != null && manager.reconstructionPresenter != null &&
+                manager.reconstructionPresenter.placeholderPrefab != null)
+            {
+                marker = (GameObject)PrefabUtility.InstantiatePrefab(manager.reconstructionPresenter.placeholderPrefab.gameObject);
+                marker.name = "ReconstructionDummy";
+                marker.tag = "EditorOnly";
+                Undo.RegisterCreatedObjectUndo(marker, "Preview reconstruction marker");
+            }
+            if (marker != null)
+            {
+                Undo.RecordObject(marker, "Show reconstruction preview");
+                Undo.RecordObject(marker.transform, "Place reconstruction preview");
+                marker.SetActive(true);
+                marker.transform.SetPositionAndRotation(node.reconstructionPosition, Quaternion.Euler(node.reconstructionRotation));
+                marker.transform.localScale = node.reconstructionScale;
+                toSelect.Add(marker);
+            }
+        }
+        else if (marker != null)
+        {
+            Undo.RecordObject(marker, "Hide reconstruction preview");
+            marker.SetActive(false);
+        }
+
         if (toSelect.Count > 0)
         {
             Selection.objects = toSelect.ToArray();
@@ -185,6 +227,8 @@ public class TourNodeEditor : Editor
         }
 
         Selection.activeObject = null;
+        GameObject marker = FindDummy("ReconstructionDummy");
+        if (marker != null) Undo.DestroyObjectImmediate(marker);
         Debug.Log("Scene reverted to default state.");
     }
 }
