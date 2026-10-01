@@ -11,6 +11,9 @@ public sealed class VirtualKeyboardKey : MonoBehaviour
     [SerializeField] private int row;
     [SerializeField] private int column;
     [SerializeField] private TMP_Text label;
+    [Header("Key Colours")]
+    [SerializeField] private Color restingColor = new Color(0.19f, 0.26f, 0.35f);
+    [SerializeField] private Color shiftedColor = new Color(0.1f, 0.5f, 0.62f);
     private UnityEngine.UI.Button button;
 
     private void Awake() { button = GetComponent<UnityEngine.UI.Button>(); }
@@ -39,7 +42,7 @@ public sealed class VirtualKeyboardKey : MonoBehaviour
     public void SetHighlighted(bool active)
     {
         var image = GetComponent<UnityEngine.UI.Image>();
-        if (image != null) image.color = active ? new Color(0.1f, 0.5f, 0.62f) : new Color(0.19f, 0.26f, 0.35f);
+        if (image != null) image.color = active ? shiftedColor : restingColor;
     }
 
     public void Press()

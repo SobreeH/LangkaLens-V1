@@ -36,6 +36,10 @@ public class GeminiChatUI : MonoBehaviour
     [Tooltip("Drag your Scroll View object here to enable auto-scrolling.")]
     public ScrollRect scrollRect;
 
+    [Header("Conversation Colours")]
+    [SerializeField] private Color userLabelColor = new Color(0.33333334f, 0.6666667f, 1f);
+    [SerializeField] private Color guideLabelColor = new Color(0f, 1f, 0.6666667f);
+
     [Header("API Configuration")]
     public string apiKey = "YOUR_API_KEY_HERE";
     [Tooltip("Gemini Flash or Flash-Lite model name for chat generation.")]
@@ -389,7 +393,7 @@ public class GeminiChatUI : MonoBehaviour
         if (chatLogText != null)
         {
             string userLabel = GetSenderUserLabel();
-            chatLogText.text += $"\n\n<color=#55AAFF><b>{userLabel}:</b></color> {prompt}";
+            chatLogText.text += $"\n\n<color=#{ColorUtility.ToHtmlStringRGB(userLabelColor)}><b>{userLabel}:</b></color> {prompt}";
             ScrollToBottom();
         }
 
@@ -506,7 +510,7 @@ public class GeminiChatUI : MonoBehaviour
                             if (chatLogText != null)
                             {
                                 string guideLabel = GetSenderGuideLabel();
-                                chatLogText.text += $"\n\n<color=#00FFAA><b>{guideLabel}:</b></color> {reply}";
+                                chatLogText.text += $"\n\n<color=#{ColorUtility.ToHtmlStringRGB(guideLabelColor)}><b>{guideLabel}:</b></color> {reply}";
                                 ScrollToBottom();
                             }
                         }
