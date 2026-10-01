@@ -1,6 +1,6 @@
 # Tour restored-model inspection plan
 
-Status: planned, not implemented. Inspected 2026-10-01.
+Status: implemented and validated in the Unity Editor; Quest device validation remains outstanding. Updated 2026-10-02. See [validation and authoring notes](TOUR_RECONSTRUCTION_VALIDATION.md).
 
 Target: `Assets/_LangkaLens/_Scenes/VR_Tour_Scene.unity` (confirmed active in Unity).
 Reference: `Assets/_LangkaLens/_Scenes/VR_Museum_Scene.unity`.
@@ -11,8 +11,8 @@ The user selected a scaled model appearing in front of them for inspection. Each
 
 1. Arriving at a configured tour node spawns a small, selectable placeholder at an authored location, following the navigation arrows' node lifetime.
 2. Hover highlights the placeholder. Selecting it with the existing Meta ray interaction starts loading its restored model. Merely hovering does not open inspection.
-3. The restored model appears in front of the user's current view, at a comfortable inspection scale. The player rig stays in place. The model remains anchored in the world after placement, so it does not follow every head movement.
-4. The user can rotate the restored reconstruction using the museum's interaction behavior, scale it with the museum's zoom controls, and read localized information.
+3. The restored model appears in front of the user's current view, at a comfortable inspection scale. The player rig stays in place. The model remains anchored in the world after placement, so it does not follow every head movement. The panorama in `SphereContainer` fades toward black during inspection to draw attention to the reconstruction, then restores on exit.
+4. The user can rotate the restored reconstruction using the museum's interaction behavior, scale it with the museum's zoom controls, and read localized information on a panel to their right, angled toward them.
 5. Close or X ends inspection, removes the model and panel, and restores the placeholder and navigation arrows.
 6. Changing nodes, opening the map, returning to the tour menu, or unloading the scene clears inspection content and pending work. Nothing from the previous node may appear afterward.
 
@@ -57,7 +57,7 @@ Create `ReconstructionPlaceholder.prefab` and a small `TourReconstructionPlaceho
 
 - Use the arrow prefab's ColliderSurface, RayInteractable, and InteractableUnityEventWrapper pattern.
 - Wire hover/unhover to visual feedback and select to opening inspection.
-- Use a lightweight placeholder mesh, with a clear visual indication that it is selectable.
+- Use `Assets/_LangkaLens/Tour/3D Models/Prefabs/globeRED.prefab` as the placeholder visual, fitted to marker size and retaining the wrapper's selection behavior.
 - Keep it separate from `NavigationArrow` and the teleport arc's arrow list, so selecting it cannot navigate to another node.
 - During loading, show feedback and block repeated selection. Hide the placeholder during inspection and restore it on close or recoverable load failure.
 
@@ -89,7 +89,7 @@ Extract a reusable inspection panel from the museum UI, retaining localization a
 
 ### 5. Input and tour integration
 
-While loading or inspecting, suppress arrow navigation and teleport aiming. While inspecting, route A/B to model scaling. Y has no model-switching action; retain its existing tour menu role, with any map opening closing/cancelling inspection first. Pause the tour's `VRZoomController` without changing the player's current position or its saved zoom offset.
+While loading or inspecting, suppress arrow navigation and teleport aiming. While inspecting, route A/B to model scaling. Y has no model-switching action or model-switching hint. Opening the map through the existing tour UI closes/cancels inspection first. Pause the tour's `VRZoomController` without changing the player's current position or its saved zoom offset.
 
 X closes or cancels inspection first. Guard that entire input frame so the same press cannot also return to the tour menu or start exit confirmation, regardless of Update ordering. Reuse the existing inspection exit-frame concept and integrate it with `TourManager` and `MRMainMenuConfirmation`.
 
@@ -120,10 +120,24 @@ Start with one explicitly configured node and one of the four confirmed restored
 - Closing, map opening, node change, menu return, and scene unload remove content and restore the appropriate controls.
 - Rapid repeated selection, close during load, late completion, missing content, and load failure do not leave duplicates, stale models, retained grabs, or leaked Addressables handles.
 - Existing arrow navigation, unconfigured nodes, legacy overlays, museum player glide, museum model toggling, localization, and exit confirmation remain functional.
-- Compile in Unity; run focused lifetime/input regression checks and Play Mode checks. Validate actual selection, viewing comfort, memory, and frame time on the target Quest device. No runtime validation has been performed for this plan.
+- Compile in Unity; run focused lifetime/input regression checks and Play Mode checks. Editor validation passed: 97 asset checks and 119 tour Play Mode checks on 2026-10-02; 7 museum regression checks passed on 2026-10-01. Actual controller/hand selection, viewing comfort, memory, and frame time still require target Quest validation; see the validation report for the limits of the Editor checks.
 
 ## Remaining content choices
 
-The four restored model sources and the single-reconstruction presentation are confirmed. The exact nodes receiving placeholders, their authored positions, the final placeholder artwork, and localized descriptions remain content configuration decisions. They do not block the implementation structure above.
+The four restored model sources and the single-reconstruction presentation are confirmed. The initial setup uses each area's starting node and editable default marker positions. Final marker placement against each panorama remains a content refinement. The implementation uses the requested red globe marker and book-based English/Thai descriptions for Ban Jalae 2, 3 and 8, and Ban Wat 9. Archaeological evidence and restored-model interpretation are distinguished; see [source mapping](TOUR_RECONSTRUCTION_SOURCES.md).
 
-No runtime scripts, scenes, prefabs, or node assets were changed while preparing this plan.
+## Implemented setup
+
+The four starting nodes expose reconstruction placeholders: `2F1` uses `OG_BJ2`, `3F1` uses `OG_BJ3`, `8F1` uses `OG_BJ8`, and `9F1` uses `OG_BW9`. Marker positions begin at `(0, -0.2, 2)` in tour coordinates and are editable per node. Additional nodes opt in by referencing one of the reconstruction definitions.
+
+Inspection display and panel prefabs are under `Assets/_LangkaLens/Tour/3D Models/Prefabs/Reconstruction/`. Reconstruction definitions are under `Assets/_LangkaLens/Tour/VR Tour Data/Reconstruction/`. The display prefabs are registered in the local Addressables group `Tour Reconstructions`.
+
+Select a marker with a controller ray or hand ray. Select and drag the model to rotate it. A/B or the Smaller/Larger panel buttons change its size. X or Close ends inspection; X also cancels a pending load. No Y model-switching action is added. Opening the map through the tour UI ends inspection.
+
+The presenter also fades the panorama 85% toward black over 0.3 seconds during inspection, preserving model/UI brightness and the existing tour warp. These values can be tuned under `Inspection backdrop` on the `Tour Reconstruction Inspection` scene object.
+
+The information panel opens 45 degrees to the user's right, angled toward them, and stays fixed in the world. Its default head-relative offset is `(1.2, -0.2, 1.2)` metres and is editable under `Inspection panel` on the presenter. The marker uses the nested `globeRED` visual normalized to 0.45 m diameter.
+
+Use the Tour Node inspector's `Setup Scene for this Node`, move `ReconstructionDummy`, and press `Sync from 'ReconstructionDummy'` to author marker placement. `Revert Scene to Default` removes the preview. The preview disables itself in Editor Play Mode and is tagged EditorOnly for builds.
+
+Repeatable checks are available under `LangkaLens/Validation/Tour Reconstruction Assets`, `Tour Reconstruction Play Mode`, and `Museum Inspection Play Mode`. Run the Play Mode commands in their respective scenes. The tour smoke test also exercises unloading into the museum scene. Validation details are recorded in `Docs/TOUR_RECONSTRUCTION_VALIDATION.md`.
