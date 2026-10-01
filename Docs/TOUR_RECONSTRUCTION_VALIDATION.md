@@ -19,7 +19,7 @@ Select and move the model to rotate it. A/B or the Smaller/Larger panel buttons 
 
 Definitions are in `Assets/_LangkaLens/Tour/VR Tour Data/Reconstruction/`. Inspection displays, the marker, and panel are in `Assets/_LangkaLens/Tour/3D Models/Prefabs/Reconstruction/`. The four displays are registered in the local Addressables group `Tour Reconstructions`. Background fade strength and duration are editable on the `Tour Reconstruction Inspection` scene object's presenter under **Inspection backdrop**.
 
-Default markers start at `(0, -0.2, 2)` in tour coordinates. Each definition displays a model with a largest dimension of 0.65 m before rotation, positioned 1.2 m along the head's horizontal forward direction and 0.2 m below it. Scale controls allow 0.5–1.5 times the initial size. These are starting values for device comfort testing.
+Markers use each node's icon position, rotation and scale. An unset `(0, 0, 0)` position, or one too close to the eye, falls back to 2 m in front of the opening horizontal view and 0.2 m below it. Distant positions retain their bearing but are brought within 3 m of the eye, adjustable using **Placeholder placement → Placeholder Max Distance** on the presenter. Valid nearby authored positions remain unchanged. Each definition displays a model with a largest dimension of 0.65 m before rotation, positioned 1.2 m along the head's horizontal forward direction and 0.2 m below it. Scale controls allow 0.5–1.5 times the initial size. These are starting values for device comfort testing.
 
 The globe is centered and fitted to a 0.45 m diameter, with its original mesh/material retained inside the marker wrapper. The source prefab is unchanged. Its original hover-overlay/drag components are removed from the nested marker instance so the wrapper is the only selection owner.
 
@@ -35,7 +35,7 @@ The existing `InsideOut360` shader now supports `_InspectionFade`, defaulting to
 | --- | --- | --- |
 | Unity compilation | Passed | New and modified C# compiled in the running Editor. |
 | Reconstruction asset validation | 97 checks passed (2026-10-02) | Four definitions, Addressables entries, model anchors and rotation targets, scene and panel references, no alternates, no missing scripts in display prefabs, translations, inspection hint mappings, panorama shader support/compilation, globeRED source, and a single marker ray interaction. |
-| Tour Play Mode validation | 119 checks passed (2026-10-02) | All four starting points; marker spawning; hover versus selection; repeated selection; stationary rig; SDK rotation without translation; right-side panel placement/orientation independent of model rotation; panel scaling and close; panorama fade/restoration without changing the shared material; blocked/restored navigation; cancellation and rapid reopen; cleanup during an active grab; map visibility; deliberate invalid-key recovery; leaving during a load; unconfigured node; disabling/re-enabling; menu return; and actual scene unload into the museum. |
+| Tour Play Mode validation | 144 checks passed (2026-10-02) | All four starting points through their actual area-menu buttons; active markers outside the eye and within readable distance; unset, distant and nearby authored placement regressions; preserved authored bearings; hover versus selection; repeated selection; stationary rig; SDK rotation without translation; right-side panel placement/orientation independent of model rotation; panel scaling and close; panorama fade/restoration without changing the shared material; blocked/restored navigation; cancellation and rapid reopen; cleanup during an active grab; map visibility; deliberate invalid-key recovery; leaving during a load; unconfigured node; disabling/re-enabling; menu return; and actual scene unload into the museum. |
 | Museum Play Mode regression | 7 checks passed (2026-10-01) | Museum mode, glide, panel and model toggle, exact rig position/rotation restoration, and primary model/UI reset. The subsequent right-panel/globe changes are limited to tour code/content. |
 | English/Thai panel checks | Included in tour suite | Nonempty localized text, no detected text overflow, and supported visible glyphs after switching locales. |
 | Camera preview | Visually inspected in Editor | The globe marker was visible at the first tour point. A preview from the eye position turned 25 degrees right showed the reconstruction and right-side information panel together against the dimmed panorama. This does not establish comfort on a headset. |
@@ -51,17 +51,19 @@ The Editor console also reported Meta entitlement failure, unavailable OpenXR/tr
 
 The Editor was returned to the saved `VR_Tour_Scene`, outside Play Mode.
 
+After the area/icon refactor, the marker still spawned but the default icon position placed it at the eye for BJ2, BJ8 and BW9. BJ3's authored position `(7.92, 0, 12.47)` was 14.77 m away, giving a tiny marker at the panorama wall. Runtime placement now provides the visible fallback and maximum distance described above without rewriting saved node placement. Before/after camera previews confirmed the visibility regression and recovery; BJ3's corrected position was `(1.61, 0, 2.53)`, with a successful collider ray hit. Renderer bounds are used during placement because a newly moved collider's physics bounds can be stale until synchronization. Tests synchronize transforms before querying hitboxes. Physical Quest and packaged-build checks remain outstanding.
+
 ## Place or add a marker
 
 1. Open `VR_Tour_Scene` and select a `TourNode` asset.
-2. Assign its Reconstruction field to one of the four definitions. Leave it empty on points that should not expose a model.
-3. Use **Setup Scene for this Node** in the Tour Node inspector. Move, rotate, or scale `ReconstructionDummy` against the panorama.
-4. Press **Sync from 'ReconstructionDummy'**, then **Revert Scene to Default** to remove the preview. Save the node asset.
+2. Assign the containing `TourArea` asset's Reconstruction field to one of the four definitions. The selected area's definition is shared by its tour nodes.
+3. Use **Setup Scene for this Node** in the Tour Node inspector. Move, rotate, or scale `IconDummy` against the panorama.
+4. Press **Sync from 'IconDummy'**, then **Revert Scene to Default** to remove the preview. Save the node asset. Nearby saved positions are used directly; distant positions retain their bearing and are brought within the presenter's maximum distance.
 5. Enter Play Mode, visit that point, and verify the marker is visible and reachable with the ray.
 
 The authoring preview is tagged `EditorOnly` and disables itself during Editor Play Mode. Runtime markers are spawned independently by the presenter. Presentation distance, initial size, and vertical offset can be adjusted on each shared reconstruction definition; changes affect every node referencing it.
 
-The current asset-validation fixture expects exactly the four initial configured nodes. If more nodes are deliberately added, update that expectation in `TourReconstructionValidation.ValidateAssets`.
+The current asset-validation fixture expects exactly four configured areas. If more areas are deliberately added, update that expectation in `TourReconstructionValidation.ValidateAssets`.
 
 ## Repeat the checks
 
