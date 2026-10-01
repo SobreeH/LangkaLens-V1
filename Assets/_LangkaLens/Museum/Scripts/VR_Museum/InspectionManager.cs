@@ -46,9 +46,12 @@ public class InspectionManager : MonoBehaviour
     private float _currentScaleMultiplier = 1f;
     private bool _isInspecting = false;
     public bool IsInspecting => _isInspecting;
-    public bool IsStationaryInspection => _isInspecting && _stationaryInspection;
+    public bool IsTourInspection => _isInspecting && _stationaryInspection;
+    public bool IsStationaryInspection => IsTourInspection && !_restoreRigOnExit;
+    public bool IsMovingToInspection { get; private set; }
     public bool CanToggleInspectedModel => _isInspecting && !_stationaryInspection && _currentArtifactData != null && _currentArtifactData.alternateModel != null;
     private bool _stationaryInspection;
+    private bool _restoreRigOnExit;
     private bool _locomotionWasEnabled;
     private bool _headColliderWasEnabled;
     private GameObject _playerController;
@@ -129,14 +132,23 @@ public class InspectionManager : MonoBehaviour
             null, null, data.localizedTitle, data.localizedDescription, true);
     }
 
+    public bool EnterTourInspection(ArtifactData data, Vector3 targetEyePosition)
+    {
+        if (data == null || data.modelContainer == null || data.uiAnchor == null) return false;
+        return BeginInspection(data.modelContainer.gameObject, data.originalOrigin, data.uiAnchor,
+            null, null, data.localizedTitle, data.localizedDescription, true, targetEyePosition);
+    }
+
     private bool BeginInspection(GameObject artifact, Transform origin, Transform uiAnchor,
-        GameObject pedestal, GameObject infoIcon, LocalizedString title, LocalizedString description, bool stationary)
+        GameObject pedestal, GameObject infoIcon, LocalizedString title, LocalizedString description, bool stationary,
+        Vector3? targetEyePosition = null)
     {
         if (!isActiveAndEnabled || _isInspecting || artifact == null || playerRig == null ||
             centerEyeCamera == null || inspectionCanvas == null || (!stationary && origin == null)) return false;
 
         _isInspecting = true;
         _stationaryInspection = stationary;
+        _restoreRigOnExit = !stationary || targetEyePosition.HasValue;
         _currentArtifact = artifact;
         if (artifact != null) _currentArtifactData = artifact.GetComponentInParent<ArtifactData>();
         _currentOrigin = origin;
@@ -163,9 +175,9 @@ public class InspectionManager : MonoBehaviour
             _locomotionWasEnabled = locomotionScript.enabled;
             locomotionScript.enabled = false;
         }
-        // Museum movement is scoped to this rig. Tour inspection never moves the player.
+        // Pause locomotion on this rig while either inspection mode moves it.
         _playerController = null;
-        if (!stationary)
+        if (_restoreRigOnExit)
         {
             Transform controller = playerRig.Find("[BuildingBlock] OVRInteractionComprehensive/Locomotor/PlayerController");
             if (controller != null)
@@ -197,7 +209,9 @@ public class InspectionManager : MonoBehaviour
 
         UpdateModelStateUI();
 
-        if (stationary)
+        if (targetEyePosition.HasValue)
+            StartCoroutine(MovePlayerForTourInspection(targetEyePosition.Value));
+        else if (stationary)
         {
             PositionCanvas();
             inspectionCanvas.SetActive(true);
@@ -212,13 +226,14 @@ public class InspectionManager : MonoBehaviour
 
         _lastInspectionExitFrame = Time.frameCount;
         StopAllCoroutines();
+        IsMovingToInspection = false;
 
         if (_currentTitle != null) _currentTitle.StringChanged -= OnTitleChanged;
         if (_currentDescription != null) _currentDescription.StringChanged -= OnDescriptionChanged;
 
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
 
-        if (!_stationaryInspection && playerRig != null)
+        if (_restoreRigOnExit && playerRig != null)
         {
             playerRig.position = _originalRigPosition;
             playerRig.rotation = _originalRigRotation;
@@ -258,13 +273,36 @@ public class InspectionManager : MonoBehaviour
         _currentUIAnchor = null; 
         _isInspecting = false;
         _stationaryInspection = false;
+        _restoreRigOnExit = false;
         _currentTitle = null;
         _currentDescription = null;
         InspectionExited?.Invoke();
     }
 
+    private IEnumerator MovePlayerForTourInspection(Vector3 targetEyePosition)
+    {
+        IsMovingToInspection = true;
+        Vector3 start = playerRig.position;
+        Vector3 movement = targetEyePosition - centerEyeCamera.position;
+        movement.y = 0f;
+        Vector3 target = start + movement;
+        float elapsed = 0f;
+        while (elapsed < transitionDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / transitionDuration);
+            playerRig.position = Vector3.Lerp(start, target, t);
+            yield return null;
+        }
+        playerRig.position = target;
+        IsMovingToInspection = false;
+        PositionCanvas();
+        inspectionCanvas.SetActive(true);
+    }
+
     private IEnumerator MovePlayerToArtifact()
     {
+        IsMovingToInspection = true;
         Vector3 startRigPos = playerRig.position;
         Quaternion startRigRot = playerRig.rotation;
 
@@ -303,6 +341,7 @@ public class InspectionManager : MonoBehaviour
 
         playerRig.position = targetRigPos;
         playerRig.rotation = targetRigRot;
+        IsMovingToInspection = false;
 
         PositionCanvas();
         inspectionCanvas.SetActive(true);
