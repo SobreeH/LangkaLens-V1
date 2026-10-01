@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -13,14 +14,20 @@ public class TourReconstructionPresenter : MonoBehaviour
     [Tooltip("Bring distant icon positions closer along the same direction so the globe stays readable and selectable inside the panorama.")]
     [Min(1f)] public float placeholderMaxDistance = 3f;
 
+    [Header("Inspection approach")]
+    [Tooltip("Desired eye distance from the restored model's centre after the player glides closer. Model bounds provide minimum clearance.")]
+    [Min(0.5f)] public float inspectionViewingDistance = 0.8f;
+
     [Header("Inspection panel")]
     [Tooltip("Panel position relative to the user's horizontal view when inspection opens. Positive X is right.")]
     public Vector3 inspectionPanelOffset = new Vector3(1.2f, -0.2f, 1.2f);
 
     [Header("Inspection backdrop")]
-    [Tooltip("How far the panorama fades toward black while inspecting. Models and UI stay visible.")]
-    [Range(0f, 1f)] public float panoramaFade = 0.85f;
-    [Min(0f)] public float panoramaFadeDuration = 0.3f;
+    [FormerlySerializedAs("panoramaFade")]
+    [Tooltip("How strongly the panorama loses focus while inspecting. Models and UI remain sharp.")]
+    [Range(0f, 1f)] public float panoramaBlur = 0.85f;
+    [FormerlySerializedAs("panoramaFadeDuration")]
+    [Min(0f)] public float panoramaBlurDuration = 0.3f;
 
     public enum PresentationState { Unavailable, Ready, Loading, Inspecting }
     public PresentationState State { get; private set; }
@@ -38,14 +45,14 @@ public class TourReconstructionPresenter : MonoBehaviour
     private int generation;
     private int lastCloseFrame = -1;
     private bool ownsInspection;
-    private static readonly int PanoramaFadeId = Shader.PropertyToID("_InspectionFade");
+    private static readonly int PanoramaBlurId = Shader.PropertyToID("_InspectionBlur");
     private MeshRenderer panoramaRenderer;
     private MaterialPropertyBlock panoramaProperties;
-    private float originalPanoramaFade;
-    private float currentPanoramaFade;
-    private float startPanoramaFade;
-    private float targetPanoramaFade;
-    private float panoramaFadeElapsed;
+    private float originalPanoramaBlur;
+    private float currentPanoramaBlur;
+    private float startPanoramaBlur;
+    private float targetPanoramaBlur;
+    private float panoramaBlurElapsed;
 
     private void OnEnable()
     {
@@ -169,13 +176,14 @@ public class TourReconstructionPresenter : MonoBehaviour
         Vector3 position = head.position + rotation * Vector3.forward * definition.viewingDistance +
             Vector3.up * definition.verticalOffset;
         displayInstance.transform.SetPositionAndRotation(position, rotation);
-        Vector3 panelPosition = head.position + rotation * inspectionPanelOffset;
-        Vector3 panelForward = Vector3.ProjectOnPlane(panelPosition - head.position, Vector3.up);
+        Vector3 targetEyePosition = InspectionEyePosition(data, head.position);
+        Vector3 panelPosition = targetEyePosition + rotation * inspectionPanelOffset;
+        Vector3 panelForward = Vector3.ProjectOnPlane(panelPosition - targetEyePosition, Vector3.up);
         Quaternion panelRotation = panelForward.sqrMagnitude > 0.001f
             ? Quaternion.LookRotation(panelForward, Vector3.up) : rotation;
         data.uiAnchor.SetPositionAndRotation(panelPosition, panelRotation);
         displayInstance.SetActive(true);
-        if (!inspectionManager.EnterStationaryInspection(data))
+        if (!inspectionManager.EnterTourInspection(data, targetEyePosition))
         {
             CloseInspection();
             return;
@@ -184,6 +192,24 @@ public class TourReconstructionPresenter : MonoBehaviour
         State = PresentationState.Inspecting;
         placeholder.gameObject.SetActive(false);
         FocusPanorama();
+    }
+
+    private Vector3 InspectionEyePosition(ArtifactData data, Vector3 eyePosition)
+    {
+        Vector3 centre = data.modelContainer.position;
+        float radius = 0f;
+        foreach (var renderer in data.primaryModel.GetComponentsInChildren<Renderer>(true))
+        {
+            Bounds bounds = renderer.bounds;
+            float centreOffset = Vector3.ProjectOnPlane(bounds.center - centre, Vector3.up).magnitude;
+            radius = Mathf.Max(radius, centreOffset + new Vector2(bounds.extents.x, bounds.extents.z).magnitude);
+        }
+        // Include the largest allowed zoom so rotating/scaling cannot put the model around the eye.
+        float distance = Mathf.Max(inspectionViewingDistance,
+            radius * Mathf.Max(1f, inspectionManager.maxScaleMultiplier) + 0.15f);
+        Vector3 direction = Vector3.ProjectOnPlane(centre - eyePosition, Vector3.up);
+        float approach = Mathf.Max(0f, direction.magnitude - distance);
+        return eyePosition + direction.normalized * approach;
     }
 
     private static void FitModel(ArtifactData data, float size)
@@ -232,7 +258,7 @@ public class TourReconstructionPresenter : MonoBehaviour
         node = null;
         currentDefinition = null;
         CloseInspection();
-        // A new panorama or disabled presenter must never inherit inspection dimming.
+        // A new panorama or disabled presenter must never inherit inspection blur.
         RestorePanorama(true);
         if (placeholder != null)
         {
@@ -254,7 +280,7 @@ public class TourReconstructionPresenter : MonoBehaviour
     {
         if (IsBusy && tourManager != null && tourManager.IsMapOpen) CloseInspection();
         if (State == PresentationState.Loading && OVRInput.GetDown(OVRInput.RawButton.X)) CloseInspection();
-        UpdatePanoramaFade();
+        UpdatePanoramaBlur();
     }
 
     private void FocusPanorama()
@@ -263,48 +289,48 @@ public class TourReconstructionPresenter : MonoBehaviour
         {
             var renderer = tourManager != null ? tourManager.photoSphereRenderer : null;
             if (renderer == null || renderer.sharedMaterial == null ||
-                !renderer.sharedMaterial.HasProperty(PanoramaFadeId)) return;
+                !renderer.sharedMaterial.HasProperty(PanoramaBlurId)) return;
             panoramaRenderer = renderer;
             if (panoramaProperties == null) panoramaProperties = new MaterialPropertyBlock();
             renderer.GetPropertyBlock(panoramaProperties);
-            originalPanoramaFade = panoramaProperties.HasFloat(PanoramaFadeId)
-                ? panoramaProperties.GetFloat(PanoramaFadeId) : renderer.sharedMaterial.GetFloat(PanoramaFadeId);
-            currentPanoramaFade = originalPanoramaFade;
+            originalPanoramaBlur = panoramaProperties.HasFloat(PanoramaBlurId)
+                ? panoramaProperties.GetFloat(PanoramaBlurId) : renderer.sharedMaterial.GetFloat(PanoramaBlurId);
+            currentPanoramaBlur = originalPanoramaBlur;
         }
-        SetPanoramaFadeTarget(Mathf.Lerp(originalPanoramaFade, 1f, panoramaFade));
+        SetPanoramaBlurTarget(Mathf.Lerp(originalPanoramaBlur, 1f, panoramaBlur));
     }
 
     private void RestorePanorama(bool immediate = false)
     {
         if (panoramaRenderer == null) return;
-        SetPanoramaFadeTarget(originalPanoramaFade);
+        SetPanoramaBlurTarget(originalPanoramaBlur);
         if (!immediate) return;
-        ApplyPanoramaFade(originalPanoramaFade);
+        ApplyPanoramaBlur(originalPanoramaBlur);
         panoramaRenderer = null;
     }
 
-    private void SetPanoramaFadeTarget(float target)
+    private void SetPanoramaBlurTarget(float target)
     {
-        startPanoramaFade = currentPanoramaFade;
-        targetPanoramaFade = target;
-        panoramaFadeElapsed = 0f;
+        startPanoramaBlur = currentPanoramaBlur;
+        targetPanoramaBlur = target;
+        panoramaBlurElapsed = 0f;
     }
 
-    private void UpdatePanoramaFade()
+    private void UpdatePanoramaBlur()
     {
         if (panoramaRenderer == null) return;
-        panoramaFadeElapsed += Time.unscaledDeltaTime;
-        float t = panoramaFadeDuration > 0f ? Mathf.Clamp01(panoramaFadeElapsed / panoramaFadeDuration) : 1f;
-        ApplyPanoramaFade(Mathf.Lerp(startPanoramaFade, targetPanoramaFade, Mathf.SmoothStep(0f, 1f, t)));
+        panoramaBlurElapsed += Time.unscaledDeltaTime;
+        float t = panoramaBlurDuration > 0f ? Mathf.Clamp01(panoramaBlurElapsed / panoramaBlurDuration) : 1f;
+        ApplyPanoramaBlur(Mathf.Lerp(startPanoramaBlur, targetPanoramaBlur, Mathf.SmoothStep(0f, 1f, t)));
         if (t >= 1f && !ownsInspection) panoramaRenderer = null;
     }
 
-    private void ApplyPanoramaFade(float fade)
+    private void ApplyPanoramaBlur(float blur)
     {
-        currentPanoramaFade = fade;
+        currentPanoramaBlur = blur;
         // Only this renderer changes; keep its texture and any other overrides intact.
         panoramaRenderer.GetPropertyBlock(panoramaProperties);
-        panoramaProperties.SetFloat(PanoramaFadeId, fade);
+        panoramaProperties.SetFloat(PanoramaBlurId, blur);
         panoramaRenderer.SetPropertyBlock(panoramaProperties);
     }
 
