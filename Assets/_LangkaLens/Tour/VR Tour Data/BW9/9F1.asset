@@ -33,6 +33,10 @@ MonoBehaviour:
   iconPosition: {x: 0, y: 0, z: 0}
   iconRotation: {x: 0, y: 0, z: 0}
   iconScale: {x: 1, y: 1, z: 1}
+  reconstruction: {fileID: 11400000, guid: 58bef75ac28ae314da8c06eee8a88734, type: 2}
+  reconstructionPosition: {x: 0, y: -0.2, z: 2}
+  reconstructionRotation: {x: 0, y: 0, z: 0}
+  reconstructionScale: {x: 1, y: 1, z: 1}
   previousPath:
     targetNode: {fileID: 11400000, guid: 417d8ed73ba711b409d52704a2f866e3, type: 2}
     arrowPosition: {x: -7.37, y: -4, z: -2.14}
