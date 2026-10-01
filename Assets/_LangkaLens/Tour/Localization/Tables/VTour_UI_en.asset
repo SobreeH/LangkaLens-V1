@@ -50,6 +50,49 @@ MonoBehaviour:
     m_Localized: Teleport
     m_Metadata:
       m_Items: []
+  - m_Id: 13365520674168832
+    m_Localized: YARANG ANCIENT CITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13365520724500480
+    m_Localized: Virtual Tour | Archaeological Monuments
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13365520724500481
+    m_Localized: ENTER SITE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13365520724500482
+    m_Localized: Point controller ray and pull trigger to explore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13369052747898880
+    m_Localized: LANGKALENS ARCHAEOLOGY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13369052752093184
+    m_Localized: SITE NO. 02
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13369052752093185
+    m_Localized: SITE NO. 03
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13369052752093186
+    m_Localized: SITE NO. 08
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13369052752093187
+    m_Localized: SITE NO. 09
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13369052752093188
+    m_Localized: 'Press X again to exit to main menu
+
+      <size=36>Closes automatically
+      after 6 seconds</size>'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
