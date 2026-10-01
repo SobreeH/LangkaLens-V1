@@ -27,6 +27,7 @@ public class TourReconstructionPresenter : MonoBehaviour
     public TourReconstructionPlaceholder PlaceholderInstance => placeholder;
 
     private TourNode node;
+    private TourReconstructionDefinition currentDefinition;
     private TourReconstructionPlaceholder placeholder;
     private GameObject displayInstance;
     private AsyncOperationHandle<GameObject> displayHandle;
@@ -46,15 +47,16 @@ public class TourReconstructionPresenter : MonoBehaviour
     {
         if (inspectionManager != null) inspectionManager.InspectionExited += OnInspectionExited;
         if (tourManager != null && tourManager.CurrentNode != null && !tourManager.IsTransitioning)
-            EnterNode(tourManager.CurrentNode);
+            EnterNode(tourManager.CurrentNode, tourManager.currentArea?.reconstruction);
     }
 
-    public void EnterNode(TourNode nextNode)
+    public void EnterNode(TourNode nextNode, TourReconstructionDefinition definition)
     {
         ClearNode();
         node = nextNode;
-        if (!isActiveAndEnabled || node == null || node.reconstruction == null ||
-            !node.reconstruction.IsConfigured || placeholderPrefab == null) return;
+        currentDefinition = definition;
+        if (!isActiveAndEnabled || node == null || currentDefinition == null ||
+            !currentDefinition.IsConfigured || placeholderPrefab == null) return;
 
         placeholder = Instantiate(placeholderPrefab, node.iconPosition,
             Quaternion.Euler(node.iconRotation), transform);
@@ -69,13 +71,13 @@ public class TourReconstructionPresenter : MonoBehaviour
         if (!isActiveAndEnabled || State != PresentationState.Ready || node == null ||
             inspectionManager == null || inspectionManager.IsInspecting ||
             tourManager == null || tourManager.IsTransitioning || tourManager.IsMapOpen ||
-            tourManager.vrCamera == null || !node.reconstruction.IsConfigured) return;
+            tourManager.vrCamera == null || !currentDefinition.IsConfigured) return;
 
         State = PresentationState.Loading;
         placeholder.SetLoading(true);
         tourManager.RefreshNavigationVisibility();
         int request = ++generation;
-        var definition = node.reconstruction;
+        var definition = currentDefinition;
 
         // An inactive staging parent prevents SDK Start/OnEnable before placement and wiring.
         var staging = new GameObject("Reconstruction Loading");
@@ -89,7 +91,7 @@ public class TourReconstructionPresenter : MonoBehaviour
         TourReconstructionDefinition definition, GameObject staging)
     {
         bool accepted = this != null && isActiveAndEnabled && request == generation &&
-            State == PresentationState.Loading && node != null && node.reconstruction == definition;
+            State == PresentationState.Loading && node != null && currentDefinition == definition;
         if (handle.Status != AsyncOperationStatus.Succeeded)
         {
             Addressables.Release(handle);
@@ -166,7 +168,7 @@ public class TourReconstructionPresenter : MonoBehaviour
         }
         ReleaseDisplay();
         RestorePanorama();
-        State = node != null && node.reconstruction != null && node.reconstruction.IsConfigured &&
+        State = node != null && currentDefinition != null && currentDefinition.IsConfigured &&
             placeholder != null ? PresentationState.Ready : PresentationState.Unavailable;
         if (placeholder != null) placeholder.SetLoading(false);
         RefreshVisibility();
@@ -193,6 +195,7 @@ public class TourReconstructionPresenter : MonoBehaviour
     public void ClearNode()
     {
         node = null;
+        currentDefinition = null;
         CloseInspection();
         // A new panorama or disabled presenter must never inherit inspection dimming.
         RestorePanorama(true);

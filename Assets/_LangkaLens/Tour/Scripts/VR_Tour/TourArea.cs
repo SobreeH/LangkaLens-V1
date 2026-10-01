@@ -4,6 +4,6 @@ using UnityEngine;
 public class TourArea : ScriptableObject
 {
     public string areaName;
-    public Sprite menuThumbnail;
+    public TourReconstructionDefinition reconstruction;
     public TourNode startingNode; 
 }

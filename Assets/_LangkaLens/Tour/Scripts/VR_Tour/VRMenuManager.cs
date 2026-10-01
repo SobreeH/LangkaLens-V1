@@ -32,6 +32,7 @@ public class VRMenuManager : MonoBehaviour
     {
         if (selectedArea != null && selectedArea.startingNode != null)
         {
+            tourManager.currentArea = selectedArea;
             // 1. Tell the Tour Manager to load the first photo (e.g., 2F1)
             tourManager.LoadNode(selectedArea.startingNode);
 

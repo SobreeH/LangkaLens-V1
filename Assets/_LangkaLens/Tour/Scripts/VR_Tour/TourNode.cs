@@ -19,9 +19,6 @@ public class TourNode : ScriptableObject
     public Vector3 iconRotation;
     public Vector3 iconScale = Vector3.one;
 
-    [Header("Restored Reconstruction (Optional)")]
-    public TourReconstructionDefinition reconstruction;
-
     [Header("Previous Node (Leave blank if start of tour)")]
     public NodeConnection previousPath;
 

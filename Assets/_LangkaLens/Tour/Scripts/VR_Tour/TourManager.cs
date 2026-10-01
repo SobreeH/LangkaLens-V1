@@ -44,6 +44,7 @@ public class TourManager : MonoBehaviour
     public GameObject[] tourOnlyLabels;
 
     private TourNode currentNode;
+    public TourArea currentArea;
     private AsyncOperationHandle<Texture2D> currentTextureHandle;
     private AsyncOperationHandle<Texture2D> pendingTextureHandle;
     private GameObject currentIconInstance;
@@ -324,7 +325,7 @@ public class TourManager : MonoBehaviour
         if (vrRigParent != null) vrRigParent.position = idealCenterPos;
         IsTransitioning = false;
         if (currentTextureHandle.Status == AsyncOperationStatus.Succeeded && reconstructionPresenter != null)
-            reconstructionPresenter.EnterNode(currentNode);
+            reconstructionPresenter.EnterNode(currentNode, currentArea?.reconstruction);
         RefreshNavigationVisibility();
     }
 
