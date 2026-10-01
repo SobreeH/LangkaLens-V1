@@ -130,9 +130,7 @@ public static class TourReconstructionSetup
             Undo.RecordObject(node, "Configure starting-node reconstruction");
             if (node.reconstruction == null)
             {
-                node.reconstructionPosition = new Vector3(0f, -0.2f, 2f);
-                node.reconstructionRotation = Vector3.zero;
-                node.reconstructionScale = Vector3.one;
+                // Reconstruction will use the node's existing iconPosition/iconRotation/iconScale.
             }
             node.reconstruction = definitions[index];
             EditorUtility.SetDirty(node);
