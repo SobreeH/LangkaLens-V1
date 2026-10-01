@@ -24967,7 +24967,7 @@ GameObject:
   - component: {fileID: 1023386063}
   - component: {fileID: 1023386065}
   - component: {fileID: 1023386066}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: CenterEyeAnchor
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
