@@ -87,6 +87,62 @@ MonoBehaviour:
     m_Key: vtour_confirm_exit_popup
     m_Metadata:
       m_Items: []
+  - m_Id: 13410486525267968
+    m_Key: reconstruction_open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211008
+    m_Key: reconstruction_loading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211009
+    m_Key: reconstruction_retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211010
+    m_Key: reconstruction_close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211011
+    m_Key: reconstruction_smaller
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211012
+    m_Key: reconstruction_larger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211013
+    m_Key: reconstruction_title_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211014
+    m_Key: reconstruction_description_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211015
+    m_Key: reconstruction_title_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211016
+    m_Key: reconstruction_description_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211017
+    m_Key: reconstruction_title_8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211018
+    m_Key: reconstruction_description_8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211019
+    m_Key: reconstruction_title_9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211020
+    m_Key: reconstruction_description_9
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -93,6 +93,89 @@ MonoBehaviour:
       after 6 seconds</size>'
     m_Metadata:
       m_Items: []
+  - m_Id: 13410486525267968
+    m_Localized: Inspect restored ruins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211008
+    m_Localized: Loading reconstruction...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211009
+    m_Localized: Loading failed. Select to retry.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211010
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211011
+    m_Localized: Smaller
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211012
+    m_Localized: Larger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211013
+    m_Localized: Ban Jalae 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211014
+    m_Localized: 'Thought to begin as a brick stupa, this monument at ancient Yarang
+      was later adapted as a worship hall, with a front hall and a room for a sacred
+      image.
+
+
+      <b>Restored model:</b> explore a possible complete building.
+      Its roof and upper details interpret parts that no longer survive.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211015
+    m_Localized: Ban Jalae 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211016
+    m_Localized: 'A Buddhist brick monument at ancient Yarang, built in two phases.
+      The first is dated to around the 7th century CE. Votive tablets and miniature
+      stupas found inside show its religious role.
+
+
+      <b>Restored model:</b>
+      explore a possible form above the stepped base. The lost upper structure is
+      interpreted, rather than an exact replica.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211017
+    m_Localized: Ban Jalae 8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211018
+    m_Localized: 'A west-facing brick monument at ancient Yarang, interpreted as
+      the complex''s main shrine. Its square base has a central chamber and sandstone
+      corner-column bases.
+
+
+      <b>Restored model:</b> imagine the missing upper
+      building. The books propose timber corner columns; its upper form, colour and
+      details remain interpretations.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211019
+    m_Localized: Ban Wat 9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13410486567211020
+    m_Localized: 'Interpreted as a Buddhist monument at ancient Yarang. Excavation
+      revealed a brick base with eastern and western stairs and rooms above it. Finds
+      include a stucco elephant and beads.
+
+
+      <b>Restored model:</b> visualize
+      a possible complete structure above the surviving base. Its upper form and
+      decoration are reconstructed interpretations.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
