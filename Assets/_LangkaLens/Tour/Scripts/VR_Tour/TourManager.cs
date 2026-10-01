@@ -12,6 +12,7 @@ public class TourManager : MonoBehaviour
     public MeshRenderer photoSphereRenderer; 
     public GameObject arrowPrefab;
     public GameObject hoverIconPrefab;
+    public TourReconstructionPresenter reconstructionPresenter;
     
     [Header("Title Screen")]
     public AssetReferenceTexture2D titleScreenPhoto; 
@@ -44,14 +45,20 @@ public class TourManager : MonoBehaviour
 
     private TourNode currentNode;
     private AsyncOperationHandle<Texture2D> currentTextureHandle;
+    private AsyncOperationHandle<Texture2D> pendingTextureHandle;
     private GameObject currentIconInstance;
     private List<GameObject> activeArrows = new List<GameObject>();
     public IReadOnlyList<GameObject> ActiveArrows => activeArrows;
     public bool IsTransitioning { get; private set; }
     public bool IsAtMainMenu => currentNode == null && !IsTransitioning;
+    public bool IsMapOpen => mapMenuCanvas != null && mapMenuCanvas.activeSelf;
+    public bool IsReconstructionBusy => reconstructionPresenter != null && reconstructionPresenter.IsBusy;
+    public bool IsNavigationBlocked => IsTransitioning || IsReconstructionBusy || IsMapOpen;
+    public TourNode CurrentNode => currentNode;
 
     private GameObject currentOverlayInstance;
-    private AsyncOperationHandle<GameObject> currentOverlayHandle;
+    private int overlayGeneration;
+    private AsyncOperationHandle<GameObject> overlayHandle;
 
     private void Start()
     {
@@ -69,7 +76,7 @@ public class TourManager : MonoBehaviour
 
     private void OnTitleScreenLoaded(AsyncOperationHandle<Texture2D> handle)
     {
-        if (handle.Status == AsyncOperationStatus.Succeeded && photoSphereRenderer != null)
+        if (this != null && handle.Status == AsyncOperationStatus.Succeeded && photoSphereRenderer != null)
             photoSphereRenderer.material.mainTexture = handle.Result;
     }
 
@@ -91,9 +98,11 @@ public class TourManager : MonoBehaviour
     private IEnumerator MainMenuRoutine()
     {
         IsTransitioning = true;
+        if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();
         SetActiveArrowsVisible(false);
         // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
         AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
+        pendingTextureHandle = nextTextureHandle;
 
         Vector3 moveDirection = vrCamera != null ? vrCamera.forward : Vector3.forward;
         moveDirection.y = 0; 
@@ -147,6 +156,7 @@ public class TourManager : MonoBehaviour
         if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
         
         currentTextureHandle = nextTextureHandle;
+        pendingTextureHandle = default;
         if (!currentTextureHandle.IsDone)
         {
             yield return currentTextureHandle;
@@ -214,9 +224,11 @@ public class TourManager : MonoBehaviour
     private IEnumerator TransitionRoutine(TourNode nextNode, Vector3? targetWorldPosition)
     {
         IsTransitioning = true;
+        if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();
         SetActiveArrowsVisible(false);
         // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
         AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(nextNode.photoReference);
+        pendingTextureHandle = nextTextureHandle;
 
         Vector3 moveDirection;
         if (targetWorldPosition.HasValue) moveDirection = (targetWorldPosition.Value - vrCamera.position);
@@ -268,6 +280,7 @@ public class TourManager : MonoBehaviour
 
         currentNode = nextNode;
         currentTextureHandle = nextTextureHandle;
+        pendingTextureHandle = default;
         
         if (!currentTextureHandle.IsDone)
         {
@@ -280,7 +293,7 @@ public class TourManager : MonoBehaviour
             
             SpawnNavigationArrows();
             
-            if (currentNode.overlayModel.RuntimeKeyIsValid())
+            if (currentNode.reconstruction == null && currentNode.overlayModel != null && currentNode.overlayModel.RuntimeKeyIsValid())
             {
                 LoadOverlayModel();
                 SpawnHoverIcon();
@@ -317,7 +330,9 @@ public class TourManager : MonoBehaviour
         
         if (vrRigParent != null) vrRigParent.position = idealCenterPos;
         IsTransitioning = false;
-        SetActiveArrowsVisible(true);
+        if (currentTextureHandle.Status == AsyncOperationStatus.Succeeded && reconstructionPresenter != null)
+            reconstructionPresenter.EnterNode(currentNode);
+        RefreshNavigationVisibility();
     }
 
     private void SpawnHoverIcon()
@@ -334,18 +349,31 @@ public class TourManager : MonoBehaviour
 
     private void LoadOverlayModel()
     {
-        currentOverlayHandle = Addressables.InstantiateAsync(
-            currentNode.overlayModel, 
-            currentNode.modelPosition, 
-            Quaternion.Euler(currentNode.modelRotation)
+        TourNode requestedNode = currentNode;
+        int request = ++overlayGeneration;
+        var operation = Addressables.InstantiateAsync(
+            requestedNode.overlayModel,
+            requestedNode.modelPosition,
+            Quaternion.Euler(requestedNode.modelRotation)
         );
 
-        currentOverlayHandle.Completed += (handle) =>
+        operation.Completed += (handle) =>
         {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            if (handle.Status != AsyncOperationStatus.Succeeded)
             {
+                Addressables.Release(handle);
+                return;
+            }
+            if (this == null || request != overlayGeneration || currentNode != requestedNode)
+            {
+                Addressables.ReleaseInstance(handle);
+                return;
+            }
+            else
+            {
+                overlayHandle = handle;
                 currentOverlayInstance = handle.Result;
-                currentOverlayInstance.transform.localScale = currentNode.modelScale;
+                currentOverlayInstance.transform.localScale = requestedNode.modelScale;
                 currentOverlayInstance.SetActive(false); 
             }
         };
@@ -353,11 +381,11 @@ public class TourManager : MonoBehaviour
 
     private void ClearOverlayModel()
     {
-        if (currentOverlayInstance != null)
-        {
-            Addressables.ReleaseInstance(currentOverlayInstance);
-            currentOverlayInstance = null;
-        }
+        ++overlayGeneration;
+        if (currentOverlayInstance != null) currentOverlayInstance.SetActive(false);
+        if (overlayHandle.IsValid()) Addressables.ReleaseInstance(overlayHandle);
+        overlayHandle = default;
+        currentOverlayInstance = null;
 
         if (currentIconInstance != null) 
         {
@@ -368,6 +396,7 @@ public class TourManager : MonoBehaviour
 
     private void Update()
     {
+        if (reconstructionPresenter != null && !reconstructionPresenter.CanReturnToTourMenu) return;
         if (OVRInput.GetDown(OVRInput.RawButton.X))
         {
             if (currentNode != null)
@@ -389,9 +418,11 @@ public class TourManager : MonoBehaviour
     
     public void ToggleMapMenu()
     {
+        if (IsTransitioning) return;
         if (mapMenuCanvas != null)
         {
             bool isOpeningMap = !mapMenuCanvas.activeSelf;
+            if (isOpeningMap && reconstructionPresenter != null) reconstructionPresenter.CloseInspection();
             mapMenuCanvas.SetActive(isOpeningMap);
 
             if (returnHomeCanvas != null) returnHomeCanvas.SetActive(!isOpeningMap);
@@ -400,6 +431,8 @@ public class TourManager : MonoBehaviour
             {
                 currentOverlayInstance.SetActive(false);
             }
+            if (reconstructionPresenter != null) reconstructionPresenter.RefreshVisibility();
+            RefreshNavigationVisibility();
         }
     }
 
@@ -429,6 +462,8 @@ public class TourManager : MonoBehaviour
         }
     }
 
+    public void RefreshNavigationVisibility() => SetActiveArrowsVisible(!IsNavigationBlocked && currentNode != null);
+
     private void ClearActiveArrows()
     {
         foreach (GameObject arrow in activeArrows)
@@ -436,5 +471,13 @@ public class TourManager : MonoBehaviour
             if (arrow != null) Destroy(arrow);
         }
         activeArrows.Clear();
+    }
+
+    private void OnDestroy()
+    {
+        if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();
+        ClearOverlayModel();
+        if (currentTextureHandle.IsValid()) Addressables.Release(currentTextureHandle);
+        if (pendingTextureHandle.IsValid()) Addressables.Release(pendingTextureHandle);
     }
 }
