@@ -55,6 +55,28 @@ public class TourNodeEditor : Editor
 
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Sync from 'IconDummy'"))
+        {
+            GameObject icon = FindDummy("IconDummy");
+            if (icon != null)
+            {
+                Undo.RecordObject(node, "Sync IconDummy");
+                node.iconPosition = icon.transform.position;
+                node.iconRotation = icon.transform.eulerAngles;
+                node.iconScale = icon.transform.localScale;
+                EditorUtility.SetDirty(node);
+                Debug.Log($"[{node.name}] Successfully grabbed transform from IconDummy!");
+            }
+            else
+            {
+                Debug.LogWarning("Could not find a GameObject named 'IconDummy' in the scene (active or inactive).");
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+
 
 
         GUILayout.Space(5);
@@ -144,6 +166,18 @@ public class TourNodeEditor : Editor
             toSelect.Add(next);
         }
 
+        // 4. Enable IconDummy and move it to node's saved position
+        GameObject icon = FindDummy("IconDummy");
+        if (icon != null)
+        {
+            Undo.RecordObject(icon, "Enable IconDummy");
+            icon.SetActive(true);
+            Undo.RecordObject(icon.transform, "Move IconDummy");
+            icon.transform.position = node.iconPosition;
+            icon.transform.eulerAngles = node.iconRotation;
+            icon.transform.localScale = node.iconScale;
+            toSelect.Add(icon);
+        }
 
         if (toSelect.Count > 0)
         {
@@ -187,6 +221,12 @@ public class TourNodeEditor : Editor
             next.SetActive(false);
         }
 
+        GameObject icon = FindDummy("IconDummy");
+        if (icon != null)
+        {
+            Undo.RecordObject(icon, "Disable IconDummy");
+            icon.SetActive(false);
+        }
 
         Debug.Log("Scene reverted to default state.");
     }

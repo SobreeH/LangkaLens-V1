@@ -148,12 +148,22 @@ public static class TourReconstructionValidation
         foreach (var area in areas)
         {
             var node = area.startingNode;
-            tour.currentArea = area;
-            tour.LoadNode(node);
+            // Use the real menu path: it owns assignment of the area-level reconstruction.
+            var menu = UnityEngine.Object.FindFirstObjectByType<VRMenuManager>(FindObjectsInactive.Include);
+            var button = node.areaNumber == 2 ? menu.btnArea2 : node.areaNumber == 3 ? menu.btnArea3 :
+                node.areaNumber == 8 ? menu.btnArea8 : menu.btnArea9;
+            button.onClick.Invoke();
             while (tour.IsTransitioning) yield return null;
+            Physics.SyncTransforms(); // Observe the moved marker's synchronized hitbox.
+            Require(tour.currentArea == area, node.name + ": menu did not select the reconstruction area.");
             Require(presenter.State == TourReconstructionPresenter.PresentationState.Ready && presenter.PlaceholderInstance != null,
                 node.name + ": marker did not spawn.");
             var marker = presenter.PlaceholderInstance;
+            Require(marker.gameObject.activeInHierarchy, node.name + ": marker is inactive after arrival.");
+            var hitbox = marker.GetComponent<Collider>();
+            Require(!hitbox.bounds.Contains(tour.vrCamera.position), node.name + ": marker surrounds the eye.");
+            Require(Vector3.Distance(marker.transform.position, tour.vrCamera.position) <= presenter.placeholderMaxDistance + 0.001f,
+                node.name + ": marker is too distant to read/select.");
             marker.OnHover();
             Require(presenter.DisplayInstance == null, "Hover opened reconstruction.");
             marker.OnUnhover();
@@ -216,6 +226,35 @@ public static class TourReconstructionValidation
             while (Time.unscaledTime < fadeDeadline) yield return null;
             Require(Mathf.Abs(ReadPanoramaFade(tour) - originalFade) < 0.001f, "Close did not restore panorama brightness.");
             Debug.Log(node.name + ": spawn, select, SDK rotation, stationary rig, panel zoom, localization and close passed.");
+        }
+        // Placement regressions: unset nodes, sphere-wall positions, and valid authored positions.
+        var placementNode = UnityEngine.Object.Instantiate(tour.CurrentNode);
+        try
+        {
+            foreach (var position in new[] { Vector3.zero, new Vector3(7.92f, 0f, 12.47f),
+                tour.vrCamera.position + new Vector3(0.5f, -0.2f, 2f) })
+            {
+                placementNode.iconPosition = position;
+                presenter.EnterNode(placementNode, tour.currentArea.reconstruction);
+                Physics.SyncTransforms();
+                var marker = presenter.PlaceholderInstance;
+                var eye = tour.vrCamera.position;
+                Require(marker.gameObject.activeInHierarchy && !marker.GetComponent<Collider>().bounds.Contains(eye),
+                    "Placement regression: globe is hidden or surrounds the eye.");
+                Require(Vector3.Distance(marker.transform.position, eye) <= presenter.placeholderMaxDistance + 0.001f,
+                    "Placement regression: globe remains on the panorama wall.");
+                if (position != Vector3.zero)
+                    Require(Vector3.Angle(position - eye, marker.transform.position - eye) < 0.01f,
+                        "Placement changed the authored icon bearing.");
+                if (Vector3.Distance(position, eye) > 1f && Vector3.Distance(position, eye) < presenter.placeholderMaxDistance)
+                    Require(Vector3.Distance(position, marker.transform.position) < 0.001f,
+                        "Placement changed a valid nearby icon position.");
+            }
+        }
+        finally
+        {
+            presenter.EnterNode(tour.CurrentNode, tour.currentArea.reconstruction);
+            UnityEngine.Object.Destroy(placementNode);
         }
         // Cancel a request, immediately open again, and reject the first request's late completion.
         presenter.OpenInspection();
