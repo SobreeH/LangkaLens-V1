@@ -7,6 +7,7 @@ using UnityEngine.Localization.Components;
 public class InspectionManager : MonoBehaviour
 {
     public static InspectionManager Instance { get; private set; }
+    public event System.Action InspectionExited;
 
     [Header("UI Elements")]
     public GameObject inspectionCanvas;
@@ -45,7 +46,13 @@ public class InspectionManager : MonoBehaviour
     private float _currentScaleMultiplier = 1f;
     private bool _isInspecting = false;
     public bool IsInspecting => _isInspecting;
-    public bool CanToggleInspectedModel => _isInspecting && _currentArtifactData != null && _currentArtifactData.alternateModel != null;
+    public bool IsStationaryInspection => _isInspecting && _stationaryInspection;
+    public bool CanToggleInspectedModel => _isInspecting && !_stationaryInspection && _currentArtifactData != null && _currentArtifactData.alternateModel != null;
+    private bool _stationaryInspection;
+    private bool _locomotionWasEnabled;
+    private bool _headColliderWasEnabled;
+    private GameObject _playerController;
+    private bool _playerControllerWasActive;
     private int _lastInspectionExitFrame = -1;
     // Keep the X press that exits inspection out of the main-menu confirmation,
     // regardless of which component receives Update first.
@@ -57,7 +64,11 @@ public class InspectionManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this) Destroy(this.gameObject);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         else Instance = this;
 
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
@@ -108,9 +119,24 @@ public class InspectionManager : MonoBehaviour
 
     public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, GameObject pedestal, GameObject infoIcon, LocalizedString title, LocalizedString description)
     {
-        if (_isInspecting) return;
+        BeginInspection(artifact, origin, uiAnchor, pedestal, infoIcon, title, description, false);
+    }
+
+    public bool EnterStationaryInspection(ArtifactData data)
+    {
+        if (data == null || data.modelContainer == null || data.uiAnchor == null) return false;
+        return BeginInspection(data.modelContainer.gameObject, data.originalOrigin, data.uiAnchor,
+            null, null, data.localizedTitle, data.localizedDescription, true);
+    }
+
+    private bool BeginInspection(GameObject artifact, Transform origin, Transform uiAnchor,
+        GameObject pedestal, GameObject infoIcon, LocalizedString title, LocalizedString description, bool stationary)
+    {
+        if (!isActiveAndEnabled || _isInspecting || artifact == null || playerRig == null ||
+            centerEyeCamera == null || inspectionCanvas == null || (!stationary && origin == null)) return false;
 
         _isInspecting = true;
+        _stationaryInspection = stationary;
         _currentArtifact = artifact;
         if (artifact != null) _currentArtifactData = artifact.GetComponentInParent<ArtifactData>();
         _currentOrigin = origin;
@@ -123,7 +149,7 @@ public class InspectionManager : MonoBehaviour
         }
 
         _currentInfoIcon = infoIcon;
-        if (_currentInfoIcon == null && _currentArtifactData != null)
+        if (!stationary && _currentInfoIcon == null && _currentArtifactData != null)
         {
             _currentInfoIcon = _currentArtifactData.infoIcon;
         }
@@ -132,13 +158,28 @@ public class InspectionManager : MonoBehaviour
             _currentInfoIcon.SetActive(false);
         }
 
-        if (locomotionScript != null) locomotionScript.enabled = false;
-        
-        // Ensure all locomotion is completely disabled
-        GameObject playerController = GameObject.Find("PlayerController");
-        if (playerController != null) playerController.SetActive(false);
-        
-        if (_headCollider != null) _headCollider.enabled = false;
+        if (locomotionScript != null)
+        {
+            _locomotionWasEnabled = locomotionScript.enabled;
+            locomotionScript.enabled = false;
+        }
+        // Museum movement is scoped to this rig. Tour inspection never moves the player.
+        _playerController = null;
+        if (!stationary)
+        {
+            Transform controller = playerRig.Find("[BuildingBlock] OVRInteractionComprehensive/Locomotor/PlayerController");
+            if (controller != null)
+            {
+                _playerController = controller.gameObject;
+                _playerControllerWasActive = _playerController.activeSelf;
+                _playerController.SetActive(false);
+            }
+        }
+        if (_headCollider != null)
+        {
+            _headColliderWasEnabled = _headCollider.enabled;
+            _headCollider.enabled = false;
+        }
         
         _originalRigPosition = playerRig.position;
         _originalRigRotation = playerRig.rotation;
@@ -151,12 +192,18 @@ public class InspectionManager : MonoBehaviour
         _currentTitle = title;
         _currentDescription = description;
 
-        if (_currentTitle != null) _currentTitle.StringChanged += OnTitleChanged;
-        if (_currentDescription != null) _currentDescription.StringChanged += OnDescriptionChanged;
+        if (_currentTitle != null && !_currentTitle.IsEmpty) _currentTitle.StringChanged += OnTitleChanged;
+        if (_currentDescription != null && !_currentDescription.IsEmpty) _currentDescription.StringChanged += OnDescriptionChanged;
 
         UpdateModelStateUI();
 
-        StartCoroutine(MovePlayerToArtifact());
+        if (stationary)
+        {
+            PositionCanvas();
+            inspectionCanvas.SetActive(true);
+        }
+        else StartCoroutine(MovePlayerToArtifact());
+        return true;
     }
 
     public void ExitInspectionState()
@@ -171,8 +218,11 @@ public class InspectionManager : MonoBehaviour
 
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
 
-        playerRig.position = _originalRigPosition;
-        playerRig.rotation = _originalRigRotation;
+        if (!_stationaryInspection && playerRig != null)
+        {
+            playerRig.position = _originalRigPosition;
+            playerRig.rotation = _originalRigRotation;
+        }
 
         if (_currentArtifact != null)
         {
@@ -191,17 +241,10 @@ public class InspectionManager : MonoBehaviour
             _currentInfoIcon = null;
         }
 
-        if (locomotionScript != null) locomotionScript.enabled = true;
-
-        // Re-enable locomotion
-        Transform locomotorRoot = playerRig.Find("[BuildingBlock] OVRInteractionComprehensive/Locomotor");
-        if (locomotorRoot != null)
-        {
-            Transform playerController = locomotorRoot.Find("PlayerController");
-            if (playerController != null) playerController.gameObject.SetActive(true);
-        }
-
-        if (_headCollider != null) _headCollider.enabled = true;
+        if (locomotionScript != null) locomotionScript.enabled = _locomotionWasEnabled;
+        if (_playerController != null) _playerController.SetActive(_playerControllerWasActive);
+        _playerController = null;
+        if (_headCollider != null) _headCollider.enabled = _headColliderWasEnabled;
 
         _currentArtifact = null;
         if (_currentArtifactData != null)
@@ -214,6 +257,10 @@ public class InspectionManager : MonoBehaviour
         _currentOrigin = null;
         _currentUIAnchor = null; 
         _isInspecting = false;
+        _stationaryInspection = false;
+        _currentTitle = null;
+        _currentDescription = null;
+        InspectionExited?.Invoke();
     }
 
     private IEnumerator MovePlayerToArtifact()
@@ -292,15 +339,12 @@ public class InspectionManager : MonoBehaviour
                 float scaleDelta = zoomSpeed * Time.deltaTime;
                 if (zoomOut) scaleDelta = -scaleDelta;
 
-                _currentScaleMultiplier += scaleDelta;
-                _currentScaleMultiplier = Mathf.Clamp(_currentScaleMultiplier, minScaleMultiplier, maxScaleMultiplier);
-
-                _currentArtifact.transform.localScale = _originalArtifactScale * _currentScaleMultiplier;
+                AdjustScale(scaleDelta);
             }
 
             // Toggle Models with 'Y' Button (Button.Four on Left Touch)
-            if (OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.LTouch) || 
-                OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.Active))
+            if (CanToggleInspectedModel && (OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.LTouch) ||
+                OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.Active)))
             {
                 OnToggleModelButtonClicked();
             }
@@ -309,7 +353,7 @@ public class InspectionManager : MonoBehaviour
 
     public void OnToggleModelButtonClicked()
     {
-        if (_currentArtifactData != null)
+        if (CanToggleInspectedModel)
         {
             _currentArtifactData.ToggleModel();
             UpdateModelStateUI();
@@ -318,9 +362,7 @@ public class InspectionManager : MonoBehaviour
 
     private void UpdateModelStateUI()
     {
-        if (_currentArtifactData == null) return;
-
-        bool hasAlternate = _currentArtifactData.alternateModel != null;
+        bool hasAlternate = CanToggleInspectedModel;
         if (toggleModelButton != null) toggleModelButton.SetActive(hasAlternate);
         if (modelStateText != null) modelStateText.gameObject.SetActive(hasAlternate);
 
@@ -338,5 +380,23 @@ public class InspectionManager : MonoBehaviour
         {
             modelStateText.text = isPrimary ? "Current Model" : "Original Model";
         }
+    }
+
+    public void IncreaseScale() => AdjustScale(0.15f);
+    public void DecreaseScale() => AdjustScale(-0.15f);
+
+    public void AdjustScale(float delta)
+    {
+        if (!_isInspecting || _currentArtifact == null) return;
+        _currentScaleMultiplier = Mathf.Clamp(_currentScaleMultiplier + delta, minScaleMultiplier, maxScaleMultiplier);
+        _currentArtifact.transform.localScale = _originalArtifactScale * _currentScaleMultiplier;
+    }
+
+    private void OnDisable() => ExitInspectionState();
+
+    private void OnDestroy()
+    {
+        ExitInspectionState();
+        if (Instance == this) Instance = null;
     }
 }
