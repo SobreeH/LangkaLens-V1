@@ -11,9 +11,9 @@ The user selected a scaled model appearing in front of them for inspection. Each
 
 1. Arriving at a configured tour node spawns a small, selectable placeholder at an authored location, following the navigation arrows' node lifetime.
 2. Hover highlights the placeholder. Selecting it with the existing Meta ray interaction starts loading its restored model. Merely hovering does not open inspection.
-3. The restored model appears in front of the user's current view, at a comfortable inspection scale. The player rig stays in place. The model remains anchored in the world after placement, so it does not follow every head movement. The panorama in `SphereContainer` fades toward black during inspection to draw attention to the reconstruction, then restores on exit.
+3. The restored model appears in front of the user's current view, at a comfortable inspection scale. The player rig smoothly approaches it without changing height or facing, targeting about 0.8 m from its centre with model-size clearance. The model remains anchored in the world after placement, so it does not follow every head movement. The panorama in `SphereContainer` loses focus during inspection to draw attention to the reconstruction, preserving brightness and keeping the model/UI sharp, then restores on exit.
 4. The user can rotate the restored reconstruction using the museum's interaction behavior, scale it with the museum's zoom controls, and read localized information on a panel to their right, angled toward them.
-5. Close or X ends inspection, removes the model and panel, and restores the placeholder and navigation arrows.
+5. Close or X ends inspection, cancels any approach, restores the original player rig position/rotation, removes the model and panel, and restores the placeholder and navigation arrows.
 6. Changing nodes, opening the map, returning to the tour menu, or unloading the scene clears inspection content and pending work. Nothing from the previous node may appear afterward.
 
 Default scope: one placeholder and one active inspection per node. Different nodes can reference different restored models, or share the same model definition. Multiple simultaneous displays are outside this initial feature.
@@ -35,7 +35,7 @@ Create one reusable inspection display and reconstruction definition for each so
 - `TourNode` already has optional `overlayModel`, `modelPosition/Rotation/Scale`, and `iconPosition/Rotation/Scale` fields. That existing path loads an overlay on node entry; `HoverIcon` shows and hides it on hover.
 - The active scene's `hoverIconPrefab` is unassigned. Of 80 tour nodes inspected, six have overlay references: four reference `globeRED.prefab`, and two reference `sample.glb`. These are not a ready-to-use inspection setup and should not be migrated automatically.
 - `Artifact_Display_Station.prefab` contains `ArtifactData`, `Grabbable`, `OneGrabFreeRotateTransformer`, `RayInteractable`, `PointableUnityEventWrapper`, `ColliderSurface`, and related movement wiring. Reuse this working interaction arrangement in a dedicated inspection display prefab.
-- `InspectionManager` already handles localized information, model scaling, alternate-model toggling, and exit. Its current entry flow moves the player toward a pedestal and its exit restores the rig; those behaviors need an explicit stationary-player mode for the tour.
+- `InspectionManager` already handles localized information, model scaling, alternate-model toggling, and exit. Tour inspection reuses its rig ownership and restoration, with a horizontal approach that preserves facing rather than the museum's pedestal-facing rotation.
 - Restored building prefabs exist as `OG_BJ2`, `OG_BJ3`, `OG_BJ8`, and `OG_BW9` under `Assets/_LangkaLens/Mixed/3D Models/RestoredModels/Prefabs/`. The inspected prefabs have no MonoBehaviour interaction components. They need an interaction wrapper and scale/pivot setup.
 - Tour and museum controls overlap: A/B move the tour rig or scale an inspected model; X returns from the tour or closes inspection. Shared exit confirmation and controller hints also need the inspection state.
 
@@ -75,9 +75,9 @@ Load the display on selection, not every node entry. Introduce caching or poolin
 
 ### 4. Museum inspection reuse
 
-Extend `InspectionManager` with an explicit presentation mode whose default preserves existing museum behavior. In stationary-player mode:
+Extend `InspectionManager` with an explicit tour presentation mode whose default preserves existing museum behavior. In tour mode:
 
-- Skip the player-glide coroutine and skip rig position/rotation restoration on exit.
+- Smoothly approach the spawned display horizontally without forced rotation, using its renderer bounds for clearance. Save and restore the rig position/rotation; stop approach immediately on exit, map opening, node change or disable. Show the panel to the right of the final eye position after arrival. Retain the stationary API for existing callers.
 - Accept the spawned display and its explicit data/anchors after initialization.
 - Reuse model scaling, localized text, and close behavior. Hide the model-toggle button and comparison state label in the tour panel.
 - Provide an exit notification so the presenter can release the spawned display and restore tour content, including when X closes inspection internally.
@@ -89,7 +89,7 @@ Extract a reusable inspection panel from the museum UI, retaining localization a
 
 ### 5. Input and tour integration
 
-While loading or inspecting, suppress arrow navigation and teleport aiming. While inspecting, route A/B to model scaling. Y has no model-switching action or model-switching hint. Opening the map through the existing tour UI closes/cancels inspection first. Pause the tour's `VRZoomController` without changing the player's current position or its saved zoom offset.
+While loading or inspecting, suppress arrow navigation and teleport aiming. While inspecting, route A/B to model scaling. Y has no model-switching action or model-switching hint. Opening the map through the existing tour UI closes/cancels inspection first. Pause the tour's `VRZoomController` while inspection owns rig movement, then restore the pre-inspection position and preserve its saved zoom offset.
 
 X closes or cancels inspection first. Guard that entire input frame so the same press cannot also return to the tour menu or start exit confirmation, regardless of Update ordering. Reuse the existing inspection exit-frame concept and integrate it with `TourManager` and `MRMainMenuConfirmation`.
 
@@ -105,7 +105,7 @@ Start with one explicitly configured node and one of the four confirmed restored
 
 1. Add optional node configuration and reusable display/placeholder prefabs.
 2. Add presenter loading, node integration, and complete cleanup.
-3. Extend shared inspection with stationary-player mode and configure its panel.
+3. Extend shared inspection with tour approach/restore behavior and configure its panel.
 4. Integrate input priority, map/exit behavior, and controller hints.
 5. Add node placement tooling and configure one demonstration node.
 6. Validate the demonstration, regress the museum, then configure the agreed remaining nodes.
@@ -114,13 +114,13 @@ Start with one explicitly configured node and one of the four confirmed restored
 
 - Configured nodes show exactly one placeholder after transition; unconfigured nodes show none.
 - Hover only highlights. One selection opens one model, and moving the pointer away does not close it.
-- Opening/closing inspection does not move or rotate the tour rig. The model stays world-anchored and appropriately sized for seated and standing use.
+- Opening inspection smoothly moves the tour rig closer without changing height or facing. Closing or cancelling restores its original position/rotation. The model stays world-anchored and appropriately sized for seated and standing use.
 - Controller and supported hand interactions rotate the model. Scale, information, and close controls work. No model-toggle button, comparison label, or model-switching controller hint appears in tour inspection.
 - A/B do not move the tour rig during inspection. X closes inspection without also leaving the node. Teleport aiming cannot remain active behind the model.
 - Closing, map opening, node change, menu return, and scene unload remove content and restore the appropriate controls.
 - Rapid repeated selection, close during load, late completion, missing content, and load failure do not leave duplicates, stale models, retained grabs, or leaked Addressables handles.
 - Existing arrow navigation, unconfigured nodes, legacy overlays, museum player glide, museum model toggling, localization, and exit confirmation remain functional.
-- Compile in Unity; run focused lifetime/input regression checks and Play Mode checks. Editor validation passed: 97 asset checks and 119 tour Play Mode checks on 2026-10-02; 7 museum regression checks passed on 2026-10-01. Actual controller/hand selection, viewing comfort, memory, and frame time still require target Quest validation; see the validation report for the limits of the Editor checks.
+- Compile in Unity; run focused lifetime/input regression checks and Play Mode checks. Editor validation passed: 177 asset checks, 162 tour Play Mode checks, and 7 museum regression checks on 2026-10-02. Actual controller/hand selection, approach comfort, blur performance/stereo appearance, memory, and frame time still require target Quest validation; see the validation report for the limits of the Editor checks.
 
 ## Remaining content choices
 
@@ -134,7 +134,7 @@ Inspection display and panel prefabs are under `Assets/_LangkaLens/Tour/3D Model
 
 Select a marker with a controller ray or hand ray. Select and drag the model to rotate it. A/B or the Smaller/Larger panel buttons change its size. X or Close ends inspection; X also cancels a pending load. No Y model-switching action is added. Opening the map through the tour UI ends inspection.
 
-The presenter also fades the panorama 85% toward black over 0.3 seconds during inspection, preserving model/UI brightness and the existing tour warp. These values can be tuned under `Inspection backdrop` on the `Tour Reconstruction Inspection` scene object.
+The presenter also smoothly blurs the panorama over 0.3 seconds during inspection, preserving brightness, sharp model/UI rendering and the existing tour warp. Blur strength defaults to 0.85. These values can be tuned under `Inspection backdrop` on the `Tour Reconstruction Inspection` scene object.
 
 The information panel opens 45 degrees to the user's right, angled toward them, and stays fixed in the world. Its default head-relative offset is `(1.2, -0.2, 1.2)` metres and is editable under `Inspection panel` on the presenter. The marker uses the nested `globeRED` visual normalized to 0.45 m diameter.
 
