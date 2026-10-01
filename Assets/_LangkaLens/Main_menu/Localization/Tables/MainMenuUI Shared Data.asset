@@ -79,6 +79,10 @@ MonoBehaviour:
     m_Key: btn_Lang
     m_Metadata:
       m_Items: []
+  - m_Id: 45288368363642880
+    m_Key: exit_main_menu_confirmation
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

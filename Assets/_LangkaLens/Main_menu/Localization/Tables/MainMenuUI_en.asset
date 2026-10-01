@@ -82,6 +82,13 @@ MonoBehaviour:
     m_Localized: EN
     m_Metadata:
       m_Items: []
+  - m_Id: 45288368363642880
+    m_Localized: 'Press X again to exit to main menu
+
+      <size=36>Closes automatically
+      after 6 seconds</size>'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
