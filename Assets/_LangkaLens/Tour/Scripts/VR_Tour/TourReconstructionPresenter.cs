@@ -9,6 +9,10 @@ public class TourReconstructionPresenter : MonoBehaviour
     public InspectionManager inspectionManager;
     public TourReconstructionPlaceholder placeholderPrefab;
 
+    [Header("Placeholder placement")]
+    [Tooltip("Bring distant icon positions closer along the same direction so the globe stays readable and selectable inside the panorama.")]
+    [Min(1f)] public float placeholderMaxDistance = 3f;
+
     [Header("Inspection panel")]
     [Tooltip("Panel position relative to the user's horizontal view when inspection opens. Positive X is right.")]
     public Vector3 inspectionPanelOffset = new Vector3(1.2f, -0.2f, 1.2f);
@@ -61,9 +65,40 @@ public class TourReconstructionPresenter : MonoBehaviour
         placeholder = Instantiate(placeholderPrefab, node.iconPosition,
             Quaternion.Euler(node.iconRotation), transform);
         placeholder.transform.localScale = node.iconScale;
+        PlacePlaceholder();
         placeholder.Setup(this);
         State = PresentationState.Ready;
         RefreshVisibility();
+    }
+
+    private void PlacePlaceholder()
+    {
+        Transform head = tourManager != null ? tourManager.vrCamera : null;
+        if (head == null) return;
+
+        // Icon positions default to the panorama origin, which is also the tour eye position.
+        // Keep authored bearings, but never put the marker around the eye or on the sphere wall.
+        // Renderer bounds update with the transform immediately; physics bounds can still
+        // describe the prefab's old position until the next physics synchronization.
+        float radius = 0f;
+        foreach (var renderer in placeholder.GetComponentsInChildren<Renderer>())
+        {
+            if (renderer.GetComponent<TMPro.TMP_Text>() != null) continue;
+            Bounds bounds = renderer.bounds;
+            radius = Mathf.Max(radius, Vector3.Distance(bounds.center, placeholder.transform.position) + bounds.extents.magnitude);
+        }
+        var camera = head.GetComponent<Camera>();
+        float minimumDistance = radius + (camera != null ? camera.nearClipPlane : 0.1f) + 0.1f;
+        float maximumDistance = Mathf.Max(minimumDistance, placeholderMaxDistance);
+        Vector3 offset = node.iconPosition - head.position;
+        if (node.iconPosition.sqrMagnitude < 0.0001f || offset.sqrMagnitude < minimumDistance * minimumDistance)
+        {
+            Vector3 forward = Vector3.ProjectOnPlane(head.forward, Vector3.up);
+            if (forward.sqrMagnitude < 0.001f) forward = Vector3.forward;
+            offset = forward.normalized * 2f + Vector3.down * 0.2f;
+        }
+        placeholder.transform.position = head.position + offset.normalized *
+            Mathf.Clamp(offset.magnitude, minimumDistance, maximumDistance);
     }
 
     public void OpenInspection()
