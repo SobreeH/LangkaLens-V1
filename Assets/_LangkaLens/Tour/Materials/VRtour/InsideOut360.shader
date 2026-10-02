@@ -3,8 +3,8 @@ Shader "Custom/InsideOut360"
     Properties
     {
         _MainTex ("360 Texture", 2D) = "white" {}
-        _InspectionBlur ("Inspection Background Blur", Range(0, 1)) = 0
-        [HideInInspector] _InspectionFade ("Legacy Inspection Fade", Range(0, 1)) = 0
+        _InspectionFade ("Inspection Background Fade", Range(0, 1)) = 0
+        _InspectionFadeColor ("Inspection Background Color", Color) = (0.32549, 0.22745, 0.17647, 1)
     }
     SubShader
     {
@@ -36,8 +36,8 @@ Shader "Custom/InsideOut360"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float4 _MainTex_TexelSize;
-            half _InspectionBlur;
+            half _InspectionFade;
+            fixed4 _InspectionFadeColor;
 
             v2f vert (appdata v)
             {
@@ -55,18 +55,8 @@ Shader "Custom/InsideOut360"
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
                 fixed4 color = tex2D(_MainTex, i.uv);
-                if (_InspectionBlur > 0.001h)
-                {
-                    // Only the panorama loses focus. Its existing mip pyramid supplies the blur.
-                    // Interpolate levels explicitly because the photos use bilinear filtering.
-                    float maxMip = max(0.0, floor(log2(max(_MainTex_TexelSize.z, _MainTex_TexelSize.w))));
-                    float mip = min(saturate(_InspectionBlur) * 7.0, maxMip);
-                    float lowerMip = floor(mip);
-                    fixed4 soft = lerp(tex2Dlod(_MainTex, float4(i.uv, 0, lowerMip)),
-                        tex2Dlod(_MainTex, float4(i.uv, 0, min(lowerMip + 1.0, maxMip))), frac(mip));
-                    // Ease out of the normal derivative-selected level without a pop.
-                    color = lerp(color, soft, saturate(_InspectionBlur * 8.0h));
-                }
+                // Fade only the panorama toward the inspection canvas palette.
+                color.rgb = lerp(color.rgb, _InspectionFadeColor.rgb, saturate(_InspectionFade));
                 return color;
             }
             ENDCG
