@@ -3833,6 +3833,11 @@ MonoBehaviour:
   _selectSurface: {fileID: 595617968}
   _movementProvider: {fileID: 0}
   _tiebreakerScore: 0
+--- !u!137 &292332713 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6642106706158580959, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 23766022}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &295322088
 GameObject:
   m_ObjectHideFlags: 0
@@ -3882,6 +3887,7 @@ GameObject:
   - component: {fileID: 302743723}
   - component: {fileID: 302743722}
   - component: {fileID: 302743721}
+  - component: {fileID: 302743724}
   m_Layer: 0
   m_Name: Tour Reconstruction Inspection
   m_TagString: Untagged
@@ -3929,12 +3935,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TourReconstructionPresenter
   tourManager: {fileID: 194958224}
   inspectionManager: {fileID: 302743721}
-  placeholderPrefab: {fileID: 2602049957433266548, guid: 81c982514df803748bf1cad2bf1e3597, type: 3}
-  placeholderMaxDistance: 3
   inspectionViewingDistance: 0.8
   inspectionPanelOffset: {x: 1.2, y: -0.2, z: 1.2}
-  panoramaBlur: 0.85
-  panoramaBlurDuration: 0.3
+  panoramaFade: 0.85
+  panoramaFadeDuration: 0.3
+  panoramaFadeColor: {r: 0.3254902, g: 0.22745098, b: 0.1764706, a: 1}
 --- !u!4 &302743723
 Transform:
   m_ObjectHideFlags: 0
@@ -3951,6 +3956,116 @@ Transform:
   - {fileID: 1160786729}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &302743724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302743720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3110464e46185954ca5828510d737f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TourInspectionButtonHighlight
+  targets:
+  - renderer: {fileID: 1529510465}
+    originalMesh: {fileID: 4300000, guid: 32fbc8bcebb64584da5868aeeb086cda, type: 3}
+    highlightMesh: {fileID: 4300000, guid: 97ec995456c2915458f54d969e08b5db, type: 2}
+    originalMaterials:
+    - {fileID: 840110603815307103, guid: e878dcbefebb86f478a53130d09dd0ac, type: 3}
+    highlightMaterials:
+    - {fileID: 840110603815307103, guid: e878dcbefebb86f478a53130d09dd0ac, type: 3}
+    - {fileID: 2100000, guid: 4a0a439f805960e49b217f39d78334e4, type: 2}
+    buttonMaterialIndices: 01000000
+  - renderer: {fileID: 1497369353}
+    originalMesh: {fileID: 4300002, guid: 8b83018900d13bb4f8e0ad895cb004e5, type: 3}
+    highlightMesh: {fileID: 4300000, guid: 6187d71027198e94dacc675fa4f7c022, type: 2}
+    originalMaterials:
+    - {fileID: 8902039159736550116, guid: ad2069ba7fe0238489d3531897cea8cf, type: 3}
+    highlightMaterials:
+    - {fileID: 8902039159736550116, guid: ad2069ba7fe0238489d3531897cea8cf, type: 3}
+    - {fileID: 2100000, guid: bd293e2eb0f60bc42899caa055ba0ebb, type: 2}
+    buttonMaterialIndices: 01000000
+  - renderer: {fileID: 25202037}
+    originalMesh: {fileID: 4300000, guid: c3ba18e9fa5e9104098cbdbb3e23a5b4, type: 3}
+    highlightMesh: {fileID: 4300000, guid: d788b9b6ceef7d749ac9baf444cfce6c, type: 2}
+    originalMaterials:
+    - {fileID: -5657245977255592283, guid: 528296ec8cb7e9e4b836b8aa1197aa98, type: 3}
+    - {fileID: 7548789142924365465, guid: 76f6075ec84afca46b2a5e5b3bfdf8ce, type: 3}
+    highlightMaterials:
+    - {fileID: -5657245977255592283, guid: 528296ec8cb7e9e4b836b8aa1197aa98, type: 3}
+    - {fileID: 7548789142924365465, guid: 76f6075ec84afca46b2a5e5b3bfdf8ce, type: 3}
+    - {fileID: 2100000, guid: 0dad41b7fb17dcc4f9d18e03eca80aad, type: 2}
+    buttonMaterialIndices: 02000000
+  - renderer: {fileID: 1645147627}
+    originalMesh: {fileID: 2703057380131705829, guid: 2b9768cc0be08784b91b7da60696ba29, type: 3}
+    highlightMesh: {fileID: 4300000, guid: b2b6151153f156e40bfcae9583185519, type: 2}
+    originalMaterials:
+    - {fileID: 8565634612894319375, guid: 2fadc56f841e8224ea1ff539811fc765, type: 3}
+    highlightMaterials:
+    - {fileID: 8565634612894319375, guid: 2fadc56f841e8224ea1ff539811fc765, type: 3}
+    - {fileID: 2100000, guid: dc636e2ce1935984e9e88514b09bb9a1, type: 2}
+    buttonMaterialIndices: 01000000
+  - renderer: {fileID: 1636116433}
+    originalMesh: {fileID: -1318633201023460034, guid: 2b1aaafc31655024394d83dc00911c1c, type: 3}
+    highlightMesh: {fileID: 4300000, guid: 4e27ec497c6bd3b49871041f4d6492ab, type: 2}
+    originalMaterials:
+    - {fileID: -4540382836535262998, guid: 2ea89d6e4d9c45940908e3f337989a9a, type: 3}
+    highlightMaterials:
+    - {fileID: -4540382836535262998, guid: 2ea89d6e4d9c45940908e3f337989a9a, type: 3}
+    - {fileID: 2100000, guid: dd2b3013de07ed14b88e3eaf25d134ef, type: 2}
+    buttonMaterialIndices: 01000000
+  - renderer: {fileID: 292332713}
+    originalMesh: {fileID: 4300000, guid: 32fbc8bcebb64584da5868aeeb086cda, type: 3}
+    highlightMesh: {fileID: 4300000, guid: 97ec995456c2915458f54d969e08b5db, type: 2}
+    originalMaterials:
+    - {fileID: 840110603815307103, guid: e878dcbefebb86f478a53130d09dd0ac, type: 3}
+    highlightMaterials:
+    - {fileID: 840110603815307103, guid: e878dcbefebb86f478a53130d09dd0ac, type: 3}
+    - {fileID: 2100000, guid: 4a0a439f805960e49b217f39d78334e4, type: 2}
+    buttonMaterialIndices: 01000000
+  - renderer: {fileID: 1051376818}
+    originalMesh: {fileID: 4300002, guid: 8b83018900d13bb4f8e0ad895cb004e5, type: 3}
+    highlightMesh: {fileID: 4300000, guid: 6187d71027198e94dacc675fa4f7c022, type: 2}
+    originalMaterials:
+    - {fileID: 8902039159736550116, guid: ad2069ba7fe0238489d3531897cea8cf, type: 3}
+    highlightMaterials:
+    - {fileID: 8902039159736550116, guid: ad2069ba7fe0238489d3531897cea8cf, type: 3}
+    - {fileID: 2100000, guid: bd293e2eb0f60bc42899caa055ba0ebb, type: 2}
+    buttonMaterialIndices: 01000000
+  - renderer: {fileID: 1962794065}
+    originalMesh: {fileID: 4300000, guid: c3ba18e9fa5e9104098cbdbb3e23a5b4, type: 3}
+    highlightMesh: {fileID: 4300000, guid: d788b9b6ceef7d749ac9baf444cfce6c, type: 2}
+    originalMaterials:
+    - {fileID: -5657245977255592283, guid: 528296ec8cb7e9e4b836b8aa1197aa98, type: 3}
+    - {fileID: 7548789142924365465, guid: 76f6075ec84afca46b2a5e5b3bfdf8ce, type: 3}
+    highlightMaterials:
+    - {fileID: -5657245977255592283, guid: 528296ec8cb7e9e4b836b8aa1197aa98, type: 3}
+    - {fileID: 7548789142924365465, guid: 76f6075ec84afca46b2a5e5b3bfdf8ce, type: 3}
+    - {fileID: 2100000, guid: 0dad41b7fb17dcc4f9d18e03eca80aad, type: 2}
+    buttonMaterialIndices: 02000000
+  - renderer: {fileID: 2132758917}
+    originalMesh: {fileID: 2703057380131705829, guid: 2b9768cc0be08784b91b7da60696ba29, type: 3}
+    highlightMesh: {fileID: 4300000, guid: b2b6151153f156e40bfcae9583185519, type: 2}
+    originalMaterials:
+    - {fileID: 8565634612894319375, guid: 2fadc56f841e8224ea1ff539811fc765, type: 3}
+    highlightMaterials:
+    - {fileID: 8565634612894319375, guid: 2fadc56f841e8224ea1ff539811fc765, type: 3}
+    - {fileID: 2100000, guid: dc636e2ce1935984e9e88514b09bb9a1, type: 2}
+    buttonMaterialIndices: 01000000
+  - renderer: {fileID: 443982767}
+    originalMesh: {fileID: -1318633201023460034, guid: 2b1aaafc31655024394d83dc00911c1c, type: 3}
+    highlightMesh: {fileID: 4300000, guid: 4e27ec497c6bd3b49871041f4d6492ab, type: 2}
+    originalMaterials:
+    - {fileID: -4540382836535262998, guid: 2ea89d6e4d9c45940908e3f337989a9a, type: 3}
+    highlightMaterials:
+    - {fileID: -4540382836535262998, guid: 2ea89d6e4d9c45940908e3f337989a9a, type: 3}
+    - {fileID: 2100000, guid: dd2b3013de07ed14b88e3eaf25d134ef, type: 2}
+    buttonMaterialIndices: 01000000
+  brown: {r: 0.3254902, g: 0.22745098, b: 0.1764706, a: 1}
+  gold: {r: 0.73333335, g: 0.57254905, b: 0.36078432, a: 1}
+  blinkPeriod: 1.6
 --- !u!1 &307456470
 GameObject:
   m_ObjectHideFlags: 0
@@ -4747,6 +4862,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 327234958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &443982767 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6232641024776965750, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 23766022}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &451226977
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11294,6 +11414,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1381050329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &1051376818 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4156531248389480619, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 23766022}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1053516415
 GameObject:
   m_ObjectHideFlags: 0
@@ -14400,6 +14525,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _InspectionFadeColor: {r: 0.32548997, g: 0.22744992, b: 0.17646995, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
@@ -20450,6 +20576,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1381050329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &1962794065 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2734129238855096822, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 23766022}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1965279561
 GameObject:
   m_ObjectHideFlags: 0
@@ -21660,6 +21791,11 @@ Transform:
   - {fileID: 355059691}
   m_Father: {fileID: 1236843317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &2132758917 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 673470444914910919, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 23766022}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2135635014
 GameObject:
   m_ObjectHideFlags: 0
