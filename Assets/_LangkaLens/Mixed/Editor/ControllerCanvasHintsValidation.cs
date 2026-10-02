@@ -102,6 +102,11 @@ public static class ControllerCanvasHintsValidation
                     Check(hints, name, S.None, C.LeftStick, "teleport");
                     Check(hints, name, S.Busy, C.LeftStick, null);
                     Check(hints, name, S.TourMenu, C.RightA, null);
+                    Check(hints, name, S.TourMenu, C.LeftY, null);
+                    Check(hints, name, S.None, C.LeftY, null);
+                    Check(hints, name, S.ReconstructionAvailable, C.LeftY, "inspect_reconstruction");
+                    Check(hints, name, S.ReconstructionAvailable | S.Busy, C.LeftY, "cancel_reconstruction");
+                    Check(hints, name, S.ReconstructionAvailable | S.Inspecting, C.LeftY, "exit_inspection");
                     Check(hints, name, S.TourMenu | S.ConfirmExit, C.LeftX, "confirm_home");
                     var tour = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<TourManager>(true)).Single();
                     Require(tour.tourOnlyLabels.Length == 0, "TourManager still competes for label visibility.");
@@ -113,7 +118,7 @@ public static class ControllerCanvasHintsValidation
             }
         }
         finally { EditorSceneManager.OpenScene(original, OpenSceneMode.Single); }
-        Debug.Log("Controller hints passed: " + checks + " binding/translation/layout checks plus 20 state assertions.");
+        Debug.Log("Controller hints passed: " + checks + " binding/translation/layout checks plus 25 state assertions.");
     }
 
     private static void Check(ControllerCanvasHints hints, string scene, S context, C control, string expected)
@@ -144,6 +149,9 @@ public static class ControllerCanvasHintsValidation
         {
             yield return S.Tablet | S.Turn;
             yield return S.Tablet | S.Busy;
+            yield return S.Tablet | S.ReconstructionAvailable;
+            yield return S.Tablet | S.ReconstructionAvailable | S.Busy;
+            yield return S.Tablet | S.ReconstructionAvailable | S.Inspecting;
         }
     }
 

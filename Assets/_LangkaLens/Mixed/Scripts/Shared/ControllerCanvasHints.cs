@@ -15,7 +15,7 @@ public class ControllerCanvasHints : MonoBehaviour
     {
         None = 0, Inspecting = 1, AlternateModel = 2, Aligning = 4,
         AlignmentPlaced = 8, Busy = 16, TourMenu = 32, ConfirmExit = 64,
-        Tablet = 128, Move = 256, Turn = 512, AlignmentAvailable = 1024
+        Tablet = 128, Move = 256, Turn = 512, AlignmentAvailable = 1024, ReconstructionAvailable = 2048
     }
     [Serializable]
     public class Label
@@ -73,6 +73,8 @@ public class ControllerCanvasHints : MonoBehaviour
         if (tour != null && tour.isActiveAndEnabled)
         {
             if (tour.IsAtMainMenu) context |= Context.TourMenu;
+            if (tour.reconstructionPresenter != null && tour.reconstructionPresenter.CanToggleInspection)
+                context |= Context.ReconstructionAvailable;
             if (tour.IsTransitioning || (tour.IsReconstructionBusy && !inspecting)) context |= Context.Busy;
         }
         if (exitConfirmation != null && exitConfirmation.isActiveAndEnabled && exitConfirmation.IsShowing)
@@ -141,6 +143,8 @@ public class ControllerCanvasHints : MonoBehaviour
                 return (context & Context.ConfirmExit) != 0 ? "confirm_home" : "home";
             case Control.LeftY:
                 if (mr) return "toggle_site_info";
+                if (tourScene && (context & Context.ReconstructionAvailable) != 0)
+                    return inspecting ? "exit_inspection" : busy ? "cancel_reconstruction" : "inspect_reconstruction";
                 return museum && inspecting && (context & Context.AlternateModel) != 0 ? "switch_model" : null;
             case Control.LeftStick:
                 if (tourScene) return !tourMenu && !busy && !inspecting ? "teleport" : null;
