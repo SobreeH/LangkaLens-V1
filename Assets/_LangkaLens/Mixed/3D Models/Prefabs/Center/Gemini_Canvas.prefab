@@ -1734,6 +1734,7 @@ GameObject:
   - component: {fileID: 363744318237137812}
   - component: {fileID: 8721593612043548131}
   - component: {fileID: 2374246326440211737}
+  - component: {fileID: 9142915697666000972}
   m_Layer: 5
   m_Name: Gemini_Canvas
   m_TagString: Untagged
@@ -1903,6 +1904,23 @@ MonoBehaviour:
   disabledTextColor: {r: 0, g: 0, b: 0, a: 0}
   isRecording: 0
   isTranscribing: 0
+--- !u!114 &9142915697666000972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3797594491250639918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a211435fc5716c478b33b6c41e9d812, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::GentleCanvasFollow
+  head: {fileID: 0}
+  viewerOffset: {x: 0, y: 0, z: 3}
+  angularDeadZone: 12
+  positionDeadZone: 0.1
+  smoothTime: 0.35
 --- !u!1 &3874381088026107266
 GameObject:
   m_ObjectHideFlags: 0
