@@ -76,10 +76,14 @@ public class GeminiChatUI : MonoBehaviour
     private bool usingFallback;
     private Image sendButtonBackground;
     private Color originalButtonColor = Color.white;
+    private bool scrollRefreshPending;
+    private float pendingScrollPosition = 1f;
 
     private void Awake()
     {
         InitializeSendButtonReferences();
+        if (scrollRect != null)
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
     }
 
     private void InitializeSendButtonReferences()
@@ -121,6 +125,8 @@ public class GeminiChatUI : MonoBehaviour
     private void OnEnable()
     {
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
+        if (scrollRect != null)
+            RefreshScrollPosition(scrollRect.verticalNormalizedPosition);
         if (!requestPending)
         {
             SetRequestPending(false);
@@ -240,6 +246,7 @@ public class GeminiChatUI : MonoBehaviour
 
     private void OnDisable()
     {
+        scrollRefreshPending = false;
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
         bool interrupted = requestPending;
         CancelRequest();
@@ -342,15 +349,7 @@ public class GeminiChatUI : MonoBehaviour
     /// </summary>
     public void ResetScrollPosition()
     {
-        if (scrollRect != null)
-        {
-            Canvas.ForceUpdateCanvases();
-            scrollRect.verticalNormalizedPosition = 1f;
-            if (scrollRect.content != null)
-            {
-                scrollRect.content.anchoredPosition = Vector2.zero;
-            }
-        }
+        RefreshScrollPosition(1f);
     }
 
     private string GetSenderUserLabel()
@@ -572,11 +571,34 @@ public class GeminiChatUI : MonoBehaviour
     // Forces the Scroll View to snap to the newest message
     private void ScrollToBottom()
     {
-        if (scrollRect != null)
-        {
-            Canvas.ForceUpdateCanvases();
-            scrollRect.verticalNormalizedPosition = 0f;
-        }
+        RefreshScrollPosition(0f);
+    }
+
+    private void RefreshScrollPosition(float normalizedPosition)
+    {
+        pendingScrollPosition = float.IsNaN(normalizedPosition) ? 1f : Mathf.Clamp01(normalizedPosition);
+        scrollRefreshPending = true;
+        ApplyScrollPosition();
+    }
+
+    private void LateUpdate()
+    {
+        if (!scrollRefreshPending) return;
+        scrollRefreshPending = false;
+        // TMP wrapping and layout can settle after a generated message or locale update.
+        ApplyScrollPosition();
+    }
+
+    private void ApplyScrollPosition()
+    {
+        if (scrollRect == null || scrollRect.content == null) return;
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        scrollRect.StopMovement();
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
+        Canvas.ForceUpdateCanvases();
+        // Recalculate against the new text height before selecting either end of the log.
+        scrollRect.verticalNormalizedPosition = pendingScrollPosition;
     }
 }
 
