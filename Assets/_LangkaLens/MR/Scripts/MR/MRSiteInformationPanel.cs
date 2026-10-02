@@ -37,7 +37,7 @@ namespace LangkaLens.MR
 
         private void Update()
         {
-            if (OVRInput.GetDown(OVRInput.RawButton.Y, OVRInput.Controller.LTouch))
+            if (OVRInput.GetDown(OVRInput.RawButton.B, OVRInput.Controller.RTouch))
                 ToggleVisibility();
         }
 

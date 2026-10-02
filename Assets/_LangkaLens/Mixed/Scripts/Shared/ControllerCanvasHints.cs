@@ -142,7 +142,7 @@ public class ControllerCanvasHints : MonoBehaviour
                     return (context & Context.ConfirmExit) != 0 ? "mr_confirm_home" : "mr_home_realign";
                 return (context & Context.ConfirmExit) != 0 ? "confirm_home" : "home";
             case Control.LeftY:
-                if (mr) return "toggle_site_info";
+                if (mr) return null;
                 if (tourScene && (context & Context.ReconstructionAvailable) != 0)
                     return inspecting ? "exit_inspection" : busy ? "cancel_reconstruction" : "inspect_reconstruction";
                 return museum && inspecting && (context & Context.AlternateModel) != 0 ? "switch_model" : null;
@@ -159,8 +159,10 @@ public class ControllerCanvasHints : MonoBehaviour
                 return museum && inspecting ? "rotate_artifact" : null;
             case Control.RightA:
                 if (aligning && (context & Context.AlignmentPlaced) != 0) return "align_confirm";
+                if (mr) return !busy && (context & Context.Aligning) == 0 ? "toggle_model" : null;
                 return (museum && inspecting) || (tourScene && !tourMenu && !busy) ? "zoom_out" : null;
             case Control.RightB:
+                if (mr) return "toggle_site_info";
                 return (museum && inspecting) || (tourScene && !tourMenu && !busy) ? "zoom_in" : null;
             default: return null;
         }

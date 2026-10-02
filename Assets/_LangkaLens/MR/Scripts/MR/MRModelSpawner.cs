@@ -57,6 +57,8 @@ namespace LangkaLens.MR
         }
 
         private GameObject _currentSpawnedModel;
+        private bool _modelRequestedVisible = true;
+        private bool _alignmentWasDone;
 
         public bool IsModelVisible => isActiveAndEnabled && _currentSpawnedModel != null &&
                                       _currentSpawnedModel.activeInHierarchy;
@@ -71,6 +73,29 @@ namespace LangkaLens.MR
             {
                 alignment = FindFirstObjectByType<MRMeshReferenceAlignment>();
             }
+        }
+
+        private void Update()
+        {
+            bool alignmentDone = IsAlignmentDone;
+            // The A press that confirms alignment must not also hide the model.
+            if (_alignmentWasDone && alignmentDone &&
+                (alignment == null || !alignment.IsBusy) &&
+                OVRInput.GetDown(OVRInput.RawButton.A, OVRInput.Controller.RTouch))
+                ToggleModelVisibility();
+            _alignmentWasDone = alignmentDone;
+        }
+
+        public void ToggleModelVisibility()
+        {
+            if (_currentSpawnedModel == null || !IsAlignmentDone)
+                return;
+            _modelRequestedVisible = !_modelRequestedVisible;
+        }
+
+        private void OnDisable()
+        {
+            _alignmentWasDone = false;
         }
 
         public void SpawnModel()
@@ -229,8 +254,9 @@ namespace LangkaLens.MR
             bool canDisplay = IsAlignmentDone && (playableArea == null || playableArea.CanPlay);
             if (canDisplay && _currentSpawnedModel == null)
                 SpawnModel();
-            if (_currentSpawnedModel != null && _currentSpawnedModel.activeSelf != canDisplay)
-                _currentSpawnedModel.SetActive(canDisplay);
+            bool visible = canDisplay && _modelRequestedVisible;
+            if (_currentSpawnedModel != null && _currentSpawnedModel.activeSelf != visible)
+                _currentSpawnedModel.SetActive(visible);
         }
 
         public void DespawnModel()
