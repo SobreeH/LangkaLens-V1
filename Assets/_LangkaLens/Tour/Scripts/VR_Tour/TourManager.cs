@@ -372,7 +372,6 @@ public class TourManager : MonoBehaviour
             mapMenuCanvas.SetActive(isOpeningMap);
 
             if (returnHomeCanvas != null) returnHomeCanvas.SetActive(!isOpeningMap);
-            if (reconstructionPresenter != null) reconstructionPresenter.RefreshVisibility();
             RefreshNavigationVisibility();
         }
     }
