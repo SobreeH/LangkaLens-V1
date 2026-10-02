@@ -122,13 +122,28 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13410486567211014
-    m_Localized: 'Thought to begin as a brick stupa, this monument at ancient Yarang
-      was later adapted as a worship hall, with a front hall and a room for a sacred
-      image.
+    m_Localized: '<b>History</b>  Interpreted as an early stupa at ancient Yarang,
+      later adapted into a worship hall through rebuilding and enlargement.
 
 
-      <b>Restored model:</b> explore a possible complete building.
-      Its roof and upper details interpret parts that no longer survive.'
+      <b>Structure</b> 
+      A front hall leads to an inner room, possibly for a sacred image. Later brickwork
+      imitated timber walls.
+
+
+      <b>Finds</b>  Excavations recovered stupa fragments,
+      glass beads, gold-sheet fragments and earring moulds.
+
+
+      <b>Restored model</b> 
+      The roof and missing upper details are interpretations of a possible complete
+      building.
+
+
+      <size=26>Sources: Ancient Yarang, p. 165;
+
+      Archaeology
+      & History of the Three Southern Border Provinces, p. 65.</size>'
     m_Metadata:
       m_Items: []
   - m_Id: 13410486567211015
@@ -136,14 +151,29 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13410486567211016
-    m_Localized: 'A Buddhist brick monument at ancient Yarang, built in two phases.
-      The first is dated to around the 7th century CE. Votive tablets and miniature
-      stupas found inside show its religious role.
+    m_Localized: '<b>History</b>  A Buddhist brick monument built in two phases.
+      Letter forms on votive tablets suggest an early phase around the 7th century
+      CE.
 
 
-      <b>Restored model:</b>
-      explore a possible form above the stepped base. The lost upper structure is
-      interpreted, rather than an exact replica.'
+      <b>Structure</b>  Later building enlarged the base and covered
+      the earlier stairs. The surviving base measures about 13.5 by 13.6 metres.
+
+
+      <b>Finds</b> 
+      Numerous votive tablets and miniature stupa fragments were found in the central
+      chamber and on offering platforms.
+
+
+      <b>Restored model</b>  The missing
+      upper structure is an interpretation, rather than an exact replica.
+
+
+      <size=26>Sources:
+      Ancient Yarang, p. 180;
+
+      Archaeology & History of the Three Southern
+      Border Provinces, p. 66.</size>'
     m_Metadata:
       m_Items: []
   - m_Id: 13410486567211017
@@ -151,14 +181,29 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13410486567211018
-    m_Localized: 'A west-facing brick monument at ancient Yarang, interpreted as
-      the complex''s main shrine. Its square base has a central chamber and sandstone
-      corner-column bases.
+    m_Localized: '<b>Role</b>  Interpreted as the principal shrine of the Ban Jalae
+      religious group at ancient Yarang. It faces west.
 
 
-      <b>Restored model:</b> imagine the missing upper
-      building. The books propose timber corner columns; its upper form, colour and
-      details remain interpretations.'
+      <b>Structure</b> 
+      A 14-metre-square brick base supports a central chamber. Sandstone corner-column
+      bases suggest timber columns; a hall was added in front.
+
+
+      <b>Finds</b> 
+      Discoveries include a bronze Avalokiteshvara head, a sandstone bull sculpture
+      and miniature stupa fragments.
+
+
+      <b>Restored model</b>  The missing upper
+      form, colour and decoration remain interpretations.
+
+
+      <size=26>Sources:
+      Ancient Yarang, p. 195;
+
+      Archaeology & History of the Three Southern
+      Border Provinces, pp. 64, 68.</size>'
     m_Metadata:
       m_Items: []
   - m_Id: 13410486567211019
@@ -166,14 +211,29 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13410486567211020
-    m_Localized: 'Interpreted as a Buddhist monument at ancient Yarang. Excavation
-      revealed a brick base with eastern and western stairs and rooms above it. Finds
-      include a stucco elephant and beads.
+    m_Localized: '<b>Role</b>  Interpreted as a Buddhist monument in the Ban Wat
+      group at ancient Yarang.
 
 
-      <b>Restored model:</b> visualize
-      a possible complete structure above the surviving base. Its upper form and
-      decoration are reconstructed interpretations.'
+      <b>Structure</b>  Excavation revealed a nearly
+      square brick base, about 12.17 by 12.25 metres, with eastern and western stairs.
+      Brick partitions and paved rooms survive above the base.
+
+
+      <b>Finds</b> 
+      Discoveries include a stucco elephant, pottery fragments, clay spouts, gold
+      and glass beads.
+
+
+      <b>Restored model</b>  The upper building and its
+      decoration visualize a possible form above the surviving ruins.
+
+
+      <size=26>Sources:
+      Ancient Yarang, p. 208;
+
+      Archaeology & History of the Three Southern
+      Border Provinces, p. 62.</size>'
     m_Metadata:
       m_Items: []
   - m_Id: 13458397711732736
