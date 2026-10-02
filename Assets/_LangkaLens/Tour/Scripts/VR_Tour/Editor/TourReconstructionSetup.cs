@@ -37,7 +37,6 @@ public static class TourReconstructionSetup
         EnsureFolder(PrefabFolder);
         EnsureFolder(DataFolder);
         AddTranslations();
-        var placeholder = CreatePlaceholder(tour.arrowPrefab);
         var panelPrefab = CreatePanel();
         var definitions = new TourReconstructionDefinition[Areas.Length];
         var settings = AddressableAssetSettingsDefaultObject.Settings;
@@ -99,7 +98,6 @@ public static class TourReconstructionSetup
         inspection.inspectionCanvas.SetActive(false);
         presenter.tourManager = tour;
         presenter.inspectionManager = inspection;
-        presenter.placeholderPrefab = placeholder.GetComponent<TourReconstructionPlaceholder>();
         Undo.RecordObject(tour, "Wire tour reconstruction");
         tour.reconstructionPresenter = presenter;
 
@@ -131,6 +129,7 @@ public static class TourReconstructionSetup
             area.reconstruction = definitions[index];
             EditorUtility.SetDirty(area);
         }
+        TourInspectionInputSetup.Configure();
         AssetDatabase.SaveAssets();
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
@@ -185,7 +184,7 @@ public static class TourReconstructionSetup
             var properties = new SerializedObject(grabbable);
             properties.FindProperty("_throwWhenUnselected").boolValue = false;
             properties.ApplyModifiedPropertiesWithoutUndo();
-            // The museum starts inspection on model selection; tour inspection already starts at the marker.
+            // The museum starts inspection on model selection; tour inspection already starts with left Y.
             var wrapper = pivot.GetComponent<PointableUnityEventWrapper>();
             if (wrapper != null) UnityEngine.Object.DestroyImmediate(wrapper);
             var rotate = pivot.GetComponent<OneGrabFreeRotateTransformer>();

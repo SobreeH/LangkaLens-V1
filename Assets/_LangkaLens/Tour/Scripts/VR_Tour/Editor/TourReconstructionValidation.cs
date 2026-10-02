@@ -45,17 +45,24 @@ public static class TourReconstructionValidation
         var tour = UnityEngine.Object.FindFirstObjectByType<TourManager>();
         Require(tour != null && tour.reconstructionPresenter != null, "Tour scene wiring is missing.");
         var presenter = tour.reconstructionPresenter;
-        Require(tour.photoSphereRenderer != null && tour.photoSphereRenderer.sharedMaterial.HasProperty("_InspectionBlur"),
-            "Panorama shader cannot blur during inspection.");
+        Require(tour.photoSphereRenderer != null && tour.photoSphereRenderer.sharedMaterial.HasProperty("_InspectionFade") &&
+            tour.photoSphereRenderer.sharedMaterial.HasProperty("_InspectionFadeColor"),
+            "Panorama shader cannot fade to the canvas palette during inspection.");
         Require(!ShaderUtil.ShaderHasError(tour.photoSphereRenderer.sharedMaterial.shader), "Panorama shader has compilation errors.");
-        Require(presenter.inspectionManager != null && presenter.placeholderPrefab != null && presenter.tourManager == tour,
+        Require(presenter.inspectionManager != null && presenter.tourManager == tour,
             "Presenter is missing a required reference.");
-        var globe = presenter.placeholderPrefab.transform.Find("globeRED");
-        Require(globe != null && PrefabUtility.GetCorrespondingObjectFromSourceAtPath(globe.gameObject,
-            TourReconstructionSetup.GlobePrefab) != null, "Marker does not use globeRED.");
-        Require(presenter.placeholderPrefab.GetComponentsInChildren<RayInteractable>(true).Length == 1 &&
-            presenter.placeholderPrefab.GetComponentInChildren<HoverIcon>(true) == null,
-            "Globe marker has duplicate or legacy overlay interactions.");
+        var highlight = presenter.GetComponent<TourInspectionButtonHighlight>();
+        Require(highlight != null && highlight.Targets.Length == 10, "Left controller Y highlight is not wired for both visual rigs.");
+        foreach (var target in highlight.Targets)
+        {
+            Require(target.renderer != null && target.originalMesh != null && target.highlightMesh != null,
+                "Button highlight is missing a mesh/renderer.");
+            Require(target.highlightMesh.vertexCount == target.originalMesh.vertexCount &&
+                target.highlightMesh.triangles.Length == target.originalMesh.triangles.Length,
+                "Splitting Y changed controller geometry.");
+            Require(target.buttonMaterialIndices.Length > 0 && target.buttonMaterialIndices.All(i =>
+                target.highlightMaterials[i].IsKeywordEnabled("_EMISSION")), "Button highlight material is not emissive.");
+        }
         var panel = presenter.inspectionManager.inspectionCanvas.GetComponent<TourInspectionPanel>();
         Require(panel != null && panel.inspection == presenter.inspectionManager && panel.closeButton != null &&
             panel.zoomInButton != null && panel.zoomOutButton != null, "Panel buttons are not wired.");
@@ -65,12 +72,6 @@ public static class TourReconstructionValidation
             .Select(g => AssetDatabase.LoadAssetAtPath<TourArea>(AssetDatabase.GUIDToAssetPath(g))).Where(a => a.reconstruction != null).ToArray();
         Require(areas.Length == 4, "Expected four configured areas.");
         foreach (int area in new[] { 2, 3, 8, 9 }) Require(areas.Any(a => a.startingNode != null && a.startingNode.areaNumber == area), "Missing area for " + area);
-        foreach (string guid in AssetDatabase.FindAssets("t:TourNode", new[] { "Assets/_LangkaLens/Tour" }))
-        {
-            var node = AssetDatabase.LoadAssetAtPath<TourNode>(AssetDatabase.GUIDToAssetPath(guid));
-            var photo = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(node.photoReference.AssetGUID));
-            Require(photo != null && photo.mipmapCount > 1, node.name + ": panorama needs mipmaps for inspection blur.");
-        }
         var table = LocalizationEditorSettings.GetStringTableCollection("VTour_UI");
         foreach (var translated in table.StringTables.Where(t => t.LocaleIdentifier.Code == "en" || t.LocaleIdentifier.Code == "th"))
         {
@@ -82,7 +83,8 @@ public static class TourReconstructionValidation
         Require(ControllerCanvasHints.ResolveKey("VR_Tour_Scene", ControllerCanvasHints.Control.LeftStick,
             ControllerCanvasHints.Context.Inspecting) == null, "Tour inspection still advertises teleport.");
         Require(ControllerCanvasHints.ResolveKey("VR_Tour_Scene", ControllerCanvasHints.Control.LeftY,
-            ControllerCanvasHints.Context.Inspecting) == null, "Tour inspection advertises model switching.");
+            ControllerCanvasHints.Context.Inspecting | ControllerCanvasHints.Context.ReconstructionAvailable) == "exit_inspection",
+            "Tour Y hint does not close inspection.");
         Status = "Asset validation passed: " + Checks + " checks";
         Debug.Log(Status);
     }
@@ -147,7 +149,14 @@ public static class TourReconstructionValidation
         var presenter = tour.reconstructionPresenter;
         var inspection = presenter.inspectionManager;
         var panel = inspection.inspectionCanvas.GetComponent<TourInspectionPanel>();
-        float originalBlur = ReadPanoramaBlur(tour);
+        var blinkChecks = CheckButtonBlink(presenter);
+        while (blinkChecks.MoveNext()) yield return null;
+        Require(!presenter.CanToggleInspection, "Inspection is available at the tour menu.");
+        presenter.ToggleInspection();
+        Require(presenter.DisplayInstance == null, "Y opened inspection at the tour menu.");
+        float originalFade = ReadPanoramaFade(tour);
+        Color originalTint = ReadPanoramaFadeColor(tour);
+        Color sharedTint = tour.photoSphereRenderer.sharedMaterial.GetColor("_InspectionFadeColor");
         var areas = AssetDatabase.FindAssets("t:TourArea", new[] { "Assets/_LangkaLens/Tour" })
             .Select(g => AssetDatabase.LoadAssetAtPath<TourArea>(AssetDatabase.GUIDToAssetPath(g)))
             .OrderBy(a => a.startingNode.areaNumber).ToArray();
@@ -160,23 +169,14 @@ public static class TourReconstructionValidation
                 node.areaNumber == 8 ? menu.btnArea8 : menu.btnArea9;
             button.onClick.Invoke();
             while (tour.IsTransitioning) yield return null;
-            Physics.SyncTransforms(); // Observe the moved marker's synchronized hitbox.
-            Require(tour.currentArea == area, node.name + ": menu did not select the reconstruction area.");
-            Require(presenter.State == TourReconstructionPresenter.PresentationState.Ready && presenter.PlaceholderInstance != null,
-                node.name + ": marker did not spawn.");
-            var marker = presenter.PlaceholderInstance;
-            Require(marker.gameObject.activeInHierarchy, node.name + ": marker is inactive after arrival.");
-            var hitbox = marker.GetComponent<Collider>();
-            Require(!hitbox.bounds.Contains(tour.vrCamera.position), node.name + ": marker surrounds the eye.");
-            Require(Vector3.Distance(marker.transform.position, tour.vrCamera.position) <= presenter.placeholderMaxDistance + 0.001f,
-                node.name + ": marker is too distant to read/select.");
-            marker.OnHover();
-            Require(presenter.DisplayInstance == null, "Hover opened reconstruction.");
-            marker.OnUnhover();
+            Require(presenter.State == TourReconstructionPresenter.PresentationState.Ready && presenter.CanToggleInspection,
+                node.name + ": Y inspection is not available after arrival.");
+            Require(presenter.GetComponentsInChildren<TourReconstructionPlaceholder>(true).Length == 0,
+                node.name + ": a placeholder spawned.");
             Vector3 position = tour.vrRigParent.position;
             Quaternion rotation = tour.vrRigParent.rotation;
-            marker.OnSelected();
-            marker.OnSelected();
+            presenter.ToggleInspection();
+            presenter.OpenInspection();
             Require(presenter.State == TourReconstructionPresenter.PresentationState.Loading, "Selection did not start one load.");
             Require(tour.ActiveArrows.All(a => !a.activeSelf) && tour.IsNavigationBlocked, "Navigation active during loading.");
             while (presenter.State == TourReconstructionPresenter.PresentationState.Loading) yield return null;
@@ -197,15 +197,19 @@ public static class TourReconstructionValidation
             Require(Vector3.Distance(spawnedPosition, presenter.DisplayInstance.transform.position) < 0.001f,
                 "Approach moved the model instead of the player.");
             yield return null; // SDK Start validates serialized interaction wiring.
-            float blurDeadline = Time.unscaledTime + presenter.panoramaBlurDuration + 0.05f;
-            while (Time.unscaledTime < blurDeadline) yield return null;
-            Require(Mathf.Abs(ReadPanoramaBlur(tour) - Mathf.Lerp(originalBlur, 1f, presenter.panoramaBlur)) < 0.001f,
-                "Inspection did not blur the panorama.");
-            Require(tour.photoSphereRenderer.sharedMaterial.GetFloat("_InspectionBlur") == 0f,
+            float fadeDeadline = Time.unscaledTime + presenter.panoramaFadeDuration + 0.05f;
+            while (Time.unscaledTime < fadeDeadline) yield return null;
+            Require(Mathf.Abs(ReadPanoramaFade(tour) - Mathf.Lerp(originalFade, 1f, presenter.panoramaFade)) < 0.001f,
+                "Inspection did not fade the panorama.");
+            Require(ReadPanoramaFadeColor(tour) == presenter.panoramaFadeColor,
+                "Inspection did not use the canvas palette tint.");
+            Require(tour.photoSphereRenderer.sharedMaterial.GetColor("_InspectionFadeColor") == sharedTint,
+                "Inspection modified the shared panorama color.");
+            Require(tour.photoSphereRenderer.sharedMaterial.GetFloat("_InspectionFade") == 0f,
                 "Inspection modified the shared panorama material.");
             Require(Mathf.Abs(tour.vrRigParent.position.y - position.y) < 0.001f &&
                 Quaternion.Angle(tour.vrRigParent.rotation, rotation) < 0.01f, "Approach changed player height or facing.");
-            Require(!inspection.CanToggleInspectedModel && !marker.gameObject.activeSelf, "Unexpected alternate or visible marker.");
+            Require(!inspection.CanToggleInspectedModel, "Unexpected alternate model.");
             var head = tour.vrCamera;
             Vector3 forward = Vector3.ProjectOnPlane(head.forward, Vector3.up).normalized;
             Quaternion openingView = Quaternion.LookRotation(forward, Vector3.up);
@@ -236,18 +240,20 @@ public static class TourReconstructionValidation
             Require(Vector3.Distance(data.modelContainer.localScale, scale) < 0.001f, "Panel zoom-out did not restore scale.");
             while (string.IsNullOrEmpty(inspection.titleText.text)) yield return null;
             Require(!string.IsNullOrEmpty(inspection.descriptionText.text), "Description did not localize.");
-            panel.closeButton.onClick.Invoke();
+            if (node.areaNumber == 2) presenter.ToggleInspection();
+            else panel.closeButton.onClick.Invoke();
             Require(Vector3.Distance(tour.vrRigParent.position, position) < 0.001f &&
                 Quaternion.Angle(tour.vrRigParent.rotation, rotation) < 0.01f, "Close did not restore the tour rig.");
-            Require(!inspection.IsInspecting && presenter.DisplayInstance == null && marker.gameObject.activeSelf,
-                "Close did not clear display and restore marker.");
+            Require(!inspection.IsInspecting && presenter.DisplayInstance == null && presenter.CanToggleInspection,
+                "Close did not clear display and restore Y availability.");
             Require(!presenter.CanReturnToTourMenu, "Close input can also leave the node in the same frame.");
             yield return null;
             Require(presenter.CanReturnToTourMenu && tour.ActiveArrows.All(a => a.activeSelf), "Tour controls did not restore.");
-            blurDeadline = Time.unscaledTime + presenter.panoramaBlurDuration + 0.05f;
-            while (Time.unscaledTime < blurDeadline) yield return null;
-            Require(Mathf.Abs(ReadPanoramaBlur(tour) - originalBlur) < 0.001f, "Close did not restore panorama sharpness.");
-            Debug.Log(node.name + ": spawn, select, player approach/restore, SDK rotation, panel zoom, localization and close passed.");
+            fadeDeadline = Time.unscaledTime + presenter.panoramaFadeDuration + 0.05f;
+            while (Time.unscaledTime < fadeDeadline) yield return null;
+            Require(Mathf.Abs(ReadPanoramaFade(tour) - originalFade) < 0.001f, "Close did not restore the panorama.");
+            Require(ReadPanoramaFadeColor(tour) == originalTint, "Close did not restore the original panorama tint.");
+            Debug.Log(node.name + ": Y toggle, player approach/restore, SDK rotation, panel zoom, localization and close passed.");
         }
         // Cancel a glide while it is still moving; no later frame may move the restored rig.
         Vector3 beforeApproach = tour.vrRigParent.position;
@@ -261,39 +267,11 @@ public static class TourReconstructionValidation
         Require(!inspection.IsMovingToInspection && Vector3.Distance(tour.vrRigParent.position, beforeApproach) < 0.001f &&
             Quaternion.Angle(tour.vrRigParent.rotation, beforeApproachRotation) < 0.01f,
             "Cancelling approach failed to stop movement and restore the rig.");
-        // Placement regressions: unset nodes, sphere-wall positions, and valid authored positions.
-        var placementNode = UnityEngine.Object.Instantiate(tour.CurrentNode);
-        try
-        {
-            foreach (var position in new[] { Vector3.zero, new Vector3(7.92f, 0f, 12.47f),
-                tour.vrCamera.position + new Vector3(0.5f, -0.2f, 2f) })
-            {
-                placementNode.iconPosition = position;
-                presenter.EnterNode(placementNode, tour.currentArea.reconstruction);
-                Physics.SyncTransforms();
-                var marker = presenter.PlaceholderInstance;
-                var eye = tour.vrCamera.position;
-                Require(marker.gameObject.activeInHierarchy && !marker.GetComponent<Collider>().bounds.Contains(eye),
-                    "Placement regression: globe is hidden or surrounds the eye.");
-                Require(Vector3.Distance(marker.transform.position, eye) <= presenter.placeholderMaxDistance + 0.001f,
-                    "Placement regression: globe remains on the panorama wall.");
-                if (position != Vector3.zero)
-                    Require(Vector3.Angle(position - eye, marker.transform.position - eye) < 0.01f,
-                        "Placement changed the authored icon bearing.");
-                if (Vector3.Distance(position, eye) > 1f && Vector3.Distance(position, eye) < presenter.placeholderMaxDistance)
-                    Require(Vector3.Distance(position, marker.transform.position) < 0.001f,
-                        "Placement changed a valid nearby icon position.");
-            }
-        }
-        finally
-        {
-            presenter.EnterNode(tour.CurrentNode, tour.currentArea.reconstruction);
-            UnityEngine.Object.Destroy(placementNode);
-        }
         // Cancel a request, immediately open again, and reject the first request's late completion.
-        presenter.OpenInspection();
-        presenter.CloseInspection();
-        presenter.OpenInspection();
+        presenter.ToggleInspection();
+        presenter.ToggleInspection();
+        Require(presenter.State == TourReconstructionPresenter.PresentationState.Ready, "Y did not cancel loading.");
+        presenter.ToggleInspection();
         while (presenter.State == TourReconstructionPresenter.PresentationState.Loading) yield return null;
         yield return null;
         Require(inspection.IsInspecting && presenter.GetComponentsInChildren<ArtifactData>(true).Length == 1,
@@ -302,10 +280,12 @@ public static class TourReconstructionValidation
         heldData.GetComponent<Grabbable>().ProcessPointerEvent(new PointerEvent(422, PointerEventType.Select,
             new Pose(heldData.modelContainer.position, Quaternion.identity)));
         tour.ToggleMapMenu();
-        Require(!inspection.IsInspecting && presenter.DisplayInstance == null && !presenter.PlaceholderInstance.gameObject.activeSelf,
-            "Map opening did not clear inspection and hide marker.");
+        Require(!inspection.IsInspecting && presenter.DisplayInstance == null && !presenter.CanToggleInspection,
+            "Map opening did not clear inspection and block Y.");
+        presenter.ToggleInspection();
+        Require(presenter.DisplayInstance == null, "Y opened inspection over the map.");
         tour.ToggleMapMenu();
-        Require(presenter.PlaceholderInstance.gameObject.activeSelf, "Map close did not restore marker.");
+        Require(presenter.CanToggleInspection, "Map close did not restore Y inspection.");
         // Capture the deliberately invalid Addressable key as expected failure evidence.
         var invalid = ScriptableObject.CreateInstance<TourReconstructionDefinition>();
         invalid.inspectionPrefab = new UnityEngine.AddressableAssets.AssetReferenceGameObject("00000000000000000000000000000000");
@@ -319,8 +299,8 @@ public static class TourReconstructionValidation
             presenter.OpenInspection();
             while (presenter.State == TourReconstructionPresenter.PresentationState.Loading) yield return null;
             Require(loadFailure != null && presenter.State == TourReconstructionPresenter.PresentationState.Ready &&
-                presenter.DisplayInstance == null && presenter.PlaceholderInstance.gameObject.activeSelf,
-                "Missing content did not recover to a selectable retry marker.");
+                presenter.DisplayInstance == null && presenter.CanToggleInspection,
+                "Missing content did not recover for Y retry.");
             Debug.Log("Expected invalid-key load failure recovered: " + loadFailure);
         }
         finally
@@ -339,10 +319,12 @@ public static class TourReconstructionValidation
         tour.LoadNode(unconfigured);
         while (tour.IsTransitioning) yield return null;
         yield return null;
-        Require(presenter.DisplayInstance == null && presenter.PlaceholderInstance == null && !inspection.IsInspecting,
+        Require(presenter.DisplayInstance == null && !presenter.CanToggleInspection && !inspection.IsInspecting,
             "Leaving while loading leaked content into another node.");
+        presenter.ToggleInspection();
+        Require(presenter.DisplayInstance == null, "Y opened a model on an unconfigured node.");
         Require(tour.ActiveArrows.Count > 0 && tour.ActiveArrows.All(a => a.activeSelf), "Unconfigured node navigation regressed.");
-        Require(Mathf.Abs(ReadPanoramaBlur(tour) - originalBlur) < 0.001f, "Node change left panorama blurred.");
+        Require(Mathf.Abs(ReadPanoramaFade(tour) - originalFade) < 0.001f, "Node change left panorama faded.");
         tour.currentArea = areas[0];
         tour.LoadNode(areas[0].startingNode);
         while (tour.IsTransitioning) yield return null;
@@ -368,16 +350,18 @@ public static class TourReconstructionValidation
         }
         finally { LocalizationSettings.SelectedLocale = previousLocale; }
         presenter.enabled = false;
+        presenter.ToggleInspection();
         yield return null;
-        Require(Mathf.Abs(ReadPanoramaBlur(tour) - originalBlur) < 0.001f, "Disabling presenter left panorama blurred.");
+        Require(Mathf.Abs(ReadPanoramaFade(tour) - originalFade) < 0.001f, "Disabling presenter left panorama faded.");
+        Require(ReadPanoramaFadeColor(tour) == originalTint, "Disabling presenter left the inspection tint.");
         Require(!inspection.IsInspecting && presenter.GetComponentsInChildren<ArtifactData>(true).Length == 0,
             "Disabling presenter leaked inspection content.");
         presenter.enabled = true;
-        Require(presenter.State == TourReconstructionPresenter.PresentationState.Ready && presenter.PlaceholderInstance != null,
-            "Re-enabling presenter did not restore the node marker.");
+        Require(presenter.State == TourReconstructionPresenter.PresentationState.Ready && presenter.CanToggleInspection,
+            "Re-enabling presenter did not restore Y inspection.");
         tour.ReturnToMainMenu();
         while (tour.IsTransitioning) yield return null;
-        Require(tour.IsAtMainMenu && presenter.PlaceholderInstance == null && presenter.DisplayInstance == null,
+        Require(tour.IsAtMainMenu && !presenter.CanToggleInspection && presenter.DisplayInstance == null,
             "Returning to tour menu did not clear reconstruction.");
         tour.currentArea = areas[0];
         tour.LoadNode(areas[0].startingNode);
@@ -389,6 +373,38 @@ public static class TourReconstructionValidation
         Require(UnityEngine.Object.FindFirstObjectByType<TourReconstructionPresenter>() == null &&
             UnityEngine.Object.FindObjectsByType<ArtifactData>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .All(a => !a.transform.root.name.EndsWith("_Inspection(Clone)")), "Scene unload leaked a reconstruction display.");
+    }
+
+    private static IEnumerator CheckButtonBlink(TourReconstructionPresenter presenter)
+    {
+        var highlight = presenter.GetComponent<TourInspectionButtonHighlight>();
+        Require(highlight != null && highlight.isActiveAndEnabled, "Y button blink missing.");
+        foreach (var target in highlight.Targets)
+        {
+            Require(target.renderer.sharedMesh == target.highlightMesh, "Blink did not bind the controller geometry.");
+            Require(target.buttonMaterialIndices.All(i => target.renderer.sharedMaterials[i].IsKeywordEnabled("_EMISSION")),
+                "Y button emission was lost when entering Play Mode.");
+        }
+        var first = highlight.Targets[0];
+        int index = first.buttonMaterialIndices[0];
+        var block = new MaterialPropertyBlock();
+        first.renderer.GetPropertyBlock(block, index);
+        Color before = block.GetColor("_EmissionColor");
+        float deadline = Time.unscaledTime + 0.4f;
+        bool changed = false;
+        while (Time.unscaledTime < deadline)
+        {
+            yield return null;
+            first.renderer.GetPropertyBlock(block, index);
+            changed |= Vector4.Distance(before, block.GetColor("_EmissionColor")) > 0.01f;
+        }
+        Require(changed, "Y button is not blinking.");
+        Require(first.originalMaterials.All(m => !m.name.EndsWith("_Y_0")), "Blink changed source controller materials.");
+        highlight.enabled = false;
+        foreach (var target in highlight.Targets)
+            Require(target.renderer.sharedMesh == target.originalMesh &&
+                target.renderer.sharedMaterials.SequenceEqual(target.originalMaterials), "Disabling blink failed to restore the controller.");
+        highlight.enabled = true;
     }
 
     private static IEnumerator MuseumSmoke()
@@ -414,12 +430,20 @@ public static class TourReconstructionValidation
             "Museum exit did not reset model/UI state.");
     }
 
-    private static float ReadPanoramaBlur(TourManager tour)
+    private static float ReadPanoramaFade(TourManager tour)
     {
         var properties = new MaterialPropertyBlock();
         tour.photoSphereRenderer.GetPropertyBlock(properties);
-        return properties.HasFloat("_InspectionBlur") ? properties.GetFloat("_InspectionBlur") :
-            tour.photoSphereRenderer.sharedMaterial.GetFloat("_InspectionBlur");
+        return properties.HasFloat("_InspectionFade") ? properties.GetFloat("_InspectionFade") :
+            tour.photoSphereRenderer.sharedMaterial.GetFloat("_InspectionFade");
+    }
+
+    private static Color ReadPanoramaFadeColor(TourManager tour)
+    {
+        var properties = new MaterialPropertyBlock();
+        tour.photoSphereRenderer.GetPropertyBlock(properties);
+        return properties.HasColor("_InspectionFadeColor") ? properties.GetColor("_InspectionFadeColor") :
+            tour.photoSphereRenderer.sharedMaterial.GetColor("_InspectionFadeColor");
     }
 
     private static void Require(bool condition, string message)
