@@ -111,6 +111,10 @@ MonoBehaviour:
     m_Key: cancel_reconstruction
     m_Metadata:
       m_Items: []
+  - m_Id: 1101349393174528
+    m_Key: toggle_model
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

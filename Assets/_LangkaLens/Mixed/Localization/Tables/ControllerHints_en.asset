@@ -124,6 +124,10 @@ MonoBehaviour:
     m_Localized: Cancel loading
     m_Metadata:
       m_Items: []
+  - m_Id: 1101349393174528
+    m_Localized: Show / Hide Model
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
