@@ -203,19 +203,7 @@ internal class CommandScript : IRunCommand
     }
     void Inspection(GameObject root)
     {
-        var rt=(RectTransform)root.transform;Touch(rt);rt.sizeDelta=new Vector2(1200,950);
-        var panel=root.transform.Find("Panel");Place(panel,0,0,1200,950);Image(panel,dark);Frame(panel,1200,950);
-        var title=panel.Find("Title").GetComponent<TMP_Text>();Place(title.transform,-102,374,880,124);Text(title,48,cream);title.alignment=TextAlignmentOptions.Left;
-        var close=panel.Find("Back_btn");Place(close,480,380,160,110);Button(close,brown);var label=close.GetComponentInChildren<TMP_Text>(true);Place(label.transform,0,0,150,100);Text(label,36,cream);
-        Decoration(panel,"HeritageHeadingRule",0,295,1110,3,brass);
-        Decoration(panel,"HeritageReadingPanel",0,-10,1110,565,paper).SetAsFirstSibling();
-        var description=panel.Find("Description").GetComponent<TMP_Text>();Place(description.transform,0,-10,1030,505);Text(description,38,ink);description.alignment=TextAlignmentOptions.TopLeft;
-        var fitter=description.GetComponent<UnityEngine.UI.ContentSizeFitter>();if(fitter!=null){Touch(fitter);fitter.verticalFit=UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained;}
-        foreach(var name in new[]{"ZoomOutButton","ZoomInButton"})
-        {
-            var button=panel.Find(name);Place(button,name=="ZoomOutButton"?-305:305,-377,505,115);Button(button,brick);
-            var text=button.GetComponentInChildren<TMP_Text>(true);Place(text.transform,0,0,475,105);Text(text,40,cream);
-        }
+        TourSiteInformationLayout.Apply(root);
     }
     public void Execute(ExecutionResult result)
     {

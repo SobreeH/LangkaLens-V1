@@ -64,8 +64,10 @@ public static class TourReconstructionValidation
                 target.highlightMaterials[i].IsKeywordEnabled("_EMISSION")), "Button highlight material is not emissive.");
         }
         var panel = presenter.inspectionManager.inspectionCanvas.GetComponent<TourInspectionPanel>();
-        Require(panel != null && panel.inspection == presenter.inspectionManager && panel.closeButton != null &&
-            panel.zoomInButton != null && panel.zoomOutButton != null, "Panel buttons are not wired.");
+        Require(panel != null && panel.inspection == presenter.inspectionManager && panel.closeButton != null,
+            "Panel Close button is not wired.");
+        Require(panel.transform.Find("Panel/ZoomInButton") == null && panel.transform.Find("Panel/ZoomOutButton") == null,
+            "Tour information panel still contains redundant zoom buttons.");
         Require(panel.transform.Find("Panel/Toggle_btn") == null && panel.transform.Find("Panel/Model_State") == null,
             "Tour panel contains model comparison controls.");
         var areas = AssetDatabase.FindAssets("t:TourArea", new[] { "Assets/_LangkaLens/Tour" })
@@ -234,10 +236,10 @@ public static class TourReconstructionValidation
             grab.ProcessPointerEvent(new PointerEvent(421, PointerEventType.Unselect, new Pose(modelPosition, Quaternion.Euler(0f, 35f, 0f))));
             grab.ProcessPointerEvent(new PointerEvent(421, PointerEventType.Unhover, new Pose(modelPosition, Quaternion.identity)));
             Vector3 scale = data.modelContainer.localScale;
-            panel.zoomInButton.onClick.Invoke();
-            Require(data.modelContainer.localScale.x > scale.x, "Panel zoom-in did not scale model.");
-            panel.zoomOutButton.onClick.Invoke();
-            Require(Vector3.Distance(data.modelContainer.localScale, scale) < 0.001f, "Panel zoom-out did not restore scale.");
+            inspection.IncreaseScale();
+            Require(data.modelContainer.localScale.x > scale.x, "Inspection scaling did not enlarge model.");
+            inspection.DecreaseScale();
+            Require(Vector3.Distance(data.modelContainer.localScale, scale) < 0.001f, "Inspection scaling did not restore scale.");
             while (string.IsNullOrEmpty(inspection.titleText.text)) yield return null;
             Require(!string.IsNullOrEmpty(inspection.descriptionText.text), "Description did not localize.");
             if (node.areaNumber == 2) presenter.ToggleInspection();

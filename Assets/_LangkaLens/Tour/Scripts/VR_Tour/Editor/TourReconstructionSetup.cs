@@ -335,18 +335,9 @@ public static class TourReconstructionSetup
             Layout(close.GetComponent<RectTransform>(), new Vector2(300f, 245f), new Vector2(145f, 70f));
             close.onClick = new UnityEngine.UI.Button.ButtonClickedEvent();
             LocalizeButton(close, "reconstruction_close");
-            var outButton = UnityEngine.Object.Instantiate(close, panel);
-            outButton.name = "ZoomOutButton";
-            Layout(outButton.GetComponent<RectTransform>(), new Vector2(-190f, -225f), new Vector2(310f, 75f));
-            LocalizeButton(outButton, "reconstruction_smaller");
-            var inButton = UnityEngine.Object.Instantiate(close, panel);
-            inButton.name = "ZoomInButton";
-            Layout(inButton.GetComponent<RectTransform>(), new Vector2(190f, -225f), new Vector2(310f, 75f));
-            LocalizeButton(inButton, "reconstruction_larger");
             var binding = root.AddComponent<TourInspectionPanel>();
             binding.closeButton = close;
-            binding.zoomInButton = inButton;
-            binding.zoomOutButton = outButton;
+            TourSiteInformationLayout.Apply(root);
             root.GetComponent<Canvas>().worldCamera = null;
             return PrefabUtility.SaveAsPrefabAsset(root, PrefabFolder + "/TourInspectionPanel.prefab");
         }
