@@ -128,6 +128,14 @@ MonoBehaviour:
     m_Localized: Show / Hide Model
     m_Metadata:
       m_Items: []
+  - m_Id: 1536502985019392
+    m_Localized: Hold to move / turn model
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1536503022768128
+    m_Localized: Turn / click to reset view
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
