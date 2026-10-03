@@ -13,7 +13,10 @@ GameObject:
   - component: {fileID: 1968331250893177747}
   - component: {fileID: 7878337895532024248}
   - component: {fileID: 4554679913415696401}
-  - component: {fileID: 2808169703254730881}
+  - component: {fileID: 7778077294011003988}
+  - component: {fileID: 5880546917284979672}
+  - component: {fileID: 2925777418818080348}
+  - component: {fileID: 1307603484931632910}
   m_Layer: 0
   m_Name: Artifact_Interactable
   m_TagString: Untagged
@@ -141,7 +144,7 @@ MonoBehaviour:
   _transferOnSecondSelection: 0
   _addNewPointsToFront: 0
   _forwardElement: {fileID: 0}
-  _oneGrabTransformer: {fileID: 2808169703254730881}
+  _oneGrabTransformer: {fileID: 7778077294011003988}
   _twoGrabTransformer: {fileID: 0}
   _targetTransform: {fileID: 8241855856377821592}
   _maxGrabPoints: 1
@@ -149,7 +152,7 @@ MonoBehaviour:
   _kinematicWhileSelected: 1
   _throwWhenUnselected: 0
   _forceKinematicDisabled: 0
---- !u!114 &2808169703254730881
+--- !u!114 &7778077294011003988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,11 +161,64 @@ MonoBehaviour:
   m_GameObject: {fileID: 1786221849534063204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7639e1b07b3fb384bbe9f17e7c16feab, type: 3}
+  m_Script: {fileID: 11500000, guid: 323bf9e89e58ca248829dc5fb87bb5eb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OneGrabFreeRotateTransformer
-  invertRotation: 0
-  idleRotationSpeed: {x: 0, y: 0, z: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::TourModelTransformer
+--- !u!114 &5880546917284979672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786221849534063204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953054d108799b942815afb3405983ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.MoveFromTargetProvider
+--- !u!114 &2925777418818080348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786221849534063204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07525681efbca7a4e9643ab3a592ada7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.DistanceGrabInteractable
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 4554679913415696401}
+  _rigidbody: {fileID: 7878337895532024248}
+  _grabSource: {fileID: 0}
+  _resetGrabOnGrabsUpdated: 1
+  _movementProvider: {fileID: 5880546917284979672}
+--- !u!114 &1307603484931632910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786221849534063204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1bc992571301d4a9602ac95ef4c71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.GrabInteractable
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 4554679913415696401}
+  _rigidbody: {fileID: 7878337895532024248}
+  _grabSource: {fileID: 0}
+  _useClosestPointAsGrabSource: 0
+  _releaseDistance: 0
+  _resetGrabOnGrabsUpdated: 1
 --- !u!1 &2219809465068475206
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +368,7 @@ MonoBehaviour:
   _pointableElement: {fileID: 4554679913415696401}
   _surface: {fileID: 9191277273180640824}
   _selectSurface: {fileID: 0}
-  _movementProvider: {fileID: 3052048829785412847}
+  _movementProvider: {fileID: 5880546917284979672}
   _tiebreakerScore: 0
 --- !u!114 &3052048829785412847
 MonoBehaviour:
