@@ -8,6 +8,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2433640850409611478, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      propertyPath: _maxGrabPoints
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433640850409611478, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      propertyPath: _oneGrabTransformer
+      value: 
+      objectReference: {fileID: 2681544361097086856}
+    - target: {fileID: 2433640850409611478, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      propertyPath: _throwWhenUnselected
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5497405978834722309, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -48,13 +60,127 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7155850479264752360, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      propertyPath: modelContainer
+      value: 
+      objectReference: {fileID: 3316761985722010064}
+    - target: {fileID: 7201208901289036918, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      propertyPath: _movementProvider
+      value: 
+      objectReference: {fileID: 8015076535122465974}
     - target: {fileID: 7262525401332414863, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
       propertyPath: m_Name
       value: DisplayDemo1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7050736534635638644, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4713308891685561534, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8584751041648038312, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2681544361097086856}
+    - targetCorrespondingSourceObject: {fileID: 8584751041648038312, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8015076535122465974}
+    - targetCorrespondingSourceObject: {fileID: 8584751041648038312, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 593903949054469750}
+    - targetCorrespondingSourceObject: {fileID: 8584751041648038312, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1095644599425767681}
   m_SourcePrefab: {fileID: 100100000, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+--- !u!1 &3146968229978653595 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8584751041648038312, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+  m_PrefabInstance: {fileID: 6669672135046844979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2681544361097086856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3146968229978653595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 323bf9e89e58ca248829dc5fb87bb5eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TourModelTransformer
+--- !u!114 &8015076535122465974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3146968229978653595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953054d108799b942815afb3405983ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.MoveFromTargetProvider
+--- !u!114 &593903949054469750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3146968229978653595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07525681efbca7a4e9643ab3a592ada7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.DistanceGrabInteractable
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 9027861336142557925}
+  _rigidbody: {fileID: 6550738465955988216}
+  _grabSource: {fileID: 0}
+  _resetGrabOnGrabsUpdated: 1
+  _movementProvider: {fileID: 8015076535122465974}
+--- !u!114 &1095644599425767681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3146968229978653595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1bc992571301d4a9602ac95ef4c71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.GrabInteractable
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 9027861336142557925}
+  _rigidbody: {fileID: 6550738465955988216}
+  _grabSource: {fileID: 0}
+  _useClosestPointAsGrabSource: 0
+  _releaseDistance: 0
+  _resetGrabOnGrabsUpdated: 1
+--- !u!4 &3316761985722010064 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8253108051703438307, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+  m_PrefabInstance: {fileID: 6669672135046844979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &6550738465955988216 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 461489860558098635, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+  m_PrefabInstance: {fileID: 6669672135046844979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9027861336142557925 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2433640850409611478, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+  m_PrefabInstance: {fileID: 6669672135046844979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3146968229978653595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43f86b14a27b52f4f9298c33015b5c26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.Grabbable
