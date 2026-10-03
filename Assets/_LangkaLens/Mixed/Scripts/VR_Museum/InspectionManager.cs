@@ -43,6 +43,9 @@ public class InspectionManager : MonoBehaviour
     private Vector3 _originalRigPosition;
     private Quaternion _originalRigRotation;
     private Vector3 _originalArtifactScale;
+    private Vector3 _originalArtifactPosition;
+    private Quaternion _originalArtifactRotation;
+    private TourModelTransformer _tourTransformer;
     private float _currentScaleMultiplier = 1f;
     private bool _isInspecting = false;
     public bool IsInspecting => _isInspecting;
@@ -196,6 +199,10 @@ public class InspectionManager : MonoBehaviour
         _originalRigPosition = playerRig.position;
         _originalRigRotation = playerRig.rotation;
         _originalArtifactScale = _currentArtifact.transform.localScale;
+        _originalArtifactPosition = _currentArtifact.transform.position;
+        _originalArtifactRotation = _currentArtifact.transform.rotation;
+        _tourTransformer = stationary ? _currentArtifact.GetComponent<TourModelTransformer>() : null;
+        if (_tourTransformer != null) _tourTransformer.SetInspecting(!targetEyePosition.HasValue);
         _currentScaleMultiplier = 1f;
 
         if (titleText != null) titleText.text = "";
@@ -241,8 +248,14 @@ public class InspectionManager : MonoBehaviour
 
         if (_currentArtifact != null)
         {
+            if (_tourTransformer != null)
+            {
+                _tourTransformer.SetInspecting(false);
+                _currentArtifact.transform.SetPositionAndRotation(_originalArtifactPosition, _originalArtifactRotation);
+            }
             _currentArtifact.transform.localScale = _originalArtifactScale;
         }
+        _tourTransformer = null;
 
         if (_currentPedestal != null)
         {
@@ -296,6 +309,7 @@ public class InspectionManager : MonoBehaviour
         }
         playerRig.position = target;
         IsMovingToInspection = false;
+        if (_tourTransformer != null) _tourTransformer.SetInspecting(true);
         PositionCanvas();
         inspectionCanvas.SetActive(true);
     }
@@ -369,6 +383,18 @@ public class InspectionManager : MonoBehaviour
             }
 
             // OVRInput.Button.One = A button, Button.Two = B button
+            if (IsMovingToInspection) return;
+            if (_tourTransformer != null)
+            {
+                if (OVRInput.GetDown(OVRInput.RawButton.RThumbstick)) ResetInspectionView();
+                float turn = OVRInput.Get(OVRInput.RawAxis2D.RThumbstick).x;
+                const float deadzone = 0.2f;
+                if (Mathf.Abs(turn) > deadzone)
+                    _tourTransformer.Rotate(Mathf.Sign(turn) * (Mathf.Abs(turn) - deadzone) /
+                        (1f - deadzone) * 60f * Time.unscaledDeltaTime);
+            }
+
+            // OVRInput.Button.One = A button, Button.Two = B button
             // Button A (zoom out = scale down), Button B (zoom in = scale up)
             bool zoomOut = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RTouch);
             bool zoomIn = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.RTouch);
@@ -422,6 +448,15 @@ public class InspectionManager : MonoBehaviour
     }
 
     public void IncreaseScale() => AdjustScale(0.15f);
+
+    public void ResetInspectionView()
+    {
+        if (!_isInspecting || IsMovingToInspection || _currentArtifact == null || _tourTransformer == null) return;
+        _currentArtifact.transform.SetPositionAndRotation(_originalArtifactPosition, _originalArtifactRotation);
+        _currentScaleMultiplier = 1f;
+        _currentArtifact.transform.localScale = _originalArtifactScale;
+        _tourTransformer.Rebase();
+    }
     public void DecreaseScale() => AdjustScale(-0.15f);
 
     public void AdjustScale(float delta)
