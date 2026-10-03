@@ -34,7 +34,7 @@ public static class TourReconstructionValidation
                 definition.name + ": missing model/anchors.");
             Require(data.alternateModel == null, definition.name + ": unexpected alternate.");
             var grab = data.GetComponent<Grabbable>();
-            Require(grab != null && data.GetComponent<OneGrabFreeRotateTransformer>() != null, definition.name + ": missing rotation.");
+            Require(grab != null && data.GetComponent<TourModelTransformer>() != null, definition.name + ": missing model manipulation.");
             var serialized = new SerializedObject(grab);
             Require(serialized.FindProperty("_targetTransform").objectReferenceValue == data.modelContainer,
                 definition.name + ": rotation pivot is not the model container.");

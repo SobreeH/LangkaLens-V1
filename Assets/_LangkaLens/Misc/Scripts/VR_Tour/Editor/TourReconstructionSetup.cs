@@ -190,6 +190,7 @@ public static class TourReconstructionSetup
             var rotate = pivot.GetComponent<OneGrabFreeRotateTransformer>();
             rotate.invertRotation = false;
             rotate.idleRotationSpeed = Vector3.zero;
+            TourModelInteractionSetup.ConfigureModel(pivot.gameObject);
             string path = PrefabFolder + "/" + root.name + ".prefab";
             PrefabUtility.SaveAsPrefabAsset(root, path);
             return path;
