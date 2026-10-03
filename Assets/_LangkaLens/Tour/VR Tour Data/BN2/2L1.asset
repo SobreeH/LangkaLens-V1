@@ -35,9 +35,9 @@ MonoBehaviour:
   iconScale: {x: 1, y: 1, z: 1}
   previousPath:
     targetNode: {fileID: 11400000, guid: 496e211aaa718aa4a91075fae580fa6a, type: 2}
-    arrowPosition: {x: -8.6, y: -4, z: -1.69}
+    arrowPosition: {x: -3.139947, y: -1.46044, z: -0.617036}
     arrowRotation: {x: 0, y: 259.354, z: 0}
   nextPath:
     targetNode: {fileID: 11400000, guid: bd6030574f3484c40989e0f8dc4e4e0c, type: 2}
-    arrowPosition: {x: 8.52, y: -4, z: 1.46}
-    arrowRotation: {x: -0, y: 79.97499, z: 0}
+    arrowPosition: {x: 3.154026, y: -1.480764, z: 0.540479}
+    arrowRotation: {x: 0, y: 79.97499, z: 0}

@@ -39,9 +39,9 @@ MonoBehaviour:
   reconstructionScale: {x: 1, y: 1, z: 1}
   previousPath:
     targetNode: {fileID: 11400000, guid: 417d8ed73ba711b409d52704a2f866e3, type: 2}
-    arrowPosition: {x: -7.37, y: -4, z: -2.14}
+    arrowPosition: {x: -3.073072, y: -1.667882, z: -0.892317}
     arrowRotation: {x: 0, y: 255.09799, z: 0}
   nextPath:
     targetNode: {fileID: 11400000, guid: 4f90f6d4868d2c641ac99df2398f95b1, type: 2}
-    arrowPosition: {x: 8.95, y: -4, z: 1.3}
-    arrowRotation: {x: -0, y: 81.207, z: 0}
+    arrowPosition: {x: 3.166768, y: -1.415315, z: 0.459978}
+    arrowRotation: {x: 0, y: 81.207, z: 0}
