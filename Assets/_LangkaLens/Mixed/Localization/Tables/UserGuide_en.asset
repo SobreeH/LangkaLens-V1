@@ -1,0 +1,188 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UserGuide_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 98b266b1af896ad41af4f4069c3673cf, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1256083456
+    m_Localized: User Guide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637888
+    m_Localized: User Guide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637889
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637890
+    m_Localized: Mixed Reality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637891
+    m_Localized: VR Tour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637892
+    m_Localized: VR Museum
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637893
+    m_Localized: 01  /  Align and explore the site
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637894
+    m_Localized: 02  /  Travel through the virtual tour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637895
+    m_Localized: 03  /  Discover the museum collection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637896
+    m_Localized: '<b>1  PLACE THE OUTLINE</b>
+
+      Hold the RIGHT GRIP and move
+      the controller to match the outline to the real entrance sign/table.
+
+
+      <b>2 
+      ADJUST THE ALIGNMENT</b>
+
+      While holding grip, move the right stick left/right
+      to rotate, or up/down to adjust reach. Match the edges and height.
+
+
+      <b>3 
+      CONFIRM</b>
+
+      Release grip, then press A. Wait for the alignment to lock.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637897
+    m_Localized: '<b>EXPLORE THE RESTORATION</b>
+
+      After alignment, press A
+      to show or hide the model. Press B to show or hide site information; use its
+      page buttons to read more.
+
+
+      <b>REALIGN</b>
+
+      Hold X for two seconds
+      to place the reference again.
+
+
+      <b>RETURN HOME</b>
+
+      Tap X to show
+      confirmation, then tap X again while it is visible. You can also use Home on
+      the tablet.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637898
+    m_Localized: '<b>CHOOSE A DESTINATION</b>
+
+      Select an area from the tour
+      menu to begin.
+
+
+      <b>MOVE TO ANOTHER VIEWPOINT</b>
+
+      Push the LEFT
+      STICK forward and aim the arc at a navigation arrow. Release the stick when
+      the arrow is highlighted to travel there.
+
+
+      <b>CANCEL A MOVE</b>
+
+      Pull
+      the left stick backward. Releasing without a selected arrow also cancels.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637899
+    m_Localized: '<b>LOOK CLOSER</b>
+
+      Hold B to zoom in; hold A to zoom out.
+
+
+      <b>INSPECT
+      A RECONSTRUCTION</b>
+
+      Where available, press Y to enter or leave reconstruction
+      inspection. Press X to leave inspection. Navigation pauses during inspection.
+
+
+      <b>LEAVE
+      THE TOUR</b>
+
+      Press X outside inspection to return to the tour menu.
+      From there, tap X twice when prompted to return Home, or use the tablet.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637900
+    m_Localized: '<b>EXPLORE THE GALLERY</b>
+
+      Use the left stick to move and
+      the right stick to turn. Look toward an exhibit to find its information icon.
+
+
+      <b>INSPECT
+      AN ARTIFACT</b>
+
+      Point at the exhibit''s information icon and press the
+      index trigger.
+
+
+      <b>ROTATE THE ARTIFACT</b>
+
+      During inspection,
+      grip the artifact with either controller and move your hand to rotate it.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637901
+    m_Localized: '<b>ZOOM AND COMPARE</b>
+
+      Hold B to enlarge the artifact;
+      hold A to reduce it. Press Y to switch models when an alternate version is
+      available.
+
+
+      <b>CONTINUE EXPLORING</b>
+
+      Press X to leave inspection.
+      Movement resumes after you exit.
+
+
+      <b>RETURN HOME</b>
+
+      Outside
+      inspection, tap X and then tap again at the confirmation, or select Home on
+      the tablet.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1289637902
+    m_Localized: "<b>TABLET</b>  Left Menu: open / hide  \u2022  Home: main menu 
+      \u2022  Change Language: English / Thai\n<b>AI CHAT BOT</b>  Type a question
+      or use Speak, then Send. Clear resets the conversation.\n<b>SELECT</b>  Point
+      at a button and press the index trigger."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
