@@ -94,6 +94,9 @@ public static class ControllerCanvasHintsValidation
                     Check(hints, name, S.Inspecting, C.LeftY, null);
                     Check(hints, name, S.Inspecting | S.AlternateModel, C.LeftY, "switch_model");
                     Check(hints, name, S.Move | S.Turn, C.LeftGrip, null);
+                    Check(hints, name, S.Inspecting, C.LeftGrip, "inspect_move_model");
+                    Check(hints, name, S.Inspecting, C.RightGrip, "inspect_move_model");
+                    Check(hints, name, S.Inspecting, C.RightStick, "inspect_turn_reset");
                 }
                 if (name == "VR_Tour_Scene")
                 {

@@ -201,8 +201,8 @@ public class InspectionManager : MonoBehaviour
         _originalArtifactScale = _currentArtifact.transform.localScale;
         _originalArtifactPosition = _currentArtifact.transform.position;
         _originalArtifactRotation = _currentArtifact.transform.rotation;
-        _tourTransformer = stationary ? _currentArtifact.GetComponent<TourModelTransformer>() : null;
-        if (_tourTransformer != null) _tourTransformer.SetInspecting(!targetEyePosition.HasValue);
+        _tourTransformer = _currentArtifact.GetComponent<TourModelTransformer>();
+        if (_tourTransformer != null) _tourTransformer.SetInspecting(stationary && !targetEyePosition.HasValue);
         _currentScaleMultiplier = 1f;
 
         if (titleText != null) titleText.text = "";
@@ -356,6 +356,7 @@ public class InspectionManager : MonoBehaviour
         playerRig.position = targetRigPos;
         playerRig.rotation = targetRigRot;
         IsMovingToInspection = false;
+        if (_tourTransformer != null) _tourTransformer.SetInspecting(true);
 
         PositionCanvas();
         inspectionCanvas.SetActive(true);

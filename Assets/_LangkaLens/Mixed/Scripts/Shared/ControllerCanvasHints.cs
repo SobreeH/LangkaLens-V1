@@ -150,15 +150,14 @@ public class ControllerCanvasHints : MonoBehaviour
                 if (tourScene) return !tourMenu && !busy && !inspecting ? "teleport" : null;
                 return (context & Context.Move) != 0 ? "move" : null;
             case Control.RightStick:
-                if (tourScene && inspecting) return "inspect_turn_reset";
+                if ((tourScene || museum) && inspecting) return "inspect_turn_reset";
                 if (aligning) return "align_turn_reach";
                 if (mr) return null;
                 return (context & Context.Turn) != 0 ? "turn" : null;
             case Control.LeftGrip:
-                if (tourScene && inspecting) return "inspect_move_model";
-                return museum && inspecting ? "rotate_artifact" : null;
+                return (tourScene || museum) && inspecting ? "inspect_move_model" : null;
             case Control.RightGrip:
-                if (tourScene && inspecting) return "inspect_move_model";
+                if ((tourScene || museum) && inspecting) return "inspect_move_model";
                 if (aligning) return "align_place";
                 return museum && inspecting ? "rotate_artifact" : null;
             case Control.RightA:
