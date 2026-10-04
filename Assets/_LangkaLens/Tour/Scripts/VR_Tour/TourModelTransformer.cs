@@ -7,13 +7,15 @@ public class TourModelTransformer : MonoBehaviour, ITransformer
     private IGrabbable grabbable;
     private Pose previousGrab;
     private bool inspecting;
+    private bool allowTranslation = true;
     private bool grabbed;
 
     public void Initialize(IGrabbable value) => grabbable = value;
 
-    public void SetInspecting(bool value)
+    public void SetInspecting(bool value, bool allowTranslation = true)
     {
         inspecting = value;
+        this.allowTranslation = allowTranslation;
         Rebase();
     }
 
@@ -35,8 +37,9 @@ public class TourModelTransformer : MonoBehaviour, ITransformer
         Pose current = grabbable.GrabPoints[0];
         if (inspecting)
         {
-            // Translate one-to-one without orbiting around the controller or snapping to it.
-            grabbable.Transform.position += current.position - previousGrab.position;
+            // Museum exhibits stay on their display while grip rotation remains available.
+            if (allowTranslation)
+                grabbable.Transform.position += current.position - previousGrab.position;
             Vector3 before = Vector3.ProjectOnPlane(previousGrab.rotation * Vector3.forward, Vector3.up);
             Vector3 after = Vector3.ProjectOnPlane(current.rotation * Vector3.forward, Vector3.up);
             // Ignore yaw when pointing almost vertically, where heading is ambiguous.

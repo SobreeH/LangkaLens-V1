@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Localization;
@@ -16,6 +17,8 @@ public class InspectionManager : MonoBehaviour
     public TextMeshProUGUI modelStateText;
     public LocalizeStringEvent modelStateLocalizeEvent;
     public GameObject toggleModelButton;
+    [Tooltip("Reset scrollable content on every canvas in this scene when inspection ends.")]
+    [SerializeField] private bool resetAllSceneCanvasContentsOnExit;
     
     [Header("VR Rig References")]
     public Transform playerRig;
@@ -67,6 +70,8 @@ public class InspectionManager : MonoBehaviour
 
     private LocalizedString _currentTitle;
     private LocalizedString _currentDescription;
+    private readonly List<CanvasContentReset> _canvasContentResets = new List<CanvasContentReset>();
+    private CanvasContentReset _inspectionContentReset;
 
     private void Awake()
     {
@@ -77,6 +82,7 @@ public class InspectionManager : MonoBehaviour
         }
         else Instance = this;
 
+        InitializeCanvasContentResets();
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
 
         if (centerEyeCamera != null)
@@ -116,7 +122,37 @@ public class InspectionManager : MonoBehaviour
     }
 
     private void OnTitleChanged(string s) { if (titleText != null) titleText.text = s; }
-    private void OnDescriptionChanged(string s) { if (descriptionText != null) descriptionText.text = s; }
+    private void OnDescriptionChanged(string s)
+    {
+        if (descriptionText != null) descriptionText.text = s;
+        if (_inspectionContentReset != null) _inspectionContentReset.ResetContents();
+    }
+
+    private void InitializeCanvasContentResets()
+    {
+        if (inspectionCanvas != null)
+            _inspectionContentReset = RegisterCanvasContentReset(inspectionCanvas);
+
+        if (!resetAllSceneCanvasContentsOnExit) return;
+        foreach (var root in gameObject.scene.GetRootGameObjects())
+        {
+            foreach (var canvas in root.GetComponentsInChildren<Canvas>(true))
+            {
+                if (canvas.gameObject == inspectionCanvas ||
+                    canvas.GetComponentsInChildren<UnityEngine.UI.ScrollRect>(true).Length == 0) continue;
+                RegisterCanvasContentReset(canvas.gameObject);
+            }
+        }
+    }
+
+    private CanvasContentReset RegisterCanvasContentReset(GameObject canvas)
+    {
+        var reset = canvas.GetComponent<CanvasContentReset>();
+        if (reset == null) reset = canvas.AddComponent<CanvasContentReset>();
+        reset.CaptureInitialPositions();
+        _canvasContentResets.Add(reset);
+        return reset;
+    }
 
     public void EnterInspectionState(GameObject artifact, Transform origin, Transform uiAnchor, GameObject pedestal, LocalizedString title, LocalizedString description)
     {
@@ -202,11 +238,13 @@ public class InspectionManager : MonoBehaviour
         _originalArtifactPosition = _currentArtifact.transform.position;
         _originalArtifactRotation = _currentArtifact.transform.rotation;
         _tourTransformer = _currentArtifact.GetComponent<TourModelTransformer>();
-        if (_tourTransformer != null) _tourTransformer.SetInspecting(stationary && !targetEyePosition.HasValue);
+        if (_tourTransformer != null)
+            _tourTransformer.SetInspecting(stationary && !targetEyePosition.HasValue, allowTranslation: stationary);
         _currentScaleMultiplier = 1f;
 
         if (titleText != null) titleText.text = "";
         if (descriptionText != null) descriptionText.text = "";
+        if (_inspectionContentReset != null) _inspectionContentReset.ResetContents();
 
         _currentTitle = title;
         _currentDescription = description;
@@ -251,8 +289,8 @@ public class InspectionManager : MonoBehaviour
             if (_tourTransformer != null)
             {
                 _tourTransformer.SetInspecting(false);
-                _currentArtifact.transform.SetPositionAndRotation(_originalArtifactPosition, _originalArtifactRotation);
             }
+            _currentArtifact.transform.SetPositionAndRotation(_originalArtifactPosition, _originalArtifactRotation);
             _currentArtifact.transform.localScale = _originalArtifactScale;
         }
         _tourTransformer = null;
@@ -289,6 +327,8 @@ public class InspectionManager : MonoBehaviour
         _restoreRigOnExit = false;
         _currentTitle = null;
         _currentDescription = null;
+        foreach (var reset in _canvasContentResets)
+            if (reset != null) reset.ResetContents();
         InspectionExited?.Invoke();
     }
 
@@ -309,7 +349,7 @@ public class InspectionManager : MonoBehaviour
         }
         playerRig.position = target;
         IsMovingToInspection = false;
-        if (_tourTransformer != null) _tourTransformer.SetInspecting(true);
+        if (_tourTransformer != null) _tourTransformer.SetInspecting(true, allowTranslation: _stationaryInspection);
         PositionCanvas();
         inspectionCanvas.SetActive(true);
     }
@@ -356,7 +396,7 @@ public class InspectionManager : MonoBehaviour
         playerRig.position = targetRigPos;
         playerRig.rotation = targetRigRot;
         IsMovingToInspection = false;
-        if (_tourTransformer != null) _tourTransformer.SetInspecting(true);
+        if (_tourTransformer != null) _tourTransformer.SetInspecting(true, allowTranslation: _stationaryInspection);
 
         PositionCanvas();
         inspectionCanvas.SetActive(true);
