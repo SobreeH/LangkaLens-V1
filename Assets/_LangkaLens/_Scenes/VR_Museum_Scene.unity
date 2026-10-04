@@ -28269,6 +28269,7 @@ MonoBehaviour:
   modelStateText: {fileID: 1301904839}
   modelStateLocalizeEvent: {fileID: 1301904841}
   toggleModelButton: {fileID: 575244873}
+  resetAllSceneCanvasContentsOnExit: 1
   playerRig: {fileID: 147365122}
   centerEyeCamera: {fileID: 1023386062}
   locomotionScript: {fileID: 1404763479}
