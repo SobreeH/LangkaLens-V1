@@ -155,11 +155,13 @@ public class ControllerCanvasHints : MonoBehaviour
                 if (mr) return null;
                 return (context & Context.Turn) != 0 ? "turn" : null;
             case Control.LeftGrip:
-                return (tourScene || museum) && inspecting ? "inspect_move_model" : null;
+                if (museum && inspecting) return "rotate_artifact";
+                return tourScene && inspecting ? "inspect_move_model" : null;
             case Control.RightGrip:
-                if ((tourScene || museum) && inspecting) return "inspect_move_model";
+                if (museum && inspecting) return "rotate_artifact";
+                if (tourScene && inspecting) return "inspect_move_model";
                 if (aligning) return "align_place";
-                return museum && inspecting ? "rotate_artifact" : null;
+                return null;
             case Control.RightA:
                 if (aligning && (context & Context.AlignmentPlaced) != 0) return "align_confirm";
                 if (mr) return !busy && (context & Context.Aligning) == 0 ? "toggle_model" : null;
