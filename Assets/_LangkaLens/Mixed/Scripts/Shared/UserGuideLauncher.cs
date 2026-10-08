@@ -1,17 +1,26 @@
 using UnityEngine;
 
-/// <summary>Owns one reusable guide window for this tablet and its scene.</summary>
+/// <summary>Owns a reusable guide window, optionally replacing an existing menu.</summary>
 [DisallowMultipleComponent]
 public sealed class UserGuideLauncher : MonoBehaviour
 {
     [SerializeField] private UserGuideCanvas guidePrefab;
+    [Tooltip("Optional menu canvas to hide and replace while the guide is open.")]
+    [SerializeField] private RectTransform replacementCanvas;
     private UserGuideCanvas instance;
+    private bool menuHidden;
 
     public void OpenGuide()
     {
         if (guidePrefab == null)
         {
             Debug.LogError("The tablet user guide prefab is missing.", this);
+            return;
+        }
+
+        if (replacementCanvas != null)
+        {
+            OpenInPlace();
             return;
         }
 
@@ -37,8 +46,44 @@ public sealed class UserGuideLauncher : MonoBehaviour
         instance.gameObject.SetActive(true);
     }
 
+    private void OpenInPlace()
+    {
+        if (instance == null)
+        {
+            // Keep the guide outside the menu hierarchy so hiding the menu cannot hide it.
+            // The prefab is inactive, allowing follow to be disabled before Awake runs.
+            instance = Instantiate(guidePrefab, replacementCanvas.parent, false);
+            if (instance.TryGetComponent<GentleCanvasFollow>(out var follow)) follow.enabled = false;
+            instance.Closed += RestoreMenu;
+        }
+
+        if (menuHidden) return;
+
+        var guideRect = (RectTransform)instance.transform;
+        float fit = Mathf.Min(replacementCanvas.rect.width / guideRect.rect.width,
+            replacementCanvas.rect.height / guideRect.rect.height);
+        guideRect.localScale = replacementCanvas.localScale * fit;
+        guideRect.SetPositionAndRotation(replacementCanvas.TransformPoint(replacementCanvas.rect.center),
+            replacementCanvas.rotation);
+
+        menuHidden = true;
+        replacementCanvas.gameObject.SetActive(false);
+        instance.gameObject.SetActive(true);
+    }
+
+    private void RestoreMenu()
+    {
+        if (!menuHidden) return;
+        menuHidden = false;
+        if (replacementCanvas != null) replacementCanvas.gameObject.SetActive(true);
+    }
+
     private void OnDestroy()
     {
-        if (instance != null) Destroy(instance.gameObject);
+        if (instance != null)
+        {
+            instance.Closed -= RestoreMenu;
+            Destroy(instance.gameObject);
+        }
     }
 }

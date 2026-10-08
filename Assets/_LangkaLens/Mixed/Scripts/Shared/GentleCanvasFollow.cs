@@ -25,6 +25,9 @@ public sealed class GentleCanvasFollow : MonoBehaviour
 
     private void Awake()
     {
+        // A fixed menu replacement disables following before its first activation.
+        if (!enabled) return;
+
         if (head == null)
         {
             Camera parentCamera = GetComponentInParent<Camera>(true);

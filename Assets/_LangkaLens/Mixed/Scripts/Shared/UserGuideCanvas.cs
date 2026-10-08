@@ -16,6 +16,8 @@ public sealed class UserGuideCanvas : MonoBehaviour
 
     [SerializeField] private Page[] pages = Array.Empty<Page>();
 
+    public event Action Closed;
+
     private void OnEnable()
     {
         int selected = Array.FindIndex(pages, page => page.sceneName == gameObject.scene.name);
@@ -32,5 +34,9 @@ public sealed class UserGuideCanvas : MonoBehaviour
         }
     }
 
-    public void Close() => gameObject.SetActive(false);
+    public void Close()
+    {
+        gameObject.SetActive(false);
+        Closed?.Invoke();
+    }
 }
