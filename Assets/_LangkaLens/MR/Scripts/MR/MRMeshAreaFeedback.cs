@@ -69,7 +69,7 @@ namespace LangkaLens.MR
             var rect = _panel.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(780, 240);
             var image = _panel.AddComponent<Image>();
-            image.color = new Color(0.025f, 0.045f, 0.06f, 0.82f);
+            image.color = new Color32(44, 32, 27, 255); // Match the other canvas backgrounds (#2C201B).
             image.raycastTarget = false;
 
             var textObject = new GameObject("Instructions", typeof(RectTransform));
