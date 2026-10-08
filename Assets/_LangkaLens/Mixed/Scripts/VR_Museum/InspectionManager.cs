@@ -29,6 +29,12 @@ public class InspectionManager : MonoBehaviour
     public float inspectionDistance = 0.6f;
     public float transitionDuration = 0.4f;
 
+    [Header("Inspection Environment")]
+    [SerializeField] private bool dimEnvironmentDuringInspection;
+    [SerializeField, Range(0f, 1f)] private float environmentBrightness = 0.18f;
+    [SerializeField, Min(0f)] private float environmentFadeDuration = 0.35f;
+    private readonly InspectionEnvironmentDimmer _environmentDimmer = new InspectionEnvironmentDimmer();
+
     [Header("Zoom Settings")]
     [Tooltip("Speed at which the model scales up and down.")]
     public float zoomSpeed = 1f;
@@ -192,6 +198,9 @@ public class InspectionManager : MonoBehaviour
         if (artifact != null) _currentArtifactData = artifact.GetComponentInParent<ArtifactData>();
         _currentOrigin = origin;
         _currentUIAnchor = uiAnchor; 
+        if (dimEnvironmentDuringInspection && !stationary)
+            _environmentDimmer.Begin(gameObject.scene, artifact.transform, playerRig,
+                inspectionCanvas.transform, environmentBrightness, environmentFadeDuration);
         
         _currentPedestal = pedestal;
         if (_currentPedestal != null)
@@ -274,7 +283,10 @@ public class InspectionManager : MonoBehaviour
         IsMovingToInspection = false;
 
         if (_currentTitle != null) _currentTitle.StringChanged -= OnTitleChanged;
+        _environmentDimmer.End(environmentFadeDuration);
         if (_currentDescription != null) _currentDescription.StringChanged -= OnDescriptionChanged;
+
+        if (_currentArtifactData != null) _currentArtifactData.SetInspectionManipulationEnabled(false);
 
         if (inspectionCanvas != null) inspectionCanvas.SetActive(false);
 
@@ -397,6 +409,7 @@ public class InspectionManager : MonoBehaviour
         playerRig.rotation = targetRigRot;
         IsMovingToInspection = false;
         if (_tourTransformer != null) _tourTransformer.SetInspecting(true, allowTranslation: _stationaryInspection);
+        if (_currentArtifactData != null) _currentArtifactData.SetInspectionManipulationEnabled(true);
 
         PositionCanvas();
         inspectionCanvas.SetActive(true);
@@ -414,6 +427,7 @@ public class InspectionManager : MonoBehaviour
 
     private void Update()
     {
+        _environmentDimmer.Tick(Time.unscaledDeltaTime);
         if (_isInspecting && _currentArtifact != null)
         {
             // Exit inspection with X button on Left Controller
@@ -507,11 +521,16 @@ public class InspectionManager : MonoBehaviour
         _currentArtifact.transform.localScale = _originalArtifactScale * _currentScaleMultiplier;
     }
 
-    private void OnDisable() => ExitInspectionState();
+    private void OnDisable()
+    {
+        ExitInspectionState();
+        _environmentDimmer.Restore();
+    }
 
     private void OnDestroy()
     {
         ExitInspectionState();
+        _environmentDimmer.Restore();
         if (Instance == this) Instance = null;
     }
 }

@@ -28275,6 +28275,9 @@ MonoBehaviour:
   locomotionScript: {fileID: 1404763479}
   inspectionDistance: 1.2
   transitionDuration: 0.4
+  dimEnvironmentDuringInspection: 1
+  environmentBrightness: 0.18
+  environmentFadeDuration: 0.35
   zoomSpeed: 1
   minScaleMultiplier: 0.5
   maxScaleMultiplier: 3

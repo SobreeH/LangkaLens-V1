@@ -38,6 +38,7 @@ public static class MuseumInspectionControlsSetup
                     data.modelContainer = data.transform;
                     grab.InjectOptionalTargetTransform(data.transform);
                     TourModelInteractionSetup.ConfigureModel(data.gameObject);
+                    data.gripOnlyDuringInspection = true;
                 }
                 PrefabUtility.SaveAsPrefabAsset(root, path);
             }
@@ -61,6 +62,7 @@ public static class MuseumInspectionControlsSetup
                 serialized.FindProperty("_targetTransform").objectReferenceValue == data.modelContainer &&
                 !serialized.FindProperty("_throwWhenUnselected").boolValue, "Incorrect grab configuration");
             Require(data.GetComponent<GrabInteractable>() != null && data.GetComponent<DistanceGrabInteractable>() != null, "Missing grip interactions");
+            Require(data.gripOnlyDuringInspection, "Museum grips must wait for ray inspection entry");
             Require(data.primaryModel != null && data.alternateModel != null &&
                 data.primaryModel.transform.IsChildOf(data.modelContainer) && data.alternateModel.transform.IsChildOf(data.modelContainer), "Model pair does not share its pivot");
             var events = data.GetComponent<PointableUnityEventWrapper>();
@@ -163,6 +165,91 @@ public static class MuseumInspectionControlsSetup
         finally { manager.transitionDuration = duration; }
         Require(count == 11, "Expected 11 runtime displays");
         Debug.Log("PASS: 11 museum displays tested for selection, arrival/inspection position locks, grip/stick rotation, stationary zoom, model switching, held reset and exit restoration.");
+    }
+
+    // Run on an ArtifactData coroutine host: InspectionManager stops its own coroutines on exit.
+    public static IEnumerator ValidateRayEntryRuntime(int exhibitCount = 1)
+    {
+        Require(EditorApplication.isPlaying, "Ray validation needs Play mode");
+        var manager = InspectionManager.Instance;
+        Require(manager != null && !manager.IsInspecting, "Museum must be idle before validation");
+        var artifacts = manager.gameObject.scene.GetRootGameObjects()
+            .SelectMany(r => r.GetComponentsInChildren<ArtifactData>(true)).Take(exhibitCount).ToArray();
+        var probe = new GameObject("Museum controller ray validation");
+        probe.SetActive(false);
+        var trigger = probe.AddComponent<VirtualSelector>();
+        var grip = probe.AddComponent<VirtualSelector>();
+        var ray = probe.AddComponent<RayInteractor>();
+        ray.InjectAllRayInteractor(trigger, probe.transform);
+        ray.MaxRayLength = 3f;
+        var distance = probe.AddComponent<DistanceGrabInteractor>();
+        distance.InjectSelector(grip);
+        distance.InjectOptionalGrabTarget(probe.transform);
+        DistanceGrabInteractable candidate = null;
+        // Reproduce the controller group's real priority with a deterministic distance candidate.
+        // The ray still performs its real surface raycast and publishes the SDK selection event.
+        distance.SetComputeCandidateOverride(() => candidate != null && candidate.isActiveAndEnabled ? candidate : null, false);
+        var group = probe.AddComponent<BestHoverInteractorGroup>();
+        group.InjectAllInteractorGroupBase(new List<IInteractor> { distance, ray });
+        group.IsRootDriver = false;
+        float duration = manager.transitionDuration;
+        try
+        {
+            probe.SetActive(true);
+            yield return null;
+            manager.transitionDuration = 0f;
+            foreach (var data in artifacts)
+            {
+                candidate = data.GetComponent<DistanceGrabInteractable>();
+                var bounds = data.GetComponent<Collider>().bounds;
+                Vector3 position = data.modelContainer.position;
+                probe.transform.position = bounds.center + data.originalOrigin.forward * 2f;
+                probe.transform.LookAt(bounds.center);
+                Physics.SyncTransforms();
+                for (int i = 0; i < 4; i++) group.Drive();
+                Require(ray.Interactable != null && ray.Interactable.GetComponentInParent<ArtifactData>() == data,
+                    "Controller ray is blocked on " + data.transform.parent.name + "; distance=" + distance.State + "; ray=" + ray.State);
+                trigger.Select();
+                for (int i = 0; i < 4; i++) group.Drive();
+                Require(manager.IsInspecting && manager.inspectionCanvas.activeSelf,
+                    "Ray trigger did not open inspection for " + data.transform.parent.name);
+                Require(Vector3.Distance(data.modelContainer.position, position) < 0.0001f,
+                    "Ray selection moved the artifact");
+                // Newly enabled SDK interactables finish Start before entering the registry.
+                yield return null;
+                trigger.Unselect();
+                for (int i = 0; i < 4; i++) group.Drive();
+                Require(candidate.enabled && data.GetComponent<GrabInteractable>().enabled,
+                    "Grip rotation unavailable after ray entry");
+                // Exercise distance grip after releasing the ray trigger.
+                grip.Select();
+                for (int i = 0; i < 4; i++) group.Drive();
+                Require(distance.SelectedInteractable == candidate, "Inspection distance grip cannot select the model");
+                probe.transform.position += Vector3.up * 0.2f;
+                probe.transform.Rotate(0f, 30f, 0f, Space.World);
+                for (int i = 0; i < 4; i++) group.Drive();
+                Require(Vector3.Distance(data.modelContainer.position, position) < 0.0001f,
+                    "Inspection grip displaced the artifact");
+                grip.Unselect();
+                for (int i = 0; i < 4; i++) group.Drive();
+                manager.ExitInspectionState();
+                Require(!candidate.enabled && !data.GetComponent<GrabInteractable>().enabled,
+                    "Exit did not return exhibit to ray selection");
+                Require(Vector3.Distance(data.modelContainer.position, position) < 0.0001f,
+                    "Ray inspection exit failed to restore position");
+                group.Disable();
+                candidate = null;
+                group.Enable();
+            }
+            Debug.Log("PASS: controller ray hover/trigger entry, grip handoff, position lock and exit reset on " + artifacts.Length + " museum exhibit(s).");
+        }
+        finally
+        {
+            group.Disable();
+            manager.ExitInspectionState();
+            manager.transitionDuration = duration;
+            UnityEngine.Object.Destroy(probe);
+        }
     }
 
     // Run on an ArtifactData coroutine host: InspectionManager stops its own coroutines on exit.

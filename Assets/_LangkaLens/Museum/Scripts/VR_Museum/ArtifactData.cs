@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Localization;
+using Oculus.Interaction;
 
 public class ArtifactData : MonoBehaviour
 {
@@ -29,6 +30,28 @@ public class ArtifactData : MonoBehaviour
 
     [Tooltip("The info icon GameObject to hide during inspection (auto-detected if left empty)")]
     public GameObject infoIcon;
+
+    [Header("Inspection Input")]
+    [Tooltip("Keep grip interactions inactive until ray selection opens museum inspection.")]
+    public bool gripOnlyDuringInspection;
+
+    private GrabInteractable _nearGrab;
+    private DistanceGrabInteractable _distanceGrab;
+
+    private void Awake()
+    {
+        _nearGrab = GetComponent<GrabInteractable>();
+        _distanceGrab = GetComponent<DistanceGrabInteractable>();
+        SetInspectionManipulationEnabled(false);
+    }
+
+    public void SetInspectionManipulationEnabled(bool value)
+    {
+        if (!gripOnlyDuringInspection) return;
+        // The rig prioritizes grab hover over ray hover, even before grip is pressed.
+        if (_nearGrab != null) _nearGrab.enabled = value;
+        if (_distanceGrab != null) _distanceGrab.enabled = value;
+    }
 
     private void Start()
     {

@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: modelContainer
       value: 
       objectReference: {fileID: 3316761985722010064}
+    - target: {fileID: 7155850479264752360, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
+      propertyPath: gripOnlyDuringInspection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7201208901289036918, guid: d18fedebb1a30134cb82d6922ac57082, type: 3}
       propertyPath: _movementProvider
       value: 
