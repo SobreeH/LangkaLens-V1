@@ -1,0 +1,14 @@
+flowchart TD
+    Start(["Enter main menu"]) --> Init["Initialize localization and menu controls"]
+    Init --> Selected{"Language confirmed in this session?"}
+    Selected -->|"No"| Language["Show Thai / English selection"]
+    Language --> Pick["Choose language and confirm"]
+    Pick --> Hub["Show main menu"]
+    Selected -->|"Yes"| Hub
+    Hub --> Action{"Visitor action"}
+    Action -->|"Change language"| Language
+    Action -->|"Read instructions"| Help["Open user guide"]
+    Help -->|"Close guide"| Hub
+    Action -->|"Choose tour, museum, or MR"| Load["Load the selected scene"]
+    Load --> End(["Selected experience begins"])
+    Action -->|"Quit"| Quit(["Close application"])

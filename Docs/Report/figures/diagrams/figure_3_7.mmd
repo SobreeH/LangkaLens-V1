@@ -1,0 +1,18 @@
+flowchart TD
+    Start(["Enter museum"]) --> Explore["Explore artifact display stations"]
+    Explore --> Select["Select an artifact"]
+    Select --> Begin["Save rig/model settings and pause locomotion"]
+    Begin --> Fade["Start fading museum surroundings; keep artifact and panel clear"]
+    Fade --> Inspect["Move into inspection and show localized information"]
+    Inspect --> Action{"Visitor action"}
+    Action -->|"Grab and rotate"| Rotate["Pause idle spin and rotate the model"]
+    Rotate -->|"Release"| Inspect
+    Action -->|"Resize"| Inspect
+    Action -->|"Switch model"| Alternate{"Alternate model configured?"}
+    Alternate -->|"Yes"| Switch["Show the other model"]
+    Switch --> Inspect
+    Alternate -->|"No"| Inspect
+    Action -->|"Close inspection"| Brighten["Start fading surroundings back to normal"]
+    Brighten --> Restore["Restore rig, model, pedestal, UI, and locomotion"]
+    Restore --> Explore
+    Explore -->|"Return and confirm"| Home(["Main menu"])

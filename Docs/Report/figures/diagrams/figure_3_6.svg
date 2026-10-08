@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1590" viewBox="0 0 1200 1590"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 370 100 L 370 170" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 360 L 370 422.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 640 265 L 680 265 L 680 275 L 725 275" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 527.5 L 370 585" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 765 L 370 805" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 640 675 L 725 675" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 995 L 370 1070" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 645 900 L 725 900" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1145 900 L 1180 900 L 1180 275 L 1145 275" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 935 610 L 935 320" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 1190 L 370 1260" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 1420 L 370 1490 L 60 1490 L 60 1130 L 125 1130" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 600 1340 L 685 1340 L 685 780 L 935 780 L 935 740" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/><rect x="135" y="20" width="470" height="80" rx="40" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="68.96000000000001" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="370" dy="0">Press left Y at a viewpoint</tspan></text>
+<polygon points="370,170 640,265 370,360 100,265" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="257.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="370" dy="0">Inspection available</tspan><tspan x="370" dy="33.04">and tour idle?</tspan></text>
+<rect x="125" y="422.5" width="490" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="467.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="370" dy="0">Load the area's</tspan><tspan x="370" dy="33.04">reconstruction display</tspan></text>
+<polygon points="370,585 640,675 370,765 100,675" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="667.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="370" dy="0">Cancelled or</tspan><tspan x="370" dy="33.04">viewpoint changed?</tspan></text>
+<polygon points="370,805 645,900 370,995 95,900" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="892.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="370" dy="0">Display loaded with</tspan><tspan x="370" dy="33.04">required references?</tspan></text>
+<rect x="125" y="1070" width="490" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="1122.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="370" dy="0">Move closer; show model and</tspan><tspan x="370" dy="33.04">localized panel</tspan></text>
+<polygon points="370,1260 600,1340 370,1420 140,1340" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="1348.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="370" dy="0">Visitor action</tspan></text>
+<rect x="725" y="840" width="420" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="935" y="892.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="935" dy="0">Release failed content;</tspan><tspan x="935" dy="33.04">return to Ready</tspan></text>
+<rect x="725" y="610" width="420" height="130" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="935" y="667.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="935" dy="0">Release content; restore</tspan><tspan x="935" dy="33.04">panorama and navigation</tspan></text>
+<rect x="725" y="230" width="420" height="90" rx="45" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="935" y="283.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="935" dy="0">Remain in tour</tspan></text>
+<rect x="387.94" y="369" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="415" y="395" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="415" dy="0">Yes</tspan></text>
+<rect x="659.96" y="214" width="40.08" height="34.68" fill="white"/>
+<text x="680" y="240" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="680" dy="0">No</tspan></text>
+<rect x="389.96" y="769" width="40.08" height="34.68" fill="white"/>
+<text x="410" y="795" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="410" dy="0">No</tspan></text>
+<rect x="649.94" y="620" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="677" y="646" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="677" dy="0">Yes</tspan></text>
+<rect x="382.94" y="1004" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="410" y="1030" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="410" dy="0">Yes</tspan></text>
+<rect x="654.96" y="844" width="40.08" height="34.68" fill="white"/>
+<text x="675" y="870" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="675" dy="0">No</tspan></text>
+<rect x="80.62" y="1424" width="278.76" height="65.36" fill="white"/>
+<text x="220" y="1450" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="220" dy="0">Rotate / resize</tspan><tspan x="220" dy="30.68">or read description</tspan></text>
+<rect x="744.66" y="1144" width="250.68" height="65.36" fill="white"/>
+<text x="870" y="1170" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="870" dy="0">Y, X, Close, map,</tspan><tspan x="870" dy="30.68">or scene exit</tspan></text></svg>

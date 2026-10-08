@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1770" height="940" viewBox="0 0 1770 940"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path id="launch-menu" d="M 885 95 L 885 140" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="menu-choice" d="M 885 260 L 885 305" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="menu-quit" d="M 1120 200 L 1270 200 L 1310 200" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="choice-branches" d="M 885 455 L 885 505" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" />
+<path id="choice-Tour" d="M 885 505 L 315 505 L 315 580" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="Tour-return-action" d="M 315 710 L 315 755" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="Tour-return-bus" d="M 315 850 L 315 895" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" />
+<path id="choice-Museum" d="M 885 505 L 885 505 L 885 580" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="Museum-return-action" d="M 885 710 L 885 755" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="Museum-return-bus" d="M 885 850 L 885 895" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" />
+<path id="choice-MR" d="M 885 505 L 1455 505 L 1455 580" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="MR-return-action" d="M 1455 710 L 1455 755" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="MR-return-bus" d="M 1455 850 L 1455 895" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" />
+<path id="return-to-menu" d="M 1455 895 L 40 895 L 40 200 L 650 200" fill="none" stroke="#475569" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<ellipse id="Start" cx="885" cy="50" rx="210" ry="45" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="885" y="61" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="885" dy="0">Launch LangkaLens</tspan></text>
+<rect id="Menu" x="650" y="140" width="470" height="120" rx="7" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="885" y="192.2" text-anchor="middle" font-family="Arial" font-size="30" font-weight="400" fill="#111827"><tspan x="885" dy="0">Main_Menu_Scene</tspan><tspan x="885" dy="34.8">Language and mode selection</tspan></text>
+<polygon id="Choice" points="885,305 1090,380 885,455 680,380" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="885" y="370" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="885" dy="0">Choose an</tspan><tspan x="885" dy="37.12">experience</tspan></text>
+<ellipse id="End" cx="1510" cy="200" rx="200" ry="50" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="1510" y="211" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="1510" dy="0">Close application</tspan></text>
+<text x="1240" y="174" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="1240" dy="0">Quit</tspan></text>
+<rect id="Tour" x="100" y="580" width="430" height="130" rx="7" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="315" y="672" text-anchor="middle" font-family="Arial" font-size="30" font-weight="400" fill="#111827"></text>
+<text x="315" y="618" text-anchor="middle" font-family="Arial" font-size="30" font-weight="600" fill="#111827"><tspan x="315" dy="0">VR_Tour_Scene</tspan></text>
+<text x="315" y="659" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="315" dy="0">Viewpoints and restored models</tspan></text>
+<text x="450" y="552" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="450" dy="0">VR tour</tspan></text>
+<rect id="TourReturn" x="115" y="755" width="400" height="95" rx="7" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="315" y="811.46" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="315" dy="0">Return and confirm</tspan></text>
+<rect id="Museum" x="670" y="580" width="430" height="130" rx="7" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="885" y="672" text-anchor="middle" font-family="Arial" font-size="30" font-weight="400" fill="#111827"></text>
+<text x="885" y="618" text-anchor="middle" font-family="Arial" font-size="30" font-weight="600" fill="#111827"><tspan x="885" dy="0">VR_Museum_Scene</tspan></text>
+<text x="885" y="659" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="885" dy="0">Artifact exploration</tspan><tspan x="885" dy="32.48">and inspection</tspan></text>
+<text x="1020" y="552" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="1020" dy="0">VR museum</tspan></text>
+<rect id="MuseumReturn" x="685" y="755" width="400" height="95" rx="7" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="885" y="795.22" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="885" dy="0">End inspection;</tspan><tspan x="885" dy="32.48">return and confirm</tspan></text>
+<rect id="MR" x="1240" y="580" width="430" height="130" rx="7" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="1455" y="672" text-anchor="middle" font-family="Arial" font-size="30" font-weight="400" fill="#111827"></text>
+<text x="1455" y="618" text-anchor="middle" font-family="Arial" font-size="30" font-weight="600" fill="#111827"><tspan x="1455" dy="0">MR_Scene</tspan></text>
+<text x="1455" y="659" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="1455" dy="0">Entrance alignment and</tspan><tspan x="1455" dy="32.48">reconstruction display</tspan></text>
+<text x="1590" y="552" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="1590" dy="0">Mixed reality</tspan></text>
+<rect id="MRReturn" x="1255" y="755" width="400" height="95" rx="7" fill="white" stroke="#334155" stroke-width="2.4"/>
+<text x="1455" y="811.46" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="1455" dy="0">Return and confirm</tspan></text></svg>

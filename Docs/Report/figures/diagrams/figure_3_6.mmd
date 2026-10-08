@@ -1,0 +1,15 @@
+flowchart TD
+    Start(["Press left Y at a viewpoint"]) --> Allowed{"Inspection available and tour idle?"}
+    Allowed -->|"No"| Tour(["Remain in tour"])
+    Allowed -->|"Yes"| Load["Load the area's reconstruction display"]
+    Load --> Cancel{"Cancelled or viewpoint changed?"}
+    Cancel -->|"Yes"| Cleanup["Release content and restore panorama/navigation"]
+    Cancel -->|"No"| Valid{"Display loaded with required references?"}
+    Valid -->|"No"| Retry["Release failed content and return to Ready"]
+    Retry --> Tour
+    Valid -->|"Yes"| Inspect["Move closer and show model with localized panel"]
+    Inspect --> Action{"Visitor action"}
+    Action -->|"Rotate or resize"| Inspect
+    Action -->|"Read description"| Inspect
+    Action -->|"Y, X, Close, map, or scene exit"| Cleanup
+    Cleanup --> Tour

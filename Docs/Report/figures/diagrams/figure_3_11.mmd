@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    actor Visitor
+    participant Arrow as NavigationArrow
+    participant Tour as TourManager
+    participant Assets as Addressables
+    participant View as Panorama and rig
+    Visitor->>Arrow: Select a linked viewpoint
+    Arrow->>Tour: Request the destination
+    Tour->>Tour: Block navigation and clear inspection
+    Tour->>Assets: Begin loading destination photo
+    Tour->>View: Animate movement and container scale
+    Tour->>Assets: Release previous photo handle
+    Assets-->>Tour: Destination load result
+    alt Photo available
+        Tour->>View: Assign photo and create navigation indicators
+    else Load failed
+        Note over Tour,View: No new panorama is assigned; record recovery in testing
+    end
+    Tour->>View: Restore container and settle the rig
+    Tour->>Tour: End transition

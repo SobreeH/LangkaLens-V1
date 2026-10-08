@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1660" height="850" viewBox="0 0 1660 850"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><text x="860" y="32" text-anchor="middle" font-family="Arial" font-size="28" font-weight="600" fill="#111827"><tspan x="860" dy="0">LangkaLens Unity application on Quest 3 / Quest 3S</tspan></text>
+<path id="visitor-entry" d="M 150 140 L 210 140" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="menu-modes" d="M 490 140 L 530 140" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" />
+<path id="menu-tour" d="M 530 140 L 530 90 L 570 90" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="menu-museum" d="M 530 140 L 530 190 L 570 190" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="menu-mr" d="M 530 140 L 530 290 L 570 290" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="tour-shared-bus" d="M 800 90 L 835 90 L 835 190" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" />
+<path id="museum-shared-bus" d="M 800 190 L 835 190" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" />
+<path id="tour-museum-inspection" d="M 835 190 L 835 90 L 890 90" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="tour-museum-assets" d="M 835 190 L 860 190 L 860 245 L 890 245" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="mr-assets" d="M 800 290 L 890 290" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="mr-xr" d="M 800 290 L 825 290 L 825 370 L 1260 370 L 1260 300 L 1300 300" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="inspection-xr" d="M 1210 105 L 1250 105 L 1250 260 L 1300 260" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="inspection-localization" d="M 1210 90 L 1300 90" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="menu-localization" d="M 350 90 L 350 58 L 1470 58 L 1470 70" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="help-localization" d="M 820 450 L 1230 450 L 1230 130 L 1300 130" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="chat-localization" d="M 750 610 L 750 525 L 1280 525 L 1280 170 L 1470 170 L 1470 150" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="gemini-request" d="M 900 635 L 975 635 L 975 585 L 1300 585" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="gemini-response" d="M 1300 615 L 1010 615 L 1010 665 L 900 665" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="groq-request" d="M 900 700 L 975 700 L 975 760 L 1300 760" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path id="groq-response" d="M 1300 795 L 950 795 L 950 720 L 900 720" fill="none" stroke="#475569" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g id="Visitor"><rect x="20" y="112" width="130" height="56" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="85" y="148" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="85" dy="0">Visitor</tspan></text>
+<g id="Menu"><rect x="210" y="90" width="280" height="100" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="350" y="134" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="350" dy="0">Main menu and</tspan><tspan x="350" dy="28.32">language selection</tspan></text>
+<g id="Tour"><rect x="570" y="58" width="230" height="64" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="685" y="98" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="685" dy="0">360-degree tour</tspan></text>
+<g id="Museum"><rect x="570" y="158" width="230" height="64" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="685" y="198" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="685" dy="0">Virtual museum</tspan></text>
+<g id="MR"><rect x="570" y="258" width="230" height="64" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="685" y="298" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="685" dy="0">On-site MR</tspan></text>
+<g id="Inspect"><rect x="890" y="58" width="320" height="64" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="1050" y="98" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1050" dy="0">Shared model inspection</tspan></text>
+<g id="Assets"><rect x="890" y="215" width="320" height="100" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="1050" y="259" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1050" dy="0">Unity content assets</tspan><tspan x="1050" dy="28.32">and Addressables</tspan></text>
+<g id="Locale"><rect x="1300" y="70" width="340" height="80" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="1470" y="104" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1470" dy="0">Thai / English</tspan><tspan x="1470" dy="28.32">localization</tspan></text>
+<g id="XR"><rect x="1300" y="230" width="340" height="110" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="1470" y="265" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1470" dy="0">Meta XR tracking,</tspan><tspan x="1470" dy="28.32">interaction, passthrough,</tspan><tspan x="1470" dy="28.32">and session anchors</tspan></text>
+<g id="Help"><rect x="570" y="410" width="250" height="80" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="695" y="444" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="695" dy="0">User guide and</tspan><tspan x="695" dy="28.32">controller hints</tspan></text>
+<g id="Guide"><rect x="570" y="610" width="330" height="130" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="735" y="669" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="735" dy="0">Chat, keyboard,</tspan><tspan x="735" dy="28.32">and speech input</tspan></text>
+<g id="Gemini"><rect x="1300" y="550" width="340" height="100" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="1470" y="608" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1470" dy="0">Google Gemini service</tspan></text>
+<g id="Groq"><rect x="1300" y="720" width="340" height="110" rx="6" fill="white" stroke="#334155" stroke-width="2"/></g>
+<text x="1470" y="769" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1470" dy="0">Groq transcription</tspan><tspan x="1470" dy="28.32">service</tspan></text>
+<text x="1470" y="415" text-anchor="middle" font-family="Arial" font-size="20" font-weight="600" fill="#111827"><tspan x="1470" dy="0">Shared application</tspan><tspan x="1470" dy="23.599999999999998">services</tspan></text>
+<text x="1115" y="515" text-anchor="middle" font-family="Arial" font-size="21" font-weight="600" fill="#111827"><tspan x="1115" dy="0">AI requests and responses</tspan></text>
+<text x="1130" y="553" text-anchor="middle" font-family="Arial" font-size="20" font-weight="400" fill="#111827"><tspan x="1130" dy="0">Question and</tspan><tspan x="1130" dy="23.599999999999998">localized instructions</tspan></text>
+<text x="1130" y="650" text-anchor="middle" font-family="Arial" font-size="20" font-weight="400" fill="#111827"><tspan x="1130" dy="0">Answer or error</tspan></text>
+<text x="1130" y="740" text-anchor="middle" font-family="Arial" font-size="20" font-weight="400" fill="#111827"><tspan x="1130" dy="0">Recorded WAV audio</tspan></text>
+<text x="1130" y="824" text-anchor="middle" font-family="Arial" font-size="20" font-weight="400" fill="#111827"><tspan x="1130" dy="0">Transcript or error</tspan></text></svg>

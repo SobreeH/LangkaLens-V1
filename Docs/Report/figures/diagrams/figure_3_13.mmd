@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    actor Visitor
+    participant Align as MRMeshReferenceAlignment
+    participant Anchor as Session spatial anchor
+    participant Area as MRMeshPlayableArea
+    participant Model as MRModelSpawner
+    Visitor->>Align: Hold right grip and adjust the outline
+    Visitor->>Align: Release grip and press A
+    Align->>Anchor: Create anchor at entrance reference
+    Anchor-->>Align: Creation, localization, and tracking state
+    alt Anchor ready and head tracked within wait period
+        Align->>Align: Retain site-to-anchor pose and confirm
+    else Anchor/tracking failure
+        Align-->>Visitor: Show retry guidance and restart alignment
+    end
+    loop MR display updates
+        Area->>Align: Check confirmation and tracking
+        Area->>Area: Check passthrough and evaluate current footprint mode
+        Model->>Area: Read CanPlay
+        alt Display allowed and visitor requests visibility
+            Model->>Model: Spawn if needed and show reconstruction
+        else Display unavailable or hidden by visitor
+            Model->>Model: Hide reconstruction
+        end
+    end

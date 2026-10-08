@@ -1,0 +1,10 @@
+flowchart TD
+    Start(["Launch LangkaLens"]) --> Menu["Main_Menu_Scene: language and mode selection"]
+    Menu --> Choice{"Choose an experience"}
+    Choice -->|"VR tour"| Tour["VR_Tour_Scene: viewpoints and restored models"]
+    Choice -->|"VR museum"| Museum["VR_Museum_Scene: artifact exploration and inspection"]
+    Choice -->|"Mixed reality"| MR["MR_Scene: entrance alignment and reconstruction display"]
+    Tour -->|"Return and confirm"| Menu
+    Museum -->|"End inspection; return and confirm"| Menu
+    MR -->|"Return and confirm"| Menu
+    Menu -->|"Quit"| End(["Close application"])

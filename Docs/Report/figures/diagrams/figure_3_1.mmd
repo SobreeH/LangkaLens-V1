@@ -1,0 +1,32 @@
+flowchart TB
+    User["Visitor"] --> App
+    subgraph App["LangkaLens Unity application on Quest 3 / Quest 3S"]
+        Menu["Main menu and language selection"]
+        Tour["360-degree tour"]
+        Museum["Virtual museum"]
+        MR["On-site MR"]
+        Inspect["Shared model inspection"]
+        Guide["Chat, keyboard, and speech input"]
+        Help["User guide and controller hints"]
+        Assets["Unity content assets and Addressables"]
+        Locale["Thai / English localization"]
+        XR["Meta XR tracking, interaction, passthrough, and session anchors"]
+        Menu --> Tour
+        Menu --> Museum
+        Menu --> MR
+        Tour --> Inspect
+        Museum --> Inspect
+        Tour --> Assets
+        Museum --> Assets
+        MR --> Assets
+        MR --> XR
+        Inspect --> XR
+        Menu --> Locale
+        Inspect --> Locale
+        Guide --> Locale
+        Help --> Locale
+    end
+    Guide -->|"Question and localized instructions"| Gemini["Google Gemini service"]
+    Gemini -->|"Answer or error"| Guide
+    Guide -->|"Recorded WAV audio"| Groq["Groq transcription service"]
+    Groq -->|"Transcript or error"| Guide

@@ -1,0 +1,28 @@
+{
+  "recorded_date": "2026-10-05",
+  "source": "Meta VR MCP read-only connected-device queries",
+  "actions": [
+    "device list",
+    "device info",
+    "device os"
+  ],
+  "model": "Quest 3S",
+  "connection_state": "device",
+  "device_codename": "panther",
+  "os": {
+    "platform": "Meta Horizon OS",
+    "display_version": "2.7.0",
+    "android_base_version": "14",
+    "android_api_level": "34",
+    "build_id": "UP1A.231005.007.A1",
+    "incremental_build": "3814840024700610",
+    "firmware_branch": "releases-oculus-14.0-v207",
+    "build_type": "user",
+    "device_reported_build_date": "Wed Aug 26 18:42:44 PDT 2026"
+  },
+  "update_status": {
+    "statement": "Latest available version",
+    "source": "Developer confirmation; the OS query records installed firmware and does not check update availability"
+  },
+  "scope": "Device metadata only; no functional or performance test was executed."
+}

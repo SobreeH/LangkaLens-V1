@@ -1,0 +1,17 @@
+flowchart TD
+    Start(["Enter VR tour"]) --> Areas["Show area map and starting view"]
+    Areas --> Pick["Choose Ban Jalae 2, 3, 8, or Ban Wat 9"]
+    Pick --> Load["Load the selected viewpoint photo"]
+    Load --> Transition["Animate the transition and release previous content"]
+    Transition --> Ready{"Photo loaded successfully?"}
+    Ready -->|"Yes"| View["Show panorama and available navigation arrows"]
+    Ready -->|"No"| Failed["Finish cleanup without assigning a new panorama"]
+    Failed --> Resume["Transition ends; input resumes"]
+    View --> Action{"Visitor action"}
+    Resume --> Action
+    Action -->|"Select a connected arrow"| Load
+    Action -->|"Request area map"| Areas
+    Action -->|"Inspect restored model"| Inspect["Use the inspection workflow in Figure 3.6"]
+    Inspect -->|"Inspection closes"| View
+    Action -->|"Return to tour starting menu"| Areas
+    Areas -->|"Return to application menu and confirm"| Home(["Main menu"])

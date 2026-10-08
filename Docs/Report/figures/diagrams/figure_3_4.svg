@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1370" viewBox="0 0 1200 1370"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 400 100 L 400 150" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 250 L 400 285" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 465 L 400 575" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 660 375 L 695 375" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 905 430 L 905 505" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 905 605 L 905 625 L 615 625" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 675 L 400 745" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 625 820 L 685 820" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1115 820 L 1160 820 L 1160 680 L 640 680 L 640 625 L 615 625" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 895 L 400 997.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 1142.5 L 400 1225" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 895 L 400 935 L 650 935 L 650 1110 L 685 1110" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 175 820 L 70 820 L 70 270 L 905 270 L 905 320" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/><rect x="185" y="20" width="430" height="80" rx="40" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="68.96000000000001" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Enter main menu</tspan></text>
+<rect x="185" y="150" width="430" height="100" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="192.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Initialize localization</tspan><tspan x="400" dy="33.04">and menu controls</tspan></text>
+<polygon points="400,285 660,375 400,465 140,375" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="367.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Language confirmed</tspan><tspan x="400" dy="33.04">in this session?</tspan></text>
+<rect x="695" y="320" width="420" height="110" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="905" y="367.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="905" dy="0">Show Thai / English</tspan><tspan x="905" dy="33.04">selection</tspan></text>
+<rect x="695" y="505" width="420" height="100" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="905" y="547.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="905" dy="0">Choose language and</tspan><tspan x="905" dy="33.04">confirm</tspan></text>
+<rect x="185" y="575" width="430" height="100" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="633.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Show main menu</tspan></text>
+<polygon points="400,745 625,820 400,895 175,820" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="828.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Visitor action</tspan></text>
+<rect x="685" y="760" width="430" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="900" y="812.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="900" dy="0">Read instructions: open</tspan><tspan x="900" dy="33.04">user guide</tspan></text>
+<rect x="170" y="997.5" width="460" height="145" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="1045.92" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Choose tour, museum, or</tspan><tspan x="400" dy="33.04">MR: load the selected</tspan><tspan x="400" dy="33.04">scene</tspan></text>
+<rect x="170" y="1225" width="460" height="90" rx="45" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="1278.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Selected experience begins</tspan></text>
+<rect x="685" y="1060" width="430" height="100" rx="50" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="900" y="1118.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="900" dy="0">Quit: close application</tspan></text>
+<rect x="412.94" y="499" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="440" y="525" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="440" dy="0">Yes</tspan></text>
+<rect x="639.96" y="322" width="40.08" height="34.68" fill="white"/>
+<text x="660" y="348" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="660" dy="0">No</tspan></text>
+<rect x="926.78" y="634" width="166.44" height="34.68" fill="white"/>
+<text x="1010" y="660" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1010" dy="0">Close guide</tspan></text>
+<rect x="87.84" y="719" width="124.32000000000001" height="65.36" fill="white"/>
+<text x="150" y="745" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="150" dy="0">Change</tspan><tspan x="150" dy="30.68">language</tspan></text></svg>

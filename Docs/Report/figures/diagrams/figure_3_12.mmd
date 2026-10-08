@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    actor Visitor
+    participant Artifact as ArtifactData
+    participant Inspect as InspectionManager
+    participant Dimmer as InspectionEnvironmentDimmer
+    participant Rig as Player rig and locomotion
+    participant UI as Inspection panel
+    participant Grab as Rotation transformer
+    Visitor->>Artifact: Select artifact
+    Artifact->>Inspect: Request inspection with model and anchors
+    Inspect->>Dimmer: Begin environment fade
+    Note over Inspect,Dimmer: Exclude selected artifact, rig, and inspection panel
+    Inspect->>Rig: Save pose and pause locomotion
+    Inspect->>Artifact: Save model state and hide pedestal/icon
+    par Fade surroundings
+        loop While environment fade is active
+            Inspect->>Dimmer: Tick with unscaled time
+            Dimmer->>Dimmer: Adjust temporary materials and skybox exposure
+        end
+    and Move into inspection
+        Inspect->>Rig: Move into inspection position
+        Inspect->>UI: Show localized title and description
+    end
+    Visitor->>Grab: Grab and rotate model
+    Visitor->>Grab: Release model
+    opt Alternate model exists
+        Visitor->>UI: Select model switch
+        UI->>Artifact: Toggle primary/alternate form
+    end
+    Visitor->>UI: Close inspection
+    UI->>Inspect: Exit inspection
+    Inspect->>Dimmer: Begin fade back to normal brightness
+    Inspect->>Artifact: Restore model, pedestal, and icon
+    Inspect->>Rig: Restore saved pose and locomotion
+    Inspect->>UI: Hide and reset panel
+    Note over Inspect,Dimmer: Updates continue until original materials and skybox are restored

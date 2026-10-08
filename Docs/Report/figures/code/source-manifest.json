@@ -1,0 +1,130 @@
+[
+  {
+    "figure": "4.1",
+    "image": "figure-4-1-main-menu-scene-loading.png",
+    "source": "Assets/_LangkaLens/Main_menu/Scripts/Main_Menu/MainMenuManager.cs",
+    "first_line": 185,
+    "last_line": 211,
+    "source_sha256": "3a3696195006807c861a8a912da01f4fd7153a2382c11341170dd354fa6629fb",
+    "excerpt_sha256": "a9833b0058ea12f132872e0901153e07e2fa3cff9e3771d1660a496113b64bc5",
+    "source_excerpt": "    public void LoadMRMode()\n    {\n        Debug.Log(\"<color=cyan>[LangkaLens]</color> <color=green>Transitioning to MR Mode...</color>\");\n        \n        // Hide canvas to act as a pseudo-loading screen\n        if (mainCanvas != null) mainCanvas.SetActive(false);\n        \n        SceneManager.LoadSceneAsync(mrSceneName);\n    }\n\n    public void LoadVRMode()\n    {\n        Debug.Log(\"<color=cyan>[LangkaLens]</color> <color=green>Transitioning to VR Mode...</color>\");\n        \n        if (mainCanvas != null) mainCanvas.SetActive(false);\n        \n        SceneManager.LoadSceneAsync(vrSceneName);\n    }\n    \n    public void LoadMuseumMode()\n    {\n        Debug.Log(\"<color=cyan>[LangkaLens]</color> Transitioning to <color=green>Museum Mode...</color>\");\n        \n        if (mainCanvas != null) mainCanvas.SetActive(false);\n        \n        SceneManager.LoadSceneAsync(museumSceneName);\n    }",
+    "visual_rows": 30,
+    "pixel_dimensions": [
+      2720,
+      2610
+    ],
+    "snapshot_date": "2026-10-05"
+  },
+  {
+    "figure": "4.2",
+    "image": "figure-4-2-tour-panorama-loading.png",
+    "source": "Assets/_LangkaLens/Tour/Scripts/VR_Tour/TourManager.cs",
+    "first_line": 217,
+    "last_line": 240,
+    "source_sha256": "78a211ebe07bfd59ec488dec550709e63ad4710a06a4f8d2e6aebe4ae1478f63",
+    "excerpt_sha256": "4d0e3b2b83b9468008f5efadb48078ad41cc6cbacfa5120ca11baa060b36eaa2",
+    "source_excerpt": "    public void LoadNode(TourNode nextNode, Vector3? targetWorldPosition = null)\n    {\n        if (nextNode == null || IsTransitioning) return;\n        StartCoroutine(TransitionRoutine(nextNode, targetWorldPosition));\n    }\n\n    private IEnumerator TransitionRoutine(TourNode nextNode, Vector3? targetWorldPosition)\n    {\n        IsTransitioning = true;\n        if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();\n        SetActiveArrowsVisible(false);\n        // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation\n        AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(nextNode.photoReference);\n        pendingTextureHandle = nextTextureHandle;\n\n        Vector3 moveDirection;\n        if (targetWorldPosition.HasValue) moveDirection = (targetWorldPosition.Value - vrCamera.position);\n        else moveDirection = vrCamera != null ? vrCamera.forward : Vector3.forward;\n        \n        moveDirection.y = 0;\n        if (moveDirection.magnitude < 0.001f) moveDirection = Vector3.forward; \n        moveDirection.Normalize();\n\n        Vector3 initialRigPos = vrRigParent.position;",
+    "visual_rows": 28,
+    "pixel_dimensions": [
+      2720,
+      2466
+    ],
+    "snapshot_date": "2026-10-05"
+  },
+  {
+    "figure": "4.3",
+    "image": "figure-4-3-tour-reconstruction-loading.png",
+    "source": "Assets/_LangkaLens/Tour/Scripts/VR_Tour/TourReconstructionPresenter.cs",
+    "first_line": 77,
+    "last_line": 101,
+    "source_sha256": "d3d1be7f65c3ddb1db1208233514be6e32137ce896fe4fa4000894b5c838b286",
+    "excerpt_sha256": "61cbe336ba712200b528b7b7b9c28c6e0ebd423b1ca94e6e92e42198abf08c02",
+    "source_excerpt": "    public void ToggleInspection()\n    {\n        if (!CanToggleInspection) return;\n        if (State == PresentationState.Loading || State == PresentationState.Inspecting)\n            CloseInspection();\n        else\n            OpenInspection();\n    }\n\n    public void OpenInspection()\n    {\n        if (!CanToggleInspection || State != PresentationState.Ready) return;\n\n        State = PresentationState.Loading;\n        tourManager.RefreshNavigationVisibility();\n        int request = ++generation;\n        var definition = currentDefinition;\n\n        // An inactive staging parent prevents SDK Start/OnEnable before placement and wiring.\n        var staging = new GameObject(\"Reconstruction Loading\");\n        staging.transform.SetParent(transform, false);\n        staging.SetActive(false);\n        var operation = Addressables.InstantiateAsync(definition.inspectionPrefab, staging.transform, false);\n        operation.Completed += handle => CompleteLoad(handle, request, definition, staging);\n    }",
+    "visual_rows": 29,
+    "pixel_dimensions": [
+      2720,
+      2538
+    ],
+    "snapshot_date": "2026-10-05"
+  },
+  {
+    "figure": "4.4",
+    "image": "figure-4-4-museum-inspection-controls.png",
+    "source": "Assets/_LangkaLens/Mixed/Scripts/VR_Museum/InspectionManager.cs",
+    "first_line": 449,
+    "last_line": 467,
+    "source_sha256": "3ae3e85599c6bdf2392f813be34c7647ef450373682bedfa6b1b374e5cb832ea",
+    "excerpt_sha256": "b93023f4e78b3fb6e1aac0378a6be5a5c0f739c0db43ee3f8e6f0bfb6bd5d665",
+    "source_excerpt": "            // OVRInput.Button.One = A button, Button.Two = B button\n            // Button A (zoom out = scale down), Button B (zoom in = scale up)\n            bool zoomOut = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RTouch);\n            bool zoomIn = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.RTouch);\n\n            if (zoomIn || zoomOut)\n            {\n                float scaleDelta = zoomSpeed * Time.deltaTime;\n                if (zoomOut) scaleDelta = -scaleDelta;\n\n                AdjustScale(scaleDelta);\n            }\n\n            // Toggle Models with 'Y' Button (Button.Four on Left Touch)\n            if (CanToggleInspectedModel && (OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.LTouch) ||\n                OVRInput.GetDown(OVRInput.Button.Four, OVRInput.Controller.Active)))\n            {\n                OnToggleModelButtonClicked();\n            }",
+    "visual_rows": 22,
+    "pixel_dimensions": [
+      2720,
+      2034
+    ],
+    "snapshot_date": "2026-10-06"
+  },
+  {
+    "figure": "4.5",
+    "image": "figure-4-5-mr-session-anchor.png",
+    "source": "Assets/_LangkaLens/MR/Scripts/MR/MRMeshReferenceAlignment.cs",
+    "first_line": 118,
+    "last_line": 145,
+    "source_sha256": "6a8190171e5fcb6ea5046213c6afb146b6ac069b8a06d864d198152ec8d934d5",
+    "excerpt_sha256": "5a3c81fd7797c62357f96ca33bcb0c760905150ed2ed43585ed256c204781863",
+    "source_excerpt": "        private IEnumerator ConfirmAlignment()\n        {\n            IsBusy = true;\n            Status = \"Locking the entrance reference. Keep looking around the sign/table.\";\n            StatusKey = \"Align_Status_Locking\";\n            Vector3 rootPosition = transform.position;\n            Quaternion rootRotation = transform.rotation;\n            _anchorObject = new GameObject(\"Ban Jalae 3 entrance anchor (session)\");\n            _anchorObject.transform.SetPositionAndRotation(transform.TransformPoint(_referenceCentreInRoot), rootRotation);\n            _anchor = _anchorObject.AddComponent<OVRSpatialAnchor>();\n            float deadline = Time.realtimeSinceStartup + 15;\n            while (_anchor != null && (!_anchor.Created || !_anchor.Localized || !_anchor.IsTracked) && Time.realtimeSinceStartup < deadline)\n                yield return null;\n\n            if (_anchor == null || !_anchor.Created || !_anchor.Localized || !_anchor.IsTracked || !HeadIsTracked())\n            {\n                BeginAlignment();\n                Status = \"Could not track the entrance anchor. Look around, then align and press A again.\";\n                StatusKey = \"Align_Status_TrackFailed\";\n                yield break;\n            }\n            _rootInAnchor = _anchor.transform.InverseTransformPoint(rootPosition);\n            _rotationInAnchor = Quaternion.Inverse(_anchor.transform.rotation) * rootRotation;\n            IsBusy = false;\n            IsConfirmed = true;\n            Status = \"Entrance aligned. Hold X for two seconds to realign.\";\n            StatusKey = \"Align_Status_Confirmed\";\n        }",
+    "visual_rows": 34,
+    "pixel_dimensions": [
+      2720,
+      2898
+    ],
+    "snapshot_date": "2026-10-05"
+  },
+  {
+    "figure": "4.6",
+    "image": "figure-4-6-mr-model-display.png",
+    "source": "Assets/_LangkaLens/MR/Scripts/MR/MRModelSpawner.cs",
+    "first_line": 252,
+    "last_line": 260,
+    "source_sha256": "8b1a56547ecf6b1928ef2d010129eec87052051c1393c0ae2e6c57ad22f63753",
+    "excerpt_sha256": "5044fde6f6a3f65a443e19c3cdd8043b56a3e9236ccae3322ad4e21a3d79f7a6",
+    "source_excerpt": "        private void LateUpdate()\n        {\n            bool canDisplay = IsAlignmentDone && (playableArea == null || playableArea.CanPlay);\n            if (canDisplay && _currentSpawnedModel == null)\n                SpawnModel();\n            bool visible = canDisplay && _modelRequestedVisible;\n            if (_currentSpawnedModel != null && _currentSpawnedModel.activeSelf != visible)\n                _currentSpawnedModel.SetActive(visible);\n        }",
+    "visual_rows": 11,
+    "pixel_dimensions": [
+      2720,
+      1242
+    ],
+    "snapshot_date": "2026-10-05"
+  },
+  {
+    "figure": "4.7",
+    "image": "figure-4-7-gemini-chat-request.png",
+    "source": "Assets/_LangkaLens/Mixed/Scripts/ALL/GeminiChatUI.cs",
+    "first_line": 436,
+    "last_line": 469,
+    "source_sha256": "220b31521f62af4bcc58acd55b8713553d7dd6a6330e9012855c99a99c7a532f",
+    "excerpt_sha256": "57c338c097fc879abdbfc4891bb86c4e4056ab26431f2595b6eb24162d7ac36d",
+    "source_excerpt": "            for (int attempt = 0; attempt < 2; attempt++)\n            {\n                string activeModel = attempt == 0 ? primaryModel : backupModel;\n                string url = $\"https://generativelanguage.googleapis.com/v1beta/models/{activeModel}:generateContent?key=\" + apiKey;\n                awaitingResponse = false;\n                ShowRequestStatus();\n                using (UnityWebRequest request = new UnityWebRequest(url, \"POST\"))\n                {\n                    currentWebRequest = request;\n                    request.timeout = 60;\n                    byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonPayload);\n                    request.uploadHandler = new UploadHandlerRaw(bodyRaw);\n                    request.downloadHandler = new DownloadHandlerBuffer();\n                    request.SetRequestHeader(\"Content-Type\", \"application/json\");\n\n                    var operation = request.SendWebRequest();\n                    while (!operation.isDone)\n                    {\n                        if (!awaitingResponse && request.uploadProgress >= 1f)\n                        {\n                            awaitingResponse = true;\n                            ShowRequestStatus();\n                        }\n                        yield return null;\n                    }\n                    RemovePendingStatus();\n\n                    // If the request was aborted during clear, exit cleanly\n                    if (request.result == UnityWebRequest.Result.ConnectionError && request.error == \"Request aborted\")\n                    {\n                        currentWebRequest = null;\n                        currentRequestCoroutine = null;\n                        yield break;\n                    }",
+    "visual_rows": 36,
+    "pixel_dimensions": [
+      2720,
+      3042
+    ],
+    "snapshot_date": "2026-10-05"
+  },
+  {
+    "figure": "4.8",
+    "image": "figure-4-8-speech-transcript-input.png",
+    "source": "Assets/_LangkaLens/Mixed/Scripts/ALL/SpeechToTextHandler.cs",
+    "first_line": 554,
+    "last_line": 570,
+    "source_sha256": "f50766728292e0a36aefe0133e76e1889d45ae1e1a2d593ceae1fb029076dc9a",
+    "excerpt_sha256": "e44abfff5f5ef1f333cd61ecf46a3a0699d67f07d0b7b1920372af103340dd35",
+    "source_excerpt": "    private static string ParseTranscript(string json)\n    {\n        GroqWhisperResponse response = JsonUtility.FromJson<GroqWhisperResponse>(json);\n        if (response == null || response.text == null)\n            throw new FormatException(\"Missing transcript field.\");\n        return response.text.Trim();\n    }\n\n    private bool ApplyTranscript(string transcription)\n    {\n        if (targetInputField == null) return false;\n        // TMP remains the sole owner of native keyboard synchronization.\n        targetInputField.text = string.IsNullOrWhiteSpace(targetInputField.text)\n            ? transcription : targetInputField.text + \" \" + transcription;\n        targetInputField.caretPosition = targetInputField.text.Length;\n        return true;\n    }",
+    "visual_rows": 18,
+    "pixel_dimensions": [
+      2720,
+      1746
+    ],
+    "snapshot_date": "2026-10-05"
+  }
+]

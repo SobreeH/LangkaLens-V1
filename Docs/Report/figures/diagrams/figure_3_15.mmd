@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    actor Visitor
+    participant Input as Editable question field
+    participant Speech as SpeechToTextHandler
+    participant Groq as Groq transcription service
+    participant Chat as GeminiChatUI
+    participant Gemini as Google Gemini service
+    opt Visitor chooses speech
+        Visitor->>Speech: Record and stop microphone input
+        Speech->>Groq: Send WAV recording
+        Groq-->>Speech: Transcript or error
+        Speech->>Input: Apply transcript when successful
+    end
+    Visitor->>Input: Type or edit the question
+    Visitor->>Chat: Press Send
+    Chat->>Gemini: Question and localized system instructions
+    opt Eligible HTTP failure and fallback enabled
+        Chat->>Gemini: Retry with fallback once
+    end
+    Gemini-->>Chat: Answer, empty response, or error
+    Chat-->>Visitor: Display result and reset pending status
+    Note over Visitor,Chat: Cancel, clear, or close can abort pending chat

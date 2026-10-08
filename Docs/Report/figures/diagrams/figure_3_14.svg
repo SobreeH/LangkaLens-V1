@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="956" viewBox="0 0 1800 956"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 1685 105 L 1685 946" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 1508 105 L 1508 946" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 1331 105 L 1331 946" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 1154 105 L 1154 946" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 977 105 L 977 946" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 800 105 L 800 946" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 800 215 L 1154 215" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1154 270 L 1331 270" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1331 325 L 1154 325" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<path d="M 1154 380 L 977 380" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 800 457 L 977 457" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 800 512 L 1508 512" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1508 567 L 1685 567" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1508 670 L 1685 670" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1685 747 L 1508 747" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<path d="M 1508 802 L 800 802" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<rect x="15" y="145" width="1770" height="283" fill="none" stroke="#64748b" stroke-width="2"/>
+<rect x="15" y="600" width="1770" height="118" fill="none" stroke="#64748b" stroke-width="2"/><text x="350" y="48" text-anchor="middle" font-family="Arial" font-size="29" font-weight="600" fill="#111827"><tspan x="350" dy="0">Messages</tspan></text>
+<rect x="717.5" y="2.5" width="165" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="800" y="72.68" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="800" dy="0">Visitor</tspan></text>
+<rect x="894.5" y="2.5" width="165" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="977" y="44.36" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="977" dy="0">Editable</tspan><tspan x="977" dy="28.32">question</tspan><tspan x="977" dy="28.32">field</tspan></text>
+<rect x="1071.5" y="2.5" width="165" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1154" y="58.52" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1154" dy="0">Speech-to-text</tspan><tspan x="1154" dy="28.32">handler</tspan></text>
+<rect x="1248.5" y="2.5" width="165" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1331" y="44.36" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1331" dy="0">Groq</tspan><tspan x="1331" dy="28.32">transcription</tspan><tspan x="1331" dy="28.32">service</tspan></text>
+<rect x="1425.5" y="2.5" width="165" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1508" y="72.68" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1508" dy="0">GeminiChatUI</tspan></text>
+<rect x="1602.5" y="2.5" width="165" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1685" y="44.36" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1685" dy="0">Google</tspan><tspan x="1685" dy="28.32">Gemini</tspan><tspan x="1685" dy="28.32">service</tspan></text>
+<rect x="46" y="143" width="405.66" height="35.86" fill="white"/>
+<text x="50" y="170" text-anchor="start" font-family="Arial" font-size="27" font-weight="600" fill="#111827"><tspan x="50" dy="0">opt  Visitor chooses speech</tspan></text>
+<rect x="36" y="179" width="560.1" height="38.22" fill="white"/>
+<text x="40" y="208" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">1. Record and stop microphone input</tspan></text>
+<rect x="964.79" y="180" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="977" y="203" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="977" dy="0">1</tspan></text>
+<rect x="36" y="234" width="340.86" height="38.22" fill="white"/>
+<text x="40" y="263" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">2. Send WAV recording</tspan></text>
+<rect x="1230.29" y="235" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1242.5" y="258" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1242.5" dy="0">2</tspan></text>
+<rect x="36" y="289" width="356.52000000000004" height="38.22" fill="white"/>
+<text x="40" y="318" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">3. Transcript or error</tspan></text>
+<rect x="1230.29" y="290" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1242.5" y="313" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1242.5" dy="0">3</tspan></text>
+<rect x="36" y="344" width="560.1" height="38.22" fill="white"/>
+<text x="40" y="373" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">4. Apply transcript when successful</tspan></text>
+<rect x="1053.29" y="345" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1065.5" y="368" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1065.5" dy="0">4</tspan></text>
+<rect x="36" y="421" width="387.84000000000003" height="38.22" fill="white"/>
+<text x="40" y="450" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">5. Type or edit question</tspan></text>
+<rect x="876.29" y="422" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="888.5" y="445" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="888.5" dy="0">5</tspan></text>
+<rect x="36" y="476" width="215.58" height="38.22" fill="white"/>
+<text x="40" y="505" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">6. Press Send</tspan></text>
+<rect x="1141.79" y="477" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1154" y="500" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1154" dy="0">6</tspan></text>
+<rect x="36" y="531" width="716.7" height="38.22" fill="white"/>
+<text x="40" y="560" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">7. Question and localized system instructions</tspan></text>
+<rect x="1584.29" y="532" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1596.5" y="555" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1596.5" dy="0">7</tspan></text>
+<rect x="46" y="598" width="697.26" height="35.86" fill="white"/>
+<text x="50" y="625" text-anchor="start" font-family="Arial" font-size="27" font-weight="600" fill="#111827"><tspan x="50" dy="0">opt  Eligible HTTP failure and fallback enabled</tspan></text>
+<rect x="36" y="634" width="434.82000000000005" height="38.22" fill="white"/>
+<text x="40" y="663" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">8. Retry with fallback once</tspan></text>
+<rect x="1584.29" y="635" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1596.5" y="658" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1596.5" dy="0">8</tspan></text>
+<rect x="36" y="711" width="560.1" height="38.22" fill="white"/>
+<text x="40" y="740" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">9. Answer, empty response, or error</tspan></text>
+<rect x="1584.29" y="712" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1596.5" y="735" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1596.5" dy="0">9</tspan></text>
+<rect x="36" y="766" width="638.4000000000001" height="38.22" fill="white"/>
+<text x="40" y="795" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">10. Display result; reset pending status</tspan></text>
+<rect x="1135.58" y="767" width="36.84" height="31.139999999999997" fill="white"/>
+<text x="1154" y="790" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1154" dy="0">10</tspan></text>
+<rect x="55" y="850" width="1690" height="54.22" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="900" y="886.07" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="900" dy="0">Cancel, clear, or close can abort pending chat.</tspan></text></svg>
