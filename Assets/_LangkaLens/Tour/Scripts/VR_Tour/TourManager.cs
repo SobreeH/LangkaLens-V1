@@ -48,6 +48,7 @@ public class TourManager : MonoBehaviour
     private AsyncOperationHandle<Texture2D> currentTextureHandle;
     private AsyncOperationHandle<Texture2D> pendingTextureHandle;
     private GameObject currentIconInstance;
+    private SceneLoadingScreen contentLoadingScreen;
     private List<GameObject> activeArrows = new List<GameObject>();
     public IReadOnlyList<GameObject> ActiveArrows => activeArrows;
     public bool IsTransitioning { get; private set; }
@@ -56,6 +57,7 @@ public class TourManager : MonoBehaviour
     public bool IsReconstructionBusy => reconstructionPresenter != null && reconstructionPresenter.IsBusy;
     public bool IsNavigationBlocked => IsTransitioning || IsReconstructionBusy || IsMapOpen;
     public TourNode CurrentNode => currentNode;
+    public bool IsInitialContentReady { get; private set; }
 
 
 
@@ -64,19 +66,24 @@ public class TourManager : MonoBehaviour
         if (mapMenuCanvas != null) mapMenuCanvas.SetActive(true);
         if (returnHomeCanvas != null) returnHomeCanvas.SetActive(false);
 
-        if (titleScreenPhoto.RuntimeKeyIsValid())
+        if (titleScreenPhoto != null && titleScreenPhoto.RuntimeKeyIsValid())
         {
             currentTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
             currentTextureHandle.Completed += OnTitleScreenLoaded;
         }
+        else IsInitialContentReady = true;
         
         SetTourLabelsActive(false);
     }
 
     private void OnTitleScreenLoaded(AsyncOperationHandle<Texture2D> handle)
     {
+        if (this == null) return;
         if (this != null && handle.Status == AsyncOperationStatus.Succeeded && photoSphereRenderer != null)
             photoSphereRenderer.material.mainTexture = handle.Result;
+        if (handle.Status != AsyncOperationStatus.Succeeded)
+            Debug.LogError("[TourManager] Failed to load the initial panorama.");
+        IsInitialContentReady = true;
     }
 
     private void SetTourLabelsActive(bool active)
@@ -90,18 +97,57 @@ public class TourManager : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        if (IsTransitioning) return;
-        StartCoroutine(MainMenuRoutine());
+        if (IsTransitioning || SceneLoadingScreen.IsLoading || !IsInitialContentReady || !isActiveAndEnabled) return;
+        if (titleScreenPhoto == null || !titleScreenPhoto.RuntimeKeyIsValid())
+        {
+            Debug.LogError("[TourManager] The title panorama reference is missing.");
+            return;
+        }
+        StartCoroutine(RunTransition(MainMenuRoutine(), true));
+    }
+
+    private IEnumerator RunTransition(IEnumerator transition, bool showLoadingScreen)
+    {
+        IsTransitioning = true;
+        contentLoadingScreen = showLoadingScreen ? SceneLoadingScreen.BeginContentLoading(this) : null;
+        try
+        {
+            if (contentLoadingScreen != null) yield return contentLoadingScreen.WaitForRenderedFrames();
+            // Advance here so exceptions in the transition also run the cleanup below.
+            while (transition.MoveNext()) yield return transition.Current;
+            if (contentLoadingScreen != null) yield return contentLoadingScreen.FinishLoading();
+        }
+        finally
+        {
+            (transition as System.IDisposable)?.Dispose();
+            if (pendingTextureHandle.IsValid()) Addressables.Release(pendingTextureHandle);
+            pendingTextureHandle = default;
+            if (contentLoadingScreen != null) contentLoadingScreen.CancelContentLoading();
+            contentLoadingScreen = null;
+            IsTransitioning = false;
+            RefreshNavigationVisibility();
+        }
     }
 
     private IEnumerator MainMenuRoutine()
     {
         IsTransitioning = true;
-        if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();
-        SetActiveArrowsVisible(false);
-        // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
+        // Keep the current view and navigation intact until the replacement succeeds.
         AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(titleScreenPhoto);
         pendingTextureHandle = nextTextureHandle;
+        float loadDeadline = Time.realtimeSinceStartup + 30f;
+        while (!nextTextureHandle.IsDone && Time.realtimeSinceStartup < loadDeadline)
+        {
+            if (contentLoadingScreen != null) contentLoadingScreen.ReportContentProgress(nextTextureHandle.PercentComplete);
+            yield return null;
+        }
+        if (!nextTextureHandle.IsDone || nextTextureHandle.Status != AsyncOperationStatus.Succeeded)
+        {
+            Debug.LogError("[TourManager] Could not load the title panorama. Keeping the current place.");
+            yield break;
+        }
+        if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();
+        SetActiveArrowsVisible(false);
 
         Vector3 moveDirection = vrCamera != null ? vrCamera.forward : Vector3.forward;
         moveDirection.y = 0; 
@@ -131,7 +177,7 @@ public class TourManager : MonoBehaviour
         float timer = 0f;
         while (timer < transitionDuration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float t = timer / transitionDuration;
             t = t * t; 
             
@@ -182,7 +228,7 @@ public class TourManager : MonoBehaviour
         timer = 0f;
         while (timer < transitionDuration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float t = timer / transitionDuration;
             t = 1f - (1f - t) * (1f - t); 
             if (vrRigParent != null) vrRigParent.position = Vector3.Lerp(arrivalStartPos, idealCenterPos, t);
@@ -190,7 +236,6 @@ public class TourManager : MonoBehaviour
         }
         
         if (vrRigParent != null) vrRigParent.position = idealCenterPos;
-        IsTransitioning = false;
     }
 
     private void ResetPlayerView(bool resetRotation = true)
@@ -216,18 +261,45 @@ public class TourManager : MonoBehaviour
 
     public void LoadNode(TourNode nextNode, Vector3? targetWorldPosition = null)
     {
-        if (nextNode == null || IsTransitioning) return;
-        StartCoroutine(TransitionRoutine(nextNode, targetWorldPosition));
+        BeginNodeTransition(nextNode, targetWorldPosition, null);
     }
 
-    private IEnumerator TransitionRoutine(TourNode nextNode, Vector3? targetWorldPosition)
+    public void LoadArea(TourArea area)
+    {
+        if (area != null) BeginNodeTransition(area.startingNode, null, area);
+    }
+
+    private void BeginNodeTransition(TourNode nextNode, Vector3? targetWorldPosition, TourArea area)
+    {
+        if (nextNode == null || IsTransitioning || SceneLoadingScreen.IsLoading ||
+            !IsInitialContentReady || !isActiveAndEnabled) return;
+        if (nextNode.photoReference == null || !nextNode.photoReference.RuntimeKeyIsValid())
+        {
+            Debug.LogError("[TourManager] The selected place has no valid panorama reference.");
+            return;
+        }
+        StartCoroutine(RunTransition(TransitionRoutine(nextNode, targetWorldPosition, area), area != null));
+    }
+
+    private IEnumerator TransitionRoutine(TourNode nextNode, Vector3? targetWorldPosition, TourArea area)
     {
         IsTransitioning = true;
-        if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();
-        SetActiveArrowsVisible(false);
-        // 0. START LOADING NEW TEXTURE IMMEDIATELY to hide load time behind the transition animation
         AsyncOperationHandle<Texture2D> nextTextureHandle = Addressables.LoadAssetAsync<Texture2D>(nextNode.photoReference);
         pendingTextureHandle = nextTextureHandle;
+        float loadDeadline = Time.realtimeSinceStartup + 30f;
+        while (!nextTextureHandle.IsDone && Time.realtimeSinceStartup < loadDeadline)
+        {
+            if (contentLoadingScreen != null) contentLoadingScreen.ReportContentProgress(nextTextureHandle.PercentComplete);
+            yield return null;
+        }
+        if (!nextTextureHandle.IsDone || nextTextureHandle.Status != AsyncOperationStatus.Succeeded)
+        {
+            Debug.LogError("[TourManager] Could not load the selected panorama. Keeping the current place.");
+            yield break;
+        }
+        if (area != null) currentArea = area;
+        if (reconstructionPresenter != null) reconstructionPresenter.ClearNode();
+        SetActiveArrowsVisible(false);
 
         Vector3 moveDirection;
         if (targetWorldPosition.HasValue) moveDirection = (targetWorldPosition.Value - vrCamera.position);
@@ -260,7 +332,7 @@ public class TourManager : MonoBehaviour
         float timer = 0f;
         while (timer < transitionDuration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float t = timer / transitionDuration;
             t = t * t; 
             
@@ -315,7 +387,7 @@ public class TourManager : MonoBehaviour
         timer = 0f;
         while (timer < transitionDuration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float t = timer / transitionDuration;
             t = 1f - (1f - t) * (1f - t); 
             if (vrRigParent != null) vrRigParent.position = Vector3.Lerp(arrivalStartPos, idealCenterPos, t);
@@ -323,7 +395,6 @@ public class TourManager : MonoBehaviour
         }
         
         if (vrRigParent != null) vrRigParent.position = idealCenterPos;
-        IsTransitioning = false;
         if (currentTextureHandle.Status == AsyncOperationStatus.Succeeded && reconstructionPresenter != null)
             reconstructionPresenter.EnterNode(currentNode, currentArea?.reconstruction);
         RefreshNavigationVisibility();
@@ -364,7 +435,7 @@ public class TourManager : MonoBehaviour
 
     public void ToggleMapMenu()
     {
-        if (IsTransitioning) return;
+        if (IsTransitioning || SceneLoadingScreen.IsLoading) return;
         if (mapMenuCanvas != null)
         {
             bool isOpeningMap = !mapMenuCanvas.activeSelf;
@@ -411,6 +482,16 @@ public class TourManager : MonoBehaviour
             if (arrow != null) Destroy(arrow);
         }
         activeArrows.Clear();
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        if (contentLoadingScreen != null) contentLoadingScreen.CancelContentLoading();
+        contentLoadingScreen = null;
+        if (pendingTextureHandle.IsValid()) Addressables.Release(pendingTextureHandle);
+        pendingTextureHandle = default;
+        IsTransitioning = false;
     }
 
     private void OnDestroy()

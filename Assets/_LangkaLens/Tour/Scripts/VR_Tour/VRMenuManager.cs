@@ -32,12 +32,8 @@ public class VRMenuManager : MonoBehaviour
     {
         if (selectedArea != null && selectedArea.startingNode != null)
         {
-            tourManager.currentArea = selectedArea;
-            // 1. Tell the Tour Manager to load the first photo (e.g., 2F1)
-            tourManager.LoadNode(selectedArea.startingNode);
-
-            // 2. Hide the main menu canvas so the user can see the environment
-            VRMenuCanvas.SetActive(false);
+            // The tour hides its map only after the new panorama loads successfully.
+            tourManager.LoadArea(selectedArea);
         }
         else
         {
