@@ -1,0 +1,201 @@
+{
+  "project": "LangkaLens",
+  "capture_date": "2026-10-05",
+  "date_timezone": "Asia/Bangkok",
+  "unity_version": "6000.3.16f1",
+  "simulator_version": "207.0",
+  "simulator_executable_file_version": "207.0.0.18.123",
+  "simulator_runtime": "C:/Program Files/MetaXRSimulator/v207.0/meta_openxr_simulator.json",
+  "simulator_device_profile": "Meta Quest 3",
+  "simulator_viewport": "Left eye",
+  "simulator_refresh_rate_setting": "72 fps; selected simulator refresh-rate setting",
+  "provenance": "Actual application-window screenshots; no image generation or compositing. Images were visually checked before report inclusion.",
+  "runtime_staging": "App callbacks/inspection methods opened the depicted states. Museum and tour inspection viewpoints were adjusted temporarily for framing. No AI request or audio recording was made.",
+  "evidence_limits": "Simulator views document UI states opened using app callbacks and inspection methods. They do not establish completed controller-input test sequences or on-site MR tracking accuracy.",
+  "report": "../Report/LangkaLens_Senior_Project_Report.md",
+  "captures": [
+    {
+      "figure": "4.9",
+      "file": "Development/unity-main-menu-editor.png",
+      "scene": "Main_Menu_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/Main_Menu_Scene.unity",
+      "caption": "Main menu setup in Unity, showing language-panel references and the three destination scenes.",
+      "capture_kind": "Unity Editor development window",
+      "pixels": [
+        1920,
+        1063
+      ],
+      "sha256": "8ac7c6fc1948b04937b0edc92c031d4e1c6dfe8b32b8962507ab59a7f43d9b70",
+      "file_modified_utc": "2026-10-05T02:08:02.217481+00:00"
+    },
+    {
+      "figure": "4.10",
+      "file": "Development/unity-tour-editor.png",
+      "scene": "VR_Tour_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/VR_Tour_Scene.unity",
+      "caption": "Tour setup in Unity, showing the four area assets, panorama renderer, and navigation references.",
+      "capture_kind": "Unity Editor development window",
+      "pixels": [
+        1920,
+        1063
+      ],
+      "sha256": "de470c21469e473a681357484bf2788cf77aa0cc25c4a8838061f1bf0b2b81d6",
+      "file_modified_utc": "2026-10-05T02:10:10.494331+00:00"
+    },
+    {
+      "figure": "4.11",
+      "file": "Development/unity-museum-editor.png",
+      "scene": "VR_Museum_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/VR_Museum_Scene.unity",
+      "caption": "Museum exhibit layout in Unity and an ArtifactData component with localized descriptions and original/alternate models.",
+      "capture_kind": "Unity Editor development window",
+      "pixels": [
+        1920,
+        1063
+      ],
+      "sha256": "5ea3ebcc9bcce301234cc395bccb79e1f6e311e318a2973732fe27df86c84d1e",
+      "file_modified_utc": "2026-10-05T02:09:28.986830+00:00"
+    },
+    {
+      "figure": "4.12",
+      "file": "Development/unity-mr-alignment-editor.png",
+      "scene": "MR_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/MR_Scene.unity",
+      "caption": "MR development setup in Unity, showing the entrance reference mesh, tracked-object references, and unrestricted footprint configuration.",
+      "capture_kind": "Unity Editor development window",
+      "pixels": [
+        1920,
+        1063
+      ],
+      "sha256": "823acb58ad5037ceccf1041fffc8f3077107a6f38eea1835094e26b14975adc6",
+      "file_modified_utc": "2026-10-05T02:12:03.695583+00:00"
+    },
+    {
+      "figure": "4.13",
+      "file": "Playtesting/language-selection-simulator.png",
+      "scene": "Main_Menu_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/Main_Menu_Scene.unity",
+      "caption": "Thai and English language selection at the start of a session in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "02263ea61889cbb1094572fe697c5d2c4bb53deb73ab90ff5b0bbb05c2f7fc54",
+      "file_modified_utc": "2026-10-05T02:34:38.374990+00:00"
+    },
+    {
+      "figure": "4.14",
+      "file": "Playtesting/main-menu-simulator.png",
+      "scene": "Main_Menu_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/Main_Menu_Scene.unity",
+      "caption": "The confirmed-language main menu with tour, museum, and mixed-reality choices in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "2e21d585107a8df132fdcdc752c222fcb6590f53b42b79d1ec9689d08f7e34d4",
+      "file_modified_utc": "2026-10-05T02:34:45.111683+00:00"
+    },
+    {
+      "figure": "4.15",
+      "file": "Playtesting/user-guide-simulator.png",
+      "scene": "Main_Menu_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/Main_Menu_Scene.unity",
+      "caption": "The reusable user guide with mode tabs and control instructions in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "6033d97a6ea1209b1cfec0d217f99321456df4e17ea5c20a6fe65546fb8c6e49",
+      "file_modified_utc": "2026-10-05T02:35:27.381735+00:00"
+    },
+    {
+      "figure": "4.16",
+      "file": "Playtesting/tour-area-menu-simulator.png",
+      "scene": "VR_Tour_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/VR_Tour_Scene.unity",
+      "caption": "Selection of Ban Ja-Lae 3, Ban Ja-Lae 2, Ban Ja-Lae 8, and Ban Wat 9 in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "13f19b35411787b94f053aa2216edf51e5cc1f8399f3dbe2e3358fd1ed1ab7e6",
+      "file_modified_utc": "2026-10-05T02:35:59.485476+00:00"
+    },
+    {
+      "figure": "4.17",
+      "file": "Playtesting/tour-panorama-simulator.png",
+      "scene": "VR_Tour_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/VR_Tour_Scene.unity",
+      "caption": "The 360-degree panorama at Ban Ja-Lae 3 viewpoint 3F1 in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "b3e5aab0503f74c59ce3addb52a454fa96aaa058dfbc48ade49b4c6ad79fee6e",
+      "file_modified_utc": "2026-10-05T02:36:06.373065+00:00"
+    },
+    {
+      "figure": "4.18",
+      "file": "Playtesting/tour-reconstruction-simulator.png",
+      "scene": "VR_Tour_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/VR_Tour_Scene.unity",
+      "caption": "Ban Ja-Lae 3 reconstruction inspection, with the model, site information, and faded panorama in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "60e13b3f7a225059ff86c2c11ee369dafafa014a614b6edaee5f9113e04221db",
+      "file_modified_utc": "2026-10-05T02:36:45.227700+00:00"
+    },
+    {
+      "figure": "4.19",
+      "file": "Playtesting/museum-gallery-simulator.png",
+      "scene": "VR_Museum_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/VR_Museum_Scene.unity",
+      "caption": "The virtual museum gallery and artifact stations in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "4e004d35330d790b90c77bcb12d428f666464814b77d2dcc07b79a139331c7a6",
+      "file_modified_utc": "2026-10-05T02:32:11.328756+00:00"
+    },
+    {
+      "figure": "4.20",
+      "file": "Playtesting/museum-inspection-simulator.png",
+      "scene": "VR_Museum_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/VR_Museum_Scene.unity",
+      "caption": "Standing Stone Buddha in Vitarka Mudra inspection, including the description and model-switch control, in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "ccc6179458a62fc44c53240af6e4ed7be538f8da7306736bf0dfc49f3c9d8f78",
+      "file_modified_utc": "2026-10-05T02:34:13.247145+00:00"
+    },
+    {
+      "figure": "4.21",
+      "file": "Playtesting/ai-guide-simulator.png",
+      "scene": "VR_Tour_Scene",
+      "scene_asset": "Assets/_LangkaLens/_Scenes/VR_Tour_Scene.unity",
+      "caption": "The shared AI guide interface with editable input, Speak, Send, Clear, and Close controls in Meta XR Simulator.",
+      "capture_kind": "Meta XR Simulator application window",
+      "pixels": [
+        1888,
+        1136
+      ],
+      "sha256": "424fd8b2b62954c467d4da90a21a28ba28bea5cfbe8633ac9c36ffb45a86c197",
+      "file_modified_utc": "2026-10-05T02:37:47.601299+00:00"
+    }
+  ],
+  "museum_capture_note": "Museum captures dated 2026-10-05 predate the inspection environment fade documented on 2026-10-06; original images are preserved."
+}
