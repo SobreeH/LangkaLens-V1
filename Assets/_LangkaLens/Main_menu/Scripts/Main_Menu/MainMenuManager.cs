@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Localization.Settings;
-using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -186,28 +185,21 @@ public class MainMenuManager : MonoBehaviour
     {
         Debug.Log("<color=cyan>[LangkaLens]</color> <color=green>Transitioning to MR Mode...</color>");
         
-        // Hide canvas to act as a pseudo-loading screen
-        if (mainCanvas != null) mainCanvas.SetActive(false);
-        
-        SceneManager.LoadSceneAsync(mrSceneName);
+        SceneLoadingScreen.LoadScene(mrSceneName);
     }
 
     public void LoadVRMode()
     {
         Debug.Log("<color=cyan>[LangkaLens]</color> <color=green>Transitioning to VR Mode...</color>");
         
-        if (mainCanvas != null) mainCanvas.SetActive(false);
-        
-        SceneManager.LoadSceneAsync(vrSceneName);
+        SceneLoadingScreen.LoadScene(vrSceneName);
     }
     
     public void LoadMuseumMode()
     {
         Debug.Log("<color=cyan>[LangkaLens]</color> Transitioning to <color=green>Museum Mode...</color>");
         
-        if (mainCanvas != null) mainCanvas.SetActive(false);
-        
-        SceneManager.LoadSceneAsync(museumSceneName);
+        SceneLoadingScreen.LoadScene(museumSceneName);
     }
 
     public void CloseApp()
