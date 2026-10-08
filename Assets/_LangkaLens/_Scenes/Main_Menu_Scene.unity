@@ -9645,6 +9645,7 @@ GameObject:
   - component: {fileID: 962405608}
   - component: {fileID: 962405606}
   - component: {fileID: 962405610}
+  - component: {fileID: 962405611}
   m_Layer: 3
   m_Name: MainCanvas
   m_TagString: Untagged
@@ -9741,6 +9742,23 @@ MonoBehaviour:
   overlapMask: 0
   compositionMode: 1
   _overlayEnabled: 1
+--- !u!114 &962405611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962405605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a211435fc5716c478b33b6c41e9d812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GentleCanvasFollow
+  head: {fileID: 1499711286}
+  viewerOffset: {x: 0, y: -0.1, z: 2.6}
+  angularDeadZone: 12
+  positionDeadZone: 0.1
+  smoothTime: 0.35
 --- !u!1 &972022144
 GameObject:
   m_ObjectHideFlags: 0
@@ -16948,6 +16966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UserGuideLauncher
   guidePrefab: {fileID: 295686426940148453, guid: 2c848a3ef13b07e4293d71c6d45f43e7, type: 3}
+  replacementCanvas: {fileID: 962405609}
 --- !u!114 &1580002438
 MonoBehaviour:
   m_ObjectHideFlags: 0
