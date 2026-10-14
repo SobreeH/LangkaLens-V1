@@ -283,6 +283,10 @@ public static class MuseumInspectionControlsSetup
             yield return null;
             Require(descriptionScroll.content.rect.height > descriptionScroll.viewport.rect.height,
                 "Long dynamic description must overflow the viewport");
+            Require(descriptionScroll.vertical,
+                "Long dynamic description must enable vertical scrolling");
+            Require(descriptionScroll.movementType == ScrollRect.MovementType.Clamped,
+                "ScrollRect must be Clamped to prevent overscroll into blank space");
             Require(Mathf.Abs(descriptionScroll.verticalNormalizedPosition - 1f) < 0.001f,
                 "New dynamic description did not start at the top after layout");
             descriptionScroll.verticalNormalizedPosition = 0f;
@@ -329,6 +333,17 @@ public static class MuseumInspectionControlsSetup
             Require(descriptionScroll.content.rect.height < descriptionScroll.viewport.rect.height &&
                 descriptionScroll.content.anchoredPosition.sqrMagnitude < 0.001f,
                 "Short dynamic description inherited a previous scroll offset");
+            Require(!descriptionScroll.vertical,
+                "Short dynamic description must disable vertical scrolling");
+
+            descriptionChanged.Invoke(manager, new object[] { "   \n\n\t   " });
+            yield return null;
+            yield return null;
+            Require(!descriptionScroll.vertical,
+                "Whitespace-only description must disable vertical scrolling");
+            Require(descriptionScroll.content.anchoredPosition.sqrMagnitude < 0.001f,
+                "Whitespace description content should remain at top");
+
             descriptionChanged.Invoke(manager, new object[] { longText });
             yield return null;
             yield return null;

@@ -127,10 +127,10 @@ public class InspectionManager : MonoBehaviour
         }
     }
 
-    private void OnTitleChanged(string s) { if (titleText != null) titleText.text = s; }
+    private void OnTitleChanged(string s) { if (titleText != null) titleText.text = s != null ? s.Trim() : ""; }
     private void OnDescriptionChanged(string s)
     {
-        if (descriptionText != null) descriptionText.text = s;
+        if (descriptionText != null) descriptionText.text = s != null ? s.Trim() : "";
         if (_inspectionContentReset != null) _inspectionContentReset.ResetContents();
     }
 
