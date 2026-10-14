@@ -10,6 +10,8 @@ public sealed class UserGuideLauncher : MonoBehaviour
     private UserGuideCanvas instance;
     private bool menuHidden;
 
+    public bool IsGuideOpen => instance != null && instance.gameObject.activeInHierarchy;
+
     public void OpenGuide()
     {
         if (guidePrefab == null)

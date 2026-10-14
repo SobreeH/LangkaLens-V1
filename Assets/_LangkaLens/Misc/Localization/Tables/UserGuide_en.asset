@@ -78,81 +78,80 @@ MonoBehaviour:
     m_Localized: '<b>EXPLORE THE RESTORATION</b>
 
       After alignment, press A
-      to show or hide the model. Press B to show or hide site information; use its
-      page buttons to read more.
+      to show/hide the model. While it is visible, press B to show/hide site information.
+      Use the page buttons to read more.
 
 
       <b>REALIGN</b>
 
-      Hold X for two seconds
-      to place the reference again.
+      Hold X for
+      two seconds to align again.
 
 
       <b>RETURN HOME</b>
 
-      Tap X to show
-      confirmation, then tap X again while it is visible. You can also use Home on
-      the tablet.'
+      Tap X, then tap
+      X again while confirmation is visible, or use Home on the tablet.'
     m_Metadata:
       m_Items: []
   - m_Id: 1289637898
-    m_Localized: '<b>CHOOSE A DESTINATION</b>
+    m_Localized: '<b>CHOOSE AN AREA</b>
 
-      Select an area from the tour
-      menu to begin.
-
-
-      <b>MOVE TO ANOTHER VIEWPOINT</b>
-
-      Push the LEFT
-      STICK forward and aim the arc at a navigation arrow. Release the stick when
-      the arrow is highlighted to travel there.
+      Select an area from the tour menu.
 
 
-      <b>CANCEL A MOVE</b>
+      <b>TRAVEL
+      TO ANOTHER VIEWPOINT</b>
 
-      Pull
-      the left stick backward. Releasing without a selected arrow also cancels.'
+      Push the LEFT STICK forward. Aim the arc at
+      an arrow; release when highlighted. Pull backward or release without a selected
+      arrow to cancel.
+
+
+      <b>PANORAMA ZOOM</b>
+
+      Hold B to zoom in; hold
+      A to zoom out.'
     m_Metadata:
       m_Items: []
   - m_Id: 1289637899
-    m_Localized: '<b>LOOK CLOSER</b>
+    m_Localized: '<b>INSPECT A RECONSTRUCTION</b>
 
-      Hold B to zoom in; hold A to zoom out.
-
-
-      <b>INSPECT
-      A RECONSTRUCTION</b>
-
-      Where available, press Y to enter or leave reconstruction
-      inspection. Press X to leave inspection. Navigation pauses during inspection.
+      Where available, press Y
+      to enter/leave. X also exits. Navigation pauses.
 
 
-      <b>LEAVE
-      THE TOUR</b>
+      Grip with either controller
+      to move/turn the model. Right stick left/right rotates it; click the stick
+      to reset position, rotation and size. Hold B to enlarge; hold A to reduce.
 
-      Press X outside inspection to return to the tour menu.
-      From there, tap X twice when prompted to return Home, or use the tablet.'
+
+      <b>RETURN
+      TO MENU / HOME</b>
+
+      Outside inspection, press X for the tour menu. There,
+      tap X twice at confirmation for Home, or use the tablet.'
     m_Metadata:
       m_Items: []
   - m_Id: 1289637900
     m_Localized: '<b>EXPLORE THE GALLERY</b>
 
       Use the left stick to move and
-      the right stick to turn. Look toward an exhibit to find its information icon.
+      the right stick to turn. Look for an exhibit''s information icon.
 
 
       <b>INSPECT
       AN ARTIFACT</b>
 
-      Point at the exhibit''s information icon and press the
-      index trigger.
+      Point at the information icon and press the index trigger.
 
 
-      <b>ROTATE THE ARTIFACT</b>
+      <b>ROTATE
+      AND RESET</b>
 
-      During inspection,
-      grip the artifact with either controller and move your hand to rotate it.'
+      During inspection, grip with either controller and turn
+      your hand to rotate. On supported exhibits, right stick left/right also rotates;
+      click it to reset position, rotation and size.'
     m_Metadata:
       m_Items: []
   - m_Id: 1289637901
@@ -177,10 +176,281 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1289637902
-    m_Localized: "<b>TABLET</b>  Left Menu: open / hide  \u2022  Home: main menu 
-      \u2022  Change Language: English / Thai\n<b>AI CHAT BOT</b>  Type a question
-      or use Speak, then Send. Clear resets the conversation.\n<b>SELECT</b>  Point
-      at a button and press the index trigger."
+    m_Localized: "<b>TABLET</b>  Left Menu: open/hide  \u2022  Home: main menu  \u2022 
+      Change Language: English/Thai\n<b>AI CHAT BOT</b>  Type, then Send. Voice:
+      Speak \u2192 talk \u2192 Speak again to stop \u2192 wait for text \u2192 Send.\n<b>CLEAR</b> 
+      Removes displayed messages and cancels the current response.\n<b>SELECT</b> 
+      Point at a button and press the index trigger."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338373955584
+    m_Localized: Point and select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338579476480
+    m_Localized: Point at a button, then press the index trigger to select it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670784
+    m_Localized: Choose an experience
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670785
+    m_Localized: Choose Mixed Reality, VR Tour, or VR Museum from the main menu.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670786
+    m_Localized: Open or hide the tablet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670787
+    m_Localized: Press the Menu button on the left controller to open or hide the
+      tablet. Select Home on the tablet to return to the main menu.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670788
+    m_Localized: Change language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670789
+    m_Localized: Select Change Language on the tablet to switch between English and
+      Thai.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670790
+    m_Localized: Position the entrance outline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670791
+    m_Localized: Hold the RIGHT GRIP and move the controller to match the outline
+      to the real entrance sign or table.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670792
+    m_Localized: Fine-tune the alignment
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670793
+    m_Localized: Keep holding RIGHT GRIP. Move the right stick left/right to rotate,
+      or up/down to adjust reach. Match the edges and height.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670794
+    m_Localized: Release grip and confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670795
+    m_Localized: Release RIGHT GRIP, then press A. Wait for the alignment to lock
+      before exploring.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670796
+    m_Localized: Show or hide the restoration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670797
+    m_Localized: After alignment, press A to show or hide the restoration model.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670798
+    m_Localized: View site information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670799
+    m_Localized: While the model is visible, press B to show or hide site information.
+      Use the page buttons to read more.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670800
+    m_Localized: Realign the site
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670801
+    m_Localized: 'Hold X for two seconds to align again.
+
+      To return Home, tap
+      X twice, confirming the prompt, or use Home on the tablet.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670802
+    m_Localized: Select a location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670803
+    m_Localized: Select an area from the tour menu to begin exploring.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670804
+    m_Localized: Aim at a navigation arrow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670805
+    m_Localized: Push the LEFT STICK forward, then aim the arc at a navigation arrow
+      until it highlights.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670806
+    m_Localized: Release to travel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338583670807
+    m_Localized: Release the LEFT STICK while an arrow is highlighted to travel there.
+      Pull backward, or release without a selected arrow, to cancel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865088
+    m_Localized: Zoom the panorama
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865089
+    m_Localized: Hold B to zoom in. Hold A to zoom out.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865090
+    m_Localized: Inspect a reconstruction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865091
+    m_Localized: Where inspection is available, press Y to enter or leave it. X also
+      exits inspection. Navigation pauses while inspecting.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865092
+    m_Localized: Move or turn the reconstruction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865093
+    m_Localized: During inspection, hold GRIP on either controller and move or turn
+      your hand to adjust the model.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865094
+    m_Localized: Rotate with the thumbstick
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865095
+    m_Localized: During inspection, move the RIGHT STICK left or right to rotate
+      the model.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865096
+    m_Localized: Reset the inspection model
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865097
+    m_Localized: Click the RIGHT STICK to reset the model's position, rotation, and
+      size.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865098
+    m_Localized: Enlarge or reduce the reconstruction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865099
+    m_Localized: 'Hold B to enlarge; hold A to reduce.
+
+      Outside inspection,
+      press X for the tour menu. Use Home on the tablet to return to the main menu.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865100
+    m_Localized: Move around the gallery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865101
+    m_Localized: Use the LEFT STICK to move and the RIGHT STICK to turn. Look for
+      an exhibit's information icon.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865102
+    m_Localized: Select an exhibit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865103
+    m_Localized: Point at an exhibit's information icon and press the index trigger
+      to inspect it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865104
+    m_Localized: Grip and rotate the artifact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865105
+    m_Localized: During inspection, hold GRIP on either controller and turn your
+      hand to rotate the artifact.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865106
+    m_Localized: Rotate and reset supported exhibits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865107
+    m_Localized: On supported exhibits, move the RIGHT STICK left/right to rotate.
+      Click it to reset position, rotation, and size.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865108
+    m_Localized: Enlarge or reduce the artifact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865109
+    m_Localized: During inspection, hold B to enlarge the artifact or hold A to reduce
+      it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865110
+    m_Localized: Compare alternate models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865111
+    m_Localized: Press Y to switch models when an alternate version is available.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865112
+    m_Localized: Leave artifact inspection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865113
+    m_Localized: 'Press X to leave inspection and resume moving.
+
+      Outside inspection,
+      tap X and confirm with X again to return Home, or use Home on the tablet.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865114
+    m_Localized: Type and send a question
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865115
+    m_Localized: 'Type your question in the AI chat, then select Send.
+
+      Clear
+      removes displayed messages and cancels the current response.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865116
+    m_Localized: Ask a question by voice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865117
+    m_Localized: Select Speak, ask your question, then select Speak again to stop.
+      Wait for the text to appear, then select Send.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865118
+    m_Localized: Getting Started
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865119
+    m_Localized: AI Guide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865120
+    m_Localized: Previous
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1862338587865121
+    m_Localized: Next
     m_Metadata:
       m_Items: []
   references:
