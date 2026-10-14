@@ -18163,6 +18163,7 @@ GameObject:
   - component: {fileID: 1778265029}
   - component: {fileID: 1778265027}
   - component: {fileID: 1778265031}
+  - component: {fileID: 1778265032}
   m_Layer: 5
   m_Name: MenuCanvas
   m_TagString: Untagged
@@ -18238,7 +18239,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1778265026}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fda2f3ff7c61604498e0461346bdd2f, type: 3}
   m_Name: 
@@ -18247,6 +18248,23 @@ MonoBehaviour:
   menuRoot: {fileID: 861453973}
   tourManager: {fileID: 194958224}
   distance: 1.5
+--- !u!114 &1778265032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778265026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a211435fc5716c478b33b6c41e9d812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GentleCanvasFollow
+  head: {fileID: 2082841586}
+  viewerOffset: {x: 0, y: 0, z: 1.5}
+  angularDeadZone: 12
+  positionDeadZone: 0.1
+  smoothTime: 0.35
 --- !u!1 &1783465555
 GameObject:
   m_ObjectHideFlags: 0
