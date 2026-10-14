@@ -181,7 +181,7 @@ internal class CommandScript : IRunCommand
         var closeText=close.GetComponentInChildren<TMP_Text>(true);Place(closeText.transform,0,0,140,100);Text(closeText,40,cream);
         Decoration(panel,"HeritageHeadingRule",0,275,1180,3,brass);
         var scroll=panel.Find("DescriptionBox");Place(scroll,0,-22,1180,550);Image(scroll,paper);
-        var scrollRect=scroll.GetComponent<UnityEngine.UI.ScrollRect>();Touch(scrollRect);scrollRect.verticalScrollbarVisibility=UnityEngine.UI.ScrollRect.ScrollbarVisibility.Permanent;
+        var scrollRect=scroll.GetComponent<UnityEngine.UI.ScrollRect>();Touch(scrollRect);scrollRect.movementType=UnityEngine.UI.ScrollRect.MovementType.Clamped;scrollRect.verticalScrollbarVisibility=UnityEngine.UI.ScrollRect.ScrollbarVisibility.Permanent;
         var view=scroll.Find("Viewport");Stretch(view,20,18,60,18);Image(view,Color.white,false);
         var content=(RectTransform)view.Find("Content");Touch(content);
         content.anchorMin=new Vector2(0,1);content.anchorMax=Vector2.one;content.pivot=new Vector2(.5f,1);
