@@ -143,3 +143,12 @@ PROJECT_PROGRESS.md
 
 # Release keystore - DO NOT commit
 *.keystore
+
+# Documentation generation scratch files, backups, and duplicate exports
+Docs/Report/.development-update/
+Docs/UserManual/backup/
+Docs/User_Guide_Screenshots/
+Docs/User_Guide_Screenshots.zip
+Docs/User_Guide_Pictures/
+Docs/LangkaLens_User_Guide_Screenshots.docx
+
