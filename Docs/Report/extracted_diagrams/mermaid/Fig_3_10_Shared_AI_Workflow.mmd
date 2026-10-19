@@ -1,21 +1,57 @@
 flowchart TD
-    Start(["Open AI guide from an experience scene"]) --> Input{"Choose input method"}
-    Input -->|"Keyboard"| Edit["Enter or edit the question"]
-    Input -->|"Microphone"| Record["Record speech after microphone permission"]
-    Record --> Transcribe["Send WAV audio to Groq"]
-    Transcribe --> Transcript{"Transcript received?"}
-    Transcript -->|"No"| SpeechError["Show transcription error or status"]
-    SpeechError --> Input
-    Transcript -->|"Yes"| Review["Place transcript in editable input"]
-    Review --> Edit
-    Edit --> Send["Visitor presses Send"]
-    Send --> Request["Send question and localized instructions to Gemini"]
-    Request --> Result{"Request outcome"}
-    Result -->|"Usable answer"| Answer["Display answer"]
-    Result -->|"Eligible failure; fallback unused"| Fallback["Try configured fallback once"]
-    Fallback --> Result
-    Result -->|"Other failure or empty answer"| Error["Display error or no-answer feedback"]
-    Result -->|"Visitor cancels or closes"| Cancel["Abort pending request"]
-    Answer --> Input
-    Error --> Input
-    Cancel --> Done(["Return to scene or edit another question"])
+    OpenGuide["⚡ Visitor opens AI Guide Canvas<br><i>Tablet button or quick-action icon</i>"]
+    
+    OpenGuide --> CheckMethod{"Visitor selects input method?"}
+    
+    %% Voice Branch
+    CheckMethod -->|"Voice (Speak Button)"| CheckRec{"if (IsRecording)?"}
+    CheckRec -->|"True (Active)"| StopRec["Stop Recording & Encode WAV"]
+    CheckRec -->|"False (Idle)"| CheckPerm{"if (RECORD_AUDIO Permission)?"}
+    CheckPerm -->|"False (Denied)"| ReqPerm["Request Android RECORD_AUDIO Permission"]
+    CheckPerm -->|"True (Granted)"| StartRec["Record Microphone Audio<br><i>Microphone.Start(16kHz mono, up to 15s)</i><br><i>Show pulsing waveform indicator</i>"]
+    
+    StopRec --> EncWav["Encode Audio Samples to 16kHz WAV"]
+    StartRec --> EncWav
+    
+    EncWav --> AsyncGroq["⚙️ Groq Cloud Whisper API<br><i>POST /v1/audio/transcriptions (whisper-large-v3)</i>"]
+    AsyncGroq --> CheckGroq{"if (HTTP Status == 200 OK)?"}
+    CheckGroq -->|"False (Error)"| GroqErr(["Show Error Toast / Allow Retry"]):::error
+    CheckGroq -->|"True (Success)"| PopInput["Populate Input Field<br><i>inputField.text = transcriptText</i><br><i>Enable visitor editing & correction</i>"]
+    
+    %% Typed Branch
+    CheckMethod -->|"Typed (Keyboard)"| VirtualKbd["Bilingual Virtual Keyboard<br><i>Visitor types question in Thai or English</i>"]
+    
+    %% Merge at Review
+    PopInput --> Review["Review & Edit Question in inputField"]
+    VirtualKbd --> Review
+    
+    Review --> ClickSend["⚡ Visitor clicks 'Send' button<br><i>GeminiChatUI.OnSendClicked()</i>"]
+    
+    ClickSend --> CheckEmpty{"if (string.IsNullOrWhiteSpace(text))?"}
+    CheckEmpty -->|"True (Empty)"| IgnoreEmpty(["Ignore click / Do nothing"]):::error
+    
+    CheckEmpty -->|"False (Valid)"| CheckInflight{"if (requestPending)?"}
+    CheckInflight -->|"True (In-flight)"| CancelReq["Cancel Request:<br><i>currentWebRequest.Abort()</i><br><i>Reset Send button icon; requestPending = false</i>"]
+    
+    CheckInflight -->|"False (Idle -> Send)"| BuildPrompt["Construct Prompt & Payload:<br><i>Append question to chat log (Cyan badge)</i><br><i>Detect locale -> Select thaiSystemPrompt or English</i><br><i>Build JSON: { contents, maxOutputTokens: 150 }</i>"]
+    
+    BuildPrompt --> AsyncGemini["⚙️ Google Gemini API<br><i>POST gemini-3.5-flash-lite:generateContent</i>"]
+    
+    AsyncGemini --> CheckGemini{"if (request.result == Success 200)?"}
+    
+    %% Fallback Branch
+    CheckGemini -->|"False (API Error)"| CheckFallback{"if (enableFallback && !usingFallback)?<br><i>HTTP 404, 408, 429, 5xx</i>"}
+    CheckFallback -->|"True (Fallback on)"| AsyncFallback["⚙️ Retry Gemini Fallback Model<br><i>POST gemini-3.1-flash-lite</i>"]
+    CheckFallback -->|"False (Fallback off)"| ShowErr["Display Localized Error in Chat Log<br><i>Show error badge + 'Check Connection'</i>"]
+    
+    %% Success
+    CheckGemini -->|"True (200 OK)"| DisplayResp["Display AI Guide Response:<br><i>Parse response text</i><br><i>Format markdown & append to log (Emerald badge)</i><br><i>Auto-scroll ScrollRect to bottom</i>"]
+    AsyncFallback --> DisplayResp
+    
+    DisplayResp --> Cleanup["Reset State & Clear Input:<br><i>requestPending = false; usingFallback = false</i><br><i>Restore Send button icon; inputField.text = ''</i>"]
+    ShowErr --> Cleanup
+    
+    Cleanup --> ReadyNext(["Ready for Next Question"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;

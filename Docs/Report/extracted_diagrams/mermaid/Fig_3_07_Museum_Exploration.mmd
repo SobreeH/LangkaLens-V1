@@ -1,0 +1,34 @@
+flowchart TD
+    EvRay["⚡ Visitor points ray & pulls Trigger / Pinch<br><i>Raycast hits Artifact pedestal collider</i>"]
+    
+    EvRay --> CheckBusy{"if (IsInspecting || IsMoving)?"}
+    CheckBusy -->|"True (Busy)"| IgnoreRay(["Ignore Raycast / Return"]):::error
+    
+    CheckBusy -->|"False (Idle)"| CheckData{"if (artifact.GetComponent&lt;ArtifactData&gt;() != null)?"}
+    CheckData -->|"False (Not an exhibit)"| IgnoreNotExhibit(["Return"]):::error
+    
+    CheckData -->|"True (Valid)"| StartInsp["Begin Inspection State:<br><i>IsInspecting = true; Pause locomotion</i><br><i>Capture original artifact & player rig transform</i><br><i>Hide pedestal & info icon GameObject</i>"]
+    
+    StartInsp --> DimEnv["Trigger EnvironmentDimmer:<br><i>EnvironmentDimmer.Begin(brightness = 0.18, duration = 0.35s)</i><br><i>Fade museum gallery materials to dark backdrop</i>"]
+    
+    DimEnv --> GlideModel["Bring Artifact to Inspection Distance:<br><i>Smoothly glide model to eye distance (0.6m)</i><br><i>Attach OneGrabFreeRotateTransformer & Zoom (0.5x - 3.0x)</i>"]
+    
+    GlideModel --> OpenUI["Open Inspection Canvas Tablet:<br><i>Bind LocalizedString title & description</i><br><i>Reset scroll rect position</i>"]
+    
+    OpenUI --> CheckAlt{"if (currentArtifactData.alternateModel != null)?"}
+    
+    CheckAlt -->|"True (Has alternate)"| ShowToggle["Show 'Switch Form' Toggle Button<br><i>toggleModelButton.SetActive(true)</i>"]
+    ShowToggle --> ClickToggle["⚡ Visitor clicks 'Switch Form'<br><i>Swap between Original and Reconstructed mesh</i>"]
+    ClickToggle --> ActiveLoop
+    
+    CheckAlt -->|"False (Single model)"| HideToggle["Hide 'Switch Form' Button<br><i>toggleModelButton.SetActive(false)</i>"]
+    HideToggle --> ActiveLoop["Active Museum Inspection Loop:<br><i>Visitor manipulates 3D artifact with hand grab</i><br><i>Joystick zoom in/out, reads bilingual info panel</i>"]
+    
+    ActiveLoop --> EvClose["⚡ Visitor clicks 'Close' / presses B button"]
+    
+    EvClose --> Teardown["Teardown & Environment Restoration:<br><i>EnvironmentDimmer.Restore() -> Fade gallery back to 1.0</i><br><i>Glide artifact back to pedestal & restore rotation</i><br><i>Re-enable visitor locomotion; IsInspecting = false</i>"]
+    
+    Teardown --> Resume(["Resume Museum Gallery Exploration"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;

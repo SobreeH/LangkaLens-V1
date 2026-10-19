@@ -1,14 +1,24 @@
 flowchart TD
-    Start(["Enter main menu"]) --> Init["Initialize localization and menu controls"]
-    Init --> Selected{"Language confirmed in this session?"}
-    Selected -->|"No"| Language["Show Thai / English selection"]
-    Language --> Pick["Choose language and confirm"]
-    Pick --> Hub["Show main menu"]
-    Selected -->|"Yes"| Hub
-    Hub --> Action{"Visitor action"}
-    Action -->|"Change language"| Language
-    Action -->|"Read instructions"| Help["Open user guide"]
-    Help -->|"Close guide"| Hub
-    Action -->|"Choose tour, museum, or MR"| Load["Load the selected scene"]
-    Load --> End(["Selected experience begins"])
-    Action -->|"Quit"| Quit(["Close application"])
+    Start(["Launch Application"]) --> Init["Initialize LocalizationSettings & MainMenuManager"]
+    Init --> CheckLang{"if (HasSelectedLanguage)?"}
+    
+    CheckLang -->|"False (First run)"| ShowLang["Show Language Selection Panel<br><i>languagePanel.SetActive(true)</i>"]
+    ShowLang --> ClickLang["⚡ Visitor selects Thai or English<br><i>SelectLanguage(index)</i>"]
+    ClickLang --> UpdateLocale["Update Active Locale<br><i>LocalizationSettings.SelectedLocale</i>"]
+    UpdateLocale --> ClickConfirm["⚡ Visitor clicks 'Confirm & Continue'<br><i>ConfirmAndContinue()</i>"]
+    ClickConfirm --> SaveConfirm["Remember Confirmation in Session<br><i>HasSelectedLanguage = true</i>"]
+    SaveConfirm --> ShowModes
+    
+    CheckLang -->|"True (Confirmed)"| ShowModes["Display Mode Selection<br><i>Show Tour, Museum & MR buttons</i>"]
+    
+    ShowModes --> ClickMode["⚡ Visitor clicks Mode Button (Tour / Museum / MR)"]
+    ClickMode --> CheckBusy{"if (SceneLoadingScreen.IsLoading)?"}
+    
+    CheckBusy -->|"True (Busy)"| IgnoreClick(["Ignore click / Return early"]):::error
+    CheckBusy -->|"False (Idle)"| BeginLoad["Begin Content Loading<br><i>SceneLoadingScreen.BeginContentLoading()</i>"]
+    
+    BeginLoad --> LoadAsync["Call SceneManager.LoadSceneAsync(destScene)"]
+    LoadAsync --> Done(["Enter Destination Experience Scene"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;

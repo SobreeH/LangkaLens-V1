@@ -1,17 +1,26 @@
 flowchart TD
-    Start(["Enter VR tour"]) --> Areas["Show area map and starting view"]
-    Areas --> Pick["Choose Ban Jalae 2, 3, 8, or Ban Wat 9"]
-    Pick --> Load["Load the selected viewpoint photo"]
-    Load --> Transition["Animate the transition and release previous content"]
-    Transition --> Ready{"Photo loaded successfully?"}
-    Ready -->|"Yes"| View["Show panorama and available navigation arrows"]
-    Ready -->|"No"| Failed["Finish cleanup without assigning a new panorama"]
-    Failed --> Resume["Transition ends; input resumes"]
-    View --> Action{"Visitor action"}
-    Resume --> Action
-    Action -->|"Select a connected arrow"| Load
-    Action -->|"Request area map"| Areas
-    Action -->|"Inspect restored model"| Inspect["Use the inspection workflow in Figure 3.6"]
-    Inspect -->|"Inspection closes"| View
-    Action -->|"Return to tour starting menu"| Areas
-    Areas -->|"Return to application menu and confirm"| Home(["Main menu"])
+    EvClick["⚡ Visitor clicks NavigationArrow<br><i>LoadNode(targetNode, targetWorldPos)</i>"]
+    
+    EvClick --> CheckBlocked{"if (IsNavigationBlocked)?<br><i>IsTransitioning || IsReconstructionBusy || IsMapOpen</i>"}
+    CheckBlocked -->|"True (Blocked)"| IgnoreClick(["Ignore click / Return early"]):::error
+    
+    CheckBlocked -->|"False (Idle)"| CheckKey{"if (photoReference.RuntimeKeyIsValid())?"}
+    CheckKey -->|"False (Invalid)"| LogKeyErr(["Debug.LogError / Abort"]):::error
+    
+    CheckKey -->|"True (Valid)"| LockState["Lock Navigation & Clear UI<br><i>IsTransitioning = true</i><br><i>Hide active arrows & hover icons</i>"]
+    LockState --> AsyncLoad["⚙️ Addressables Asset Pipeline<br><i>Addressables.LoadAssetAsync&lt;Texture2D&gt;(photoReference)</i>"]
+    AsyncLoad --> StartWarp["Start Warp Transition Animation<br><i>Lunge rig forward 3m (Ease-in)</i><br><i>Stretch PhotoSphere 3x forward</i>"]
+    
+    StartWarp --> CheckLoaded{"if (handle.Status == Succeeded)?<br><i>Within 30s deadline</i>"}
+    
+    CheckLoaded -->|"False (Failed / Timeout)"| RecoverErr["Error Recovery:<br><i>Release pending handle</i><br><i>Restore previous camera position</i><br><i>IsTransitioning = false; RefreshNavigation()</i>"]
+    RecoverErr --> KeepPlace(["Keep Current Viewpoint"]):::error
+    
+    CheckLoaded -->|"True (Succeeded)"| ApplyTex["Apply Destination Panorama<br><i>photoSphereRenderer.material.mainTexture = handle.Result</i><br><i>Release previous texture handle from VRAM</i>"]
+    ApplyTex --> SettleRig["Settle Rig & Update Tour State<br><i>Ease-out rig to ideal center position</i><br><i>Reset PhotoSphere container scale to 1.0</i><br><i>currentNode = targetNode</i>"]
+    SettleRig --> SpawnArrows["Spawn Navigation Arrows & Hints<br><i>Instantiate arrows for connectedPaths</i><br><i>Check currentNode reconstruction -> Enable Y hint</i>"]
+    SpawnArrows --> UnlockNav["Unlock Navigation State<br><i>IsTransitioning = false</i>"]
+    UnlockNav --> Ready(["Viewpoint Ready for Visitor Input"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;

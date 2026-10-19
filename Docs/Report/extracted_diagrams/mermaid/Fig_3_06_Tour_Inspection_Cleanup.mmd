@@ -1,15 +1,31 @@
 flowchart TD
-    Start(["Press left Y at a viewpoint"]) --> Allowed{"Inspection available and tour idle?"}
-    Allowed -->|"No"| Tour(["Remain in tour"])
-    Allowed -->|"Yes"| Load["Load the area's reconstruction display"]
-    Load --> Cancel{"Cancelled or viewpoint changed?"}
-    Cancel -->|"Yes"| Cleanup["Release content and restore panorama/navigation"]
-    Cancel -->|"No"| Valid{"Display loaded with required references?"}
-    Valid -->|"No"| Retry["Release failed content and return to Ready"]
-    Retry --> Tour
-    Valid -->|"Yes"| Inspect["Move closer and show model with localized panel"]
-    Inspect --> Action{"Visitor action"}
-    Action -->|"Rotate or resize"| Inspect
-    Action -->|"Read description"| Inspect
-    Action -->|"Y, X, Close, map, or scene exit"| Cleanup
-    Cleanup --> Tour
+    EvY["⚡ Visitor presses Left Controller Y Button<br><i>TourReconstructionPresenter.ToggleInspection()</i>"]
+    
+    EvY --> CheckCan{"if (CanToggleInspection)?<br><i>!isTransitioning && !isMapOpen && definition.isConfigured</i>"}
+    CheckCan -->|"False (Blocked)"| IgnoreY(["Ignore button press / Return"]):::error
+    
+    CheckCan -->|"True (Allowed)"| CheckActive{"if (State == Inspecting || Loading)?"}
+    
+    %% Close Branch
+    CheckActive -->|"True (Already active)"| TriggerClose["Trigger CloseInspection():<br><i>Fade panorama backdrop back to 1.0</i><br><i>Destroy reconstruction model instance</i><br><i>Release Addressables instantiate handle</i>"]
+    TriggerClose --> RestoreTour["Restore Tour State:<br><i>Hide inspection panel tablet</i><br><i>Re-enable navigation arrows & hover icons</i><br><i>State = PresentationState.Ready</i>"]
+    RestoreTour --> TourView(["Return to 360 Panorama View"]):::success
+    
+    %% Open Branch
+    CheckActive -->|"False (Ready -> Open)"| StartLoad["OpenInspection():<br><i>State = PresentationState.Loading</i><br><i>Disable tour navigation arrows</i><br><i>Create inactive staging GameObject</i>"]
+    StartLoad --> AsyncInst["⚙️ Addressables Asset Pipeline<br><i>Addressables.InstantiateAsync(definition.inspectionPrefab, staging)</i>"]
+    
+    AsyncInst --> CheckInstOK{"if (handle.Status == Succeeded && !cancelled)?"}
+    CheckInstOK -->|"False (Failed / Cancelled)"| LoadErr["Destroy staging parent & release handle<br><i>State = PresentationState.Ready; RefreshNavigation()</i>"]
+    LoadErr --> TourView
+    
+    CheckInstOK -->|"True (Loaded)"| SetupModel["Activate Model & Fade Backdrop:<br><i>Position model at inspectionViewingDistance (0.8m)</i><br><i>Fade panorama backdrop to 0.15 with #533A2D tint</i><br><i>Attach TourModelTransformer & OneGrabRotate</i>"]
+    SetupModel --> ShowUI["Open Inspection Tablet UI<br><i>Position localized info panel at offset</i><br><i>State = PresentationState.Inspecting</i>"]
+    
+    ShowUI --> InspectLoop["Active Inspection Interaction Loop:<br><i>• OneGrabFreeRotateTransformer: Hand grab rotation</i><br><i>• Joystick Zoom: Scale model 0.5x - 3.0x</i><br><i>• Scrollable bilingual historical description</i>"]
+    
+    InspectLoop --> EvExit["⚡ Visitor presses Left Y, B button, or Close tablet"]
+    EvExit --> TriggerClose
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;

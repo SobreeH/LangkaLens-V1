@@ -1,20 +1,36 @@
 flowchart TD
-    Start(["MR display update"]) --> Confirmed{"Alignment confirmed?"}
-    Confirmed -->|"No"| Hide["Hide reconstruction and show alignment guidance"]
-    Hide --> Start
-    Confirmed -->|"Yes"| Tracked{"Anchor/headset tracked and passthrough ready?"}
-    Tracked -->|"No"| Pause["Hide reconstruction until tracking/display checks recover"]
-    Pause --> Start
-    Tracked -->|"Yes"| Spawn["Create model at its placement if needed"]
-    Spawn --> Visible{"Visitor requested model visible?"}
-    Visible -->|"Yes"| Show["Display the aligned reconstruction"]
-    Visible -->|"No"| Hidden["Keep model hidden"]
-    Show --> Action{"Visitor action"}
-    Hidden --> Action
-    Action -->|"Press A to toggle model"| Toggle["Change requested visibility"]
-    Toggle --> Start
-    Action -->|"Press B for information"| Info["Read/change site information pages when model is visible"]
-    Info --> Start
-    Action -->|"Continue viewing"| Start
-    Action -->|"Hold X to realign"| Align(["Entrance alignment workflow"])
-    Action -->|"Return and confirm"| Home(["Main menu"])
+    Tick["⚡ Unity Update() Frame Tick<br><i>MRMeshPlayableArea / MRModelSpawner</i>"]
+    
+    Tick --> CheckConf{"if (Alignment.IsConfirmed)?"}
+    CheckConf -->|"False (Not aligned)"| HideUnaligned["Hide Site Models & Show Wireframe<br><i>siteModelPrefab.SetActive(false)</i>"]
+    HideUnaligned --> WaitAlign(["Awaiting Alignment"]):::error
+    
+    CheckConf -->|"True (Aligned)"| CheckHead{"if (HeadIsTracked())?"}
+    CheckHead -->|"False (Lost 6DOF)"| HideTrack["Tracking Lost: Suppress Virtual Content<br><i>Hide site models & UI panels</i><br><i>Show Quest system boundary warning</i>"]
+    HideTrack --> WaitReloc(["Wait for Relocalization"]):::error
+    
+    CheckHead -->|"True (Head tracked)"| CheckAnchor{"if (anchor.IsTracked && Localized)?"}
+    CheckAnchor -->|"False (Anchor lost)"| HideAnchor["Anchor Tracking Degraded<br><i>Hide site models to prevent drift</i>"]
+    HideAnchor --> WaitReloc
+    
+    CheckAnchor -->|"True (Anchor tracked)"| CheckPass{"if (PassthroughReady && Active)?"}
+    CheckPass -->|"False (Blackout)"| WaitPass["Wait for Passthrough Feed<br><i>Suppress virtual overlay</i>"]
+    WaitPass --> WaitReloc
+    
+    CheckPass -->|"True (All guards pass)"| RenderModels["Render Aligned Site Models:<br><i>• Enable MeshRenderers on siteModelPrefab</i><br><i>• Apply unrestricted footprint (Free walking)</i><br><i>• Update MRSiteInformationPanel billboard to head</i>"]
+    
+    RenderModels --> CheckBtnA{"if (Button A Pressed)?"}
+    CheckBtnA -->|"True"| ToggleModel["Toggle Reconstruction Model<br><i>siteModelPrefab.SetActive(!active)</i>"]
+    
+    CheckBtnA -->|"False"| CheckBtnB{"if (Button B Pressed)?"}
+    ToggleModel --> CheckBtnB
+    CheckBtnB -->|"True"| TogglePanel["Toggle Site Information Tablet<br><i>siteInfoPanel.SetActive(!active)</i>"]
+    
+    CheckBtnB -->|"False"| CheckReset{"if (Left X held &gt;= 2.0s)?"}
+    TogglePanel --> CheckReset
+    CheckReset -->|"True"| DoReset["Trigger BeginAlignment()<br><i>Reset anchor & restart alignment</i>"]
+    
+    CheckReset -->|"False"| FrameEnd(["End of Frame (Yield)"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
