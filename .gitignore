@@ -156,3 +156,6 @@ Docs/LangkaLens_User_Guide_Screenshots.docx
 __pycache__/
 *.py[cod]
 *.class
+
+# Microsoft Office temporary lock files
+~$*
