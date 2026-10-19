@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="1590" viewBox="0 0 1250 1590"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 380 92.5 L 380 135" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 380 255 L 380 317.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 380 432.5 L 380 492.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 380 597.5 L 380 665" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 380 845 L 380 897.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 110 755 L 50 755 L 50 375 L 125 375" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 380 1002.5 L 380 1052.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 635 1105 L 670 1105" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 925 1005 L 925 865" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 925 745 L 925 375 L 635 375" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 925 1205 L 925 1287.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 925 1412.5 L 925 1450 L 635 1450" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1155 1350 L 1220 1350 L 1220 290 L 680 290 L 680 375 L 635 375" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/><rect x="160" y="17.5" width="440" height="75" rx="37.5" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="380" y="63.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="380" dy="0">Enter MR scene</tspan></text>
+<rect x="125" y="135" width="510" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="380" y="187.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="380" dy="0">Check references, tracking,</tspan><tspan x="380" dy="33.04">and passthrough setup</tspan></text>
+<rect x="125" y="317.5" width="510" height="115" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="380" y="367.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="380" dy="0">Hold right grip to position</tspan><tspan x="380" dy="33.04">the entrance outline</tspan></text>
+<rect x="125" y="492.5" width="510" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="380" y="537.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="380" dy="0">Use right stick to adjust</tspan><tspan x="380" dy="33.04">rotation and reach</tspan></text>
+<polygon points="380,665 650,755 380,845 110,755" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="380" y="747.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="380" dy="0">Outline matches the</tspan><tspan x="380" dy="33.04">real sign / table?</tspan></text>
+<rect x="125" y="897.5" width="510" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="380" y="958.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="380" dy="0">Release grip and press A</tspan></text>
+<rect x="125" y="1052.5" width="510" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="380" y="1097.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="380" dy="0">Create a session spatial</tspan><tspan x="380" dy="33.04">anchor</tspan></text>
+<polygon points="925,1005 1180,1105 925,1205 670,1105" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="925" y="1097.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="925" dy="0">Anchor created, localized</tspan><tspan x="925" dy="33.04">and tracked; head tracked?</tspan></text>
+<rect x="720" y="745" width="410" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="925" y="797.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="925" dy="0">Show alignment failure</tspan><tspan x="925" dy="33.04">guidance</tspan></text>
+<rect x="695" y="1287.5" width="460" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="925" y="1342.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="925" dy="0">Confirm alignment; retain</tspan><tspan x="925" dy="33.04">site-to-anchor pose</tspan></text>
+<rect x="125" y="1400" width="510" height="100" rx="50" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="380" y="1442.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="380" dy="0">Continue to MR display</tspan><tspan x="380" dy="33.04">workflow</tspan></text>
+<rect x="392.94" y="846" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="420" y="872" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="420" dy="0">Yes</tspan></text>
+<rect x="59.959999999999994" y="679" width="40.08" height="34.68" fill="white"/>
+<text x="80" y="705" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="80" dy="0">No</tspan></text>
+<rect x="959.76" y="934" width="180.48000000000002" height="65.36" fill="white"/>
+<text x="1050" y="960" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1050" dy="0">No, or</tspan><tspan x="1050" dy="30.68">wait expires</tspan></text>
+<rect x="937.94" y="1214" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="965" y="1240" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="965" dy="0">Yes</tspan></text>
+<rect x="797.64" y="214" width="264.72" height="65.36" fill="white"/>
+<text x="930" y="240" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="930" dy="0">Hold X for two</tspan><tspan x="930" dy="30.68">seconds to realign</tspan></text></svg>

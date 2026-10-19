@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="860" viewBox="0 0 1800 860"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 300 80 L 365 80" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 645 80 L 710 80" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 990 80 L 1040 80" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1370 80 L 1405 80" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1580 152.5 L 1580 232.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1405 305 L 1300 305" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 920 305 L 852.5 305" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 680 245 L 680 195 L 1580 195 L 1580 232.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1110 225 L 1110 220 L 1350 220 L 1350 305 L 1405 305" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1110 385 L 1110 465" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1340 560 L 1415 560" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1580 507.5 L 1580 377.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1110 655 L 1110 770 L 1780 770 L 1780 305 L 1755 305" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1110 385 L 1110 425 L 680 425 L 680 500" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 505 560 L 420 560" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 70 560 L 30 560 L 30 190 L 505 190 L 505 132.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 505 132.5 L 505 210 L 245 210 L 245 262.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/><rect x="40" y="42.5" width="260" height="75" rx="37.5" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="170" y="88.64" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="170" dy="0">Enter museum</tspan></text>
+<rect x="365" y="27.5" width="280" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="505" y="56.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="505" dy="0">Explore</tspan><tspan x="505" dy="31.86">artifact</tspan><tspan x="505" dy="31.86">stations</tspan></text>
+<rect x="710" y="27.5" width="280" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="850" y="72.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="850" dy="0">Select an</tspan><tspan x="850" dy="31.86">artifact</tspan></text>
+<rect x="1040" y="22.5" width="330" height="115" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1205" y="56.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1205" dy="0">Save rig/model</tspan><tspan x="1205" dy="31.86">settings; pause</tspan><tspan x="1205" dy="31.86">locomotion</tspan></text>
+<rect x="1405" y="7.5" width="350" height="145" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1580" y="40.85" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1580" dy="0">Start fading</tspan><tspan x="1580" dy="31.86">surroundings; keep</tspan><tspan x="1580" dy="31.86">artifact and panel</tspan><tspan x="1580" dy="31.86">clear</tspan></text>
+<rect x="1405" y="232.5" width="350" height="145" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1580" y="265.84999999999997" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1580" dy="0">Move into</tspan><tspan x="1580" dy="31.86">inspection; show</tspan><tspan x="1580" dy="31.86">localized</tspan><tspan x="1580" dy="31.86">information</tspan></text>
+<polygon points="1110,225 1300,305 1110,385 920,305" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1110" y="313.64" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1110" dy="0">Visitor action</tspan></text>
+<rect x="507.5" y="245" width="345" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="680" y="281.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="680" dy="0">Grab / rotate: pause</tspan><tspan x="680" dy="31.86">idle spin and rotate</tspan><tspan x="680" dy="31.86">model</tspan></text>
+<polygon points="1110,465 1340,560 1110,655 880,560" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1110" y="552.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1110" dy="0">Switch model: alternate</tspan><tspan x="1110" dy="31.86">model configured?</tspan></text>
+<rect x="1415" y="507.5" width="330" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1580" y="552.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1580" dy="0">Show the other</tspan><tspan x="1580" dy="31.86">model</tspan></text>
+<rect x="505" y="500" width="350" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="680" y="536.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="680" dy="0">Close: fade</tspan><tspan x="680" dy="31.86">surroundings back to</tspan><tspan x="680" dy="31.86">normal</tspan></text>
+<rect x="70" y="495" width="350" height="130" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="245" y="536.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="245" dy="0">Restore rig, model,</tspan><tspan x="245" dy="31.86">pedestal, UI, and</tspan><tspan x="245" dy="31.86">locomotion</tspan></text>
+<rect x="95" y="262.5" width="300" height="85" rx="42.5" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="245" y="313.64" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="245" dy="0">Main menu</tspan></text>
+<rect x="1074.86" y="154" width="110.28" height="34.68" fill="white"/>
+<text x="1130" y="180" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1130" dy="0">Release</tspan></text>
+<rect x="1251.88" y="178" width="96.24000000000001" height="34.68" fill="white"/>
+<text x="1300" y="204" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1300" dy="0">Resize</tspan></text>
+<rect x="1352.94" y="506" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="1380" y="532" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1380" dy="0">Yes</tspan></text>
+<rect x="1694.96" y="714" width="40.08" height="34.68" fill="white"/>
+<text x="1715" y="740" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1715" dy="0">No</tspan></text>
+<rect x="187.64" y="154" width="264.72" height="34.68" fill="white"/>
+<text x="320" y="180" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="320" dy="0">Return and confirm</tspan></text></svg>

@@ -1,0 +1,26 @@
+flowchart LR
+    Visitor(["Visitor / learner"])
+    subgraph System["LangkaLens"]
+        Language["Choose Thai or English"]
+        Help["Read controls and user guidance"]
+        Tour["Explore panoramic viewpoints"]
+        Reconstruction["Inspect restored site models"]
+        Museum["Inspect and rotate artifacts"]
+        Alternate["Switch models where available"]
+        Alignment["Align the MR entrance reference"]
+        MR["View MR reconstruction and site information"]
+        Chat["Ask the guide a typed question"]
+        Speech["Record speech and review the transcript"]
+        Return["Return to the main menu"]
+    end
+    Visitor --> Language
+    Visitor --> Help
+    Visitor --> Tour
+    Visitor --> Reconstruction
+    Visitor --> Museum
+    Visitor --> Alternate
+    Visitor --> Alignment
+    Visitor --> MR
+    Visitor --> Chat
+    Visitor --> Speech
+    Visitor --> Return

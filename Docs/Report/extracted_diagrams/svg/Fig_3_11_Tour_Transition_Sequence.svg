@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="934" viewBox="0 0 1800 934"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 1685 105 L 1685 924" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 1463.75 105 L 1463.75 924" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 1242.5 105 L 1242.5 924" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 1021.25 105 L 1021.25 924" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 800 105 L 800 924" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+<path d="M 800 167 L 1021.25 167" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1021.25 222 L 1242.5 222" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1242.5 277 L 1294.5 277 L 1294.5 299 L 1242.5 299" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1242.5 332 L 1463.75 332" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1242.5 387 L 1685 387" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1242.5 442 L 1463.75 442" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1463.75 497 L 1242.5 497" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<path d="M 1242.5 600 L 1685 600" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 15 636 L 1785 636" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round" stroke-dasharray="8 6" />
+<path d="M 1242.5 815.22 L 1685 815.22" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1242.5 870.22 L 1294.5 870.22 L 1294.5 892.22 L 1242.5 892.22" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="15" y="530" width="1770" height="256.22" fill="none" stroke="#64748b" stroke-width="2"/><text x="350" y="48" text-anchor="middle" font-family="Arial" font-size="29" font-weight="600" fill="#111827"><tspan x="350" dy="0">Messages</tspan></text>
+<rect x="695.375" y="2.5" width="209.25" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="800" y="72.68" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="800" dy="0">Visitor</tspan></text>
+<rect x="916.625" y="2.5" width="209.25" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1021.25" y="72.68" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1021.25" dy="0">Navigation Arrow</tspan></text>
+<rect x="1137.875" y="2.5" width="209.25" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1242.5" y="72.68" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1242.5" dy="0">TourManager</tspan></text>
+<rect x="1359.125" y="2.5" width="209.25" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1463.75" y="72.68" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1463.75" dy="0">Addressables</tspan></text>
+<rect x="1580.375" y="2.5" width="209.25" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1685" y="72.68" text-anchor="middle" font-family="Arial" font-size="24" font-weight="400" fill="#111827"><tspan x="1685" dy="0">Panorama and rig</tspan></text>
+<rect x="36" y="131" width="450.48" height="38.22" fill="white"/>
+<text x="40" y="160" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">1. Select a linked viewpoint</tspan></text>
+<rect x="898.415" y="132" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="910.625" y="155" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="910.625" dy="0">1</tspan></text>
+<rect x="36" y="186" width="356.52000000000004" height="38.22" fill="white"/>
+<text x="40" y="215" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">2. Request destination</tspan></text>
+<rect x="1119.665" y="187" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1131.875" y="210" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1131.875" dy="0">2</tspan></text>
+<rect x="36" y="241" width="591.4200000000001" height="38.22" fill="white"/>
+<text x="40" y="270" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">3. Block navigation; clear inspection</tspan></text>
+<rect x="1268.29" y="244" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1280.5" y="267" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1280.5" dy="0">3</tspan></text>
+<rect x="36" y="296" width="544.44" height="38.22" fill="white"/>
+<text x="40" y="325" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">4. Begin loading destination photo</tspan></text>
+<rect x="1340.915" y="297" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1353.125" y="320" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1353.125" dy="0">4</tspan></text>
+<rect x="36" y="351" width="622.74" height="38.22" fill="white"/>
+<text x="40" y="380" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">5. Animate movement and container scale</tspan></text>
+<rect x="1451.54" y="352" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1463.75" y="375" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1463.75" dy="0">5</tspan></text>
+<rect x="36" y="406" width="513.12" height="38.22" fill="white"/>
+<text x="40" y="435" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">6. Release previous photo handle</tspan></text>
+<rect x="1340.915" y="407" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1353.125" y="430" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1353.125" dy="0">6</tspan></text>
+<rect x="36" y="461" width="419.16" height="38.22" fill="white"/>
+<text x="40" y="490" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">7. Destination load result</tspan></text>
+<rect x="1340.915" y="462" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1353.125" y="485" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1353.125" dy="0">7</tspan></text>
+<rect x="46" y="528" width="303.6" height="35.86" fill="white"/>
+<text x="50" y="555" text-anchor="start" font-family="Arial" font-size="27" font-weight="600" fill="#111827"><tspan x="50" dy="0">alt  Photo available</tspan></text>
+<rect x="36" y="564" width="716.7" height="38.22" fill="white"/>
+<text x="40" y="593" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">8. Assign photo; create navigation indicators</tspan></text>
+<rect x="1451.54" y="565" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1463.75" y="588" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1463.75" dy="0">8</tspan></text>
+<rect x="31" y="631" width="259.86" height="35.86" fill="white"/>
+<text x="35" y="658" text-anchor="start" font-family="Arial" font-size="27" font-weight="600" fill="#111827"><tspan x="35" dy="0">else  Load failed</tspan></text>
+<rect x="55" y="696" width="1690" height="54.22" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="900" y="732.07" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="900" dy="0">No new panorama is assigned; record recovery in testing</tspan></text>
+<rect x="36" y="779.22" width="513.12" height="38.22" fill="white"/>
+<text x="40" y="808.22" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">9. Restore container; settle rig</tspan></text>
+<rect x="1451.54" y="780.22" width="24.42" height="31.139999999999997" fill="white"/>
+<text x="1463.75" y="803.22" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1463.75" dy="0">9</tspan></text>
+<rect x="36" y="834.22" width="293.88" height="38.22" fill="white"/>
+<text x="40" y="863.22" text-anchor="start" font-family="Arial" font-size="29" font-weight="400" fill="#111827"><tspan x="40" dy="0">10. End transition</tspan></text>
+<rect x="1262.08" y="837.22" width="36.84" height="31.139999999999997" fill="white"/>
+<text x="1280.5" y="860.22" text-anchor="middle" font-family="Arial" font-size="23" font-weight="400" fill="#111827"><tspan x="1280.5" dy="0">10</tspan></text></svg>

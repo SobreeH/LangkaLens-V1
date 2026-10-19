@@ -1,0 +1,20 @@
+flowchart TD
+    Start(["MR display update"]) --> Confirmed{"Alignment confirmed?"}
+    Confirmed -->|"No"| Hide["Hide reconstruction and show alignment guidance"]
+    Hide --> Start
+    Confirmed -->|"Yes"| Tracked{"Anchor/headset tracked and passthrough ready?"}
+    Tracked -->|"No"| Pause["Hide reconstruction until tracking/display checks recover"]
+    Pause --> Start
+    Tracked -->|"Yes"| Spawn["Create model at its placement if needed"]
+    Spawn --> Visible{"Visitor requested model visible?"}
+    Visible -->|"Yes"| Show["Display the aligned reconstruction"]
+    Visible -->|"No"| Hidden["Keep model hidden"]
+    Show --> Action{"Visitor action"}
+    Hidden --> Action
+    Action -->|"Press A to toggle model"| Toggle["Change requested visibility"]
+    Toggle --> Start
+    Action -->|"Press B for information"| Info["Read/change site information pages when model is visible"]
+    Info --> Start
+    Action -->|"Continue viewing"| Start
+    Action -->|"Hold X to realign"| Align(["Entrance alignment workflow"])
+    Action -->|"Return and confirm"| Home(["Main menu"])

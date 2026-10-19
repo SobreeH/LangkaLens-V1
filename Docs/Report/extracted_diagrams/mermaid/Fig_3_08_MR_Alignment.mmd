@@ -1,0 +1,14 @@
+flowchart TD
+    Start(["Enter MR scene"]) --> Setup["Check references, tracking, and passthrough setup"]
+    Setup --> Place["Hold right grip to position the entrance outline"]
+    Place --> Adjust["Use right stick to adjust rotation and reach"]
+    Adjust --> Match{"Outline matches the real sign/table?"}
+    Match -->|"No"| Place
+    Match -->|"Yes"| Confirm["Release grip and press A"]
+    Confirm --> Anchor["Create a session spatial anchor"]
+    Anchor --> Valid{"Anchor created, localized, and tracked; head tracked?"}
+    Valid -->|"No, or wait expires"| Error["Show alignment failure guidance"]
+    Error --> Place
+    Valid -->|"Yes"| Locked["Confirm alignment and retain site-to-anchor pose"]
+    Locked --> Display(["Continue to MR display workflow"])
+    Locked -->|"Hold X for two seconds to realign"| Place

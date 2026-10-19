@@ -1,0 +1,21 @@
+flowchart TD
+    Start(["Open AI guide from an experience scene"]) --> Input{"Choose input method"}
+    Input -->|"Keyboard"| Edit["Enter or edit the question"]
+    Input -->|"Microphone"| Record["Record speech after microphone permission"]
+    Record --> Transcribe["Send WAV audio to Groq"]
+    Transcribe --> Transcript{"Transcript received?"}
+    Transcript -->|"No"| SpeechError["Show transcription error or status"]
+    SpeechError --> Input
+    Transcript -->|"Yes"| Review["Place transcript in editable input"]
+    Review --> Edit
+    Edit --> Send["Visitor presses Send"]
+    Send --> Request["Send question and localized instructions to Gemini"]
+    Request --> Result{"Request outcome"}
+    Result -->|"Usable answer"| Answer["Display answer"]
+    Result -->|"Eligible failure; fallback unused"| Fallback["Try configured fallback once"]
+    Fallback --> Result
+    Result -->|"Other failure or empty answer"| Error["Display error or no-answer feedback"]
+    Result -->|"Visitor cancels or closes"| Cancel["Abort pending request"]
+    Answer --> Input
+    Error --> Input
+    Cancel --> Done(["Return to scene or edit another question"])

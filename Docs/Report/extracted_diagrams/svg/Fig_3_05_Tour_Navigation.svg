@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1570" viewBox="0 0 1200 1570"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 400 92.5 L 400 147.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 242.5 L 400 287.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 382.5 L 400 442.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 537.5 L 400 585" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 705 L 400 755" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 925 L 400 1000" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 630 840 L 720 840" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 930 907.5 L 930 1000" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 930 1120 L 930 1170 L 685 1170 L 685 1280 L 625 1280" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 1120 L 400 1205" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 625 1280 L 720 1280" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1140 1280 L 1160 1280 L 1160 1140 L 665 1140 L 665 1060 L 635 1060" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 175 1280 L 65 1280 L 65 490 L 165 490" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 400 1355 L 400 1500 L 25 1500 L 25 195 L 165 195" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 635 195 L 720 195" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/><rect x="195" y="17.5" width="410" height="75" rx="37.5" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="63.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Enter VR tour</tspan></text>
+<rect x="165" y="147.5" width="470" height="95" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="187.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Show area map and starting</tspan><tspan x="400" dy="33.04">view</tspan></text>
+<rect x="165" y="287.5" width="470" height="95" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="327.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Choose Ban Jalae 2, 3, 8,</tspan><tspan x="400" dy="33.04">or Ban Wat 9</tspan></text>
+<rect x="165" y="442.5" width="470" height="95" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="482.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Load selected viewpoint</tspan><tspan x="400" dy="33.04">photo</tspan></text>
+<rect x="165" y="585" width="470" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="637.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Animate transition and</tspan><tspan x="400" dy="33.04">release previous content</tspan></text>
+<polygon points="400,755 630,840 400,925 170,840" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="832.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Photo loaded</tspan><tspan x="400" dy="33.04">successfully?</tspan></text>
+<rect x="165" y="1000" width="470" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="1052.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Show panorama and available</tspan><tspan x="400" dy="33.04">navigation arrows</tspan></text>
+<rect x="720" y="772.5" width="420" height="135" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="930" y="832.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="930" dy="0">Finish cleanup without</tspan><tspan x="930" dy="33.04">assigning a new panorama</tspan></text>
+<rect x="720" y="1000" width="420" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="930" y="1052.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="930" dy="0">Transition ends; input</tspan><tspan x="930" dy="33.04">resumes</tspan></text>
+<polygon points="400,1205 625,1280 400,1355 175,1280" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="400" y="1288.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="400" dy="0">Visitor action</tspan></text>
+<rect x="720" y="1220" width="420" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="930" y="1272.44" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="930" dy="0">Inspect restored model:</tspan><tspan x="930" dy="33.04">use Figure 3.6</tspan></text>
+<rect x="720" y="152.5" width="420" height="85" rx="42.5" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="930" y="203.96" text-anchor="middle" font-family="Arial" font-size="28" font-weight="400" fill="#111827"><tspan x="930" dy="0">Main menu</tspan></text>
+<rect x="412.94" y="944" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="440" y="970" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="440" dy="0">Yes</tspan></text>
+<rect x="639.96" y="784" width="40.08" height="34.68" fill="white"/>
+<text x="660" y="810" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="660" dy="0">No</tspan></text>
+<rect x="817.66" y="1133" width="250.68" height="34.68" fill="white"/>
+<text x="943" y="1159" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="943" dy="0">Inspection closes</tspan></text>
+<rect x="62.81999999999999" y="699" width="138.36" height="65.36" fill="white"/>
+<text x="132" y="725" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="132" dy="0">Connected</tspan><tspan x="132" dy="30.68">arrow</tspan></text>
+<rect x="108.6" y="1452" width="292.8" height="65.36" fill="white"/>
+<text x="255" y="1478" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="255" dy="0">Area map / return to</tspan><tspan x="255" dy="30.68">tour starting menu</tspan></text>
+<rect x="776.5799999999999" y="64" width="306.84000000000003" height="65.36" fill="white"/>
+<text x="930" y="90" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="930" dy="0">Return to application</tspan><tspan x="930" dy="30.68">menu and confirm</tspan></text></svg>

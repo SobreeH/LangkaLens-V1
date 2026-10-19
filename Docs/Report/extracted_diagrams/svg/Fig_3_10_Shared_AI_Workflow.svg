@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1620" viewBox="0 0 1200 1620"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 370 97.5 L 370 180" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 340 L 370 387.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 595 260 L 695 260" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 910 320 L 910 387.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 910 492.5 L 910 560" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 910 730 L 910 787.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 690 645 L 585 645" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 155 645 L 35 645 L 35 260 L 145 260" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 690 840 L 650 840 L 650 440 L 590 440" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 590 440 L 605 440 L 605 865 L 590 865" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 917.5 L 370 977.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 1102.5 L 370 1170" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 605 1250 L 690 1250" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 910 1332.5 L 910 1370 L 635 1370 L 635 1250 L 605 1250" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 1330 L 370 1370 L 230 1370 L 230 1432.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 1330 L 370 1370 L 675 1370 L 675 1422.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 370 1170 L 370 1135 L 675 1135 L 675 1130 L 910 1130 L 910 1120" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 40 1490 L 20 1490 L 20 260 L 145 260" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 890 1490 L 1175 1490 L 1175 135 L 370 135 L 370 180" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/><rect x="95" y="12.5" width="550" height="85" rx="42.5" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="46.36000000000001" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="370" dy="0">Open AI guide from an</tspan><tspan x="370" dy="37.76">experience scene</tspan></text>
+<polygon points="370,180 595,260 370,340 145,260" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="270.24" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="370" dy="0">Choose input method</tspan></text>
+<rect x="695" y="200" width="430" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="910" y="232.48000000000002" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="910" dy="0">Microphone: record</tspan><tspan x="910" dy="37.76">speech after</tspan><tspan x="910" dy="37.76">permission</tspan></text>
+<rect x="690" y="387.5" width="440" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="910" y="431.36" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="910" dy="0">Send WAV audio to</tspan><tspan x="910" dy="37.76">Groq</tspan></text>
+<polygon points="910,560 1130,645 910,730 690,645" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="910" y="636.36" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="910" dy="0">Transcript</tspan><tspan x="910" dy="37.76">received?</tspan></text>
+<rect x="155" y="585" width="430" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="636.36" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="370" dy="0">Show transcription</tspan><tspan x="370" dy="37.76">error or status</tspan></text>
+<rect x="690" y="787.5" width="440" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="910" y="831.36" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="910" dy="0">Place transcript in</tspan><tspan x="910" dy="37.76">editable input</tspan></text>
+<rect x="150" y="387.5" width="440" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="431.36" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="370" dy="0">Keyboard: enter or</tspan><tspan x="370" dy="37.76">edit the question</tspan></text>
+<rect x="150" y="812.5" width="440" height="105" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="875.24" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="370" dy="0">Visitor presses Send</tspan></text>
+<rect x="135" y="977.5" width="470" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="1012.48" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="370" dy="0">Send question and</tspan><tspan x="370" dy="37.76">localized instructions</tspan><tspan x="370" dy="37.76">to Gemini</tspan></text>
+<polygon points="370,1170 605,1250 370,1330 135,1250" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="370" y="1260.24" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="370" dy="0">Request outcome</tspan></text>
+<rect x="690" y="1167.5" width="440" height="165" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="910" y="1203.6" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="910" dy="0">Eligible failure;</tspan><tspan x="910" dy="37.76">fallback unused: try</tspan><tspan x="910" dy="37.76">configured fallback</tspan><tspan x="910" dy="37.76">once</tspan></text>
+<rect x="40" y="1432.5" width="380" height="115" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="230" y="1481.36" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="230" dy="0">Usable answer:</tspan><tspan x="230" dy="37.76">display answer</tspan></text>
+<rect x="460" y="1422.5" width="430" height="135" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="675" y="1462.48" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="675" dy="0">Other failure / empty</tspan><tspan x="675" dy="37.76">answer: display</tspan><tspan x="675" dy="37.76">feedback</tspan></text>
+<rect x="690" y="940" width="440" height="180" rx="90" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="910" y="983.6" text-anchor="middle" font-family="Arial" font-size="32" font-weight="400" fill="#111827"><tspan x="910" dy="0">Cancel / close: abort</tspan><tspan x="910" dy="37.76">pending request;</tspan><tspan x="910" dy="37.76">return to scene or</tspan><tspan x="910" dy="37.76">edit another question</tspan></text>
+<rect x="919.7" y="724" width="60.6" height="39.4" fill="white"/>
+<text x="950" y="754" text-anchor="middle" font-family="Arial" font-size="30" font-weight="400" fill="#111827"><tspan x="950" dy="0">Yes</tspan></text>
+<rect x="617.8" y="587" width="44.400000000000006" height="39.4" fill="white"/>
+<text x="640" y="617" text-anchor="middle" font-family="Arial" font-size="30" font-weight="400" fill="#111827"><tspan x="640" dy="0">No</tspan></text></svg>

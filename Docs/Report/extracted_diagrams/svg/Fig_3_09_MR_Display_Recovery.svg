@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="960" viewBox="0 -60 1900 960"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#475569"/></marker></defs><path d="M 360 70 L 475 70" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 825 70 L 885 70" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1315 70 L 1415 70" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 650 135 L 650 217.5" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1100 142.5 L 1100 210" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1580 127.5 L 1580 250" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1390 330 L 1350 330 L 1350 480" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1580 410 L 1580 435 L 1700 435 L 1700 480" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1350 590 L 1350 670" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1700 590 L 1700 745 L 1535 745" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1165 745 L 1050 745" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1350 820 L 1350 870 L 440 870 L 440 820" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1350 670 L 1350 630 L 1100 630 L 1100 490 L 1050 490" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1350 670 L 1350 610 L 655 610 L 655 490 L 615 490" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 475 280 L 205 280 L 205 110" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 902.5 280 L 885 280 L 885 395 L 205 395 L 205 110" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 875 805 L 875 885 L 25 885 L 25 70 L 50 70" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 245 745 L 25 745 L 25 70 L 50 70" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<path d="M 1535 745 L 1850 745 L 1850 -40 L 205 -40 L 205 30" fill="none" stroke="#475569" stroke-width="2.8" stroke-linejoin="round"  marker-end="url(#arrow)"/><rect x="50" y="30" width="310" height="80" rx="40" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="205" y="78.64" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="205" dy="0">MR display update</tspan></text>
+<polygon points="650,5 825,70 650,135 475,70" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="650" y="62.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="650" dy="0">Alignment</tspan><tspan x="650" dy="31.86">confirmed?</tspan></text>
+<polygon points="1100,-2.5 1315,70 1100,142.5 885,70" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1100" y="62.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1100" dy="0">Anchor / headset tracked</tspan><tspan x="1100" dy="31.86">and passthrough ready?</tspan></text>
+<rect x="1415" y="12.5" width="330" height="115" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1580" y="62.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1580" dy="0">Create model at its</tspan><tspan x="1580" dy="31.86">placement if needed</tspan></text>
+<rect x="475" y="217.5" width="350" height="125" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="650" y="256.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="650" dy="0">Hide reconstruction;</tspan><tspan x="650" dy="31.86">show alignment</tspan><tspan x="650" dy="31.86">guidance</tspan></text>
+<rect x="902.5" y="210" width="395" height="140" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1100" y="256.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1100" dy="0">Hide reconstruction</tspan><tspan x="1100" dy="31.86">until tracking /</tspan><tspan x="1100" dy="31.86">display checks recover</tspan></text>
+<polygon points="1580,250 1770,330 1580,410 1390,330" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1580" y="322.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1580" dy="0">Visitor requests</tspan><tspan x="1580" dy="31.86">model visible?</tspan></text>
+<rect x="1185" y="480" width="330" height="110" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1350" y="527.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1350" dy="0">Display aligned</tspan><tspan x="1350" dy="31.86">reconstruction</tspan></text>
+<rect x="1605" y="480" width="190" height="110" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1700" y="511.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1700" dy="0">Keep</tspan><tspan x="1700" dy="31.86">model</tspan><tspan x="1700" dy="31.86">hidden</tspan></text>
+<polygon points="1350,670 1535,745 1350,820 1165,745" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="1350" y="753.64" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="1350" dy="0">Visitor action</tspan></text>
+<rect x="700" y="685" width="350" height="120" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="875" y="737.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="875" dy="0">A: change requested</tspan><tspan x="875" dy="31.86">model visibility</tspan></text>
+<rect x="245" y="670" width="390" height="150" rx="8" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="440" y="721.78" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="440" dy="0">B: read / change site</tspan><tspan x="440" dy="31.86">information pages when</tspan><tspan x="440" dy="31.86">model is visible</tspan></text>
+<rect x="700" y="437.5" width="350" height="105" rx="52.5" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="875" y="482.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="875" dy="0">Hold X: entrance</tspan><tspan x="875" dy="31.86">alignment workflow</tspan></text>
+<rect x="265" y="437.5" width="350" height="105" rx="52.5" fill="white" stroke="#334155" stroke-width="2.5"/>
+<text x="440" y="482.71" text-anchor="middle" font-family="Arial" font-size="27" font-weight="400" fill="#111827"><tspan x="440" dy="0">Return and confirm:</tspan><tspan x="440" dy="31.86">main menu</tspan></text>
+<rect x="840.94" y="19" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="868" y="45" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="868" dy="0">Yes</tspan></text>
+<rect x="1322.94" y="19" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="1350" y="45" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1350" dy="0">Yes</tspan></text>
+<rect x="669.96" y="156" width="40.08" height="34.68" fill="white"/>
+<text x="690" y="182" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="690" dy="0">No</tspan></text>
+<rect x="1119.96" y="158" width="40.08" height="34.68" fill="white"/>
+<text x="1140" y="184" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1140" dy="0">No</tspan></text>
+<rect x="1362.94" y="277" width="54.120000000000005" height="34.68" fill="white"/>
+<text x="1390" y="303" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1390" dy="0">Yes</tspan></text>
+<rect x="1649.96" y="391" width="40.08" height="34.68" fill="white"/>
+<text x="1670" y="417" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1670" dy="0">No</tspan></text>
+<rect x="1541.68" y="684" width="236.64000000000001" height="34.68" fill="white"/>
+<text x="1660" y="710" text-anchor="middle" font-family="Arial" font-size="26" font-weight="400" fill="#111827"><tspan x="1660" dy="0">Continue viewing</tspan></text></svg>
