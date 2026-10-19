@@ -8544,9 +8544,9 @@ MonoBehaviour:
   viewer: {fileID: 1499711286}
   card: {fileID: 1460517435}
   guideLauncher: {fileID: 1580002437}
-  repeatInterval: 30
-  visibleDuration: 10
-  viewerOffset: {x: -2, y: 0, z: 2}
+  repeatInterval: 15
+  visibleDuration: 1
+  viewerOffset: {x: 0, y: 0, z: 2}
 --- !u!4 &755341881
 Transform:
   m_ObjectHideFlags: 0
