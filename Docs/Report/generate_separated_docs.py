@@ -245,7 +245,7 @@ def add_meta_box(doc, doc_title_text):
         f"Document Focus: {doc_title_text}\n"
         "Project Author: Wansobree Hajihama (Student ID: 6620610023)\n"
         "Project Advisor: Assistant Professor Dr. Zamree Che-aron (ผศ.ดร.ซัมรี เจ๊ะอารน)\n"
-        "Academic Degree: Bachelor of Science in Computer and Information Science for Management (CSM)\n"
+        "Academic Degree: Bachelor of Science in Computer and Informatics for Management (CIM)\n"
         "Institution: Faculty of Communication Sciences, Prince of Songkla University, Pattani Campus\n"
         "Target Hardware: Meta Quest 3 & Meta Quest 3S (Horizon OS / Android 12L) | Engine: Unity 6000.3.16f1 URP"
     )
@@ -596,7 +596,7 @@ def export_analysis_markdown(md_path):
 **Academic Context:** Senior Project Technical Specification (Part 1.1)  
 **Author:** Wansobree Hajihama (Student ID: 6620610023)  
 **Project Advisor:** Assistant Professor Dr. Zamree Che-aron (ผศ.ดร.ซัมรี เจ๊ะอารน)  
-**Academic Degree:** Bachelor of Science in Computer and Information Science for Management (CSM)  
+**Academic Degree:** Bachelor of Science in Computer and Informatics for Management (CIM)  
 **Institution:** Faculty of Communication Sciences, Prince of Songkla University, Pattani Campus  
 **Target Hardware:** Meta Quest 3 & Meta Quest 3S (Horizon OS / Android 12L) | **Engine:** Unity 6000.3.16f1 URP  
 
@@ -1011,7 +1011,7 @@ def export_development_markdown(md_path):
 **Academic Context:** Senior Project Technical Specification (Part 1.2)  
 **Author:** Wansobree Hajihama (Student ID: 6620610023)  
 **Project Advisor:** Assistant Professor Dr. Zamree Che-aron (ผศ.ดร.ซัมรี เจ๊ะอารน)  
-**Academic Degree:** Bachelor of Science in Computer and Information Science for Management (CSM)  
+**Academic Degree:** Bachelor of Science in Computer and Informatics for Management (CIM)  
 **Institution:** Faculty of Communication Sciences, Prince of Songkla University, Pattani Campus  
 **Target Hardware:** Meta Quest 3 & Meta Quest 3S (Horizon OS / Android 12L) | **Engine:** Unity 6000.3.16f1 URP  
 

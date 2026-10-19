@@ -272,7 +272,7 @@ def generate_report():
         "Academic Context: Senior Project Technical Specification & Architectural Report\n"
         "Author: Wansobree Hajihama (Student ID: 6620610023)\n"
         "Project Advisor: Assistant Professor Dr. Zamree Che-aron (ผศ.ดร.ซัมรี เจ๊ะอารน)\n"
-        "Academic Program: Bachelor of Science in Computer and Information Science for Management (CSM)\n"
+        "Academic Program: Bachelor of Science in Computer and Informatics for Management (CIM)\n"
         "Institution: Faculty of Communication Sciences, Prince of Songkla University, Pattani Campus\n"
         "Target Platforms: Meta Quest 3 / Meta Quest 3S (Horizon OS / Android 12L) | Engine: Unity 6000.3.16f1 URP"
     )
@@ -867,7 +867,7 @@ def export_markdown(md_path):
 **Academic Context:** Senior Project Technical Specification & Architectural Report  
 **Author:** Wansobree Hajihama (Student ID: 6620610023)  
 **Project Advisor:** Assistant Professor Dr. Zamree Che-aron (ผศ.ดร.ซัมรี เจ๊ะอารน)  
-**Academic Program:** Bachelor of Science in Computer and Information Science for Management (CSM)  
+**Academic Program:** Bachelor of Science in Computer and Informatics for Management (CIM)  
 **Institution:** Faculty of Communication Sciences, Prince of Songkla University, Pattani Campus  
 **Target Hardware:** Meta Quest 3 & Meta Quest 3S (Horizon OS / Android 12L) | **Engine:** Unity 6000.3.16f1 URP  
 

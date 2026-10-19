@@ -5,14 +5,14 @@
   <h2 style="font-size: 16pt; line-height: 1.4; margin: 0; padding: 0; border: 0;">LangkaLens: An Immersive Virtual Reality and Mixed Reality<br />Cultural Heritage Platform for Ancient Yarang City<br />with Intelligent AI Heritage Guide</h2>
   <p style="font-size: 14pt; line-height: 1.6; margin: 8mm 0 0;">Prepared by:<br /><strong>Wansobree Hajihama</strong><br />Student ID: <strong>6620610023</strong></p>
   <p style="font-size: 12pt; line-height: 1.5; margin: 8mm 0 0;">Project advisor:<br />Assistant Professor Dr. Zamree Che-aron (ผศ.ดร.ซัมรี เจ๊ะอารน)</p>
-  <p style="font-size: 13pt; line-height: 1.5; margin: 26mm 0 0;">A Senior Project Submitted in Partial Fulfillment of the Requirements<br />for the Degree of Bachelor of Science in<br />Computer and Information Science for Management<br /><strong>Faculty of Communication Sciences</strong><br />Prince of Songkla University, Pattani Campus<br />Academic Year 2026 (2569 B.E.)</p>
+  <p style="font-size: 13pt; line-height: 1.5; margin: 26mm 0 0;">A Senior Project Submitted in Partial Fulfillment of the Requirements<br />for the Degree of Bachelor of Science in<br />Computer and Informatics for Management<br /><strong>Faculty of Communication Sciences</strong><br />Prince of Songkla University, Pattani Campus<br />Academic Year 2026 (2569 B.E.)</p>
 </div>
 
 <div class="project-information" style="page-break-after: always; break-after: page; padding-top: 8mm;">
   <p>Project title : LangkaLens: An Immersive Virtual Reality and Mixed Reality Cultural Heritage Platform for Ancient Yarang City with Intelligent AI Heritage Guide</p>
   <p>Prepared by : Wansobree Hajihama</p>
   <p>Student ID : 6620610023</p>
-  <p>Programme : Computer and Information Science for Management</p>
+  <p>Programme : Computer and Informatics for Management</p>
   <p>Academic year : 2566 B.E.</p>
   <p>Project advisor : Assistant Professor Dr. Zamree Che-aron<br />(ผศ.ดร.ซัมรี เจ๊ะอารน)</p>
   <hr style="border: 0; border-top: 1px solid #000; margin-top: 16mm;" />
@@ -40,7 +40,7 @@ The author wishes to express sincere gratitude and profound appreciation to proj
 
 The author also expresses sincere gratitude to **Assistant Professor Dr. Wannisa Matcha (ผศ.ดร.วรรนิศา มัจฉา)** for her valuable input and helpful suggestions for the LangkaLens project.
 
-Gratitude is extended to the faculty members of the Department of Computer and Information Science for Management, Faculty of Communication Sciences, for cultivating foundational competencies in software development, computer graphics, human-computer interaction, and intelligent systems throughout the undergraduate curriculum.
+Gratitude is extended to the faculty members of the Department of Computer and Informatics for Management, Faculty of Communication Sciences, for cultivating foundational competencies in software development, computer graphics, human-computer interaction, and intelligent systems throughout the undergraduate curriculum.
 
 The author also conveys gratitude to the archaeological researchers of the Fine Arts Department of Thailand (Regional Office No. 11, Songkhla), local community custodians of Ban Jalae, Yarang District, and peer researchers who provided archaeological documentation and photogrammetric models.
 
@@ -100,6 +100,7 @@ The author also conveys gratitude to the archaeological researchers of the Fine 
     - 4.2.4 MR Alignment and Model Display
     - 4.2.5 AI Chat and Speech Input
     - 4.2.6 Unity Development Screenshots
+    - 4.2.7 Digitized Cultural Heritage Assets and 3D Model Preparation
   - 4.3 Equipment, Operating Systems, and Development Tools
     - 4.3.1 Development Computer
     - 4.3.2 Headsets, Controllers, and Cables
@@ -121,6 +122,7 @@ The author also conveys gratitude to the archaeological researchers of the Fine 
   - A.4 On-site MR
   - A.5 Shared Guide
   - A.6 Technical Verification Records
+  - A.7 Visual Assets Catalog and Artifact Comparison Gallery
 
 ---
 
@@ -906,6 +908,30 @@ Figure 4.12. MR development setup in Unity, showing the entrance reference mesh,
 
 ---
 
+#### 4.2.7 Digitized Cultural Heritage Assets and 3D Model Preparation
+
+In addition to C# application controllers and Unity scene hierarchies, LangkaLens incorporates a comprehensive repository of high-fidelity 3D cultural heritage models reconstructed from archaeological monographs, excavation field reports, and photogrammetric scans of the Ancient Yarang City complex. These visual assets fulfill two complementary roles: (1) full-scale architectural reconstructions of interpreted Dvaravati-period religious monuments for the VR 360-degree Tour and on-site Mixed Reality modes, and (2) museum-grade archaeological relic exhibits with dual-state alternate meshes for the VR Museum.
+
+Figure 4.12a illustrates the four primary historical monument reconstructions authored for the application: Ban Ja-Lae Site 2 (Monument No. 2, stupa baseline sanctuary), Ban Ja-Lae Site 3 (Monument No. 3, tiered terracotta stupa base), Ban Ja-Lae Site 8 (Monument No. 8, central relic chamber and mandapa complex), and Ban Wat Site 9 (Monument No. 9, moated brick foundation shrine). In each case, surviving brick baselines were mapped from excavation monographs [1, 2] to establish precise ground dimensions, while interpreted upper superstructures, tiered bell cornices, and finials were reconstructed in Blender based on contemporaneous 7th–9th century Dvaravati architectural analogues.
+
+![3D interpreted architectural reconstructions of the four primary monument complexes in Ancient Yarang City: (a) Ban Ja-Lae 2, (b) Ban Ja-Lae 3, (c) Ban Ja-Lae 8, and (d) Ban Wat 9.](figures/reconstructions_grid_4monuments.png)
+
+Figure 4.12a. 3D interpreted architectural reconstructions of the four primary monument complexes in Ancient Yarang City: (a) Ban Ja-Lae 2, (b) Ban Ja-Lae 3, (c) Ban Ja-Lae 8, and (d) Ban Wat 9.
+
+For the VR Museum gallery, 11 excavated archaeological relics were digitized into high-resolution 3D models. To address the archaeological distinction between surviving evidence and digital hypothesis (discussed in Chapter 2), each relic is structured as an `ArtifactData` component carrying two distinct models: an excavated weathered state (`originalModelPrefab`) and an archaeologically restored state (`restoredModelPrefab`). Visitors examine the relic on its display pedestal using 6-DOF manipulation, and toggle between the weathered original and restored forms using controller input.
+
+![Archaeological artifact digital preservation: dual-state comparison of the Standing Stone Buddha in Vitarka Mudra, showing the weathered excavated fragment (Left) alongside the 3D digitally restored museum exhibit (Right).](../Images/02_Artifact_Comparisons/Buddha_Comparison.png)
+
+Figure 4.12b. Archaeological artifact digital preservation: dual-state comparison of the Standing Stone Buddha in Vitarka Mudra, showing the weathered excavated fragment (Left) alongside the 3D digitally restored museum exhibit (Right).
+
+![Dual-state artifact comparison: Nandi Sacred Bull, contrasting the eroded terracotta excavated posture with the complete restored sacred zebu bull.](../Images/02_Artifact_Comparisons/Cow_Comparison.png)
+
+Figure 4.12c. Dual-state artifact comparison: Nandi Sacred Bull, contrasting the eroded terracotta excavated posture with the complete restored sacred zebu bull.
+
+To ensure sustained 72/90 FPS rendering on standalone Meta Quest 3 and Quest 3S hardware, all 3D assets undergo a systematic mobile optimization pipeline. High-poly photogrammetric meshes (>500,000 polygons) are retopologized to under 15,000 triangles per exhibit with baked normal, roughness, and ambient occlusion maps. Textures are compressed using ASTC 6x6 blocks to conserve mobile VRAM. A comprehensive audit of the project repository catalogues exactly 512 image assets across 15 structured domains (totaling 1.72 GB). The complete visual asset catalog, orderly naming taxonomy (`LL-IMG-...`), and full 11-artifact comparison plates are documented in Appendix A.7 and companion project deliverables (*LangkaLens Visual Asset Lookbook* and *Master Image Catalog*).
+
+---
+
 ### 4.3 Equipment, Operating Systems, and Development Tools
 
 This section records the equipment and software used for the project. Computer specifications were read from the developer's PC on 5 October 2026. Headset models and cable types were supplied by the developer, who also confirmed that both headsets run the latest available Meta Horizon OS. OS/build information for both Quest 3 and Quest 3S was read through the Meta VR device tools on the same date, with each headset connected separately.
@@ -1167,3 +1193,73 @@ References [1] and [2] provide the archaeological sources for the curated site i
 | Simulator record | Simulator version, device profile, viewport, settings, and relevant screenshots |
 | Device record | Quest 3/3S OS and development app-build details |
 | Figures | Development and simulator screenshots are included in Sections 4.2.6 and 4.4.2; add relevant device captures and rendered diagrams |
+
+
+### A.7 Visual Assets Catalog and Artifact Comparison Gallery
+
+This section documents the visual assets, 3D model renders, and side-by-side artifact comparison plates authored for LangkaLens. The complete repository contains 512 visual assets organized into 15 domain categories, audited and compiled in the companion *LangkaLens Master Visual Asset Lookbook* (`Docs/LangkaLens_Visual_Asset_Lookbook.docx`) and *Master Image Catalog* (`Docs/LangkaLens_Image_Catalog.docx`).
+
+#### 15-Domain Visual Asset Repository Breakdown
+
+| Domain Code | Category Domain Name | Files | Volume | Formats | Target Experience Subsystem |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **CAT-01** | Museum Archaeological Artifacts (Excavated vs Restored) | 22 | 6.7 MB | PNG | VR Museum / Inspection |
+| **CAT-02** | Artifact Comparison Sheets (Side-by-Side Widescreen) | 11 | 4.3 MB | PNG | Senior Report / Lookbook |
+| **CAT-03** | Historic Monument Architectural Reconstructions | 7 | 3.6 MB | PNG | VR Tour & Mixed Reality |
+| **CAT-04** | Museum Gallery Demo Ceramic & Relic Exhibits | 5 | 3.6 MB | PNG | VR Museum / Secondary |
+| **CAT-05** | Interactive 3D Props & Navigation Elements | 7 | 2.2 MB | PNG | VR Tour / UI Interaction |
+| **CAT-06** | Photogrammetric Scans & Environmental Assets | 7 | 2.7 MB | PNG | Museum Environment |
+| **CAT-07** | 360-Degree Panoramic VR Tour Nodes | 91 | 1,118 MB | JPG | VR Tour / Equirectangular |
+| **CAT-08** | User Guide Localized Module Screenshots (EN/TH) | 112 | 190.9 MB | PNG | Docs / In-Game Guide |
+| **CAT-09** | User Guide Step-by-Step Workflow Captures | 56 | 118.6 MB | JPG | In-Engine UI Guide |
+| **CAT-10** | Academic Thesis & Senior Project Report Figures | 29 | 8.3 MB | PNG | PSU Senior Project Report |
+| **CAT-11** | Horizon Store, Distribution & Branding Assets | 12 | 23.3 MB | PNG | Horizon OS Store |
+| **CAT-12** | In-Game UI, Menus, Thumbnails & HUD Sprites | 48 | 29.0 MB | PNG | Main Menu & HUD System |
+| **CAT-13** | Material Textures & PBR Shading Maps | 67 | 188.7 MB | PNG | 3D Graphics / Shaders |
+| **CAT-14** | User Evaluation, Playtesting & Debugging Captures | 13 | 18.3 MB | PNG | Validation & QA Testing |
+| **CAT-15** | Engine Utilities & Supporting Asset Textures | 25 | 2.0 MB | PNG | Unity Engine / Plugins |
+| **TOTAL** | **All 15 Structured Visual Domains** | **512** | **1,720.7 MB** | **PNG / JPG** | **Full Project Scope** |
+
+Table A.1. Comprehensive LangkaLens visual asset repository inventory (15 domains, 512 files, 1.72 GB).
+
+#### Curated Archaeological Relic Exhibits Roster
+
+Table A.2 details the 11 key archaeological relics excavated from Ancient Yarang City and preserved in the LangkaLens VR Museum, listing their catalog identifiers, Thai and English nomenclature, excavated condition, and restored features.
+
+| Catalog ID | Artifact Exhibit & Thai Name | Excavated Condition (`_ORG`) | 3D Restored Form (`_RES`) |
+| :--- | :--- | :--- | :--- |
+| `LL-IMG-ART-01` | **Standing Buddha**<br>พระพุทธรูปยืนศิลปะทวารวดี | Weathered sandstone fragment; hands eroded | Full standing Buddha in vitarka mudra; restored robe |
+| `LL-IMG-ART-02` | **Nandi Sacred Bull**<br>ประติมากรรมโคนันทิ | Eroded terracotta scan with surface losses | Complete sacred zebu bull posture with polished horns |
+| `LL-IMG-ART-03` | **Carved Stone Pillar**<br>เสาหินสลักโบราณ | Weathered lower relief block with fissure lines | Crisp carved architectural column with floral moldings |
+| `LL-IMG-ART-04` | **Ancient Deity Statue**<br>เทวรูปโบราณ | Armless excavated torso scan; facial weathering | Complete standing bodhisattva/deity with restored headdress |
+| `LL-IMG-ART-05` | **Stupa Model Type 1**<br>สถูปจำลอง แบบที่ 1 | Segmented miniature stupa fragment | Bell-shaped tiered stupa with ringed conical finial |
+| `LL-IMG-ART-06` | **Stupa Model Type 2**<br>สถูปจำลอง แบบที่ 2 | Weathered finial stupa with fractured base | Tiered circular stupa with harmika and parasol spire |
+| `LL-IMG-ART-07` | **Stupa Model Type 3**<br>สถูปจำลอง แบบที่ 3 | Eroded square-base stupa miniature | Square-stepped stupa with octagonal tiered spires |
+| `LL-IMG-ART-08` | **Stupa Model Type 4**<br>สถูปจำลอง แบบที่ 4 | Basal relic stupa with broken cornice | Complete stepped stupa with square decorative niche |
+| `LL-IMG-ART-09` | **Surya / Trinity Stele**<br>แผ่นสลักสุริยเทพ / ตรีมูรติ | Chipped sandstone relief tablet fragment | Restored sun deity figure with solar halo and lotus |
+| `LL-IMG-ART-10` | **Kurma Sacred Turtle**<br>ประติมากรรมเต่ามงคล | Weathered stone turtle foundation deposit | Detailed carapace anatomy with ritual polish |
+| `LL-IMG-ART-11` | **Dharmachakra Wheel**<br>ธรรมจักรศิลา | Excavated stone wheel hub fragments | Complete 16-spoke symbolic Buddhist law wheel |
+
+Table A.2. Inventory of the 11 key archaeological artifacts curated in the LangkaLens VR Museum.
+
+#### Representative Artifact Comparison Plates
+
+![Artifact comparison plate: Carved Stone Pillar (เสาหินสลักโบราณ), comparing excavated weathered fragment (Left) with reconstructed architectural column (Right).](../Images/02_Artifact_Comparisons/Pillar_Comparison.png)
+
+Figure A.1. Artifact comparison plate: Carved Stone Pillar (เสาหินสลักโบราณ), comparing excavated weathered fragment (Left) with reconstructed architectural column (Right).
+
+![Artifact comparison plate: Dharmachakra Stone Wheel (ธรรมจักรศิลา), comparing excavated hub fragments (Left) with complete 16-spoke symbolic wheel (Right).](../Images/02_Artifact_Comparisons/Wheel_Comparison.png)
+
+Figure A.2. Artifact comparison plate: Dharmachakra Stone Wheel (ธรรมจักรศิลา), comparing excavated hub fragments (Left) with complete 16-spoke symbolic wheel (Right).
+
+![Artifact comparison plate: Ancient Deity / Bodhisattva Statue (เทวรูปโบราณ), showing fragmented torso (Left) alongside restored crowned figure (Right).](../Images/02_Artifact_Comparisons/Statue_Comparison.png)
+
+Figure A.3. Artifact comparison plate: Ancient Deity / Bodhisattva Statue (เทวรูปโบราณ), showing fragmented torso (Left) alongside restored crowned figure (Right).
+
+#### Companion Project Deliverables & Visual Catalogs
+
+For the complete collection of all 11 widescreen composite plates, studio beauty angle renders, and interactive asset specifications, refer to the following companion documents in `Docs/`:
+1. **LangkaLens Complete Visual Asset Lookbook & Illustrated Image Gallery** (`Docs/LangkaLens_Visual_Asset_Lookbook.docx` / `.pdf`)
+2. **LangkaLens Master Visual Assets & Image Catalog** (`Docs/LangkaLens_Image_Catalog.docx` / `.pdf`)
+3. **LangkaLens In-Game Screenshots & XR Experience Showcase Lookbook** (`Docs/LangkaLens_Screenshots_Lookbook.docx` / `.pdf`)
+4. **LangkaLens Master Multi-Page Diagram Suite** (`Docs/Report/LangkaLens_All_Diagrams.drawio` and `Docs/Report/extracted_diagrams/`)
