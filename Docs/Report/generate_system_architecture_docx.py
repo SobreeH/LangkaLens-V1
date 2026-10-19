@@ -159,10 +159,19 @@ def add_callout(doc, title, text, border_color="1F497D", bg_color="F4F6F9"):
     sp.paragraph_format.space_before = Pt(0)
     sp.paragraph_format.space_after = Pt(4)
 
-def add_image_figure(doc, img_path, caption, width_in=5.6):
+def add_image_figure(doc, img_path, caption, width_in=5.6, max_height_in=6.0):
     if not os.path.exists(img_path):
         print(f"Warning: Image not found: {img_path}")
         return
+    try:
+        from PIL import Image
+        with Image.open(img_path) as im:
+            img_w, img_h = im.size
+            aspect = img_w / img_h
+            if (width_in / aspect) > max_height_in:
+                width_in = max_height_in * aspect
+    except Exception:
+        pass
     p_img = doc.add_paragraph()
     p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_img.paragraph_format.space_before = Pt(8)

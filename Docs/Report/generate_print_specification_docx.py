@@ -139,14 +139,24 @@ def add_callout(doc, text, title="", width_inches=6.4):
     spacer.paragraph_format.space_before = Pt(0)
     spacer.paragraph_format.space_after = Pt(3)
 
-def add_image_box(doc, image_path, caption="", width_inches=4.8):
+def add_image_box(doc, image_path, caption="", width_inches=4.8, max_height_inches=5.2):
     if not os.path.exists(image_path):
         print(f"Warning: Image not found at {image_path}")
         return
         
+    try:
+        from PIL import Image
+        with Image.open(image_path) as im:
+            img_w, img_h = im.size
+            aspect = img_w / img_h
+            if (width_inches / aspect) > max_height_inches:
+                width_inches = max_height_inches * aspect
+    except Exception:
+        pass
+        
     p_img = doc.add_paragraph()
     p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_img.paragraph_format.space_before = Pt(4)
+    p_img.paragraph_format.space_before = Pt(3)
     p_img.paragraph_format.space_after = Pt(2)
     p_img.paragraph_format.keep_with_next = True
     run_img = p_img.add_run()
@@ -213,7 +223,7 @@ def create_styled_table(doc, headers, data, col_widths=None, font_size=8.5, spac
 
 def add_side_by_side_diagrams(doc, img_left, cap_left, title_left, desc_left,
                               img_right, cap_right, title_right, desc_right,
-                              img_width=2.85):
+                              img_width=2.85, max_height_inches=5.8):
     table = doc.add_table(rows=1, cols=2)
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = False
@@ -243,12 +253,23 @@ def add_side_by_side_diagrams(doc, img_left, cap_left, title_left, desc_left,
         format_run_font(r_desc, "Times New Roman", 8.5, color_rgb=(0x44, 0x44, 0x44))
         
         if os.path.exists(img):
+            actual_w = img_width
+            try:
+                from PIL import Image
+                with Image.open(img) as im:
+                    img_w, img_h = im.size
+                    aspect = img_w / img_h
+                    if (actual_w / aspect) > max_height_inches:
+                        actual_w = max_height_inches * aspect
+            except Exception:
+                pass
+                
             p_img = cell.add_paragraph()
             p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
             p_img.paragraph_format.space_before = Pt(2)
             p_img.paragraph_format.space_after = Pt(1)
             r_img = p_img.add_run()
-            r_img.add_picture(img, width=Inches(img_width))
+            r_img.add_picture(img, width=Inches(actual_w))
             
             p_cap = cell.add_paragraph()
             p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -527,13 +548,15 @@ def build_arranged_document():
     add_styled_paragraph(doc, 
         "Governs the hub-and-spoke execution pattern. Launching initializes Main_Menu_Scene. Visitors choose between Thai or English and route into any destination scene. Return requests prompt confirmation before restoring the main menu and releasing mode-specific assets.")
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_3.png", 
-                  caption="Figure 3.3: Application Overview and Scene Navigation Flowchart", width_inches=4.6)
+                  caption="Figure 3.3: Application Overview and Scene Navigation Flowchart", width_inches=4.8, max_height_inches=2.6)
                   
+    doc.add_page_break()
+    
     add_heading_3(doc, "3.3.2 Main Menu Language Selection & Scene Loading Flowchart")
     add_styled_paragraph(doc, 
-        "Enforces session-scoped language persistence. When launched, the system checks whether language has been confirmed during the current application session. If unconfirmed, the bilingual selection dialog is displayed. Subsequent returns to the main menu skip this prompt.")
+        "Governs session-scoped language persistence and async scene transitions. When launched, MainMenuManager checks HasSelectedLanguage in session memory. If unconfirmed, the bilingual modal displays and visitor selection updates LocalizationSettings.SelectedLocale. Clicking Confirm remembers the choice and displays mode buttons. Clicking a mode button validates SceneLoadingScreen.IsLoading (ignoring double-clicks), invokes BeginContentLoading(), and calls SceneManager.LoadSceneAsync().")
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_4.png", 
-                  caption="Figure 3.4: Main Menu Language Selection and Scene Loading Flowchart", width_inches=2.7)
+                  caption="Figure 3.4: Main Menu Language Selection and Scene Loading Flowchart", width_inches=5.0, max_height_inches=5.8)
                   
     doc.add_page_break()
     
@@ -550,47 +573,52 @@ def build_arranged_document():
         img_left="Docs/Report/figures/diagrams/figure_3_5.png",
         cap_left="Figure 3.5: VR Tour Viewpoint Traversal",
         title_left="3.3.3 VR 360 Panoramic Navigation",
-        desc_left="Selecting a directional arrow locks locomotion, loads destination 8K equirectangular textures asynchronously via Addressables, animates camera movement, releases prior texture handles, and activates new indicators.",
+        desc_left="Selecting a NavigationArrow checks IsNavigationBlocked (suppressing transitions, open map, or active inspection) and validates Addressable runtime keys. It locks navigation, requests the 8K equirectangular texture via Addressables.LoadAssetAsync<Texture2D>(), animates a 3m camera lunge with 3x sphere stretch, verifies load status within a 30s deadline, updates material.mainTexture, disposes of the previous texture handle from GPU VRAM, eases out camera rig, instantiates ArrowPlacementHelper, and unlocks navigation.",
         img_right="Docs/Report/figures/diagrams/figure_3_6.png",
         cap_right="Figure 3.6: Tour Reconstruction Inspection",
         title_right="3.3.4 Tour Reconstruction Inspection",
-        desc_right="Pressing Left Controller Button Y loads the 3D stupa prefab asynchronously via Addressables. If the user moves away or cancels, pending asynchronous loads are safely aborted and discarded immediately.",
-        img_width=2.65
+        desc_right="Pressing Left Controller Button Y invokes TourReconstructionPresenter.ToggleInspection(). If already inspecting, it fades panorama backdrop back to 1.0, destroys the model instance, and releases the Addressables handle. If opening, it creates a staging parent, calls Addressables.InstantiateAsync(inspectionPrefab), places model at 0.8m distance, dims backdrop to 0.15 with #533A2D tint, attaches OneGrabFreeRotateTransformer (0.5x-3.0x zoom), displays the bilingual tablet, and handles clean teardown upon exit.",
+        img_width=2.85,
+        max_height_inches=4.2
     )
     
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 9: ACTIVITY FLOWCHARTS: FIG 3.7 & FIG 3.8 (FITS ON PAGE 9)
+    # PAGE 9: ACTIVITY FLOWCHARTS: FIG 3.7 & FIG 3.8 (DEDICATED PAGES)
     # =========================================================================
     add_heading_3(doc, "3.3.5 VR Museum Artifact Exploration & Environment Dimmer Flowchart")
     add_styled_paragraph(doc, 
-        "When an artifact is selected, player locomotion is locked, pre-inspection camera poses are cached, and InspectionEnvironmentDimmer initiates an exposure fade on the surrounding gallery (0.18 multiplier over 0.35s) while keeping the artifact illuminated. Closing restores gallery lighting.")
+        "Raycasting an artifact pedestal verifies ArtifactData, pauses visitor locomotion, and triggers EnvironmentDimmer.Begin(0.18, 0.35s) to fade surrounding museum geometry. The relic glides to 0.6m eye distance with OneGrabFreeRotateTransformer. The inspection canvas tablet binds localized strings and displays a 'Switch Form' toggle button if alternateModel is present to switch between weathered original (_ORG) and digitally restored (_RES) meshes. Closing smoothly restores gallery lighting, returns the model to its pedestal, and resumes locomotion.")
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_7.png", 
-                  caption="Figure 3.7: VR Museum Artifact Exploration and Environment Dimmer Flowchart", width_inches=4.6)
+                  caption="Figure 3.7: VR Museum Artifact Exploration and Environment Dimmer Flowchart", width_inches=5.4, max_height_inches=2.8)
                   
+    doc.add_page_break()
+    
     add_heading_3(doc, "3.3.6 Mixed Reality Entrance Alignment & Session Anchor Flowchart")
     add_styled_paragraph(doc, 
-        "The curator aligns a virtual entrance outline to physical signage using the right controller grip and thumbstick. Confirming with button A initiates hardware spatial anchor creation with a 15-second timeout window. Upon localization, the relative transformation matrix is locked for the session.")
+        "Verifies Meta Quest 6-DOF head and Touch Plus controller tracking. A 2-second hold of Left X clears existing anchors to restart alignment. The curator positions the virtual entrance wireframe outline using the right grip, adjusting rotation yaw (45 deg/s) and reach distance (0.15m-3.0m) with the thumbstick. Pressing button A invokes OVRSpatialAnchor.CreateAsync() with a 15-second timeout window. Upon localization, the relative transformation matrix locks, and MRModelSpawner.SpawnAlignedModel() instantiates the site reconstruction.")
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_8.png", 
-                  caption="Figure 3.8: On-Site Mixed Reality Entrance Alignment and Session Anchor Flowchart", width_inches=2.7)
+                  caption="Figure 3.8: On-Site Mixed Reality Entrance Alignment and Session Anchor Flowchart", width_inches=4.8, max_height_inches=6.2)
                   
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 10: ACTIVITY FLOWCHARTS: FIG 3.9 & FIG 3.10 (FITS ON PAGE 10)
+    # PAGE 10: ACTIVITY FLOWCHARTS: FIG 3.9 & FIG 3.10 (DEDICATED PAGES)
     # =========================================================================
     add_heading_3(doc, "3.3.7 MR Model Display Gating & Tracking Recovery Flowchart")
     add_styled_paragraph(doc, 
-        "In the saved unrestricted configuration, monument display requires alignment confirmation, active head tracking, and passthrough readiness. If tracking quality drops or passthrough is interrupted, the reconstructed building automatically conceals itself until SLAM tracking re-establishes stability.")
+        "Executing in unrestricted footprint mode (allowing free visitor walking), runtime display requires alignment confirmation, active 6-DOF head tracking, spatial anchor localization, and active color passthrough. If tracking quality drops or passthrough is interrupted, virtual monuments and UI panels suppress immediately to prevent drift. Curators can toggle the 3D monument via button A, toggle the site information tablet via button B, or hold Left X for 2 seconds to trigger realignment.")
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_9.png", 
-                  caption="Figure 3.9: MR Model Display Gating and Tracking Recovery Flowchart", width_inches=4.6)
+                  caption="Figure 3.9: MR Model Display Gating and Tracking Recovery Flowchart", width_inches=5.4, max_height_inches=3.0)
                   
+    doc.add_page_break()
+    
     add_heading_3(doc, "3.3.8 Shared Multimodal AI Heritage Guide Workflow Flowchart")
     add_styled_paragraph(doc, 
-        "Users may type questions or dictate speech. Audio recordings are transmitted to Groq Whisper for transcription and returned to an editable text field. This allows users to review and amend the transcription before submitting the prompt to Google Gemini.")
+        "Visitors submit questions via either 16kHz PCM audio microphone recording (transcribed via Groq Cloud Whisper API whisper-large-v3 with runtime Android permission checks) or bilingual virtual keyboard. The transcribed text is placed into an editable inputField for review. Clicking Send dispatches gemini-3.5-flash-lite with contextual archaeological prompts (150 max output tokens). On HTTP 404, 408, 429, or 5xx errors, an automatic fallback to gemini-3.1-flash-lite executes before reporting an error.")
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_10.png", 
-                  caption="Figure 3.10: Shared Multimodal AI Heritage Guide Workflow Flowchart", width_inches=2.6)
+                  caption="Figure 3.10: Shared Multimodal AI Heritage Guide Workflow Flowchart", width_inches=4.6, max_height_inches=6.4)
                   
     doc.add_page_break()
     

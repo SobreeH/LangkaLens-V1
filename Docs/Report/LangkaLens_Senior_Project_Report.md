@@ -421,169 +421,292 @@ Figure 3.3. Overview of the four enabled scenes. Each experience provides its ow
 
 ```mermaid
 flowchart TD
-    Start(["Enter main menu"]) --> Init["Initialize localization and menu controls"]
-    Init --> Selected{"Language confirmed in this session?"}
-    Selected -->|"No"| Language["Show Thai / English selection"]
-    Language --> Pick["Choose language and confirm"]
-    Pick --> Hub["Show main menu"]
-    Selected -->|"Yes"| Hub
-    Hub --> Action{"Visitor action"}
-    Action -->|"Change language"| Language
-    Action -->|"Read instructions"| Help["Open user guide"]
-    Help -->|"Close guide"| Hub
-    Action -->|"Choose tour, museum, or MR"| Load["Load the selected scene"]
-    Load --> End(["Selected experience begins"])
-    Action -->|"Quit"| Quit(["Close application"])
+    Start(["Launch Application"]) --> Init["Initialize LocalizationSettings & MainMenuManager"]
+    Init --> CheckLang{"if (HasSelectedLanguage)?"}
+    
+    CheckLang -->|"False (First run)"| ShowLang["Show Language Selection Panel<br><i>languagePanel.SetActive(true)</i>"]
+    ShowLang --> ClickLang["⚡ Visitor selects Thai or English<br><i>SelectLanguage(index)</i>"]
+    ClickLang --> UpdateLocale["Update Active Locale<br><i>LocalizationSettings.SelectedLocale</i>"]
+    UpdateLocale --> ClickConfirm["⚡ Visitor clicks 'Confirm & Continue'<br><i>ConfirmAndContinue()</i>"]
+    ClickConfirm --> SaveConfirm["Remember Confirmation in Session<br><i>HasSelectedLanguage = true</i>"]
+    SaveConfirm --> ShowModes
+    
+    CheckLang -->|"True (Confirmed)"| ShowModes["Display Mode Selection<br><i>Show Tour, Museum & MR buttons</i>"]
+    
+    ShowModes --> ClickMode["⚡ Visitor clicks Mode Button (Tour / Museum / MR)"]
+    ClickMode --> CheckBusy{"if (SceneLoadingScreen.IsLoading)?"}
+    
+    CheckBusy -->|"True (Busy)"| IgnoreClick(["Ignore click / Return early"]):::error
+    CheckBusy -->|"False (Idle)"| BeginLoad["Begin Content Loading<br><i>SceneLoadingScreen.BeginContentLoading()</i>"]
+    
+    BeginLoad --> LoadAsync["Call SceneManager.LoadSceneAsync(destScene)"]
+    LoadAsync --> Done(["Enter Destination Experience Scene"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.4. Main menu workflow. Language confirmation is remembered within the running session, rather than using the old `HasSelectedLanguage` preference to skip setup after a restart.
+Figure 3.4. Main menu workflow. Governs session-scoped language persistence (`MainMenuManager`) and asynchronous scene transitions. Validates `SceneLoadingScreen.IsLoading` to prevent duplicate requests before invoking `SceneManager.LoadSceneAsync()`.
 
 #### 3.4.3 VR Tour: Area Selection and Viewpoint Navigation
 
 ```mermaid
 flowchart TD
-    Start(["Enter VR tour"]) --> Areas["Show area map and starting view"]
-    Areas --> Pick["Choose Ban Jalae 2, 3, 8, or Ban Wat 9"]
-    Pick --> Load["Load the selected viewpoint photo"]
-    Load --> Transition["Animate the transition and release previous content"]
-    Transition --> Ready{"Photo loaded successfully?"}
-    Ready -->|"Yes"| View["Show panorama and available navigation arrows"]
-    Ready -->|"No"| Failed["Finish cleanup without assigning a new panorama"]
-    Failed --> Resume["Transition ends; input resumes"]
-    View --> Action{"Visitor action"}
-    Resume --> Action
-    Action -->|"Select a connected arrow"| Load
-    Action -->|"Request area map"| Areas
-    Action -->|"Inspect restored model"| Inspect["Use the inspection workflow in Figure 3.6"]
-    Inspect -->|"Inspection closes"| View
-    Action -->|"Return to tour starting menu"| Areas
-    Areas -->|"Return to application menu and confirm"| Home(["Main menu"])
+    EvClick["⚡ Visitor clicks NavigationArrow<br><i>LoadNode(targetNode, targetWorldPos)</i>"]
+    
+    EvClick --> CheckBlocked{"if (IsNavigationBlocked)?<br><i>IsTransitioning || IsReconstructionBusy || IsMapOpen</i>"}
+    CheckBlocked -->|"True (Blocked)"| IgnoreClick(["Ignore click / Return early"]):::error
+    
+    CheckBlocked -->|"False (Idle)"| CheckKey{"if (photoReference.RuntimeKeyIsValid())?"}
+    CheckKey -->|"False (Invalid)"| LogKeyErr(["Debug.LogError / Abort"]):::error
+    
+    CheckKey -->|"True (Valid)"| LockState["Lock Navigation & Clear UI<br><i>IsTransitioning = true</i><br><i>Hide active arrows & hover icons</i>"]
+    LockState --> AsyncLoad["⚙️ Addressables Asset Pipeline<br><i>Addressables.LoadAssetAsync&lt;Texture2D&gt;(photoReference)</i>"]
+    AsyncLoad --> StartWarp["Start Warp Transition Animation<br><i>Lunge rig forward 3m (Ease-in)</i><br><i>Stretch PhotoSphere 3x forward</i>"]
+    
+    StartWarp --> CheckLoaded{"if (handle.Status == Succeeded)?<br><i>Within 30s deadline</i>"}
+    
+    CheckLoaded -->|"False (Failed / Timeout)"| RecoverErr["Error Recovery:<br><i>Release pending handle</i><br><i>Restore previous camera position</i><br><i>IsTransitioning = false; RefreshNavigation()</i>"]
+    RecoverErr --> KeepPlace(["Keep Current Viewpoint"]):::error
+    
+    CheckLoaded -->|"True (Succeeded)"| ApplyTex["Apply Destination Panorama<br><i>photoSphereRenderer.material.mainTexture = handle.Result</i><br><i>Release previous texture handle from VRAM</i>"]
+    ApplyTex --> SettleRig["Settle Rig & Update Tour State<br><i>Ease-out rig to ideal center position</i><br><i>Reset PhotoSphere container scale to 1.0</i><br><i>currentNode = targetNode</i>"]
+    SettleRig --> SpawnArrows["Spawn Navigation Arrows & Hints<br><i>Instantiate arrows for connectedPaths</i><br><i>Check currentNode reconstruction -> Enable Y hint</i>"]
+    SpawnArrows --> UnlockNav["Unlock Navigation State<br><i>IsTransitioning = false</i>"]
+    UnlockNav --> Ready(["Viewpoint Ready for Visitor Input"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.5. Tour navigation. Navigation is blocked during transitions, inspection, or an open map. A failed photo load does not automatically establish a successful arrival; recovery must be checked in functional testing. The left Y button is used for reconstruction inspection.
+Figure 3.5. Tour navigation. Navigation is blocked during transitions, open map, or active inspection. Requests 8K equirectangular textures via Addressables, executes camera lunge animation, verifies load within a 30s deadline, and deallocates prior textures from GPU VRAM upon arrival.
 
 #### 3.4.4 VR Tour: Restored-Model Inspection
 
 ```mermaid
 flowchart TD
-    Start(["Press left Y at a viewpoint"]) --> Allowed{"Inspection available and tour idle?"}
-    Allowed -->|"No"| Tour(["Remain in tour"])
-    Allowed -->|"Yes"| Load["Load the area's reconstruction display"]
-    Load --> Cancel{"Cancelled or viewpoint changed?"}
-    Cancel -->|"Yes"| Cleanup["Release content and restore panorama/navigation"]
-    Cancel -->|"No"| Valid{"Display loaded with required references?"}
-    Valid -->|"No"| Retry["Release failed content and return to Ready"]
-    Retry --> Tour
-    Valid -->|"Yes"| Inspect["Move closer and show model with localized panel"]
-    Inspect --> Action{"Visitor action"}
-    Action -->|"Rotate or resize"| Inspect
-    Action -->|"Read description"| Inspect
-    Action -->|"Y, X, Close, map, or scene exit"| Cleanup
-    Cleanup --> Tour
+    EvY["⚡ Visitor presses Left Controller Y Button<br><i>TourReconstructionPresenter.ToggleInspection()</i>"]
+    
+    EvY --> CheckCan{"if (CanToggleInspection)?<br><i>!isTransitioning && !isMapOpen && definition.isConfigured</i>"}
+    CheckCan -->|"False (Blocked)"| IgnoreY(["Ignore button press / Return"]):::error
+    
+    CheckCan -->|"True (Allowed)"| CheckActive{"if (State == Inspecting || Loading)?"}
+    
+    %% Close Branch
+    CheckActive -->|"True (Already active)"| TriggerClose["Trigger CloseInspection():<br><i>Fade panorama backdrop back to 1.0</i><br><i>Destroy reconstruction model instance</i><br><i>Release Addressables instantiate handle</i>"]
+    TriggerClose --> RestoreTour["Restore Tour State:<br><i>Hide inspection panel tablet</i><br><i>Re-enable navigation arrows & hover icons</i><br><i>State = PresentationState.Ready</i>"]
+    RestoreTour --> TourView(["Return to 360 Panorama View"]):::success
+    
+    %% Open Branch
+    CheckActive -->|"False (Ready -> Open)"| StartLoad["OpenInspection():<br><i>State = PresentationState.Loading</i><br><i>Disable tour navigation arrows</i><br><i>Create inactive staging GameObject</i>"]
+    StartLoad --> AsyncInst["⚙️ Addressables Asset Pipeline<br><i>Addressables.InstantiateAsync(definition.inspectionPrefab, staging)</i>"]
+    
+    AsyncInst --> CheckInstOK{"if (handle.Status == Succeeded && !cancelled)?"}
+    CheckInstOK -->|"False (Failed / Cancelled)"| LoadErr["Destroy staging parent & release handle<br><i>State = PresentationState.Ready; RefreshNavigation()</i>"]
+    LoadErr --> TourView
+    
+    CheckInstOK -->|"True (Loaded)"| SetupModel["Activate Model & Fade Backdrop:<br><i>Position model at inspectionViewingDistance (0.8m)</i><br><i>Fade panorama backdrop to 0.15 with #533A2D tint</i><br><i>Attach TourModelTransformer & OneGrabRotate</i>"]
+    SetupModel --> ShowUI["Open Inspection Tablet UI<br><i>Position localized info panel at offset</i><br><i>State = PresentationState.Inspecting</i>"]
+    
+    ShowUI --> InspectLoop["Active Inspection Interaction Loop:<br><i>• OneGrabFreeRotateTransformer: Hand grab rotation</i><br><i>• Joystick Zoom: Scale model 0.5x - 3.0x</i><br><i>• Scrollable bilingual historical description</i>"]
+    
+    InspectLoop --> EvExit["⚡ Visitor presses Left Y, B button, or Close tablet"]
+    EvExit --> TriggerClose
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.6. Tour inspection and cleanup. The display is loaded on demand. Late completion after cancellation is discarded. The visitor's view is restored when inspection ends; tour reconstructions do not offer alternate-model switching.
+Figure 3.6. Tour reconstruction inspection and cleanup lifecycle. Pressing Left Controller Y invokes `TourReconstructionPresenter` to instantiate the 3D stupa prefab via Addressables at 0.8m viewing distance, dims panorama backdrop to 0.15 (`#533A2D`), enables `OneGrabFreeRotateTransformer`, and safely releases handles upon exit.
 
 #### 3.4.5 VR Museum: Artifact Exploration and Inspection
 
 ```mermaid
 flowchart TD
-    Start(["Enter museum"]) --> Explore["Explore artifact display stations"]
-    Explore --> Select["Select an artifact"]
-    Select --> Begin["Save rig/model settings and pause locomotion"]
-    Begin --> Fade["Start fading museum surroundings; keep artifact and panel clear"]
-    Fade --> Inspect["Move into inspection and show localized information"]
-    Inspect --> Action{"Visitor action"}
-    Action -->|"Grab and rotate"| Rotate["Pause idle spin and rotate the model"]
-    Rotate -->|"Release"| Inspect
-    Action -->|"Resize"| Inspect
-    Action -->|"Switch model"| Alternate{"Alternate model configured?"}
-    Alternate -->|"Yes"| Switch["Show the other model"]
-    Switch --> Inspect
-    Alternate -->|"No"| Inspect
-    Action -->|"Close inspection"| Brighten["Start fading surroundings back to normal"]
-    Brighten --> Restore["Restore rig, model, pedestal, UI, and locomotion"]
-    Restore --> Explore
-    Explore -->|"Return and confirm"| Home(["Main menu"])
+    EvRay["⚡ Visitor points ray & pulls Trigger / Pinch<br><i>Raycast hits Artifact pedestal collider</i>"]
+    
+    EvRay --> CheckBusy{"if (IsInspecting || IsMoving)?"}
+    CheckBusy -->|"True (Busy)"| IgnoreRay(["Ignore Raycast / Return"]):::error
+    
+    CheckBusy -->|"False (Idle)"| CheckData{"if (artifact.GetComponent&lt;ArtifactData&gt;() != null)?"}
+    CheckData -->|"False (Not an exhibit)"| IgnoreNotExhibit(["Return"]):::error
+    
+    CheckData -->|"True (Valid)"| StartInsp["Begin Inspection State:<br><i>IsInspecting = true; Pause locomotion</i><br><i>Capture original artifact & player rig transform</i><br><i>Hide pedestal & info icon GameObject</i>"]
+    
+    StartInsp --> DimEnv["Trigger EnvironmentDimmer:<br><i>EnvironmentDimmer.Begin(brightness = 0.18, duration = 0.35s)</i><br><i>Fade museum gallery materials to dark backdrop</i>"]
+    
+    DimEnv --> GlideModel["Bring Artifact to Inspection Distance:<br><i>Smoothly glide model to eye distance (0.6m)</i><br><i>Attach OneGrabFreeRotateTransformer & Zoom (0.5x - 3.0x)</i>"]
+    
+    GlideModel --> OpenUI["Open Inspection Canvas Tablet:<br><i>Bind LocalizedString title & description</i><br><i>Reset scroll rect position</i>"]
+    
+    OpenUI --> CheckAlt{"if (currentArtifactData.alternateModel != null)?"}
+    
+    CheckAlt -->|"True (Has alternate)"| ShowToggle["Show 'Switch Form' Toggle Button<br><i>toggleModelButton.SetActive(true)</i>"]
+    ShowToggle --> ClickToggle["⚡ Visitor clicks 'Switch Form'<br><i>Swap between Original and Reconstructed mesh</i>"]
+    ClickToggle --> ActiveLoop
+    
+    CheckAlt -->|"False (Single model)"| HideToggle["Hide 'Switch Form' Button<br><i>toggleModelButton.SetActive(false)</i>"]
+    HideToggle --> ActiveLoop["Active Museum Inspection Loop:<br><i>Visitor manipulates 3D artifact with hand grab</i><br><i>Joystick zoom in/out, reads bilingual info panel</i>"]
+    
+    ActiveLoop --> EvClose["⚡ Visitor clicks 'Close' / presses B button"]
+    
+    EvClose --> Teardown["Teardown & Environment Restoration:<br><i>EnvironmentDimmer.Restore() -> Fade gallery back to 1.0</i><br><i>Glide artifact back to pedestal & restore rotation</i><br><i>Re-enable visitor locomotion; IsInspecting = false</i>"]
+    
+    Teardown --> Resume(["Resume Museum Gallery Exploration"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.7. Museum exploration and inspection, including the surrounding environment fade on entry and restoration on exit. The fade runs alongside the inspection transition. The model-switching control is available only where an alternate model is provided. Shared guide and language functions can also be accessed from the scene's tablet/submenu.
+Figure 3.7. Museum exploration and inspection. Raycasting artifact pedestal triggers `EnvironmentDimmer` (0.18 brightness over 0.35s), glides model to 0.6m distance, and binds bilingual metadata. Toggle button enables switching between weathered original (`_ORG`) and digitally restored (`_RES`) meshes.
 
 #### 3.4.6 MR: Entrance Alignment and Session Anchor
 
 ```mermaid
 flowchart TD
-    Start(["Enter MR scene"]) --> Setup["Check references, tracking, and passthrough setup"]
-    Setup --> Place["Hold right grip to position the entrance outline"]
-    Place --> Adjust["Use right stick to adjust rotation and reach"]
-    Adjust --> Match{"Outline matches the real sign/table?"}
-    Match -->|"No"| Place
-    Match -->|"Yes"| Confirm["Release grip and press A"]
-    Confirm --> Anchor["Create a session spatial anchor"]
-    Anchor --> Valid{"Anchor created, localized, and tracked; head tracked?"}
-    Valid -->|"No, or wait expires"| Error["Show alignment failure guidance"]
-    Error --> Place
-    Valid -->|"Yes"| Locked["Confirm alignment and retain site-to-anchor pose"]
-    Locked --> Display(["Continue to MR display workflow"])
-    Locked -->|"Hold X for two seconds to realign"| Place
+    StartMR(["Enter On-Site MR Scene"]) --> CheckTrack{"if (HeadIsTracked() && ControllerTracked())?"}
+    CheckTrack -->|"False (Untracked)"| WaitTrack["Wait for Quest Tracking Readiness<br><i>Display tracking prompt & yield</i>"]
+    WaitTrack --> CheckTrack
+    
+    CheckTrack -->|"True (Tracked)"| CheckReset{"if (Left X held &gt;= 2.0s)?"}
+    CheckReset -->|"True (Reset)"| DoReset["Reset Session Anchor:<br><i>Destroy active anchorObject</i><br><i>IsConfirmed = false; HasPlacedPreview = false</i><br><i>BeginAlignment()</i>"]
+    
+    CheckReset -->|"False (Normal)"| CheckConf{"if (IsConfirmed || IsBusy)?"}
+    DoReset --> CheckConf
+    CheckConf -->|"True (Confirmed)"| ActiveMR(["Site Aligned & Active"]):::success
+    
+    CheckConf -->|"False (Unaligned)"| ShowWire["Display Entrance Wireframe Outline<br><i>Show reference mesh attached to Right Controller</i>"]
+    ShowWire --> CheckGrip{"if (Right Hand Trigger Held)?"}
+    
+    CheckGrip -->|"True (Grip held)"| AdjPose["Adjust Alignment Pose:<br><i>Thumbstick X: Rotate yaw (45 deg/s)</i><br><i>Thumbstick Y: Adjust reach distance (0.15m - 3m)</i><br><i>HasPlacedPreview = true</i>"]
+    AdjPose --> CheckGrip
+    
+    CheckGrip -->|"False (Released)"| CheckA{"if (HasPlacedPreview && !Grip && Press A)?"}
+    CheckA -->|"False (Still aligning)"| ShowWire
+    
+    CheckA -->|"True (Confirmed)"| StartAnchor["StartCoroutine: ConfirmAlignment()<br><i>IsBusy = true</i><br><i>Prompt UI: 'Creating spatial anchor...'</i>"]
+    
+    StartAnchor --> AsyncAnchor["⚙️ Meta XR Core SDK<br><i>OVRSpatialAnchor.CreateAsync() at aligned pose</i>"]
+    
+    AsyncAnchor --> CheckAnchorOK{"if (anchor.Created && anchor.Localized)?<br><i>Within 15s deadline</i>"}
+    CheckAnchorOK -->|"False (Failed / Timeout)"| AnchorFail["Anchor Creation Failed:<br><i>Prompt UI: 'Localization failed. Retry.'</i><br><i>IsBusy = false</i>"]
+    AnchorFail --> ShowWire
+    
+    CheckAnchorOK -->|"True (Localized)"| AnchorOK["Lock Reference Frame & Spawn Site:<br><i>IsConfirmed = true, IsBusy = false</i><br><i>Lock reference root pose to spatial anchor</i><br><i>Trigger MRModelSpawner.SpawnAlignedModel()</i>"]
+    AnchorOK --> ActiveMR
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.8. MR alignment. Anchor creation waits for up to 15 seconds. Resetting clears the session anchor and starts alignment again. The inspected workflow does not save anchors for reuse after the application closes.
+Figure 3.8. MR alignment and session anchor registration. Validates Quest 6-DOF tracking, positions entrance wireframe outline via controller grip and thumbstick (yaw & reach), and initiates `OVRSpatialAnchor.CreateAsync()` with a 15-second timeout window to lock the spatial transformation matrix.
 
 #### 3.4.7 MR: Model Display, Information, and Tracking Recovery
 
 ```mermaid
 flowchart TD
-    Start(["MR display update"]) --> Confirmed{"Alignment confirmed?"}
-    Confirmed -->|"No"| Hide["Hide reconstruction and show alignment guidance"]
-    Hide --> Start
-    Confirmed -->|"Yes"| Tracked{"Anchor/headset tracked and passthrough ready?"}
-    Tracked -->|"No"| Pause["Hide reconstruction until tracking/display checks recover"]
-    Pause --> Start
-    Tracked -->|"Yes"| Spawn["Create model at its placement if needed"]
-    Spawn --> Visible{"Visitor requested model visible?"}
-    Visible -->|"Yes"| Show["Display the aligned reconstruction"]
-    Visible -->|"No"| Hidden["Keep model hidden"]
-    Show --> Action{"Visitor action"}
-    Hidden --> Action
-    Action -->|"Press A to toggle model"| Toggle["Change requested visibility"]
-    Toggle --> Start
-    Action -->|"Press B for information"| Info["Read/change site information pages when model is visible"]
-    Info --> Start
-    Action -->|"Continue viewing"| Start
-    Action -->|"Hold X to realign"| Align(["Entrance alignment workflow"])
-    Action -->|"Return and confirm"| Home(["Main menu"])
+    Tick["⚡ Unity Update() Frame Tick<br><i>MRMeshPlayableArea / MRModelSpawner</i>"]
+    
+    Tick --> CheckConf{"if (Alignment.IsConfirmed)?"}
+    CheckConf -->|"False (Not aligned)"| HideUnaligned["Hide Site Models & Show Wireframe<br><i>siteModelPrefab.SetActive(false)</i>"]
+    HideUnaligned --> WaitAlign(["Awaiting Alignment"]):::error
+    
+    CheckConf -->|"True (Aligned)"| CheckHead{"if (HeadIsTracked())?"}
+    CheckHead -->|"False (Lost 6DOF)"| HideTrack["Tracking Lost: Suppress Virtual Content<br><i>Hide site models & UI panels</i><br><i>Show Quest system boundary warning</i>"]
+    HideTrack --> WaitReloc(["Wait for Relocalization"]):::error
+    
+    CheckHead -->|"True (Head tracked)"| CheckAnchor{"if (anchor.IsTracked && Localized)?"}
+    CheckAnchor -->|"False (Anchor lost)"| HideAnchor["Anchor Tracking Degraded<br><i>Hide site models to prevent drift</i>"]
+    HideAnchor --> WaitReloc
+    
+    CheckAnchor -->|"True (Anchor tracked)"| CheckPass{"if (PassthroughReady && Active)?"}
+    CheckPass -->|"False (Blackout)"| WaitPass["Wait for Passthrough Feed<br><i>Suppress virtual overlay</i>"]
+    WaitPass --> WaitReloc
+    
+    CheckPass -->|"True (All guards pass)"| RenderModels["Render Aligned Site Models:<br><i>• Enable MeshRenderers on siteModelPrefab</i><br><i>• Apply unrestricted footprint (Free walking)</i><br><i>• Update MRSiteInformationPanel billboard to head</i>"]
+    
+    RenderModels --> CheckBtnA{"if (Button A Pressed)?"}
+    CheckBtnA -->|"True"| ToggleModel["Toggle Reconstruction Model<br><i>siteModelPrefab.SetActive(!active)</i>"]
+    
+    CheckBtnA -->|"False"| CheckBtnB{"if (Button B Pressed)?"}
+    ToggleModel --> CheckBtnB
+    CheckBtnB -->|"True"| TogglePanel["Toggle Site Information Tablet<br><i>siteInfoPanel.SetActive(!active)</i>"]
+    
+    CheckBtnB -->|"False"| CheckReset{"if (Left X held &gt;= 2.0s)?"}
+    TogglePanel --> CheckReset
+    CheckReset -->|"True"| DoReset["Trigger BeginAlignment()<br><i>Reset anchor & restart alignment</i>"]
+    
+    CheckReset -->|"False"| FrameEnd(["End of Frame (Yield)"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.9. MR display and recovery in the saved unrestricted configuration. Walking beyond a historical hallway does not trigger a current footprint restriction. Tracking and passthrough checks still control content visibility. The information panel follows model visibility. The code requests headset-boundary visibility suppression while its checked tracking and passthrough conditions hold; actual device behavior requires observation.
+Figure 3.9. MR display gating and continuous tracking recovery in unrestricted footprint mode. Validates alignment confirmation, 6-DOF head tracking, anchor localization, and color passthrough feed. Suppresses virtual models on tracking loss to eliminate drift, with A/B toggles for model and site info.
 
 #### 3.4.8 Shared AI Guide: Text, Speech, Responses, and Errors
 
 ```mermaid
 flowchart TD
-    Start(["Open AI guide from an experience scene"]) --> Input{"Choose input method"}
-    Input -->|"Keyboard"| Edit["Enter or edit the question"]
-    Input -->|"Microphone"| Record["Record speech after microphone permission"]
-    Record --> Transcribe["Send WAV audio to Groq"]
-    Transcribe --> Transcript{"Transcript received?"}
-    Transcript -->|"No"| SpeechError["Show transcription error or status"]
-    SpeechError --> Input
-    Transcript -->|"Yes"| Review["Place transcript in editable input"]
-    Review --> Edit
-    Edit --> Send["Visitor presses Send"]
-    Send --> Request["Send question and localized instructions to Gemini"]
-    Request --> Result{"Request outcome"}
-    Result -->|"Usable answer"| Answer["Display answer"]
-    Result -->|"Eligible failure; fallback unused"| Fallback["Try configured fallback once"]
-    Fallback --> Result
-    Result -->|"Other failure or empty answer"| Error["Display error or no-answer feedback"]
-    Result -->|"Visitor cancels or closes"| Cancel["Abort pending request"]
-    Answer --> Input
-    Error --> Input
-    Cancel --> Done(["Return to scene or edit another question"])
+    OpenGuide["⚡ Visitor opens AI Guide Canvas<br><i>Tablet button or quick-action icon</i>"]
+    
+    OpenGuide --> CheckMethod{"Visitor selects input method?"}
+    
+    %% Voice Branch
+    CheckMethod -->|"Voice (Speak Button)"| CheckRec{"if (IsRecording)?"}
+    CheckRec -->|"True (Active)"| StopRec["Stop Recording & Encode WAV"]
+    CheckRec -->|"False (Idle)"| CheckPerm{"if (RECORD_AUDIO Permission)?"}
+    CheckPerm -->|"False (Denied)"| ReqPerm["Request Android RECORD_AUDIO Permission"]
+    CheckPerm -->|"True (Granted)"| StartRec["Record Microphone Audio<br><i>Microphone.Start(16kHz mono, up to 15s)</i><br><i>Show pulsing waveform indicator</i>"]
+    
+    StopRec --> EncWav["Encode Audio Samples to 16kHz WAV"]
+    StartRec --> EncWav
+    
+    EncWav --> AsyncGroq["⚙️ Groq Cloud Whisper API<br><i>POST /v1/audio/transcriptions (whisper-large-v3)</i>"]
+    AsyncGroq --> CheckGroq{"if (HTTP Status == 200 OK)?"}
+    CheckGroq -->|"False (Error)"| GroqErr(["Show Error Toast / Allow Retry"]):::error
+    CheckGroq -->|"True (Success)"| PopInput["Populate Input Field<br><i>inputField.text = transcriptText</i><br><i>Enable visitor editing & correction</i>"]
+    
+    %% Typed Branch
+    CheckMethod -->|"Typed (Keyboard)"| VirtualKbd["Bilingual Virtual Keyboard<br><i>Visitor types question in Thai or English</i>"]
+    
+    %% Merge at Review
+    PopInput --> Review["Review & Edit Question in inputField"]
+    VirtualKbd --> Review
+    
+    Review --> ClickSend["⚡ Visitor clicks 'Send' button<br><i>GeminiChatUI.OnSendClicked()</i>"]
+    
+    ClickSend --> CheckEmpty{"if (string.IsNullOrWhiteSpace(text))?"}
+    CheckEmpty -->|"True (Empty)"| IgnoreEmpty(["Ignore click / Do nothing"]):::error
+    
+    CheckEmpty -->|"False (Valid)"| CheckInflight{"if (requestPending)?"}
+    CheckInflight -->|"True (In-flight)"| CancelReq["Cancel Request:<br><i>currentWebRequest.Abort()</i><br><i>Reset Send button icon; requestPending = false</i>"]
+    
+    CheckInflight -->|"False (Idle -> Send)"| BuildPrompt["Construct Prompt & Payload:<br><i>Append question to chat log (Cyan badge)</i><br><i>Detect locale -> Select thaiSystemPrompt or English</i><br><i>Build JSON: { contents, maxOutputTokens: 150 }</i>"]
+    
+    BuildPrompt --> AsyncGemini["⚙️ Google Gemini API<br><i>POST gemini-3.5-flash-lite:generateContent</i>"]
+    
+    AsyncGemini --> CheckGemini{"if (request.result == Success 200)?"}
+    
+    %% Fallback Branch
+    CheckGemini -->|"False (API Error)"| CheckFallback{"if (enableFallback && !usingFallback)?<br><i>HTTP 404, 408, 429, 5xx</i>"}
+    CheckFallback -->|"True (Fallback on)"| AsyncFallback["⚙️ Retry Gemini Fallback Model<br><i>POST gemini-3.1-flash-lite</i>"]
+    CheckFallback -->|"False (Fallback off)"| ShowErr["Display Localized Error in Chat Log<br><i>Show error badge + 'Check Connection'</i>"]
+    
+    %% Success
+    CheckGemini -->|"True (200 OK)"| DisplayResp["Display AI Guide Response:<br><i>Parse response text</i><br><i>Format markdown & append to log (Emerald badge)</i><br><i>Auto-scroll ScrollRect to bottom</i>"]
+    AsyncFallback --> DisplayResp
+    
+    DisplayResp --> Cleanup["Reset State & Clear Input:<br><i>requestPending = false; usingFallback = false</i><br><i>Restore Send button icon; inputField.text = ''</i>"]
+    ShowErr --> Cleanup
+    
+    Cleanup --> ReadyNext(["Ready for Next Question"]):::success
+
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b;
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.10. Shared AI workflow. Speech becomes editable text before chat submission. Fallback applies to selected HTTP failures (404, 408, 429, and 5xx). Request status, clear, and cancellation controls support recovery; response time and answer accuracy must be evaluated rather than assumed.
+Figure 3.10. Shared Multimodal AI Heritage Guide query workflow. Supports 16kHz microphone audio (transcribed via Groq Cloud Whisper API `whisper-large-v3`) and bilingual virtual keyboard into an editable input field. Prompts are submitted to Google Gemini (`gemini-3.5-flash-lite`) with automated single-attempt fallback to `gemini-3.1-flash-lite`.
 
 ---
 
