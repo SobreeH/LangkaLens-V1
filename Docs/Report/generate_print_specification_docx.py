@@ -5,6 +5,7 @@ import docx
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.enum.section import WD_SECTION_START, WD_ORIENT
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 
@@ -42,6 +43,7 @@ def add_header_footer(doc, subtitle_text):
     for sec in doc.sections:
         header = sec.header
         hp = header.paragraphs[0]
+        hp.text = ""
         hp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
         hrun = hp.add_run(f"LangkaLens | {subtitle_text}")
         hrun.font.name = "Times New Roman"
@@ -50,6 +52,7 @@ def add_header_footer(doc, subtitle_text):
         
         footer = sec.footer
         fp = footer.paragraphs[0]
+        fp.text = ""
         fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
         frun = fp.add_run("Prince of Songkla University, Pattani Campus — Faculty of Communication Science (CIM)")
         frun.font.name = "Times New Roman"
@@ -112,7 +115,11 @@ def add_heading_3(doc, text):
     format_run_font(r, "Times New Roman", 10.5, bold=True, color_rgb=(0x1A, 0x2E, 0x40))
     return p
 
-def add_callout(doc, text, title="", width_inches=6.4):
+def add_callout(doc, text, title="", width_inches=None):
+    is_landscape = (doc.sections[-1].orientation == WD_ORIENT.LANDSCAPE)
+    if width_inches is None:
+        width_inches = 9.6 if is_landscape else 6.4
+        
     table = doc.add_table(rows=1, cols=1)
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = False
@@ -139,10 +146,16 @@ def add_callout(doc, text, title="", width_inches=6.4):
     spacer.paragraph_format.space_before = Pt(0)
     spacer.paragraph_format.space_after = Pt(3)
 
-def add_image_box(doc, image_path, caption="", width_inches=4.8, max_height_inches=5.2):
+def add_image_box(doc, image_path, caption="", width_inches=None, max_height_inches=None):
     if not os.path.exists(image_path):
         print(f"Warning: Image not found at {image_path}")
         return
+        
+    is_landscape = (doc.sections[-1].orientation == WD_ORIENT.LANDSCAPE)
+    if width_inches is None:
+        width_inches = 8.8 if is_landscape else 5.4
+    if max_height_inches is None:
+        max_height_inches = 4.8 if is_landscape else 6.0
         
     try:
         from PIL import Image
@@ -223,12 +236,21 @@ def create_styled_table(doc, headers, data, col_widths=None, font_size=8.5, spac
 
 def add_side_by_side_diagrams(doc, img_left, cap_left, title_left, desc_left,
                               img_right, cap_right, title_right, desc_right,
-                              img_width=2.85, max_height_inches=5.8):
+                              img_width=None, max_height_inches=None):
+    is_landscape = (doc.sections[-1].orientation == WD_ORIENT.LANDSCAPE)
+    if is_landscape:
+        col_width = Inches(4.90)
+        actual_img_w = 4.2 if img_width is None else img_width
+        actual_max_h = 5.5 if max_height_inches is None else max_height_inches
+    else:
+        col_width = Inches(3.18)
+        actual_img_w = 2.85 if img_width is None else img_width
+        actual_max_h = 4.2 if max_height_inches is None else max_height_inches
+
     table = doc.add_table(rows=1, cols=2)
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = False
     
-    col_width = Inches(3.18)
     table.rows[0].cells[0].width = col_width
     table.rows[0].cells[1].width = col_width
     
@@ -253,14 +275,14 @@ def add_side_by_side_diagrams(doc, img_left, cap_left, title_left, desc_left,
         format_run_font(r_desc, "Times New Roman", 8.5, color_rgb=(0x44, 0x44, 0x44))
         
         if os.path.exists(img):
-            actual_w = img_width
+            w_draw = actual_img_w
             try:
                 from PIL import Image
                 with Image.open(img) as im:
                     img_w, img_h = im.size
                     aspect = img_w / img_h
-                    if (actual_w / aspect) > max_height_inches:
-                        actual_w = max_height_inches * aspect
+                    if (w_draw / aspect) > actual_max_h:
+                        w_draw = actual_max_h * aspect
             except Exception:
                 pass
                 
@@ -269,7 +291,7 @@ def add_side_by_side_diagrams(doc, img_left, cap_left, title_left, desc_left,
             p_img.paragraph_format.space_before = Pt(2)
             p_img.paragraph_format.space_after = Pt(1)
             r_img = p_img.add_run()
-            r_img.add_picture(img, width=Inches(actual_w))
+            r_img.add_picture(img, width=Inches(w_draw))
             
             p_cap = cell.add_paragraph()
             p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -282,24 +304,57 @@ def add_side_by_side_diagrams(doc, img_left, cap_left, title_left, desc_left,
     spacer.paragraph_format.space_before = Pt(0)
     spacer.paragraph_format.space_after = Pt(4)
 
-def init_document(subtitle_text):
-    doc = docx.Document()
-    sec = doc.sections[0]
+def add_section_landscape(doc):
+    sec = doc.add_section(WD_SECTION_START.NEW_PAGE)
+    sec.orientation = WD_ORIENT.LANDSCAPE
+    sec.page_width = Inches(11.69)
+    sec.page_height = Inches(8.27)
+    sec.top_margin = Inches(0.75)
+    sec.bottom_margin = Inches(0.75)
+    sec.left_margin = Inches(0.85)
+    sec.right_margin = Inches(0.85)
+    return sec
+
+def add_section_portrait(doc):
+    sec = doc.add_section(WD_SECTION_START.NEW_PAGE)
+    sec.orientation = WD_ORIENT.PORTRAIT
     sec.page_width = Inches(8.27)
     sec.page_height = Inches(11.69)
     sec.top_margin = Inches(0.75)
     sec.bottom_margin = Inches(0.75)
     sec.left_margin = Inches(1.0)
     sec.right_margin = Inches(0.8)
-    add_header_footer(doc, subtitle_text)
+    return sec
+
+def add_section_full_page_plate(doc):
+    sec = doc.add_section(WD_SECTION_START.NEW_PAGE)
+    sec.orientation = WD_ORIENT.PORTRAIT
+    sec.page_width = Inches(8.27)
+    sec.page_height = Inches(11.69)
+    sec.top_margin = Inches(0.50)
+    sec.bottom_margin = Inches(0.50)
+    sec.left_margin = Inches(0.55)
+    sec.right_margin = Inches(0.55)
+    return sec
+
+def init_document():
+    doc = docx.Document()
+    sec = doc.sections[0]
+    sec.orientation = WD_ORIENT.PORTRAIT
+    sec.page_width = Inches(8.27)
+    sec.page_height = Inches(11.69)
+    sec.top_margin = Inches(0.75)
+    sec.bottom_margin = Inches(0.75)
+    sec.left_margin = Inches(1.0)
+    sec.right_margin = Inches(0.8)
     return doc
 
 def build_arranged_document():
-    print("Building document with updated Faculty, Course, Stitch Storyboard, and Renumbered Architecture Diagrams...")
-    doc = init_document("Objectives, Scope, Storyboards & Diagrams")
+    print("Building document with Enlarged Diagrams and Dynamic Landscape Layout...")
+    doc = init_document()
     
     # =========================================================================
-    # PAGE 1: TITLE, ACADEMIC METADATA & EXECUTIVE SUMMARY (FITS 100% ON PAGE 1)
+    # PAGE 1: TITLE, ACADEMIC METADATA & EXECUTIVE SUMMARY (PORTRAIT)
     # =========================================================================
     seal_path = "Docs/Report/figures/cover/psu-seal.png"
     if os.path.exists(seal_path):
@@ -346,13 +401,13 @@ def build_arranged_document():
     add_callout(doc, 
         "Executive Summary & Seminar Progression Context:\n"
         "This specification document is compiled specifically for print and academic review. It consolidates the definitive Project Objectives, System Scope, Master Spatial Storyboard generated via Google Stitch, and the complete 14-diagram architectural suite (Figures 3.1 through 3.15) for LangkaLens. "
-        "These materials represent the latest, updated versions of the concepts originally presented during the preliminary seminar course last semester. Key updates include: integrating the Master Spatial Storyboard into Section 3.1 as Figure 3.1; shifting and renumbering the High-Level System Architecture and behavioral diagrams to Figures 3.2 through 3.15; adopting session-scoped language persistence; upgrading Mixed Reality to an unrestricted boundary with persistent spatial session anchors (OVRSpatialAnchor); integrating an unscaled environment dimmer during artifact inspection; implementing an asynchronous speech-to-text pipeline (Groq Whisper) with an editable input field before Google Gemini AI query dispatch; and incorporating the complete 15-domain visual repository (512 assets) featuring 11 curated archaeological relics and 4 full-scale architectural reconstructions.",
+        "These materials represent the latest, updated versions of the concepts originally presented during the preliminary seminar course last semester. Key updates include: integrating the Master Spatial Storyboard into Section 3.1 as Figure 3.1; shifting and renumbering the High-Level System Architecture and behavioral diagrams to Figures 3.2 through 3.15; adopting dynamic landscape orientations to display wide architectural and sequence diagrams at full fidelity; adopting session-scoped language persistence; upgrading Mixed Reality to an unrestricted boundary with persistent spatial session anchors (OVRSpatialAnchor); integrating an unscaled environment dimmer during artifact inspection; implementing an asynchronous speech-to-text pipeline (Groq Whisper) with an editable input field before Google Gemini AI query dispatch; and incorporating the complete 15-domain visual repository (512 assets) featuring 11 curated archaeological relics and 4 full-scale architectural reconstructions.",
         title="DOCUMENT PURPOSE & SEMINAR PROGRESSION SUMMARY", width_inches=6.4)
         
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 2: PART 1: PROJECT OBJECTIVES & TRACEABILITY MATRIX (FITS ON PAGE 2)
+    # PAGE 2: PART 1: PROJECT OBJECTIVES & TRACEABILITY MATRIX (PORTRAIT)
     # =========================================================================
     add_heading_1(doc, "Part 1: Project Objectives (วัตถุประสงค์ของโครงงาน)")
     
@@ -406,7 +461,7 @@ def build_arranged_document():
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 3: PART 2: SYSTEM SCOPE (FITS ON PAGE 3)
+    # PAGE 3: PART 2: SYSTEM SCOPE (PORTRAIT)
     # =========================================================================
     add_heading_1(doc, "Part 2: System Scope (ขอบเขตของโครงงานและระบบ)")
     
@@ -464,7 +519,7 @@ def build_arranged_document():
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 4: FORMAL REQUIREMENTS SPECIFICATIONS MATRIX (FITS ON PAGE 4)
+    # PAGE 4: FORMAL REQUIREMENTS SPECIFICATIONS MATRIX (PORTRAIT)
     # =========================================================================
     add_heading_2(doc, "Formal Requirements Specifications Matrix (FR-01 to FR-08 & NFR-01 to NFR-06)")
     add_styled_paragraph(doc, 
@@ -493,7 +548,7 @@ def build_arranged_document():
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 5: PART 3: SECTION 3.1 MASTER SPATIAL STORYBOARD (STITCH GENERATED)
+    # PAGE 5: PART 3: SECTION 3.1 MASTER SPATIAL STORYBOARD (PORTRAIT - CONCEPTUAL NARRATIVE)
     # =========================================================================
     add_heading_1(doc, "Part 3: Updated System Storyboards and Architectural Diagrams (สตอรี่บอร์ดและแผนภาพระบบฉบับปรับปรุงล่าสุด)")
     
@@ -505,18 +560,46 @@ def build_arranged_document():
         
     add_heading_2(doc, "3.1 Master Spatial Storyboard (สตอรี่บอร์ดหลักจำลองการโต้ตอบเชิงพื้นที่)")
     add_styled_paragraph(doc, 
-        "Figure 3.1 illustrates the comprehensive LangkaLens master spatial storyboard and end-to-end interaction topology across the seven primary user journey phases on Meta Quest 3 and Quest 3S, generated via Google Stitch spatial design specification. "
-        "Ground truth archaeological data from 7th-11th century Dvaravati excavations are translated into world-space UI components, natural 6-DOF Touch Plus controller gestures, and decoupled cloud microservices:")
+        "Figure 3.1 (presented as a dedicated full-page spatial architecture plate on the facing page) illustrates the comprehensive LangkaLens master spatial storyboard "
+        "and end-to-end interaction topology across the seven primary user journey phases on Meta Quest 3 and Quest 3S, generated via Google Stitch spatial design specification. "
+        "Ground truth archaeological data from 7th-11th century Dvaravati excavations are translated into world-space UI components, natural 6-DOF Touch Plus controller gestures, "
+        "and decoupled cloud microservices:")
         
-    add_image_box(doc, "Docs/Report/figures/diagrams/storyboard_01_master_journey.png", 
-                  caption="Figure 3.1: LangkaLens Master Spatial Storyboard: 7-Scene Interactive User Journey & Architecture Topology across Meta Quest 3 and Quest 3S (Generated via Google Stitch Spatial Computing Design System)", 
-                  width_inches=5.3, max_height_inches=5.1)
-                  
-    doc.add_page_break()
+    add_styled_paragraph(doc,
+        "• Curatorial Monograph Grounding: Each virtual environment directly reflects official Fine Arts Department excavation monographs for Ancient Yarang City (Ban Jalae 2, Ban Jalae 3, Ban Jalae 8, and Ban Wat 9).\n"
+        "• Spatial Ergonomics & Comfort: Interactive world-space canvases are positioned at 1.2m–2.0m optical focal distance, maintaining an ergonomic 30°–60° field of view and eliminating vergence-accommodation conflict.\n"
+        "• Unified 7-Scene Progression: Maps the complete user trajectory from language onboarding (Phase 01) and heritage hub navigation (Phase 02), to 360° tour waypoint traversal (Phase 03), in-situ stupa reconstruction (Phase 04), virtual museum inspection with lighting dimmers (Phases 05–06), on-site mixed reality alignment with hardware spatial anchors (Phase 07), and omnipresent multimodal AI guidance.\n"
+        "• Controller Input Paradigm: Establishes standardized physical mapping across index triggers (raycast selection and navigation warp), grip buttons (6-DOF relic grab and bounding box translation), thumbsticks (locomotion and axial model rotation), and face buttons (A/B scaling and Y dual-mesh toggle).")
+
+    add_callout(doc,
+        "Full-Page Master Spatial Storyboard Plate Notice:\n"
+        "To preserve the curatorial fidelity and textual legibility of all eight interaction panels, controller input schematics, and engine runtime metrics, "
+        "Figure 3.1 is presented on the following page (Page 6) as an unscaled, dedicated full-page architectural plate. "
+        "The formal interaction and subsystem specification matrix analyzing each scene follows on Page 7.",
+        title="MASTER SPATIAL STORYBOARD PLATE GUIDE (FIGURE 3.1)", width_inches=6.4)
+        
+    # =========================================================================
+    # PAGE 6: SECTION 3.1 FULL-PAGE MASTER SPATIAL STORYBOARD PLATE (PORTRAIT - FULL PAGE)
+    # =========================================================================
+    add_section_full_page_plate(doc)
     
+    p_sb_title = doc.add_paragraph()
+    p_sb_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_sb_title.paragraph_format.space_before = Pt(8)
+    p_sb_title.paragraph_format.space_after = Pt(4)
+    p_sb_title.paragraph_format.keep_with_next = True
+    r_sb_title = p_sb_title.add_run("Figure 3.1: LangkaLens Master Spatial Storyboard: 7-Scene Interactive User Journey & Architecture Topology")
+    format_run_font(r_sb_title, "Times New Roman", 10.5, bold=True, color_rgb=(0x1F, 0x49, 0x7D))
+    
+    # Storyboard Image enlarged to full page width (7.15 inches wide x 6.83 inches tall!)
+    add_image_box(doc, "Docs/Report/figures/diagrams/storyboard_01_master_journey.png", 
+                  caption="Figure 3.1: Complete 7-Scene Interactive User Journey and Architectural Topology across Meta Quest 3 and Quest 3S (Generated via Google Stitch Spatial Computing Design System, grounded in 7th–11th Century Dvaravati Archaeological Data). Visualizes end-to-end user flows, world-space UI cards, and Touch Plus controller field mapping.", 
+                  width_inches=7.15, max_height_inches=7.2)
+                  
     # =========================================================================
-    # PAGE 6: SECTION 3.1.1 MASTER STORYBOARD SPECIFICATION MATRIX (FITS ON PAGE 6)
+    # PAGE 7: SECTION 3.1.1 MASTER STORYBOARD SPECIFICATION MATRIX (PORTRAIT)
     # =========================================================================
+    add_section_portrait(doc)
     add_heading_3(doc, "3.1.1 Master Storyboard Interaction & Subsystem Specification Matrix")
     add_styled_paragraph(doc, 
         "The matrix below formalizes the visual environments, spatial UI components, user trigger controls, audio/haptic feedback cues, "
@@ -542,28 +625,29 @@ def build_arranged_document():
         "Concrete running captures, 4-monument reconstructions, and dual-mesh photogrammetric plates for each scene are detailed in Section 3.6.",
         title="SPATIAL STATE DECOUPLING PRINCIPLE", width_inches=6.4)
         
-    doc.add_page_break()
-    
     # =========================================================================
-    # PAGE 7: SECTION 3.2 HIGH-LEVEL ARCHITECTURE & FIGURE 3.2 (FITS ON PAGE 7)
+    # PAGE 7: SECTION 3.2 HIGH-LEVEL ARCHITECTURE (DYNAMIC LANDSCAPE - 9.2 INCHES WIDE!)
     # =========================================================================
+    add_section_landscape(doc)
     add_heading_2(doc, "3.2 High-Level System Architecture Diagram")
     add_styled_paragraph(doc, 
         "The updated system architecture follows a clean 4-tier layered model that enforces separation of concerns across presentation, "
-        "domain logic, hardware abstraction, and external services:\n"
+        "domain logic, hardware abstraction, and external cloud services:\n"
         "• Tier 1 (Presentation & Spatial UX): World-space Canvas hierarchies, TextMesh Pro distance-field rendering, Meta XR Color Passthrough, and 3D spatialized audio cues.\n"
         "• Tier 2 (Application & Domain Logic): Core state controllers (MainMenuManager, TourManager, InspectionManager, InspectionEnvironmentDimmer, MRMeshReferenceAlignment, GeminiChatUI).\n"
         "• Tier 3 (Engine & XR Hardware Abstraction): Unity 6 Engine and Meta XR All-In-One SDK (v203.0.2), handling 6-DOF SLAM tracking, optical passthrough buffers, spatial anchor hardware, and Touch Plus controller events.\n"
-        "• Tier 4 (Data Persistence & Cloud Microservices): ScriptableObjects and Addressable AssetBundles paired with external REST endpoints for Google Gemini and Groq Whisper.")
+        "• Tier 4 (Data Persistence & Cloud Microservices): ScriptableObjects and Addressable AssetBundles paired with external REST endpoints for Google Gemini and Groq Whisper.",
+        font_name="Times New Roman", size_pt=9.0, space_before=0, space_after=2)
         
+    # Enlarged to 9.2 inches wide in Landscape!
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_1.png", 
-                  caption="Figure 3.2: Updated High-Level System Architecture and External Services Topology", width_inches=5.4)
+                  caption="Figure 3.2: Updated High-Level System Architecture and External Services Topology", 
+                  width_inches=9.2, max_height_inches=4.7)
                   
-    doc.add_page_break()
-    
     # =========================================================================
-    # PAGE 8: SECTION 3.3 ACTOR PROFILES, USE CASES & FIGURE 3.3 (FITS ON PAGE 8)
+    # PAGE 8: SECTION 3.3 ACTOR PROFILES & USE CASES (PORTRAIT - ENLARGED)
     # =========================================================================
+    add_section_portrait(doc)
     add_heading_2(doc, "3.3 System Actor Profiles & Use Case Diagram")
     add_styled_paragraph(doc, 
         "LangkaLens identifies three primary system actors with distinct operational scopes:\n"
@@ -579,40 +663,50 @@ def build_arranged_document():
     ]
     create_styled_table(doc, actor_headers, actor_data, col_widths=[1.7, 1.8, 2.9], font_size=8.0, space_after=2)
     
+    # Enlarged to 5.2 inches wide
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_2.png", 
-                  caption="Figure 3.3: Updated System Functions and Use Case Diagram for Visitors and Curators", width_inches=4.2)
+                  caption="Figure 3.3: Updated System Functions and Use Case Diagram for Visitors and Curators", 
+                  width_inches=5.2, max_height_inches=5.0)
                   
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 9: SECTION 3.4 ACTIVITY FLOWCHARTS: FIG 3.4 & FIG 3.5 (DEDICATED PAGES)
+    # PAGE 9: SECTION 3.4 ACTIVITY FLOWCHARTS: FIG 3.4 (PORTRAIT - ENLARGED)
     # =========================================================================
     add_heading_2(doc, "3.4 System Workflow & Behavioral Activity Flowcharts")
     
     add_heading_3(doc, "3.4.1 Application Lifecycle & Scene Navigation Flowchart")
     add_styled_paragraph(doc, 
         "Governs the hub-and-spoke execution pattern. Launching initializes Main_Menu_Scene. Visitors choose between Thai or English and route into any destination scene. Return requests prompt confirmation before restoring the main menu and releasing mode-specific assets.")
+    # Enlarged to 6.2 inches wide (full width!)
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_3.png", 
-                  caption="Figure 3.4: Application Overview and Scene Navigation Flowchart", width_inches=4.8, max_height_inches=2.6)
+                  caption="Figure 3.4: Application Overview and Scene Navigation Flowchart", 
+                  width_inches=6.2, max_height_inches=3.4)
                   
     doc.add_page_break()
     
+    # =========================================================================
+    # PAGE 10: SECTION 3.4.2 MAIN MENU LANGUAGE SELECTION FLOWCHART (PORTRAIT - ENLARGED)
+    # =========================================================================
     add_heading_3(doc, "3.4.2 Main Menu Language Selection & Scene Loading Flowchart")
     add_styled_paragraph(doc, 
         "Governs session-scoped language persistence and async scene transitions. When launched, MainMenuManager checks HasSelectedLanguage in session memory. If unconfirmed, the bilingual modal displays and visitor selection updates LocalizationSettings.SelectedLocale. Clicking Confirm remembers the choice and displays mode buttons. Clicking a mode button validates SceneLoadingScreen.IsLoading (ignoring double-clicks), invokes BeginContentLoading(), and calls SceneManager.LoadSceneAsync().")
+    # Enlarged to 5.3 inches wide, max height 6.2 inches
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_4.png", 
-                  caption="Figure 3.5: Main Menu Language Selection and Scene Loading Flowchart", width_inches=5.0, max_height_inches=5.8)
+                  caption="Figure 3.5: Main Menu Language Selection and Scene Loading Flowchart", 
+                  width_inches=5.3, max_height_inches=6.2)
                   
-    doc.add_page_break()
-    
     # =========================================================================
-    # PAGE 10: ACTIVITY FLOWCHARTS: FIG 3.6 & FIG 3.7 (SIDE-BY-SIDE ON PAGE 10)
+    # PAGE 11: SECTIONS 3.4.3 & 3.4.4 VR TOUR & RECONSTRUCTION FLOWCHARTS (LANDSCAPE - SIDE-BY-SIDE ENLARGED)
     # =========================================================================
+    add_section_landscape(doc)
     add_heading_2(doc, "VR Tour Viewpoint Navigation & Reconstruction Inspection Flowcharts")
     add_styled_paragraph(doc, 
         "The two flowcharts below illustrate the core operational logic of the VR Panoramic Tour: viewpoint wayfinding via Addressables "
-        "and contextual 3D reconstructed stupa inspection:")
+        "and contextual 3D reconstructed stupa inspection. Displayed side-by-side in landscape for maximum diagrammatic legibility:",
+        space_before=0, space_after=2)
         
+    # Side-by-side in landscape with each diagram enlarged to 4.2 inches wide!
     add_side_by_side_diagrams(
         doc,
         img_left="Docs/Report/figures/diagrams/figure_3_5.png",
@@ -623,89 +717,117 @@ def build_arranged_document():
         cap_right="Figure 3.7: Tour Reconstruction Inspection",
         title_right="3.4.4 Tour Reconstruction Inspection",
         desc_right="Pressing Left Controller Button Y invokes TourReconstructionPresenter.ToggleInspection(). If already inspecting, it fades panorama backdrop back to 1.0, destroys the model instance, and releases the Addressables handle. If opening, it creates a staging parent, calls Addressables.InstantiateAsync(inspectionPrefab), places model at 0.8m distance, dims backdrop to 0.15 with #533A2D tint, attaches OneGrabFreeRotateTransformer (0.5x-3.0x zoom), displays the bilingual tablet, and handles clean teardown upon exit.",
-        img_width=2.85,
-        max_height_inches=4.2
+        img_width=4.2,
+        max_height_inches=5.5
     )
     
-    doc.add_page_break()
-    
     # =========================================================================
-    # PAGE 11: ACTIVITY FLOWCHARTS: FIG 3.8 & FIG 3.9 (DEDICATED PAGES)
+    # PAGE 12: SECTION 3.4.5 VR MUSEUM DIMMER FLOWCHART (PORTRAIT - ENLARGED)
     # =========================================================================
+    add_section_portrait(doc)
     add_heading_3(doc, "3.4.5 VR Museum Artifact Exploration & Environment Dimmer Flowchart")
     add_styled_paragraph(doc, 
         "Raycasting an artifact pedestal verifies ArtifactData, pauses visitor locomotion, and triggers EnvironmentDimmer.Begin(0.18, 0.35s) to fade surrounding museum geometry. The relic glides to 0.6m eye distance with OneGrabFreeRotateTransformer. The inspection canvas tablet binds localized strings and displays a 'Switch Form' toggle button if alternateModel is present to switch between weathered original (_ORG) and digitally restored (_RES) meshes. Closing smoothly restores gallery lighting, returns the model to its pedestal, and resumes locomotion.")
+    # Enlarged to 6.2 inches wide (full width!)
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_7.png", 
-                  caption="Figure 3.8: VR Museum Artifact Exploration and Environment Dimmer Flowchart", width_inches=5.4, max_height_inches=2.8)
-                  
-    doc.add_page_break()
-    
-    add_heading_3(doc, "3.4.6 Mixed Reality Entrance Alignment & Session Anchor Flowchart")
-    add_styled_paragraph(doc, 
-        "Verifies Meta Quest 6-DOF head and Touch Plus controller tracking. A 2-second hold of Left X clears existing anchors to restart alignment. The curator positions the virtual entrance wireframe outline using the right grip, adjusting rotation yaw (45 deg/s) and reach distance (0.15m-3.0m) with the thumbstick. Pressing button A invokes OVRSpatialAnchor.CreateAsync() with a 15-second timeout window. Upon localization, the relative transformation matrix locks, and MRModelSpawner.SpawnAlignedModel() instantiates the site reconstruction.")
-    add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_8.png", 
-                  caption="Figure 3.9: On-Site Mixed Reality Entrance Alignment and Session Anchor Flowchart", width_inches=4.8, max_height_inches=6.2)
+                  caption="Figure 3.8: VR Museum Artifact Exploration and Environment Dimmer Flowchart", 
+                  width_inches=6.2, max_height_inches=3.2)
                   
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 12: ACTIVITY FLOWCHARTS: FIG 3.10 & FIG 3.11 (DEDICATED PAGES)
+    # PAGE 13: SECTION 3.4.6 MR ENTRANCE ALIGNMENT FLOWCHART (PORTRAIT - ENLARGED)
+    # =========================================================================
+    add_heading_3(doc, "3.4.6 Mixed Reality Entrance Alignment & Session Anchor Flowchart")
+    add_styled_paragraph(doc, 
+        "Verifies Meta Quest 6-DOF head and Touch Plus controller tracking. A 2-second hold of Left X clears existing anchors to restart alignment. The curator positions the virtual entrance wireframe outline using the right grip, adjusting rotation yaw (45 deg/s) and reach distance (0.15m-3.0m) with the thumbstick. Pressing button A invokes OVRSpatialAnchor.CreateAsync() with a 15-second timeout window. Upon localization, the relative transformation matrix locks, and MRModelSpawner.SpawnAlignedModel() instantiates the site reconstruction.")
+    # Enlarged to 5.2 inches wide, height 6.5 inches
+    add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_8.png", 
+                  caption="Figure 3.9: On-Site Mixed Reality Entrance Alignment and Session Anchor Flowchart", 
+                  width_inches=5.2, max_height_inches=6.5)
+                  
+    doc.add_page_break()
+    
+    # =========================================================================
+    # PAGE 14: SECTION 3.4.7 MR MODEL DISPLAY GATING FLOWCHART (PORTRAIT - ENLARGED)
     # =========================================================================
     add_heading_3(doc, "3.4.7 MR Model Display Gating & Tracking Recovery Flowchart")
     add_styled_paragraph(doc, 
         "Executing in unrestricted footprint mode (allowing free visitor walking), runtime display requires alignment confirmation, active 6-DOF head tracking, spatial anchor localization, and active color passthrough. If tracking quality drops or passthrough is interrupted, virtual monuments and UI panels suppress immediately to prevent drift. Curators can toggle the 3D monument via button A, toggle the site information tablet via button B, or hold Left X for 2 seconds to trigger realignment.")
+    # Enlarged to 6.2 inches wide (full width!)
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_9.png", 
-                  caption="Figure 3.10: MR Model Display Gating and Tracking Recovery Flowchart", width_inches=5.4, max_height_inches=3.0)
+                  caption="Figure 3.10: MR Model Display Gating and Tracking Recovery Flowchart", 
+                  width_inches=6.2, max_height_inches=3.3)
                   
     doc.add_page_break()
     
+    # =========================================================================
+    # PAGE 15: SECTION 3.4.8 MULTIMODAL AI GUIDE WORKFLOW (PORTRAIT - ENLARGED)
+    # =========================================================================
     add_heading_3(doc, "3.4.8 Shared Multimodal AI Heritage Guide Workflow Flowchart")
     add_styled_paragraph(doc, 
         "Visitors submit questions via either 16kHz PCM audio microphone recording (transcribed via Groq Cloud Whisper API whisper-large-v3 with runtime Android permission checks) or bilingual virtual keyboard. The transcribed text is placed into an editable inputField for review. Clicking Send dispatches gemini-3.5-flash-lite with contextual archaeological prompts (150 max output tokens). On HTTP 404, 408, 429, or 5xx errors, an automatic fallback to gemini-3.1-flash-lite executes before reporting an error.")
+    # Enlarged to 5.0 inches wide, height 6.6 inches
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_10.png", 
-                  caption="Figure 3.11: Shared Multimodal AI Heritage Guide Workflow Flowchart", width_inches=4.6, max_height_inches=6.4)
+                  caption="Figure 3.11: Shared Multimodal AI Heritage Guide Workflow Flowchart", 
+                  width_inches=5.0, max_height_inches=6.6)
                   
-    doc.add_page_break()
-    
     # =========================================================================
-    # PAGE 13: SEQUENCE DIAGRAMS: FIG 3.12 & FIG 3.13 (FITS ON PAGE 13)
+    # PAGE 16-19: SECTION 3.5 PROCESS SEQUENCE DIAGRAMS (LANDSCAPE - FULL-WIDTH ENLARGED)
     # =========================================================================
+    add_section_landscape(doc)
     add_heading_2(doc, "3.5 Process Sequence Diagrams (Dynamic Component Interactions)")
     
+    # Figure 3.12: Tour Transition Sequence
     add_heading_3(doc, "3.5.1 Process 1: Tour Viewpoint Transition & Asynchronous Asset Loading")
     add_styled_paragraph(doc, 
-        "Chronicles the interaction between TourManager, Addressables, and URP materials. When an arrow indicator is clicked, input is disabled, the new 8K texture handle is requested, camera translation begins, the old texture handle is deallocated via Addressables.Release(), and indicators are refreshed.")
+        "Chronicles the interaction between TourManager, Addressables, and URP materials. When an arrow indicator is clicked, input is disabled, the new 8K texture handle is requested, camera translation begins, the old texture handle is deallocated via Addressables.Release(), and indicators are refreshed.",
+        space_before=0, space_after=2)
+    # Enlarged to 9.0 inches wide in Landscape!
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_11.png", 
-                  caption="Figure 3.12: Sequence Diagram: Asynchronous Tour Viewpoint Transition and Memory Cleanup", width_inches=4.9)
+                  caption="Figure 3.12: Sequence Diagram: Asynchronous Tour Viewpoint Transition and Memory Cleanup", 
+                  width_inches=9.0, max_height_inches=4.7)
                   
+    doc.add_page_break()
+    
+    # Figure 3.13: Museum Dimmer Sequence
     add_heading_3(doc, "3.5.2 Process 2: Museum Artifact Inspection & Dimmer Exposure Lifecycle")
     add_styled_paragraph(doc, 
-        "Documents the collaboration between InspectionManager, OneGrabFreeRotateTransformer, and InspectionEnvironmentDimmer. When an exhibit is grabbed, player locomotion is suspended, gallery renderers fade to 18% brightness, and localized metadata cards open. Closing restores full lighting.")
+        "Documents the collaboration between InspectionManager, OneGrabFreeRotateTransformer, and InspectionEnvironmentDimmer. When an exhibit is grabbed, player locomotion is suspended, gallery renderers fade to 18% brightness, and localized metadata cards open. Closing restores full lighting.",
+        space_before=0, space_after=2)
+    # Enlarged to 8.8 inches wide in Landscape!
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_12.png", 
-                  caption="Figure 3.13: Sequence Diagram: Museum Artifact Inspection and Dimmer Lifecycle", width_inches=4.9)
+                  caption="Figure 3.13: Sequence Diagram: Museum Artifact Inspection and Dimmer Lifecycle", 
+                  width_inches=8.8, max_height_inches=4.8)
                   
     doc.add_page_break()
     
-    # =========================================================================
-    # PAGE 14: SEQUENCE DIAGRAMS: FIG 3.14 & FIG 3.15 (FITS ON PAGE 14)
-    # =========================================================================
+    # Figure 3.14: MR Alignment Sequence
     add_heading_3(doc, "3.5.3 Process 3: MR Spatial Alignment & Hardware Session Anchoring")
     add_styled_paragraph(doc, 
-        "Illustrates the hardware synchronization between MRMeshReferenceAlignment, OVRSpatialAnchor, and MRModelSpawner. Bounding gizmo adjustments yield a relative transform, which is bound to an active Meta spatial anchor upon button confirmation.")
+        "Illustrates the hardware synchronization between MRMeshReferenceAlignment, OVRSpatialAnchor, and MRModelSpawner. Bounding gizmo adjustments yield a relative transform, which is bound to an active Meta spatial anchor upon button confirmation.",
+        space_before=0, space_after=2)
+    # Enlarged to 8.2 inches wide in Landscape!
     add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_13.png", 
-                  caption="Figure 3.14: Sequence Diagram: MR Entrance Alignment and Spatial Anchoring", width_inches=4.6)
-                  
-    add_heading_3(doc, "3.5.4 Process 4: Multimodal AI Heritage Guide (Speech & LLM Synthesis)")
-    add_styled_paragraph(doc, 
-        "Details the decoupled cloud interaction: speech recording triggers a POST request to Groq Whisper, populating the local input field. Upon Send, GeminiChatUI dispatches the prompt with injected archaeological context. If an HTTP 429/5xx error occurs, a single-attempt fallback model is automatically invoked.")
-    add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_14.png", 
-                  caption="Figure 3.15: Sequence Diagram: Multimodal AI Guide Speech Transcription and Gemini LLM Query", width_inches=4.7)
+                  caption="Figure 3.14: Sequence Diagram: MR Entrance Alignment and Spatial Anchoring", 
+                  width_inches=8.2, max_height_inches=5.0)
                   
     doc.add_page_break()
     
+    # Figure 3.15: AI Guide Sequence
+    add_heading_3(doc, "3.5.4 Process 4: Multimodal AI Heritage Guide (Speech & LLM Synthesis)")
+    add_styled_paragraph(doc, 
+        "Details the decoupled cloud interaction: speech recording triggers a POST request to Groq Whisper, populating the local input field. Upon Send, GeminiChatUI dispatches the prompt with injected archaeological context. If an HTTP 429/5xx error occurs, a single-attempt fallback model is automatically invoked.",
+        space_before=0, space_after=2)
+    # Enlarged to 9.0 inches wide in Landscape!
+    add_image_box(doc, "Docs/Report/figures/diagrams/figure_3_14.png", 
+                  caption="Figure 3.15: Sequence Diagram: Multimodal AI Guide Speech Transcription and Gemini LLM Query", 
+                  width_inches=9.0, max_height_inches=4.7)
+                  
     # =========================================================================
-    # PAGE 15: SECTION 3.6 STEP-BY-STEP SPATIAL INTERFACE WALKTHROUGH (FRAMES 1 & 2)
+    # PAGE 20: SECTION 3.6 STEP-BY-STEP SPATIAL INTERFACE WALKTHROUGH (PORTRAIT)
     # =========================================================================
+    add_section_portrait(doc)
     add_heading_2(doc, "3.6 Step-by-Step Spatial Interface Walkthrough & Visual Plates")
     add_styled_paragraph(doc, 
         "The step-by-step walkthrough below provides concrete visual proof of the seven user journey phases captured directly from runtime builds on the physical Meta Quest 3 hardware, "
@@ -719,7 +841,7 @@ def build_arranged_document():
         "• User Interaction: The visitor aims the controller ray pointer at their preferred language card and pulls the index trigger. The selected card highlights in Dvaravati Gold (#E5A93C), unlocking the 'Confirm & Continue' button.\n"
         "• System Implementation: MainMenuManager.cs initialises the selected locale code ('th' or 'en') via Unity Localization StringTable collections and records session confirmation.")
     add_image_box(doc, "Docs/User_Guide_Pictures/01_GettingStarted_PointAndSelect.jpg", 
-                  caption="Storyboard Frame 1: Language Onboarding Portal & Controller Raycast Selection", width_inches=3.6)
+                  caption="Storyboard Frame 1: Language Onboarding Portal & Controller Raycast Selection", width_inches=4.6)
                   
     # Frame 2
     add_heading_3(doc, "Storyboard Frame 2: Spatial Heritage Hub (Main Menu Navigation)")
@@ -729,12 +851,12 @@ def build_arranged_document():
         "• User Interaction: Pointing the raycast at any portal card triggers depth elevation and haptic pulse. Clicking loads the destination scene.\n"
         "• System Implementation: MainMenuManager.cs routes the selection to SceneManager.LoadSceneAsync with garbage collection.")
     add_image_box(doc, "Docs/User_Guide_Pictures/02_GettingStarted_ChooseExperience.jpg", 
-                  caption="Storyboard Frame 2: Spatial Heritage Hub (Main Menu Navigation)", width_inches=3.6)
+                  caption="Storyboard Frame 2: Spatial Heritage Hub (Main Menu Navigation)", width_inches=4.6)
                   
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 16: FRAME 3 & 4-MONUMENT ARCHITECTURAL RECONSTRUCTIONS (FITS ON PAGE 16)
+    # PAGE 21: FRAME 3 & 4-MONUMENT ARCHITECTURAL RECONSTRUCTIONS (PORTRAIT)
     # =========================================================================
     # Frame 3
     add_heading_3(doc, "Storyboard Frame 3: VR 360-Degree Panoramic Tour & Wayfinding")
@@ -744,19 +866,20 @@ def build_arranged_document():
         "• User Interaction: The visitor aims at a directional chevron and clicks the index trigger. The system executes a smooth quadratic translation to the arrival node.\n"
         "• System Implementation: TourManager.cs parses TourNode graphs, loads new textures via Unity Addressables, and calls Addressables.Release() on prior textures.")
     add_image_box(doc, "Docs/User_Guide_Pictures/12_VRTour_AimAtNavigationArrow.jpg", 
-                  caption="Storyboard Frame 3: VR 360-Degree Panoramic Tour & Wayfinding Chevrons", width_inches=3.3)
+                  caption="Storyboard Frame 3: VR 360-Degree Panoramic Tour & Wayfinding Chevrons", width_inches=4.2)
                   
-    # 4-Monument Reconstructions Plate
+    # 4-Monument Reconstructions Plate (Enlarged to 5.8 inches wide!)
     add_heading_3(doc, "3D Interpreted Architectural Reconstructions of Ancient Yarang Monuments")
     add_styled_paragraph(doc, 
         "LangkaLens incorporates full-scale architectural reconstructions of interpreted Dvaravati religious monuments: (a) Ban Ja-Lae Site 2 (stupa sanctuary), (b) Ban Ja-Lae Site 3 (tiered terracotta stupa base), (c) Ban Ja-Lae Site 8 (mandapa complex), and (d) Ban Wat Site 9 (moated foundation shrine).")
     add_image_box(doc, "Docs/Report/figures/reconstructions_grid_4monuments.png", 
-                  caption="Architectural Reconstruction Plate: 3D interpreted monuments of Ban Ja-Lae 2, Ban Ja-Lae 3, Ban Ja-Lae 8, and Ban Wat 9", width_inches=4.3)
+                  caption="Architectural Reconstruction Plate: 3D interpreted monuments of Ban Ja-Lae 2, Ban Ja-Lae 3, Ban Ja-Lae 8, and Ban Wat 9", 
+                  width_inches=5.8, max_height_inches=3.4)
                   
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 17: FRAME 4 & FRAME 5 WITH ARTIFACT COMPARISON PLATE (FITS ON PAGE 17)
+    # PAGE 22: FRAME 4 & FRAME 5 WITH ARTIFACT COMPARISON PLATE (PORTRAIT)
     # =========================================================================
     # Frame 4
     add_heading_3(doc, "Storyboard Frame 4: In-Situ 3D Stupa Architectural Reconstruction Overlay")
@@ -766,20 +889,21 @@ def build_arranged_document():
         "• User Interaction: Pressing Left Controller Button Y toggles the 3D stupa. The right thumbstick allows smooth vertical rotation of the model for comprehensive inspection.\n"
         "• System Implementation: TourReconstructionPresenter.cs instantiates the reconstruction prefab via Addressables.")
     add_image_box(doc, "Docs/User_Guide_Pictures/15_VRTour_EnterReconstructionInspection.jpg", 
-                  caption="Storyboard Frame 4: In-Situ 3D Stupa Architectural Reconstruction Overlay", width_inches=3.3)
+                  caption="Storyboard Frame 4: In-Situ 3D Stupa Architectural Reconstruction Overlay", width_inches=4.2)
                   
-    # Frame 5 with Dual-Mesh Comparison Plate
+    # Frame 5 with Dual-Mesh Comparison Plate (Enlarged to 5.8 inches wide!)
     add_heading_3(doc, "Storyboard Frame 5: VR Museum Artifact Examination & Dual-Mesh Comparison")
     add_styled_paragraph(doc, 
         "• Visual Scene: Virtual museum gallery with pedestals illuminating 3D scans of excavated relics. InspectionEnvironmentDimmer fades ambient gallery lighting to 18%.\n"
         "• Dual-Mesh Comparison: Visitors press Left Button Y to dynamically toggle between the weathered excavation state (_ORG) and an archaeologically restored visual form (_RES), such as the Standing Buddha in Vitarka Mudra shown below:")
     add_image_box(doc, "Docs/Images/02_Artifact_Comparisons/Buddha_Comparison.png", 
-                  caption="Artifact Comparison Plate: Standing Buddha (พระพุทธรูปยืนศิลปะทวารวดี) — Excavated Weathered Scan (_ORG, Left) vs 3D Restored Form (_RES, Right)", width_inches=4.3)
+                  caption="Artifact Comparison Plate: Standing Buddha (พระพุทธรูปยืนศิลปะทวารวดี) — Excavated Weathered Scan (_ORG, Left) vs 3D Restored Form (_RES, Right)", 
+                  width_inches=5.8, max_height_inches=3.4)
                   
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 18: FRAME 6 & FRAME 7 (FITS ON PAGE 18)
+    # PAGE 23: FRAME 6 & FRAME 7 (PORTRAIT)
     # =========================================================================
     # Frame 6
     add_heading_3(doc, "Storyboard Frame 6: On-Site Mixed Reality Passthrough & Spatial Alignment")
@@ -789,7 +913,7 @@ def build_arranged_document():
         "• User Interaction: The curator grabs the virtual reference gizmo with the right grip, matches it to the physical sign, and presses Button A to lock a hardware spatial anchor.\n"
         "• System Implementation: MRMeshReferenceAlignment.cs and Meta OVRSpatialAnchor API manage coordinate transformation and session locking.")
     add_image_box(doc, "Docs/User_Guide_Pictures/07_MR_ReleaseGripAndConfirm.jpg", 
-                  caption="Storyboard Frame 6: On-Site Mixed Reality Passthrough Alignment & Session Anchoring", width_inches=3.4)
+                  caption="Storyboard Frame 6: On-Site Mixed Reality Passthrough Alignment & Session Anchoring", width_inches=4.6)
                   
     # Frame 7
     add_heading_3(doc, "Storyboard Frame 7: Independent Multimodal AI Heritage Assistant")
@@ -799,12 +923,12 @@ def build_arranged_document():
         "• User Interaction: Visitors type questions or record speech. Speech is transcribed by Groq Whisper into an editable input field before submitting to Google Gemini.\n"
         "• System Implementation: GeminiChatUI.cs manages RESTful chat requests with prompt grounding; SpeechToTextHandler.cs encodes 16kHz PCM WAV audio chunks.")
     add_image_box(doc, "Docs/User_Guide_Pictures/27_AIGuide_TypeAndSendQuestion.jpg", 
-                  caption="Storyboard Frame 7: Multimodal Gemini AI Heritage Assistant (Voice & Typed Chat)", width_inches=3.4)
+                  caption="Storyboard Frame 7: Multimodal Gemini AI Heritage Assistant (Voice & Typed Chat)", width_inches=4.6)
                   
     doc.add_page_break()
     
     # =========================================================================
-    # PAGE 19: SECTION 3.7 CONTROLLER MAPPING TABLE & CONCLUDING SUMMARY (PAGE 19)
+    # PAGE 24: SECTION 3.7 CONTROLLER MAPPING TABLE & CONCLUDING SUMMARY (PORTRAIT)
     # =========================================================================
     add_heading_2(doc, "3.7 Spatial Controller Input Mapping Reference Table & Curatorial Field Guide")
     add_styled_paragraph(doc, 
@@ -836,6 +960,9 @@ def build_arranged_document():
         "All visual components and interactive state machines are fully aligned with the senior project report (Docs/Report/LangkaLens_Senior_Project_Report.docx).",
         title="SYSTEM SPECIFICATION CONCLUDING SUMMARY", width_inches=6.4)
         
+    # Apply running headers and footers across ALL sections (portrait and landscape)
+    add_header_footer(doc, "Objectives, Scope, Storyboards & Diagrams")
+    
     out_docx = r"Docs/Report/LangkaLens_Objectives_Scope_Diagrams_and_Storyboards.docx"
     doc.save(out_docx)
     print(f"Successfully generated DOCX: {out_docx}")
@@ -864,12 +991,13 @@ This specification document is compiled specifically for print and academic revi
 These materials represent the latest, updated versions of the concepts originally presented during the preliminary seminar course last semester. Key updates include:
 1. **Master Spatial Storyboard Integration:** Integrating the Google Stitch Master Spatial Storyboard into Section 3.1 as Figure 3.1, establishing an end-to-end curatorial user journey from onboarding to multimodal AI guidance.
 2. **Synchronized Figure Numbering:** Shifting and renumbering the High-Level System Architecture and behavioral diagrams to Figures 3.2 through 3.15, aligning 1-to-1 with Chapter 3 of the thesis report.
-3. **Decoupled Cloud Architecture:** Transitioning from theoretical administrative portals to a focused, standalone mobile VR/MR architecture. Cloud AI (Gemini and Groq) is strictly decoupled from the core presentation loop.
-4. **Session-Scoped Language Persistence:** Adopting session-scoped language persistence (confirming once per runtime session).
-5. **Unrestricted Mixed Reality with Hardware Anchors:** Upgrading Mixed Reality to an unrestricted boundary matching open-air historical parks, backed by persistent hardware spatial session anchors (`OVRSpatialAnchor`).
-6. **Unscaled Museum Dimmer:** Integrating an unscaled environment exposure dimmer (0.18 multiplier over 0.35s) during artifact inspection to maximize focus.
-7. **Two-Stage Voice Transcription:** Implementing an asynchronous speech-to-text pipeline (Groq Whisper) with an editable input field before Google Gemini AI query dispatch.
-8. **Enriched Visual Asset Integration:** Incorporating the complete 15-domain visual repository (512 assets, 1.72 GB) featuring 11 curated archaeological relics and 4 full-scale architectural reconstructions.
+3. **Dynamic Landscape Sections & Diagram Enlargement:** Adapting wide architecture and sequence diagrams to landscape page layouts, enlarging diagrams by up to 90% for clear, crisp legibility.
+4. **Decoupled Cloud Architecture:** Transitioning from theoretical administrative portals to a focused, standalone mobile VR/MR architecture. Cloud AI (Gemini and Groq) is strictly decoupled from the core presentation loop.
+5. **Session-Scoped Language Persistence:** Adopting session-scoped language persistence (confirming once per runtime session).
+6. **Unrestricted Mixed Reality with Hardware Anchors:** Upgrading Mixed Reality to an unrestricted boundary matching open-air historical parks, backed by persistent hardware spatial session anchors (`OVRSpatialAnchor`).
+7. **Unscaled Museum Dimmer:** Integrating an unscaled environment exposure dimmer (0.18 multiplier over 0.35s) during artifact inspection to maximize focus.
+8. **Two-Stage Voice Transcription:** Implementing an asynchronous speech-to-text pipeline (Groq Whisper) with an editable input field before Google Gemini AI query dispatch.
+9. **Enriched Visual Asset Integration:** Incorporating the complete 15-domain visual repository (512 assets, 1.72 GB) featuring 11 curated archaeological relics and 4 full-scale architectural reconstructions.
 
 ---
 
@@ -947,7 +1075,7 @@ Based on consultation with official Fine Arts Department excavation monographs a
 | **FR-04** | VR Museum Artifact 6-DOF | ArtifactData; OneGrabFreeRotate; Dimmer | Pedestal exhibit grab; 0.18 environment fade; dual-mesh toggle support. |
 | **FR-05** | MR Entrance Alignment | MRMeshReferenceAlignment; OVRSpatialAnchor | Curator gizmo alignment; hardware anchor generation within 15 seconds. |
 | **FR-06** | MR Display Gating | MRMeshPlayableArea; Passthrough Buffers | Automatic concealment upon tracking degradation; unrestricted park volume. |
-| **FR-07** | Multimodal AI Heritage Guide | GeminiChatUI; Google Gemini REST API | Context-grounded prompt injection; automatic fallback on HTTP 429/5xx. |
+| **FR-07** | Multimodal AI Heritage Guide | GeminiChatUI; Google Gemini REST API | Context-grounded prompt injection; automatic fallback on HTTP 429/5xx."],
 | **FR-08** | Voice Speech-to-Text | SpeechToTextHandler; Groq Whisper Cloud | 16kHz WAV streaming; editable text field population before prompt dispatch. |
 | **NFR-01** | Performance & Frame Rate | URP Forward+; Single-Pass Instanced Stereo | Rock-solid 72/90 FPS; frame time <= 13.8 ms; draw calls <= 120 per eye. |
 | **NFR-02** | Memory Footprint | Addressables.Release(); ASTC 6x6 Textures | Peak heap allocation < 2.5 GB; zero VRAM leaks during scene traversal. |
@@ -961,9 +1089,12 @@ Based on consultation with official Fine Arts Department excavation monographs a
 # Part 3: Updated System Storyboards and Architectural Diagrams (สตอรี่บอร์ดและแผนภาพระบบฉบับปรับปรุงล่าสุด)
 
 ### 3.1 Master Spatial Storyboard (สตอรี่บอร์ดหลักจำลองการโต้ตอบเชิงพื้นที่)
-Figure 3.1 illustrates the comprehensive LangkaLens master spatial storyboard and end-to-end interaction topology across the seven primary user journey phases on Meta Quest 3 and Quest 3S, generated via Google Stitch spatial design specification.
+Figure 3.1 (presented as a dedicated full-page spatial architecture plate) illustrates the comprehensive LangkaLens master spatial storyboard and end-to-end interaction topology across the seven primary user journey phases on Meta Quest 3 and Quest 3S, generated via Google Stitch spatial design specification.
 
-![Figure 3.1: Master Spatial Storyboard](figures/diagrams/storyboard_01_master_journey.png)
+#### Figure 3.1: Master Spatial Storyboard *(Full-Page Architectural Plate)*
+![Figure 3.1: Master Spatial Storyboard (Full-Page Plate)](figures/diagrams/storyboard_01_master_journey.png)
+
+*Figure 3.1: Complete 7-Scene Interactive User Journey and Architectural Topology across Meta Quest 3 and Quest 3S (Generated via Google Stitch Spatial Computing Design System, grounded in 7th–11th Century Dvaravati Archaeological Data). Visualizes end-to-end user flows, world-space UI cards, and Touch Plus controller field mapping.*
 
 #### 3.1.1 Master Storyboard Interaction & Subsystem Specification Matrix
 
@@ -977,7 +1108,7 @@ Figure 3.1 illustrates the comprehensive LangkaLens master spatial storyboard an
 | **06** | On-Site MR | Real park via Color Passthrough | 1:1 Stupa + Curator reference gizmo | Right Grip+Stick align; Button A anchor | Spatial reverb; tactile anchor lock | MRMeshReferenceAlignment.cs |
 | **07** | Multimodal AI Guide | Floating glassmorphic tablet | Tablet window with chat and mic bar | Dictate voice or type; click Send | Digital chime; typewriter audio stream | GeminiChatUI.cs |
 
-### 3.2 High-Level System Architecture Diagram
+### 3.2 High-Level System Architecture Diagram *(Landscape Orientation)*
 ![Figure 3.2: Updated High-Level System Architecture and External Services Topology](figures/diagrams/figure_3_1.png)
 
 ### 3.3 System Actor Profiles & Use Case Diagram
@@ -988,9 +1119,8 @@ Figure 3.1 illustrates the comprehensive LangkaLens master spatial storyboard an
   ![Figure 3.4](figures/diagrams/figure_3_3.png)
 - **Figure 3.5:** Main Menu Language Selection and Scene Loading Flowchart  
   ![Figure 3.5](figures/diagrams/figure_3_4.png)
-- **Figure 3.6:** VR 360 Panoramic Tour Navigation Flowchart  
-  ![Figure 3.6](figures/diagrams/figure_3_5.png)
-- **Figure 3.7:** VR Tour Reconstruction Inspection and Memory Cleanup Flowchart  
+- **Figure 3.6 & 3.7:** VR 360 Panoramic Tour Navigation & Tour Reconstruction Inspection *(Landscape Side-by-Side)*  
+  ![Figure 3.6](figures/diagrams/figure_3_5.png)  
   ![Figure 3.7](figures/diagrams/figure_3_6.png)
 - **Figure 3.8:** VR Museum Artifact Exploration and Environment Dimmer Flowchart  
   ![Figure 3.8](figures/diagrams/figure_3_7.png)
@@ -1001,7 +1131,7 @@ Figure 3.1 illustrates the comprehensive LangkaLens master spatial storyboard an
 - **Figure 3.11:** Shared Multimodal AI Heritage Guide Workflow Flowchart  
   ![Figure 3.11](figures/diagrams/figure_3_10.png)
 
-### 3.5 Process Sequence Diagrams
+### 3.5 Process Sequence Diagrams *(Landscape Orientation)*
 - **Figure 3.12:** Sequence Diagram: Asynchronous Tour Viewpoint Transition and Memory Cleanup  
   ![Figure 3.12](figures/diagrams/figure_3_11.png)
 - **Figure 3.13:** Sequence Diagram: Museum Artifact Inspection and Dimmer Lifecycle  
