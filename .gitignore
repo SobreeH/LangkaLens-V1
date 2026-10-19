@@ -152,3 +152,7 @@ Docs/User_Guide_Screenshots.zip
 Docs/User_Guide_Pictures/
 Docs/LangkaLens_User_Guide_Screenshots.docx
 
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*.class
