@@ -1,4 +1,4 @@
-# LangkaLens: Project Objectives, System Scope, Updated System Diagrams, and Spatial Storyboards
+# LangkaLens: Project Objectives, System Scope, Master Spatial Storyboard, and Architectural Diagrams
 **Academic Context:** Senior Project Technical Specification & Print Deliverable  
 **Author:** Wansobree Hajihama (Student ID: 6620610023)  
 **Project Advisor:** Assistant Professor Dr. Zamree Che-aron (ผศ.ดร.ซัมรี เจ๊ะอารน)  
@@ -11,15 +11,17 @@
 ---
 
 ## Executive Summary & Seminar Progression Context
-This specification document is compiled specifically for print and academic review. It consolidates the definitive Project Objectives, System Scope, updated Architectural/Activity/Sequence Diagrams (Figures 3.1 through 3.14), and comprehensive Spatial Storyboards for LangkaLens.
+This specification document is compiled specifically for print and academic review. It consolidates the definitive Project Objectives, System Scope, Master Spatial Storyboard generated via Google Stitch, and the complete 14-diagram architectural suite (Figures 3.1 through 3.15) for LangkaLens.
 
 These materials represent the latest, updated versions of the concepts originally presented during the preliminary seminar course last semester. Key updates include:
-1. **Decoupled Cloud Architecture:** Transitioning from theoretical administrative portals to a focused, standalone mobile VR/MR architecture. Cloud AI (Gemini and Groq) is strictly decoupled from the core presentation loop.
-2. **Session-Scoped Language Persistence:** Adopting session-scoped language persistence (confirming once per runtime session).
-3. **Unrestricted Mixed Reality with Hardware Anchors:** Upgrading Mixed Reality to an unrestricted boundary matching open-air historical parks, backed by persistent hardware spatial session anchors (`OVRSpatialAnchor`).
-4. **Unscaled Museum Dimmer:** Integrating an unscaled environment exposure dimmer (0.18 multiplier over 0.35s) during artifact inspection to maximize focus.
-5. **Two-Stage Voice Transcription:** Implementing an asynchronous speech-to-text pipeline (Groq Whisper) with an editable input field before Google Gemini AI query dispatch.
-6. **Enriched Visual Asset Integration:** Incorporating the complete 15-domain visual repository (512 assets, 1.72 GB) featuring 11 curated archaeological relics and 4 full-scale architectural reconstructions.
+1. **Master Spatial Storyboard Integration:** Integrating the Google Stitch Master Spatial Storyboard into Section 3.1 as Figure 3.1, establishing an end-to-end curatorial user journey from onboarding to multimodal AI guidance.
+2. **Synchronized Figure Numbering:** Shifting and renumbering the High-Level System Architecture and behavioral diagrams to Figures 3.2 through 3.15, aligning 1-to-1 with Chapter 3 of the thesis report.
+3. **Decoupled Cloud Architecture:** Transitioning from theoretical administrative portals to a focused, standalone mobile VR/MR architecture. Cloud AI (Gemini and Groq) is strictly decoupled from the core presentation loop.
+4. **Session-Scoped Language Persistence:** Adopting session-scoped language persistence (confirming once per runtime session).
+5. **Unrestricted Mixed Reality with Hardware Anchors:** Upgrading Mixed Reality to an unrestricted boundary matching open-air historical parks, backed by persistent hardware spatial session anchors (`OVRSpatialAnchor`).
+6. **Unscaled Museum Dimmer:** Integrating an unscaled environment exposure dimmer (0.18 multiplier over 0.35s) during artifact inspection to maximize focus.
+7. **Two-Stage Voice Transcription:** Implementing an asynchronous speech-to-text pipeline (Groq Whisper) with an editable input field before Google Gemini AI query dispatch.
+8. **Enriched Visual Asset Integration:** Incorporating the complete 15-domain visual repository (512 assets, 1.72 GB) featuring 11 curated archaeological relics and 4 full-scale architectural reconstructions.
 
 ---
 
@@ -108,47 +110,14 @@ Based on consultation with official Fine Arts Department excavation monographs a
 
 ---
 
-# Part 3: Updated System Diagrams (แผนภาพระบบฉบับปรับปรุงล่าสุด)
+# Part 3: Updated System Storyboards and Architectural Diagrams (สตอรี่บอร์ดและแผนภาพระบบฉบับปรับปรุงล่าสุด)
 
-### 3.1 High-Level System Architecture Diagram
-![Figure 3.1: Updated High-Level System Architecture and External Services Topology](figures/diagrams/figure_3_1.png)
+### 3.1 Master Spatial Storyboard (สตอรี่บอร์ดหลักจำลองการโต้ตอบเชิงพื้นที่)
+Figure 3.1 illustrates the comprehensive LangkaLens master spatial storyboard and end-to-end interaction topology across the seven primary user journey phases on Meta Quest 3 and Quest 3S, generated via Google Stitch spatial design specification.
 
-### 3.2 System Actor Profiles & Use Case Diagram
-![Figure 3.2: Updated System Functions and Use Case Diagram for Visitors and Curators](figures/diagrams/figure_3_2.png)
+![Figure 3.1: Master Spatial Storyboard](figures/diagrams/storyboard_01_master_journey.png)
 
-### 3.3 System Workflow & Behavioral Activity Flowcharts
-- **Figure 3.3:** Application Overview and Scene Navigation Flowchart  
-  ![Figure 3.3](figures/diagrams/figure_3_3.png)
-- **Figure 3.4:** Main Menu Language Selection and Scene Loading Flowchart  
-  ![Figure 3.4](figures/diagrams/figure_3_4.png)
-- **Figure 3.5:** VR 360 Panoramic Tour Navigation Flowchart  
-  ![Figure 3.5](figures/diagrams/figure_3_5.png)
-- **Figure 3.6:** VR Tour Reconstruction Inspection and Memory Cleanup Flowchart  
-  ![Figure 3.6](figures/diagrams/figure_3_6.png)
-- **Figure 3.7:** VR Museum Artifact Exploration and Environment Dimmer Flowchart  
-  ![Figure 3.7](figures/diagrams/figure_3_7.png)
-- **Figure 3.8:** On-Site Mixed Reality Entrance Alignment and Session Anchor Flowchart  
-  ![Figure 3.8](figures/diagrams/figure_3_8.png)
-- **Figure 3.9:** MR Model Display Gating and Tracking Recovery Flowchart  
-  ![Figure 3.9](figures/diagrams/figure_3_9.png)
-- **Figure 3.10:** Shared Multimodal AI Heritage Guide Workflow Flowchart  
-  ![Figure 3.10](figures/diagrams/figure_3_10.png)
-
-### 3.4 Process Sequence Diagrams
-- **Figure 3.11:** Sequence Diagram: Asynchronous Tour Viewpoint Transition and Memory Cleanup  
-  ![Figure 3.11](figures/diagrams/figure_3_11.png)
-- **Figure 3.12:** Sequence Diagram: Museum Artifact Inspection and Dimmer Lifecycle  
-  ![Figure 3.12](figures/diagrams/figure_3_12.png)
-- **Figure 3.13:** Sequence Diagram: MR Entrance Alignment and Spatial Anchoring  
-  ![Figure 3.13](figures/diagrams/figure_3_13.png)
-- **Figure 3.14:** Sequence Diagram: Multimodal AI Guide Speech Transcription and Gemini LLM Query  
-  ![Figure 3.14](figures/diagrams/figure_3_14.png)
-
----
-
-# Part 4: Updated System Storyboards & Spatial Interaction Flows
-
-### 4.1 Master Storyboard Specification Matrix
+#### 3.1.1 Master Storyboard Interaction & Subsystem Specification Matrix
 
 | # | Scene / Experience | Visual Environment | Spatial UI & Components | User Triggers & Controls | Audio & Haptic Feedback | C# Controller Link |
 |---|---|---|---|---|---|---|
@@ -160,7 +129,41 @@ Based on consultation with official Fine Arts Department excavation monographs a
 | **06** | On-Site MR | Real park via Color Passthrough | 1:1 Stupa + Curator reference gizmo | Right Grip+Stick align; Button A anchor | Spatial reverb; tactile anchor lock | MRMeshReferenceAlignment.cs |
 | **07** | Multimodal AI Guide | Floating glassmorphic tablet | Tablet window with chat and mic bar | Dictate voice or type; click Send | Digital chime; typewriter audio stream | GeminiChatUI.cs |
 
-### 4.2 Step-by-Step Storyboard Walkthrough & Interface Design
+### 3.2 High-Level System Architecture Diagram
+![Figure 3.2: Updated High-Level System Architecture and External Services Topology](figures/diagrams/figure_3_1.png)
+
+### 3.3 System Actor Profiles & Use Case Diagram
+![Figure 3.3: Updated System Functions and Use Case Diagram for Visitors and Curators](figures/diagrams/figure_3_2.png)
+
+### 3.4 System Workflow & Behavioral Activity Flowcharts
+- **Figure 3.4:** Application Overview and Scene Navigation Flowchart  
+  ![Figure 3.4](figures/diagrams/figure_3_3.png)
+- **Figure 3.5:** Main Menu Language Selection and Scene Loading Flowchart  
+  ![Figure 3.5](figures/diagrams/figure_3_4.png)
+- **Figure 3.6:** VR 360 Panoramic Tour Navigation Flowchart  
+  ![Figure 3.6](figures/diagrams/figure_3_5.png)
+- **Figure 3.7:** VR Tour Reconstruction Inspection and Memory Cleanup Flowchart  
+  ![Figure 3.7](figures/diagrams/figure_3_6.png)
+- **Figure 3.8:** VR Museum Artifact Exploration and Environment Dimmer Flowchart  
+  ![Figure 3.8](figures/diagrams/figure_3_7.png)
+- **Figure 3.9:** On-Site Mixed Reality Entrance Alignment and Session Anchor Flowchart  
+  ![Figure 3.9](figures/diagrams/figure_3_8.png)
+- **Figure 3.10:** MR Model Display Gating and Tracking Recovery Flowchart  
+  ![Figure 3.10](figures/diagrams/figure_3_9.png)
+- **Figure 3.11:** Shared Multimodal AI Heritage Guide Workflow Flowchart  
+  ![Figure 3.11](figures/diagrams/figure_3_10.png)
+
+### 3.5 Process Sequence Diagrams
+- **Figure 3.12:** Sequence Diagram: Asynchronous Tour Viewpoint Transition and Memory Cleanup  
+  ![Figure 3.12](figures/diagrams/figure_3_11.png)
+- **Figure 3.13:** Sequence Diagram: Museum Artifact Inspection and Dimmer Lifecycle  
+  ![Figure 3.13](figures/diagrams/figure_3_12.png)
+- **Figure 3.14:** Sequence Diagram: MR Entrance Alignment and Spatial Anchoring  
+  ![Figure 3.14](figures/diagrams/figure_3_13.png)
+- **Figure 3.15:** Sequence Diagram: Multimodal AI Guide Speech Transcription and Gemini LLM Query  
+  ![Figure 3.15](figures/diagrams/figure_3_14.png)
+
+### 3.6 Step-by-Step Spatial Interface Walkthrough & Visual Plates
 
 #### Storyboard Frame 1: Language Onboarding Portal
 ![Storyboard Frame 1](../User_Guide_Pictures/01_GettingStarted_PointAndSelect.jpg)
@@ -186,7 +189,7 @@ Based on consultation with official Fine Arts Department excavation monographs a
 #### Storyboard Frame 7: Independent Multimodal AI Heritage Assistant
 ![Storyboard Frame 7](../User_Guide_Pictures/27_AIGuide_TypeAndSendQuestion.jpg)
 
-### 4.3 Spatial Controller Input Mapping Reference Table
+### 3.7 Spatial Controller Input Mapping Reference Table & Curatorial Field Guide
 
 | Mode | Hand | Input Element | Physical Action | Operational Function & Visual Feedback |
 |---|---|---|---|---|
