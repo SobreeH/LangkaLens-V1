@@ -75,6 +75,8 @@ The author also conveys gratitude to the archaeological researchers of the Fine 
 - **CHAPTER 3: SYSTEM ARCHITECTURE AND SYSTEM DESIGN**
   - 3.1 System Overview and Design Goals
   - 3.2 High-Level System Architecture
+    - 3.2.1 Master Spatial Storyboard
+    - 3.2.2 Application Subsystems and Cloud AI Services
   - 3.3 User Functions
   - 3.4 Application and Scene Flowcharts
     - 3.4.1 Application Overview
@@ -318,7 +320,17 @@ The design aims to make these experiences understandable for visitors, especiall
 
 ### 3.2 High-Level System Architecture
 
-The Unity application runs on the headset. Its scenes share content and interface services, while chat and transcription communicate with external providers.
+#### 3.2.1 Master Spatial Storyboard
+
+Figure 3.1 illustrates the comprehensive LangkaLens master spatial storyboard and end-to-end interaction architecture across the seven primary user journey phases on Meta Quest 3 and Quest 3S, generated via Google Stitch spatial design specification. It maps visual scene environments, world-space UI components, 6-DOF controller interactions, audio and haptic feedback cues, and underlying Unity C# controller scripts from initial language onboarding to the multimodal AI heritage guide.
+
+![Figure 3.1: Master Spatial Storyboard](figures/diagrams/storyboard_01_master_journey.png)
+
+Figure 3.1. LangkaLens master spatial storyboard: Complete 7-scene user journey and architecture topology across Meta Quest 3 and Quest 3S (generated via Google Stitch spatial computing design system).
+
+#### 3.2.2 Application Subsystems and Cloud AI Services
+
+The Unity application runs on the headset. Its scenes share content and interface services, while chat and transcription communicate with external providers. Figure 3.2 presents the modular subsystem components and external AI services.
 
 ```mermaid
 flowchart TB
@@ -355,7 +367,7 @@ flowchart TB
     Groq -->|"Transcript or error"| Guide
 ```
 
-Figure 3.1. Main application components and external AI services. The guide and help components are shared by the experience scenes; they are not separate modes loaded from the main menu.
+Figure 3.2. Main application components and external AI services. The guide and help components are shared by the experience scenes; they are not separate modes loaded from the main menu.
 
 ---
 
@@ -392,7 +404,7 @@ flowchart LR
     Visitor --> Return
 ```
 
-Figure 3.2. Visitor functions. Alternate-model switching depends on the content configured for the selected artifact. Tracking checks run automatically and are not a separate visitor task.
+Figure 3.3. Visitor functions. Alternate-model switching depends on the content configured for the selected artifact. Tracking checks run automatically and are not a separate visitor task.
 
 ---
 
@@ -415,7 +427,7 @@ flowchart TD
     Menu -->|"Quit"| End(["Close application"])
 ```
 
-Figure 3.3. Overview of the four enabled scenes. Each experience provides its own tablet/submenu for shared guide functions.
+Figure 3.4. Overview of the four enabled scenes. Each experience provides its own tablet/submenu for shared guide functions.
 
 #### 3.4.2 Main Menu: Language, Guidance, and Mode Selection
 
@@ -446,7 +458,7 @@ flowchart TD
     classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.4. Main menu workflow. Governs session-scoped language persistence (`MainMenuManager`) and asynchronous scene transitions. Validates `SceneLoadingScreen.IsLoading` to prevent duplicate requests before invoking `SceneManager.LoadSceneAsync()`.
+Figure 3.5. Main menu workflow. Governs session-scoped language persistence (`MainMenuManager`) and asynchronous scene transitions. Validates `SceneLoadingScreen.IsLoading` to prevent duplicate requests before invoking `SceneManager.LoadSceneAsync()`.
 
 #### 3.4.3 VR Tour: Area Selection and Viewpoint Navigation
 
@@ -479,7 +491,7 @@ flowchart TD
     classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.5. Tour navigation. Navigation is blocked during transitions, open map, or active inspection. Requests 8K equirectangular textures via Addressables, executes camera lunge animation, verifies load within a 30s deadline, and deallocates prior textures from GPU VRAM upon arrival.
+Figure 3.6. Tour navigation. Navigation is blocked during transitions, open map, or active inspection. Requests 8K equirectangular textures via Addressables, executes camera lunge animation, verifies load within a 30s deadline, and deallocates prior textures from GPU VRAM upon arrival.
 
 #### 3.4.4 VR Tour: Restored-Model Inspection
 
@@ -517,7 +529,7 @@ flowchart TD
     classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.6. Tour reconstruction inspection and cleanup lifecycle. Pressing Left Controller Y invokes `TourReconstructionPresenter` to instantiate the 3D stupa prefab via Addressables at 0.8m viewing distance, dims panorama backdrop to 0.15 (`#533A2D`), enables `OneGrabFreeRotateTransformer`, and safely releases handles upon exit.
+Figure 3.7. Tour reconstruction inspection and cleanup lifecycle. Pressing Left Controller Y invokes `TourReconstructionPresenter` to instantiate the 3D stupa prefab via Addressables at 0.8m viewing distance, dims panorama backdrop to 0.15 (`#533A2D`), enables `OneGrabFreeRotateTransformer`, and safely releases handles upon exit.
 
 #### 3.4.5 VR Museum: Artifact Exploration and Inspection
 
@@ -558,7 +570,7 @@ flowchart TD
     classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.7. Museum exploration and inspection. Raycasting artifact pedestal triggers `EnvironmentDimmer` (0.18 brightness over 0.35s), glides model to 0.6m distance, and binds bilingual metadata. Toggle button enables switching between weathered original (`_ORG`) and digitally restored (`_RES`) meshes.
+Figure 3.8. Museum exploration and inspection. Raycasting artifact pedestal triggers `EnvironmentDimmer` (0.18 brightness over 0.35s), glides model to 0.6m distance, and binds bilingual metadata. Toggle button enables switching between weathered original (`_ORG`) and digitally restored (`_RES`) meshes.
 
 #### 3.4.6 MR: Entrance Alignment and Session Anchor
 
@@ -599,7 +611,7 @@ flowchart TD
     classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.8. MR alignment and session anchor registration. Validates Quest 6-DOF tracking, positions entrance wireframe outline via controller grip and thumbstick (yaw & reach), and initiates `OVRSpatialAnchor.CreateAsync()` with a 15-second timeout window to lock the spatial transformation matrix.
+Figure 3.9. MR alignment and session anchor registration. Validates Quest 6-DOF tracking, positions entrance wireframe outline via controller grip and thumbstick (yaw & reach), and initiates `OVRSpatialAnchor.CreateAsync()` with a 15-second timeout window to lock the spatial transformation matrix.
 
 #### 3.4.7 MR: Model Display, Information, and Tracking Recovery
 
@@ -642,7 +654,7 @@ flowchart TD
     classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.9. MR display gating and continuous tracking recovery in unrestricted footprint mode. Validates alignment confirmation, 6-DOF head tracking, anchor localization, and color passthrough feed. Suppresses virtual models on tracking loss to eliminate drift, with A/B toggles for model and site info.
+Figure 3.10. MR display gating and continuous tracking recovery in unrestricted footprint mode. Validates alignment confirmation, 6-DOF head tracking, anchor localization, and color passthrough feed. Suppresses virtual models on tracking loss to eliminate drift, with A/B toggles for model and site info.
 
 #### 3.4.8 Shared AI Guide: Text, Speech, Responses, and Errors
 
@@ -706,7 +718,7 @@ flowchart TD
     classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534;
 ```
 
-Figure 3.10. Shared Multimodal AI Heritage Guide query workflow. Supports 16kHz microphone audio (transcribed via Groq Cloud Whisper API `whisper-large-v3`) and bilingual virtual keyboard into an editable input field. Prompts are submitted to Google Gemini (`gemini-3.5-flash-lite`) with automated single-attempt fallback to `gemini-3.1-flash-lite`.
+Figure 3.11. Shared Multimodal AI Heritage Guide query workflow. Supports 16kHz microphone audio (transcribed via Groq Cloud Whisper API `whisper-large-v3`) and bilingual virtual keyboard into an editable input field. Prompts are submitted to Google Gemini (`gemini-3.5-flash-lite`) with automated single-attempt fallback to `gemini-3.1-flash-lite`.
 
 ---
 
@@ -740,7 +752,7 @@ sequenceDiagram
     Tour->>Tour: End transition
 ```
 
-Figure 3.11. Asynchronous tour transition.
+Figure 3.12. Asynchronous tour transition.
 
 #### 3.5.2 Museum Artifact Inspection
 
@@ -784,7 +796,7 @@ sequenceDiagram
     Note over Inspect,Dimmer: Updates continue until original materials and skybox are restored
 ```
 
-Figure 3.12. Museum inspection, environment fade, and restoration. The fade helper restores original materials after the return fade completes, or immediately when the manager is disabled or destroyed. Tour inspection uses the shared manager with its own display-loading and placement components; this museum fade is skipped for stationary/tour inspection.
+Figure 3.13. Museum inspection, environment fade, and restoration. The fade helper restores original materials after the return fade completes, or immediately when the manager is disabled or destroyed. Tour inspection uses the shared manager with its own display-loading and placement components; this museum fade is skipped for stationary/tour inspection.
 
 #### 3.5.3 MR Alignment and Display Readiness
 
@@ -817,7 +829,7 @@ sequenceDiagram
     end
 ```
 
-Figure 3.13. Session alignment and display control. The saved unrestricted footprint does not enforce a hallway boundary. Alignment uses a session anchor.
+Figure 3.14. Session alignment and display control. The saved unrestricted footprint does not enforce a hallway boundary. Alignment uses a session anchor.
 
 #### 3.5.4 AI Guide with Optional Speech Input
 
@@ -847,7 +859,7 @@ sequenceDiagram
     Note over Visitor,Chat: Cancel, clear, or close can abort pending chat
 ```
 
-Figure 3.14. Transcription and chat are separate requests. Speech is not automatically submitted as a question, and the diagram does not claim a fixed answer time or verified historical accuracy.
+Figure 3.15. Transcription and chat are separate requests. Speech is not automatically submitted as a question, and the diagram does not claim a fixed answer time or verified historical accuracy.
 
 
 ### 3.6 Interface and Input Design
