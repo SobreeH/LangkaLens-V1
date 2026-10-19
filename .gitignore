@@ -151,6 +151,9 @@ Docs/User_Guide_Screenshots/
 Docs/User_Guide_Screenshots.zip
 Docs/User_Guide_Pictures/
 Docs/LangkaLens_User_Guide_Screenshots.docx
+Docs/Report/temp_*
+Docs/Report/test_*
+Docs/Report/stitch_*.html
 
 # Python bytecode & cache
 __pycache__/
