@@ -18,7 +18,7 @@ The PDFs were read locally. Relevant pages were rendered and visually checked be
 | `OG_BJ8` / Ban Jalae 8 / บ้านจาเละ หมายเลข 8 | Book 1 p. 195 (PDF 195); Book 2 pp. 64, 68 (PDF 74, 78) | A west-facing monument with a square base, central chamber and sandstone column bases. The authors interpret it as the principal monument in the religious group and propose wooden corner columns. The column reconstruction is a hypothesis, not surviving timber. |
 | `OG_BW9` / Ban Wat 9 / บ้านวัด หมายเลข 9 | Book 1 p. 208 (PDF 208); Book 2 p. 62 (PDF 72) | A brick monument interpreted as Buddhist, with eastern/western stairs and rooms above the base. Stucco elephant sculpture and beads occur among the finds. This is Ban Wat 9, distinct from the unexcavated Ban Jalae 9. |
 
-`MR_Scene`'s existing BJ3/A3 information was checked through `MRSiteInformationTools.cs` and the actual `MR_UI` English/Thai entries (`SiteInfo_About`, `SiteInfo_Interpretation`, and source entries). Its account of two phases, votive tablets, miniature stupas and the incomplete upper structure agrees with the referenced book pages. Its text and scene were not changed.
+`MR_Scene`'s existing BJ3/A3 information was checked through `MRSiteInformationTools.cs` and the actual `MR_UI` English/Thai entries (`SiteInfo_About`, `SiteInfo_Interpretation`, and source entries). Page 3's source citation (`SiteInfo_SourceInterpretation`) credits the restored 3D model directly to the Regional Office of Fine Arts No. 11, Songkhla (สำนักศิลปากรที่ ๑๑ สงขลา) alongside the book page citations.
 
 ## Reading the restored models
 
