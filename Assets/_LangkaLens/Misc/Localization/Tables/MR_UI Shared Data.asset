@@ -123,6 +123,10 @@ MonoBehaviour:
     m_Key: SiteInfo_Next
     m_Metadata:
       m_Items: []
+  - m_Id: 14088039320694784
+    m_Key: SiteInfo_SourceInterpretation
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

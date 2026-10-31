@@ -171,6 +171,15 @@ MonoBehaviour:
     m_Localized: Next
     m_Metadata:
       m_Items: []
+  - m_Id: 14088039320694784
+    m_Localized: 'Sources: Yarang, p. 180
+
+      Southern Border Provinces, p. 66
+
+      3D
+      Model: Regional Office of Fine Arts No. 11, Songkhla'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

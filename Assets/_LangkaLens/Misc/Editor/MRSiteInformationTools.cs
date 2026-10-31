@@ -30,6 +30,7 @@ namespace LangkaLens.Editor
             { "SiteInfo_Interpretation", "The complete upper structure has not survived. Its restored form is an interpretation; the books suggest a possible comparison with Candi Mendut in Java.\n\nThis display is fitted to the viewing space. Its size, upper tiers, colours and fine details are not a verified, exact replica.", "ส่วนบนของอาคารไม่เหลือครบ รูปแบบที่เติมขึ้นจึงเป็นการตีความ\nหนังสือเสนอว่าอาจมีรูปแบบคล้ายจันทิเมนดุตในชวา\n\nแบบจำลองนี้ปรับขนาดให้พอดีกับพื้นที่แสดง\nขนาด ส่วนยอด สี และรายละเอียดจึงไม่ใช่สำเนา\nที่ผ่านการยืนยันว่าตรงกับของเดิมทุกประการ" },
             { "SiteInfo_SourceAbout", "Sources: Yarang, p. 180\nSouthern Border Provinces, p. 66", "ที่มา: เมืองโบราณยะรัง หน้า 180\nพัฒนาการฯ 3 จังหวัดชายแดนใต้ หน้า 66" },
             { "SiteInfo_SourceEvidence", "Sources: Yarang, pp. 180, 192-194\nSouthern Border Provinces, p. 66", "ที่มา: เมืองโบราณยะรัง หน้า 180, 192-194\nพัฒนาการฯ 3 จังหวัดชายแดนใต้ หน้า 66" },
+            { "SiteInfo_SourceInterpretation", "Sources: Yarang, p. 180\nSouthern Border Provinces, p. 66\n3D Model: Regional Office of Fine Arts No. 11, Songkhla", "ที่มา: เมืองโบราณยะรัง หน้า 180\nพัฒนาการฯ 3 จังหวัดชายแดนใต้ หน้า 66\nแบบจำลอง 3 มิติ: สำนักศิลปากรที่ ๑๑ สงขลา" },
             { "SiteInfo_Previous", "Previous", "ย้อนกลับ" },
             { "SiteInfo_Next", "Next", "ถัดไป" }
         };
@@ -81,7 +82,7 @@ namespace LangkaLens.Editor
                 controller.pages[i] = page.gameObject;
                 Label(page, "Heading", headings[i], font, 60, 238, 1280, 88, 56, new Color(0.96f, 0.84f, 0.61f));
                 Label(page, "Body", bodies[i], font, 60, 340, 1280, 540, 48, new Color(0.92f, 0.94f, 0.91f));
-                Label(page, "Source", i == 1 ? "SiteInfo_SourceEvidence" : "SiteInfo_SourceAbout", font, 60, 910, 1280, 130, 48, new Color(0.72f, 0.84f, 0.82f));
+                Label(page, "Source", i == 1 ? "SiteInfo_SourceEvidence" : i == 2 ? "SiteInfo_SourceInterpretation" : "SiteInfo_SourceAbout", font, 60, 910, 1280, 130, 48, new Color(0.72f, 0.84f, 0.82f));
                 page.gameObject.SetActive(i == 0);
             }
             Button(rect, "Previous", "SiteInfo_Previous", font, 60, controller.PreviousPage);
@@ -98,7 +99,69 @@ namespace LangkaLens.Editor
             Selection.activeGameObject = canvasObject;
         }
 
-        private static void PopulateTables()
+        [MenuItem("Tools/LangkaLens/MR/Update site information translations")]
+        public static void UpdateTranslations()
+        {
+            PopulateTables();
+            UpdatePage3SourceReference();
+        }
+
+        private static void UpdatePage3SourceReference()
+        {
+            var page3 = GameObject.Find("Page3");
+            if (page3 == null)
+            {
+                foreach (var go in Resources.FindObjectsOfTypeAll<GameObject>())
+                {
+                    if (go.name == "Page3" && go.scene.isLoaded)
+                    {
+                        page3 = go;
+                        break;
+                    }
+                }
+            }
+
+            if (page3 == null) return;
+
+            Transform sourceTrans = page3.transform.Find("Source");
+            if (sourceTrans == null) return;
+
+            var localize = sourceTrans.GetComponent<LocalizeStringEvent>();
+            var tmp = sourceTrans.GetComponent<TextMeshProUGUI>();
+
+            if (localize != null)
+            {
+                Undo.RecordObject(localize, "Update Page 3 Source Key");
+                localize.StringReference = new LocalizedString(Table, "SiteInfo_SourceInterpretation");
+                if (tmp != null)
+                {
+                    localize.OnUpdateString.RemoveAllListeners();
+                    var setter = (UnityAction<string>)Delegate.CreateDelegate(typeof(UnityAction<string>), tmp, "set_text");
+                    UnityEventTools.AddPersistentListener(localize.OnUpdateString, setter);
+                    localize.OnUpdateString.SetPersistentListenerState(0, UnityEventCallState.EditorAndRuntime);
+                }
+                localize.RefreshString();
+                EditorUtility.SetDirty(localize);
+            }
+
+            if (tmp != null)
+            {
+                Undo.RecordObject(tmp, "Update Page 3 Source Text");
+                string enText = Enumerable.Range(0, Copy.GetLength(0))
+                    .Where(i => Copy[i, 0] == "SiteInfo_SourceInterpretation")
+                    .Select(i => Copy[i, 1])
+                    .FirstOrDefault();
+                if (!string.IsNullOrEmpty(enText))
+                {
+                    tmp.text = enText;
+                }
+                EditorUtility.SetDirty(tmp);
+            }
+
+            EditorSceneManager.MarkSceneDirty(page3.scene);
+        }
+
+        public static void PopulateTables()
         {
             var collection = LocalizationEditorSettings.GetStringTableCollection(Table);
             if (collection == null) throw new InvalidOperationException("MR_UI table collection is missing.");

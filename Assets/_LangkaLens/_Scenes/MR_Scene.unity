@@ -16015,7 +16015,7 @@ MonoBehaviour:
       m_TableCollectionName: MR_UI
     m_TableEntryReference:
       m_KeyId: 0
-      m_Key: SiteInfo_SourceAbout
+      m_Key: SiteInfo_SourceInterpretation
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
@@ -16035,6 +16035,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
+      - m_Target: {fileID: 1528541499}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   references:
     version: 2
     RefIds: []
@@ -16060,7 +16072,10 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Sources: Yarang, p. 180
 
-    Southern Border Provinces, p. 66'
+    Southern Border Provinces, p. 66
+
+    3D
+    Model: Regional Office of Fine Arts No. 11, Songkhla'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ee8e07c22dd1b52448cf41c6ef1233ff, type: 2}
   m_sharedMaterial: {fileID: 6007258334728703960, guid: ee8e07c22dd1b52448cf41c6ef1233ff, type: 2}
