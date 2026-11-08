@@ -82,7 +82,10 @@ namespace LangkaLens.Editor
                 controller.pages[i] = page.gameObject;
                 Label(page, "Heading", headings[i], font, 60, 238, 1280, 88, 56, new Color(0.96f, 0.84f, 0.61f));
                 Label(page, "Body", bodies[i], font, 60, 340, 1280, 540, 48, new Color(0.92f, 0.94f, 0.91f));
-                Label(page, "Source", i == 1 ? "SiteInfo_SourceEvidence" : i == 2 ? "SiteInfo_SourceInterpretation" : "SiteInfo_SourceAbout", font, 60, 910, 1280, 130, 48, new Color(0.72f, 0.84f, 0.82f));
+                float sourceY = i == 2 ? 870 : 910;
+                float sourceH = i == 2 ? 150 : 130;
+                float sourceSize = i == 2 ? 32 : 36;
+                Label(page, "Source", i == 1 ? "SiteInfo_SourceEvidence" : i == 2 ? "SiteInfo_SourceInterpretation" : "SiteInfo_SourceAbout", font, 60, sourceY, 1280, sourceH, sourceSize, new Color(0.72f, 0.84f, 0.82f));
                 page.gameObject.SetActive(i == 0);
             }
             Button(rect, "Previous", "SiteInfo_Previous", font, 60, controller.PreviousPage);
