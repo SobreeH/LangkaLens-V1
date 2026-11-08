@@ -31,6 +31,9 @@
 *.slnx
 *.slnx.user
 
+# Temporary compiler test assemblies
+TempAssembly.*
+
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be committed to version control.
 *.blend1
