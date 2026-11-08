@@ -592,13 +592,31 @@ public class GeminiChatUI : MonoBehaviour
     private void ApplyScrollPosition()
     {
         if (scrollRect == null || scrollRect.content == null) return;
+        if (chatLogText != null)
+        {
+            chatLogText.ForceMeshUpdate();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(chatLogText.rectTransform);
+        }
         scrollRect.movementType = ScrollRect.MovementType.Clamped;
         scrollRect.StopMovement();
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
         Canvas.ForceUpdateCanvases();
+
+        float viewportHeight = scrollRect.viewport != null
+            ? scrollRect.viewport.rect.height
+            : ((RectTransform)scrollRect.transform).rect.height;
+        bool hasText = chatLogText == null || !string.IsNullOrWhiteSpace(chatLogText.text);
+        bool canScroll = hasText && (scrollRect.content.rect.height > viewportHeight + 1f);
+        scrollRect.vertical = canScroll;
+        if (scrollRect.verticalScrollbar != null)
+            scrollRect.verticalScrollbar.interactable = canScroll;
+
+        scrollRect.Rebuild(CanvasUpdate.Prelayout);
+        scrollRect.Rebuild(CanvasUpdate.PostLayout);
         // Recalculate against the new text height before selecting either end of the log.
         scrollRect.verticalNormalizedPosition = pendingScrollPosition;
+        scrollRect.Rebuild(CanvasUpdate.PostLayout);
     }
 }
 

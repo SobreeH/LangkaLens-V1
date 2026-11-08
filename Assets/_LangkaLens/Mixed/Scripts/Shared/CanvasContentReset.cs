@@ -69,6 +69,12 @@ public sealed class CanvasContentReset : MonoBehaviour
             if (scroll != null && scroll.isActiveAndEnabled && scroll.content != null)
             {
                 scroll.movementType = ScrollRect.MovementType.Clamped;
+                var textComp = scroll.content.GetComponentInChildren<TMPro.TMP_Text>(true);
+                if (textComp != null)
+                {
+                    textComp.ForceMeshUpdate();
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(textComp.rectTransform);
+                }
                 LayoutRebuilder.ForceRebuildLayoutImmediate(scroll.content);
             }
         }
@@ -99,7 +105,13 @@ public sealed class CanvasContentReset : MonoBehaviour
                 if (scroll.verticalScrollbar != null)
                     scroll.verticalScrollbar.interactable = canScrollVertical;
 
-                if (scroll.vertical) scroll.verticalNormalizedPosition = 1f;
+                scroll.Rebuild(CanvasUpdate.Prelayout);
+                scroll.Rebuild(CanvasUpdate.PostLayout);
+                if (scroll.vertical)
+                {
+                    scroll.verticalNormalizedPosition = 1f;
+                    scroll.Rebuild(CanvasUpdate.PostLayout);
+                }
             }
 
             if (horizontalSupported != null && i < horizontalSupported.Length && horizontalSupported[i])
@@ -115,7 +127,13 @@ public sealed class CanvasContentReset : MonoBehaviour
                 if (scroll.horizontalScrollbar != null)
                     scroll.horizontalScrollbar.interactable = canScrollHorizontal;
 
-                if (scroll.horizontal) scroll.horizontalNormalizedPosition = 0f;
+                scroll.Rebuild(CanvasUpdate.Prelayout);
+                scroll.Rebuild(CanvasUpdate.PostLayout);
+                if (scroll.horizontal)
+                {
+                    scroll.horizontalNormalizedPosition = 0f;
+                    scroll.Rebuild(CanvasUpdate.PostLayout);
+                }
             }
         }
     }

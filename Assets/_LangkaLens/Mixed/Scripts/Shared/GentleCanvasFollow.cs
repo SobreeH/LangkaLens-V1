@@ -9,6 +9,10 @@ public sealed class GentleCanvasFollow : MonoBehaviour
     [SerializeField] private Transform head;
     [Tooltip("Metres to the right, above and ahead of the viewer, relative to their horizontal heading.")]
     [SerializeField] private Vector3 viewerOffset = new Vector3(0f, 0f, 3f);
+    [Tooltip("Additional offset applied while the child virtual keyboard is open.")]
+    [SerializeField] private Vector3 keyboardOpenOffset = new Vector3(0f, 0.85f, 0f);
+    [Tooltip("Minimum clearance in metres kept between the bottom of the open keyboard and the rig floor.")]
+    [SerializeField, Min(0f)] private float minFloorClearance = 0.1f;
     [Tooltip("Small head turns leave the panel stationary so the user can scan its contents.")]
     [SerializeField, Range(1f, 45f)] private float angularDeadZone = 12f;
     [Tooltip("Small physical head movements leave the panel stationary.")]
@@ -17,6 +21,9 @@ public sealed class GentleCanvasFollow : MonoBehaviour
     [SerializeField, Min(0.05f)] private float smoothTime = 0.35f;
 
     private Transform followSpace;
+    private BilingualVirtualKeyboard childKeyboard;
+    private Vector3 currentExtraOffset;
+    private Vector3 extraOffsetVelocity;
     private Vector3 anchorHeadPosition;
     private Vector3 smoothedHeadPosition;
     private Quaternion targetRotation = Quaternion.identity;
@@ -41,6 +48,8 @@ public sealed class GentleCanvasFollow : MonoBehaviour
             return;
         }
 
+        childKeyboard = GetComponentInChildren<BilingualVirtualKeyboard>(true);
+
         // Leave the eye anchor before rendering: otherwise late XR pose updates still head-lock the UI.
         // Keeping the tracking-space parent also lets locomotion/recentering move the panel with the rig.
         if (transform.IsChildOf(head)) transform.SetParent(head.parent, true);
@@ -53,6 +62,8 @@ public sealed class GentleCanvasFollow : MonoBehaviour
         if (!initialized || head == null) return;
         SetTarget(GetHeading());
         smoothedHeadPosition = anchorHeadPosition;
+        currentExtraOffset = GetTargetExtraOffset();
+        extraOffsetVelocity = Vector3.zero;
         ApplyPose(targetRotation);
         velocity = Vector3.zero;
     }
@@ -75,10 +86,15 @@ public sealed class GentleCanvasFollow : MonoBehaviour
 
         smoothedHeadPosition = Vector3.SmoothDamp(smoothedHeadPosition, anchorHeadPosition,
             ref velocity, smoothTime, Mathf.Infinity, deltaTime);
+        currentExtraOffset = Vector3.SmoothDamp(currentExtraOffset, GetTargetExtraOffset(),
+            ref extraOffsetVelocity, smoothTime, Mathf.Infinity, deltaTime);
         float blend = 1f - Mathf.Exp(-deltaTime / smoothTime);
         Quaternion rotation = Quaternion.Slerp(transform.localRotation, targetRotation, blend);
         ApplyPose(rotation);
     }
+
+    private Vector3 GetTargetExtraOffset()
+        => childKeyboard != null && childKeyboard.IsOpen ? keyboardOpenOffset : Vector3.zero;
 
     private Quaternion GetHeading()
     {
@@ -107,7 +123,15 @@ public sealed class GentleCanvasFollow : MonoBehaviour
         Vector3 origin = followSpace != null
             ? followSpace.TransformPoint(smoothedHeadPosition) : smoothedHeadPosition;
         // Ease around the viewer on an arc, rather than cutting through them during a large turn.
-        transform.SetPositionAndRotation(origin + rotation * viewerOffset, rotation);
+        Vector3 position = origin + rotation * (viewerOffset + currentExtraOffset);
+        if (childKeyboard != null && childKeyboard.IsOpen && followSpace != null)
+        {
+            var kbRect = (RectTransform)childKeyboard.transform;
+            float keyboardBottomFromCanvas = (kbRect.localPosition.y + kbRect.rect.yMin) * transform.lossyScale.y;
+            float minCanvasY = followSpace.position.y + minFloorClearance - keyboardBottomFromCanvas;
+            if (position.y < minCanvasY) position.y = minCanvasY;
+        }
+        transform.SetPositionAndRotation(position, rotation);
     }
 
     private Vector3 ToLocalPosition(Vector3 worldPosition)
