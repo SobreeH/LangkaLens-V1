@@ -41,7 +41,8 @@ public class GeminiChatUI : MonoBehaviour
     [SerializeField] private Color guideLabelColor = new Color(0f, 1f, 0.6666667f);
 
     [Header("API Configuration")]
-    public string apiKey = "YOUR_API_KEY_HERE";
+    [Tooltip("Optional local override. Leave blank to load geminiApiKey from gitignored Resources/LangkaLensSecrets.json or .env.")]
+    public string apiKey = "";
     [Tooltip("Gemini Flash or Flash-Lite model name for chat generation.")]
     public string modelName = "gemini-3.5-flash-lite";
     [Tooltip("Try the fallback once if the main model is unavailable (404, 408, 429, or 5xx).")]
@@ -404,10 +405,27 @@ public class GeminiChatUI : MonoBehaviour
         currentRequestCoroutine = StartCoroutine(SendRequest(prompt));
     }
 
+    public string EffectiveApiKey => ApiSecretsConfig.GetGeminiApiKey(apiKey);
+
+    private string GetEffectiveApiKey() => EffectiveApiKey;
+
     private IEnumerator SendRequest(string prompt)
     {
         try
         {
+            string effectiveKey = GetEffectiveApiKey();
+            if (string.IsNullOrWhiteSpace(effectiveKey))
+            {
+                Debug.LogError("[GeminiChatUI] Gemini API key is missing! Configure Assets/Resources/LangkaLensSecrets.json (see LangkaLensSecrets.example.json) or set GEMINI_API_KEY in .env.");
+                if (chatLogText != null)
+                {
+                    string errorLabel = IsThaiLocale() ? "ข้อผิดพลาด:" : "Config Error:";
+                    string msg = IsThaiLocale() ? "ไม่พบ Gemini API Key" : "Gemini API key is not configured.";
+                    chatLogText.text += $"\n<color=red><b>{errorLabel}</b> {msg}</color>";
+                    ScrollToBottom();
+                }
+                yield break;
+            }
             // Construct the payload with GenerationConfig and SystemInstruction
             GeminiRequest requestData = new GeminiRequest
             {
@@ -436,7 +454,7 @@ public class GeminiChatUI : MonoBehaviour
             for (int attempt = 0; attempt < 2; attempt++)
             {
                 string activeModel = attempt == 0 ? primaryModel : backupModel;
-                string url = $"https://generativelanguage.googleapis.com/v1beta/models/{activeModel}:generateContent?key=" + apiKey;
+                string url = $"https://generativelanguage.googleapis.com/v1beta/models/{activeModel}:generateContent?key=" + effectiveKey;
                 awaitingResponse = false;
                 ShowRequestStatus();
                 using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
@@ -657,11 +675,16 @@ public class GeminiChatUIEditor : Editor
         GeminiChatUI chatScript = (GeminiChatUI)target;
         SerializedProperty modelProp = serializedObject.FindProperty("modelName");
 
+        string keySource = ApiSecretsConfig.GetCredentialSource(
+            chatScript.apiKey, p => p.geminiApiKey, "GEMINI_API_KEY", "YOUR_API_KEY_HERE");
+        EditorGUILayout.HelpBox($"Gemini API Key Source: {keySource}",
+            string.IsNullOrWhiteSpace(chatScript.EffectiveApiKey) ? MessageType.Warning : MessageType.Info);
+
         GUILayout.Space(10);
-        GeminiModelPicker.DrawModelSelector(serializedObject, modelProp, chatScript.apiKey, "Chat Model");
+        GeminiModelPicker.DrawModelSelector(serializedObject, modelProp, chatScript.EffectiveApiKey, "Chat Model");
         if (serializedObject.FindProperty("enableFallback").boolValue)
             GeminiModelPicker.DrawModelSelector(serializedObject,
-                serializedObject.FindProperty("fallbackModelName"), chatScript.apiKey, "Fallback Model");
+                serializedObject.FindProperty("fallbackModelName"), chatScript.EffectiveApiKey, "Fallback Model");
 
         serializedObject.ApplyModifiedProperties();
 

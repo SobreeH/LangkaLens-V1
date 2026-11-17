@@ -44,7 +44,7 @@ public class SpeechToTextHandler : MonoBehaviour
     public GeminiChatUI geminiChatUI;
 
     [Header("Groq Whisper API Configuration")]
-    [Tooltip("Groq API Key (starts with gsk_...). If empty, checks PlayerPrefs.")]
+    [Tooltip("Optional local override (starts with gsk_...). Leave blank to load groqApiKey from gitignored Resources/LangkaLensSecrets.json, .env, or PlayerPrefs.")]
     // This is a different provider's credential, not a rename of Gemini's apiKey.
     // Migrating apiKey also migrates old scene overrides over the valid prefab key.
     public string groqApiKey = "";
@@ -111,9 +111,10 @@ public class SpeechToTextHandler : MonoBehaviour
     {
         get
         {
-            if (!string.IsNullOrWhiteSpace(groqApiKey) && groqApiKey != "YOUR_GROQ_API_KEY_HERE" && groqApiKey != "YOUR_API_KEY_HERE")
+            string configured = ApiSecretsConfig.GetGroqApiKey(groqApiKey);
+            if (!string.IsNullOrWhiteSpace(configured))
             {
-                return groqApiKey.Trim();
+                return configured;
             }
 
             string prefKey = PlayerPrefs.GetString(GroqApiKeyPrefKey, "");
@@ -824,12 +825,21 @@ public class SpeechToTextHandlerEditor : Editor
             ? LocalizationSettings.SelectedLocale.LocaleName
             : $"System ({activeLocaleCode})";
 
+        string keySource = ApiSecretsConfig.GetCredentialSource(
+            handler.groqApiKey, p => p.groqApiKey, "GROQ_API_KEY", "YOUR_GROQ_API_KEY_HERE", "YOUR_API_KEY_HERE");
+        if (keySource.StartsWith("Missing", StringComparison.Ordinal) &&
+            !string.IsNullOrWhiteSpace(PlayerPrefs.GetString(SpeechToTextHandler.GroqApiKeyPrefKey, "")))
+        {
+            keySource = "Editor PlayerPrefs (not included in Quest APK)";
+        }
+
         EditorGUILayout.HelpBox(
+            $"🔑 Groq API Key Source: {keySource}\n" +
             $"🌐 Current Locale: {localeName}\n" +
             $"🎯 Active Whisper Target Language: '{(effectiveLangCode ?? "Auto-Detect")}'\n" +
             (effectiveLangCode == "th" ? "🇹🇭 Constraining Whisper decoder to Thai tokens for maximum accuracy." :
              effectiveLangCode == "en" ? "🇬🇧 Constraining Whisper decoder to English tokens." : "Auto-detecting language per audio."),
-            MessageType.Info);
+            string.IsNullOrWhiteSpace(handler.EffectiveApiKey) ? MessageType.Warning : MessageType.Info);
 
         // Model selector popup
         string currentModel = modelProp.stringValue;
@@ -872,18 +882,14 @@ public class SpeechToTextHandlerEditor : Editor
         if (targetObj != null && PrefabUtility.IsPartOfPrefabInstance(targetObj))
         {
             EditorGUILayout.Space(4);
-            if (GUILayout.Button("💾 Apply Settings to Prefab Asset (Propagate to Scenes)", GUILayout.Height(24)))
+            if (GUILayout.Button("💾 Apply Model Settings to Prefab Asset (Propagate to Scenes)", GUILayout.Height(24)))
             {
                 serializedObject.ApplyModifiedProperties();
                 string assetPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(targetObj);
                 if (!string.IsNullOrEmpty(assetPath))
                 {
                     PrefabUtility.ApplyPropertyOverride(modelProp, assetPath, InteractionMode.UserAction);
-                    if (!string.IsNullOrWhiteSpace(keyProp.stringValue))
-                    {
-                        PrefabUtility.ApplyPropertyOverride(keyProp, assetPath, InteractionMode.UserAction);
-                    }
-                    EditorUtility.DisplayDialog("Applied to Prefab", $"Settings applied to prefab asset:\n{assetPath}", "OK");
+                    EditorUtility.DisplayDialog("Applied to Prefab", $"Model settings applied to prefab asset:\n{assetPath}\n(API keys are kept out of prefabs; store them in Assets/Resources/LangkaLensSecrets.json.)", "OK");
                 }
             }
         }

@@ -13,7 +13,10 @@ using UnityEditor;
 public class GeminiController : MonoBehaviour
 {
     [Header("API Configuration")]
-    public string apiKey = "YOUR_API_KEY_HERE";
+    [Tooltip("Optional local override. Leave blank to load geminiApiKey from gitignored Resources/LangkaLensSecrets.json or .env.")]
+    public string apiKey = "";
+
+    public string EffectiveApiKey => ApiSecretsConfig.GetGeminiApiKey(apiKey);
     [Tooltip("Gemini Flash or Flash-Lite model name for generation.")]
     public string modelName = "gemini-3.5-flash-lite";
     private string ApiEndpoint => $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key=";
@@ -78,8 +81,15 @@ public class GeminiController : MonoBehaviour
             }
         };
 
+        string effectiveKey = EffectiveApiKey;
+        if (string.IsNullOrWhiteSpace(effectiveKey))
+        {
+            Debug.LogError("[GeminiController] Gemini API key is missing! Configure Assets/Resources/LangkaLensSecrets.json or .env.");
+            yield break;
+        }
+
         string jsonPayload = JsonUtility.ToJson(requestData);
-        using (UnityWebRequest request = new UnityWebRequest(ApiEndpoint + apiKey, "POST"))
+        using (UnityWebRequest request = new UnityWebRequest(ApiEndpoint + effectiveKey, "POST"))
         {
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonPayload);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -137,7 +147,7 @@ public class GeminiControllerEditor : Editor
         SerializedProperty modelProp = serializedObject.FindProperty("modelName");
 
         GUILayout.Space(10);
-        GeminiModelPicker.DrawModelSelector(serializedObject, modelProp, script.apiKey, "Model");
+        GeminiModelPicker.DrawModelSelector(serializedObject, modelProp, script.EffectiveApiKey, "Model");
 
         serializedObject.ApplyModifiedProperties();
 

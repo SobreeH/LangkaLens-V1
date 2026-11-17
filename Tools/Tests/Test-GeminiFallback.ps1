@@ -23,6 +23,7 @@ public sealed class ChatFallbackHarness {
     public object currentRequestCoroutine;
     public TextStub chatLogText = new TextStub();
     public bool backupStatusShown;
+    string GetEffectiveApiKey() { return apiKey; }
     string GetLocalizedSystemPrompt() { return "Test guide instructions"; }
     bool IsThaiLocale() { return false; }
     string GetSenderGuideLabel() { return "Guide"; }

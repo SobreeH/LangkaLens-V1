@@ -110,13 +110,14 @@ public static class GeminiModelPicker
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("🔄 Fetch Flash/Lite Models from API", GUILayout.Height(26)))
         {
-            if (string.IsNullOrWhiteSpace(apiKey) || apiKey == "YOUR_API_KEY_HERE")
+            string resolvedKey = ApiSecretsConfig.GetGeminiApiKey(apiKey);
+            if (string.IsNullOrWhiteSpace(resolvedKey))
             {
-                EditorUtility.DisplayDialog("Missing API Key", "Please enter a valid Gemini API Key above before fetching models.", "OK");
+                EditorUtility.DisplayDialog("Missing API Key", "Please configure a Gemini API Key in Assets/Resources/LangkaLensSecrets.json, .env, or the Inspector override before fetching models.", "OK");
             }
             else
             {
-                FetchModelsFromAPI(apiKey, modelProp);
+                FetchModelsFromAPI(resolvedKey, modelProp);
             }
         }
 
