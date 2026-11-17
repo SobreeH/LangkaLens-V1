@@ -2136,7 +2136,7 @@ MonoBehaviour:
   scrollRect: {fileID: 5216660772292662824}
   userLabelColor: {r: 0.45882353, g: 0.27450982, b: 0.21960784, a: 1}
   guideLabelColor: {r: 0.3254902, g: 0.22745098, b: 0.1764706, a: 1}
-  apiKey: AQ.Ab8RN6LWboDZRwzxj0NOL_zFqJf6TPNUzFlSmQh45bKeYasovQ
+  apiKey: 
   modelName: gemini-3.5-flash
   enableFallback: 1
   fallbackModelName: gemini-3.1-flash-lite
@@ -2170,7 +2170,7 @@ MonoBehaviour:
   speakButton: {fileID: 2191326726986776442}
   speakButtonText: {fileID: 2445905706643818451}
   geminiChatUI: {fileID: 8721593612043548131}
-  groqApiKey: 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
+  groqApiKey: 
   modelName: whisper-large-v3-turbo
   languageMode: 0
   explicitLanguageCode: th

@@ -20901,10 +20901,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2374246326440211737, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
-      propertyPath: apiKey
-      value: AQ.Ab8RN6LWboDZRwzxj0NOL_zFqJf6TPNUzFlSmQh45bKeYasovQ
-      objectReference: {fileID: 0}
     - target: {fileID: 2636789264775911985, guid: c3c445dbcb5857043816397dbefa8ad4, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
