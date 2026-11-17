@@ -144,8 +144,27 @@ AI_PROMPT_STORYBOARD.md
 Artifacts_UI_Translations.csv
 PROJECT_PROGRESS.md
 
-# Release keystore - DO NOT commit
+# Release keystore & Credentials / API Keys / Secrets - DO NOT commit
 *.keystore
+*.jks
+*.p12
+*.pem
+*.key
+keystore.properties
+.env
+.env.*
+!.env.example
+LangkaLensSecrets.json
+**/LangkaLensSecrets.json
+**/LangkaLensSecrets.json.meta
+**/LangkaLensSecrets.asset
+**/LangkaLensSecrets.asset.meta
+*.secrets.json
+!*secrets*.example.json
+Assets/**/Secrets/
+Assets/**/Secrets.meta
+google-services.json
+GoogleService-Info.plist
 
 # Documentation generation scratch files, backups, and duplicate exports
 Docs/Report/.development-update/
